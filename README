@@ -1,0 +1,147 @@
+プログラム名：Wizardry二次創作RPG～天竜の塔～
+
+用途：童帝が考えた夢のWizardryを現実に？
+
+
+使い方：
+まだ遊べません
+
+操作方法：
+まだ何も出来ません
+
+インストール：
+zip展開するだけ
+
+アンインストール：
+レジストリもテンポラリファイルも弄っておりません。
+フォルダごと削除するだけですっきりさっぱりおさらばできます。
+
+ファイル解説：
+wten.exe		プログラム本体です。
+README			今読んでいるこれ
+data/			使用している画像データなど
+
+
+Q&A：
+	Q:バグをみつけた or 動作しない or 要望がある
+	A:確認次第対応可能であれば対応します。
+	公開しても問題が無いメールアドレスにて
+	下部に記載されたアドレスまでメールをどうぞ。
+
+
+作者：sweetie
+メールアドレス：ｂｎｒｙｘｘ３３２ａ（あっと）ｍａｉｌ.ｇｏｏ．ｎｅ．ｊｐ
+
+
+ライセンス：
+・libjpeg
+{
+　　　libjpeg　Copyright (C) 1991-1998, Thomas G. Lane.
+　　　this software is based in part on the work of the Independent JPEG Group.
+}
+・libpng
+{
+　　　libpng　Copyright (c) 1998-2004 Glenn Randers-Pehrson.
+　　　zlib　Copyright (C) 1995-2004 Jean-loup Gailly and Mark Adler.
+}
+・Ogg Vorbis
+{
+　　　ogg_static, vorbis_static, vorbisfile_static
+　　　Copyright (C) 1994-2002 XIPHOPHORUS Company http://www.xiph.org/ .
+
+　　　Please note that this is only a sample license; authoritative license terms are included with each software bundle.
+　　　　　　
+　　　c year, Xiph.Org Foundation
+　　　　　　
+　　　Redistribution and use in source and binary forms, with or without modification,
+　　　are permitted provided that the following conditions are met:
+　　　　　　
+　　　- Redistributions of source code must retain the above copyright notice,
+　　　this list of conditions and the following disclaimer.
+
+　　　- Redistributions in binary form must reproduce the above copyright notice,
+　　　this list of conditions and the following disclaimer in the documentation
+　　　and/or other materials provided with the distribution.
+
+　　　- Neither the name of the Xiph.org Foundation nor the names of its contributors may be used
+　　　to endorse or promote products derived from this software without specific prior written permission.
+
+　　　This software is provided by the copyright holders and contributors “as is” and
+　　　any express or implied warranties, including, but not limited to, the implied warranties
+　　　of merchantability and fitness for a particular purpose are disclaimed. In no event shall
+　　　the foundation or contributors be liable for any direct, indirect, incidental, special,
+　　　exemplary, or consequential damages (including, but not limited to, procurement of
+　　　substitute goods or services; loss of use, data, or profits; or business interruption)
+　　　however caused and on any theory of liability, whether in contract, strict liability,
+　　　or tort (including negligence or otherwise) arising in any way out of the use of this
+　　　software, even if advised of the possibility of such damage.
+}
+・Mersenne Twister
+{
+　　　Mersenne Twister
+　　　Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
+　　　All rights reserved.
+
+　　　Redistribution and use in source and binary forms, with or without
+　　　modification, are permitted provided that the following conditions
+　　　are met:
+
+　　　1. Redistributions of source code must retain the above copyright
+　　　notice, this list of conditions and the following disclaimer.
+
+　　　2. Redistributions in binary form must reproduce the above copyright
+　　　notice, this list of conditions and the following disclaimer in the
+　　　documentation and/or other materials provided with the distribution.
+
+　　　3. The name of the author may not be used to endorse or promote products
+　　　derived from this software without specific prior written permission.
+
+　　　THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+　　　IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+　　　OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+　　　IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+　　　INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+　　　NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+　　　DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+　　　THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+　　　(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+　　　THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+}
+その他自作部分のライセンス：
+・本ライセンスにおいて、全ての条項は「変更の有無を問わず、明示暗示を問わず、商業慈善を問わず、
+	個人法人を問わず、保持使用を問わず、有料無料を問わず、全体一部を問わず、コピー派生を問わず
+	実行ファイルソースファイルを問わず、故意錯誤を問わず」と装飾されている物として扱う。
+・著作権者は本ソフトウェアに関する一切の保障義務をもたない。
+・上記条項唯一の例外として、本ライセンスに違反した場合を除いて著作権者から
+	本ソフトウェアに関する一切の法的措置を受ける事が無い事のみ保証される。
+・著作権者やその他保持者がこのライセンスの範囲で行う活動に支障が無い範囲であれば何を行っても構わない。
+・上記条項の”何を行っても構わない”には本ソフトウェアの製作者を偽っての再配布も含まれる。
+・全ての権利の行使において、著作権者への連絡、著作権者やライセンス条項の記載、
+	適用ライセンスなどの制限は一切存在しない。
+著作権者名：sweetie
+
+
+面倒な人向けライセンス解説：
+実行ファイルの再配布にはDxLib内で使用されている各種ライブラリの著作権者とライセンスについて記載義務が生じます。
+ソースコードについてはライセンス記載義務すらありません。
+自分が書いたコードのごとく好きに扱えます。
+
+
+スペシャルサンクス：
+童帝		原案提供
+Sir-Tech社	原作であるWizardryの開発元様
+山田 巧	本ソフトウエアで使用しているDxLibライブラリの作者様
+その他、童帝雑談スレ住民全て
+
+
+技術情報(と、どうでもいい話)：
+Boost Software Licenseは実行ファイルのみの場合ライセンスを記載する必要は無いそうなので記載していない。
+DxLibについても以下同文。
+なので、コンパイルを試みる場合はそれぞれのソースコードを別途取得してきてください。
+ちなみに、Boostは1.45.0、DxLibは3.04dを用いてコンパイルしています。
+org/click3/以下のファイルは https://github.com/click3/org-click3 を参照。
+makefileが入ってはいますが、まず間違いなく動かないので適当に何とかしてください。
+コンパイラはVisualStudio2008 SP1のコマンドライン版を独自ツールでラップしたもの。
+といっても、各種環境変数をごにょるだけなので、たぶんmakefileにインクルードパスとライブラリパス追加すれば動くんじゃないですかね。
+独自ライセンスうぜーって人はパブリックドメインだと思っておくといいと思います、厳密には違うけどほとんど同じ意味なので。
+
