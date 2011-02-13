@@ -17,7 +17,7 @@ UIBox::UIBox(const std::string& filename) {
 	const unsigned int line_len = 1;
 	const unsigned int line_thick = src->GetWidth() / 2;
 	const unsigned int blank_size = 1;
-#define LOAD_DERIVATION(name, x, y, w, h) 									\
+#define LOAD_DERIVATION(name, x, y, w, h) 								\
 	{													\
 		boost::optional<boost::shared_ptr<Graph>> name = src->Derivation(x, y, w, h);	\
 		BOOST_ASSERT(name);										\
@@ -34,11 +34,19 @@ UIBox::UIBox(const std::string& filename) {
 	LOAD_DERIVATION(blank,	corner_width,			corner_height,		blank_size,	blank_size);
 #undef LOAD_DERIVATION
 
-	boost::optional<boost::shared_ptr<Error> > error = Resize(src->GetWidth(), src->GetHeight());
-	BOOST_ASSERT(!error);
+	width = src->GetWidth();
+	height = src->GetHeight();
 }
 
 UIBox::~UIBox() {
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBox::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
+	boost::optional<boost::shared_ptr<Error> > error = UIBase::SetOwnerWindow(window);
+	if(error) {
+		return error.get();
+	}
+	return UIBase::Resize(width, height);
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBox::Resize(unsigned int width, unsigned int height) {

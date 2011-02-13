@@ -18,6 +18,10 @@ boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_pt
 	}
 	owner = window;
 	BOOST_ASSERT(owner.lock());
+	boost::optional<boost::shared_ptr<Error> > error = Move(x, y);
+	if(error) {
+		return error.get();
+	}
 	return boost::none;
 }
 
