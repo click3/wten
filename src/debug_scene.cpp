@@ -16,7 +16,7 @@ boost::optional<boost::shared_ptr<Error> > AddUI(const boost::shared_ptr<windows
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
 
-	boost::shared_ptr<UI> ui(new uis::UIBox("data/ui/box1/box1.png"));
+	boost::shared_ptr<UI> ui(new uis::UIBox("data/ui/box1.png"));
 	if(!ui) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
