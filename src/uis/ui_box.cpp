@@ -41,13 +41,6 @@ UIBox::UIBox(const std::string& filename) {
 UIBox::~UIBox() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UIBox::PointAndSizeIsValid(void) {
-	if(width < left_up->GetWidth()+right_up->GetWidth() || height < left_up->GetHeight()+left_down->GetHeight()) {
-		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
-	}
-	return UIBase::PointAndSizeIsValid();
-}
-
 boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = PointAndSizeIsValid()) {
@@ -108,6 +101,14 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
 		}
 	}
 	return boost::none;
+}
+
+utility::opt_error<unsigned int>::type UIBox::CalcWidth() {
+	return left_up->GetWidth()+right_up->GetWidth();
+}
+
+utility::opt_error<unsigned int>::type UIBox::CalcHeight() {
+	return left_up->GetHeight()+left_down->GetHeight();
 }
 
 } // uis

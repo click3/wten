@@ -7,8 +7,9 @@ class UIBox : public UIBase {
 public:
 	UIBox(const std::string& filename);
 	~UIBox();
-	boost::optional<boost::shared_ptr<Error> > PointAndSizeIsValid(void);
 	boost::optional<boost::shared_ptr<Error> > Draw(void);
+	utility::opt_error<unsigned int>::type CalcWidth();
+	utility::opt_error<unsigned int>::type CalcHeight();
 protected:
 	boost::shared_ptr<Graph> left_up;
 	boost::shared_ptr<Graph> left_down;

@@ -4,24 +4,9 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIBase::UIBase() :
-	x(0),	y(0),	width(0),	height(0)
-{
-}
+namespace {
 
-UIBase::~UIBase() {
-}
-
-boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
-	if(owner.lock()) {
-		return CreateError(ERROR_CODE_INTERNAL_ERROR);
-	}
-	owner = window;
-	BOOST_ASSERT(owner.lock());
-	return boost::none;
-}
-
-boost::optional<boost::shared_ptr<Error> > UIBase::PointAndSizeIsValid(void) {
+boost::optional<boost::shared_ptr<Error> > OwnerRectCheck(const boost::weak_ptr<windows::WindowBase> owner, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	boost::shared_ptr<windows::WindowBase> window = owner.lock();
 	if(!window) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
@@ -39,6 +24,51 @@ boost::optional<boost::shared_ptr<Error> > UIBase::PointAndSizeIsValid(void) {
 
 	if(x+width > owner_width || y+height > owner_height) {
 		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
+	}
+	return boost::none;
+}
+
+} // anonymous
+
+UIBase::UIBase() :
+	x(0),	y(0),	width(0),	height(0)
+{
+}
+
+UIBase::~UIBase() {
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
+	if(owner.lock()) {
+		return CreateError(ERROR_CODE_INTERNAL_ERROR);
+	}
+	owner = window;
+	BOOST_ASSERT(owner.lock());
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBase::InnerRectCheck(void) {
+	opt_error<unsigned int>::type width = CalcWidth();
+	if(width.which() == 0) {
+		return boost::get<boost::shared_ptr<Error> >(width);
+	}
+	opt_error<unsigned int>::type height = CalcHeight();
+	if(height.which() == 0) {
+		return boost::get<boost::shared_ptr<Error> >(height);
+	}
+	if(this->width < boost::get<unsigned int>(width) || this->height < boost::get<unsigned int>(height)) {
+		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
+	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBase::PointAndSizeIsValid(void) {
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = OwnerRectCheck(owner, x, y, width, height)) {
+		return error.get();
+	}
+	if(error = InnerRectCheck()) {
+		return error.get();
 	}
 	return boost::none;
 }
@@ -94,6 +124,30 @@ boost::optional<boost::shared_ptr<Error> > UIBase::Resize(unsigned int width, un
 	this->width = width;
 	this->height = height;
 	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBase::Resize(void) {
+	opt_error<unsigned int>::type width = CalcWidth();
+	if(width.which() == 0) {
+		return boost::get<boost::shared_ptr<Error> >(width);
+	}
+	opt_error<unsigned int>::type height = CalcHeight();
+	if(height.which() == 0) {
+		return boost::get<boost::shared_ptr<Error> >(height);
+	}
+	boost::optional<boost::shared_ptr<Error> > error = Resize(boost::get<unsigned int>(width), boost::get<unsigned int>(height));
+	if(error) {
+		return error.get();
+	}
+	return boost::none;
+}
+
+utility::opt_error<unsigned int>::type UIBase::CalcWidth() {
+	return 0;
+}
+
+utility::opt_error<unsigned int>::type UIBase::CalcHeight() {
+	return 0;
 }
 
 } // uis

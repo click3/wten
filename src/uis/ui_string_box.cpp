@@ -7,6 +7,10 @@ using namespace utility;
 UIStringBox::UIStringBox(const std::string& filename, const std::string& text) :
 	UIBox(filename), text(text)
 {
+	boost::optional<boost::shared_ptr<Error> > error = Resize();
+	if(error) {
+		error.get()->Abort();
+	}
 }
 
 UIStringBox::~UIStringBox() {
@@ -17,36 +21,13 @@ boost::optional<boost::shared_ptr<Error> > UIStringBox::SetText(const std::strin
 	this->text = text;
 	boost::optional<boost::shared_ptr<Error> > error = PointAndSizeIsValid();
 	if(error) {
-		opt_error<unsigned int>::type width = CalcWidth();
-		if(width.which() == 0) {
-			return boost::get<boost::shared_ptr<Error> >(width);
-		}
-		opt_error<unsigned int>::type height = CalcHeight();
-		if(height.which() == 0) {
-			return boost::get<boost::shared_ptr<Error> >(height);
-		}
-		error = Resize(boost::get<unsigned int>(width), boost::get<unsigned int>(height));
+		error = Resize();
 		if(error) {
 			this->text = temp_text;
 			return error.get();
 		}
 	}
 	return boost::none;
-}
-
-boost::optional<boost::shared_ptr<Error> > UIStringBox::PointAndSizeIsValid(void) {
-	opt_error<unsigned int>::type width = CalcWidth();
-	if(width.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(width);
-	}
-	opt_error<unsigned int>::type height = CalcHeight();
-	if(height.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(height);
-	}
-	if(this->width < boost::get<unsigned int>(width) || this->height < boost::get<unsigned int>(height)) {
-		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
-	}
-	return UIBox::PointAndSizeIsValid();
 }
 
 boost::optional<boost::shared_ptr<Error> > UIStringBox::Draw(void) {
@@ -102,7 +83,16 @@ opt_error<unsigned int>::type UIStringBox::CalcWidth() {
 		}
 		font_width = boost::get<unsigned int>(width_opt);
 	}
-	return left_up->GetWidth() + right_up->GetWidth() + font_width;
+
+	unsigned int frame_width;
+	{
+		opt_error<unsigned int>::type width_opt = UIBox::CalcWidth();
+		if(width_opt.which() == 0) {
+			return boost::get<boost::shared_ptr<Error> >(width_opt);
+		}
+		frame_width = boost::get<unsigned int>(width_opt);
+	}
+	return frame_width + font_width;
 }
 
 opt_error<unsigned int>::type UIStringBox::CalcHeight() {
@@ -114,7 +104,16 @@ opt_error<unsigned int>::type UIStringBox::CalcHeight() {
 		}
 		font_height = boost::get<unsigned int>(height_opt);
 	}
-	return left_up->GetHeight() + left_down->GetHeight() + font_height;
+
+	unsigned int frame_height;
+	{
+		opt_error<unsigned int>::type height_opt = UIBox::CalcHeight();
+		if(height_opt.which() == 0) {
+			return boost::get<boost::shared_ptr<Error> >(height_opt);
+		}
+		frame_height = boost::get<unsigned int>(height_opt);
+	}
+	return frame_height + font_height;
 }
 
 } // uis
