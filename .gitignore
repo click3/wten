@@ -1,3 +1,4 @@
 
 *.obj
 *.pch
+/Log.txt
