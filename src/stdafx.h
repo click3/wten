@@ -13,6 +13,7 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <algorithm>
 
 #include "org/click3/notification_center.h"
 
@@ -24,6 +25,7 @@
 #include "window.h"
 #include "ui.h"
 #include "event_manager.h"
+#include "event_notify.h"
 #include "window_manager.h"
 #include "scene.h"
 #include "scene_base.h"
