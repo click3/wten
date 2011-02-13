@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "version.h"
 
 namespace wten {
 
@@ -20,7 +21,9 @@ WTen::~WTen() {
 
 //static
 std::string WTen::CreateWindowTitle() {
-	return "Wizardry `“V—³‚Ì“ƒ` Ver0.00";
+	char str[1024];
+	sprintf(str, "Wizardry `“V—³‚Ì“ƒ` %s", OPEN_VERSION);
+	return std::string(str);
 }
 
 boost::optional<boost::shared_ptr<Error> > WTen::DoStart() {

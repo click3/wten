@@ -4,11 +4,12 @@ obj = DxLib_lib.obj utility.obj graph.obj ui_base.obj ui_box.obj window_base.obj
 exe = wten.exe
 
 .c.obj:
-        $(cc) /c /Yustdafx.h $(opt) /Tp $<
+	$(cc) /c /Yustdafx.h $(opt) /Tp $<
 .cpp.obj:
-        $(cc) /c /Yustdafx.h $(opt) /Tp $<
+	$(cc) /c /Yustdafx.h $(opt) /Tp $<
 $(exe).exe: $(obj)
-        $(cc) $(opt) /Fe$* $** $(lib)
+	version.exe
+	$(cc) $(opt) /Fe$* $** $(lib)
 
 src/stdafx.h: src/DxLib_lib.h src/error.h src/event.h src/event_manager.h src/graph.h src/ui.h src/utility.h src/window.h src/window_manager.h src/scene.h src/wten.h src/debug_scene.h src/error_normal.h src/event_notify.h src/scene_base.h src/window_base.h src/uis/ui_base.h src/uis/ui_box.h
 	touch src/stdafx.h
@@ -26,7 +27,7 @@ event_manager.obj: src/event_manager.cpp stdafx.obj
 event_notify.obj: src/event_notify.cpp stdafx.obj
 error_normal.obj: src/error_normal.cpp stdafx.obj
 scene_base.obj: src/scene_base.cpp stdafx.obj
-wten.obj: src/wten.cpp stdafx.obj
+wten.obj: src/wten.cpp stdafx.obj src/version.h
 main.obj: src/main.cpp stdafx.obj
 
 debug_scene.obj:  src/debug_scene.cpp stdafx.obj
