@@ -2,6 +2,8 @@
 
 namespace wten {
 
+using namespace utility;
+
 namespace {
 
 int SCREEN_MODEToFlag(DxLibWrapper::SCREEN_MODE screen_mode) {
@@ -28,7 +30,7 @@ DxLibWrapper::~DxLibWrapper() {
 	DxLib_End();
 }
 
-
+//static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ChangeWindowMode(bool window_mode) {
 	const int result = ::ChangeWindowMode(window_mode ? TRUE : FALSE);
 	if(result == -1) {
@@ -37,6 +39,7 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ChangeWindowMode(bool w
 	return boost::none;
 }
 
+//static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetDrawScreen(SCREEN_MODE mode) {
 	const int result = ::SetDrawScreen(SCREEN_MODEToFlag(mode));
 	if(result == -1) {
@@ -45,11 +48,13 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetDrawScreen(SCREEN_MO
 	return boost::none;
 }
 
+//static
 bool DxLibWrapper::ProcessMessage() {
 	const int result = ::ProcessMessage();
 	return (result != -1);
 }
 
+//static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ClearDrawScreen() {
 	const int result = ::ClearDrawScreen();
 	if(result == -1) {
@@ -58,12 +63,24 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ClearDrawScreen() {
 	return boost::none;
 }
 
+//static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ScreenFlip() {
 	const int result = ::ScreenFlip();
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
 	}
 	return boost::none;
+}
+
+//static
+opt_error<boost::tuple<unsigned int,unsigned int> >::type DxLibWrapper::GetWindowSize() {
+	int width;
+	int height;
+	const int result = ::GetWindowSize(&width, &height);
+	if(result == -1 || width < 0 || height < 0) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return boost::make_tuple<unsigned int,unsigned int>(width, height);
 }
 
 

@@ -15,7 +15,7 @@ public:
 	DxLibWrapper(bool window_mode = true);
 	~DxLibWrapper();
 
-	boost::optional<boost::shared_ptr<Error> > ChangeWindowMode(bool window_mode);
+	static boost::optional<boost::shared_ptr<Error> > ChangeWindowMode(bool window_mode);
 
 	enum SCREEN_MODE {
 		SCREEN_MODE_FRONT,
@@ -23,10 +23,11 @@ public:
 		SCREEN_MODE_WORK,
 		SCREEN_MODE_TEMPFRONT,
 	};
-	boost::optional<boost::shared_ptr<Error> > SetDrawScreen(SCREEN_MODE mode);
-	bool ProcessMessage();
-	boost::optional<boost::shared_ptr<Error> > ClearDrawScreen();
-	boost::optional<boost::shared_ptr<Error> > ScreenFlip();
+	static boost::optional<boost::shared_ptr<Error> > SetDrawScreen(SCREEN_MODE mode);
+	static bool ProcessMessage();
+	static boost::optional<boost::shared_ptr<Error> > ClearDrawScreen();
+	static boost::optional<boost::shared_ptr<Error> > ScreenFlip();
+	static utility::opt_error<boost::tuple<unsigned int,unsigned int> >::type GetWindowSize();
 };
 
 } // wten
