@@ -11,11 +11,11 @@ private:
 	unsigned int width;
 	unsigned int height;
 public:
-	Graph(const TCHAR* filename);
+	Graph(const std::string& filename);
 	unsigned int GetWidth();
 	unsigned int GetHeight();
-	bool Draw(unsigned int x, unsigned int y);
-	bool DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
+	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y);
+	boost::optional<boost::shared_ptr<Error> > DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
 	boost::optional<boost::shared_ptr<Graph>> Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
 };
 

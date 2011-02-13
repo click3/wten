@@ -2,6 +2,8 @@
 
 namespace wten {
 
+using namespace utility;
+
 namespace {
 
 int GetDxLibGraph(const DxLibGraphHandle& handle) {
@@ -39,9 +41,9 @@ boost::optional<boost::tuple<int, int>> Graph::GetSize(void) {
 	return boost::make_tuple(x, y);
 }
 
-Graph::Graph(const TCHAR* filename) {
-	BOOST_ASSERT(filename != NULL);
-	const int handle = ::LoadGraph(filename);
+Graph::Graph(const std::string& filename) {
+	BOOST_ASSERT(!filename.empty());
+	const int handle = ::LoadGraph(filename.c_str());
 
 	BOOST_ASSERT(handle != -1);
 	inner_ptr = IntToDxLibGraphHandle(handle);
@@ -60,18 +62,26 @@ unsigned int Graph::GetHeight() {
 	return height;
 }
 
-bool Graph::Draw(unsigned int x, unsigned int y) {
+boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned int y) {
 	if(!inner_ptr) {
-		return false;
+		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
-	return (::DrawGraph(x, y, GetDxLibGraph(inner_ptr), TRUE) != -1);
+	const int result = ::DrawGraph(x, y, GetDxLibGraph(inner_ptr), TRUE);
+	if(result == -1) {
+		return CreateError(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
 }
 
-bool Graph::DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
+boost::optional<boost::shared_ptr<Error> > Graph::DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
 	if(!inner_ptr) {
-		return false;
+		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
-	return (::DrawExtendGraph(x, y, x + w, y + h, GetDxLibGraph(inner_ptr), TRUE) != -1);
+	const int result = ::DrawExtendGraph(x, y, x + w, y + h, GetDxLibGraph(inner_ptr), TRUE);
+	if(result == -1) {
+		return CreateError(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Graph>> Graph::Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
