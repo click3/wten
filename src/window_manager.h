@@ -14,6 +14,8 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Draw(void) const;
 	boost::optional<boost::shared_ptr<Error> > EnqueueEvent(boost::shared_ptr<Event> event);
 	boost::optional<boost::shared_ptr<Error> > DoEvent(void);
+	boost::optional<boost::shared_ptr<Error> > PushWindow(boost::shared_ptr<Window> window);
+	boost::optional<boost::shared_ptr<Error> > PopWindow(void);
 };
 
 } // wten

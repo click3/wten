@@ -30,7 +30,7 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::DoEvent(void) {
 			boost::shared_ptr<Error> error = boost::get<boost::shared_ptr<Error> >(event_opt);
 			return error;
 		}
-		boost::optional<boost::shared_ptr<Event> > event = boost::get<boost::shared_ptr<Event> >(event_opt);
+		boost::optional<boost::shared_ptr<Event> > event = boost::get<boost::optional<boost::shared_ptr<Event> > >(event_opt);
 		if(!event) {
 			break;
 		}
@@ -47,6 +47,16 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::DoEvent(void) {
 			event = next_event;
 		}
 	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowManager::PushWindow(boost::shared_ptr<Window> window) {
+	window_stack.push_back(window);
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowManager::PopWindow(void) {
+	window_stack.pop_back();
 	return boost::none;
 }
 
