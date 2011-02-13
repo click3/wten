@@ -4,7 +4,9 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIBase::UIBase() {
+UIBase::UIBase() :
+	x(0),	y(0),	width(0),	height(0)
+{
 }
 
 UIBase::~UIBase() {
