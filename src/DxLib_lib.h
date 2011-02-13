@@ -29,6 +29,9 @@ public:
 	static boost::optional<boost::shared_ptr<Error> > ClearDrawScreen();
 	static boost::optional<boost::shared_ptr<Error> > ScreenFlip();
 	static utility::opt_error<boost::tuple<unsigned int,unsigned int> >::type GetWindowSize();
+	static utility::opt_error<unsigned int>::type GetFontHeight();
+	static utility::opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const std::string& text);
+	static boost::optional<boost::shared_ptr<Error> > DrawString(unsigned int x, unsigned int y, const std::string& text, utility::Color color);
 };
 
 } // wten

@@ -100,5 +100,32 @@ opt_error<boost::tuple<unsigned int,unsigned int> >::type DxLibWrapper::GetWindo
 	return boost::make_tuple<unsigned int,unsigned int>(width, height);
 }
 
+//static
+opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
+	const int result = ::GetFontSize();
+	if(result == -1) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return result + 2;//正確ではない値を返す事があるらしいのでマージンを取る
+}
+
+//static
+opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const std::string& text) {
+	const int result = ::GetDrawStringWidth(text.c_str(), text.length());
+	if(result == -1) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return result;
+}
+
+//static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, const std::string& text, Color color) {
+	const int result = ::DrawString(x, y, text.c_str(), color.GetColorCode());
+	if(result == -1) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return boost::none;
+}
+
 
 } // wten
