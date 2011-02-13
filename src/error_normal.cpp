@@ -13,6 +13,7 @@ const wchar_t* ErrorNormal::ToString(void) {
 	ADD_ERROR(UNKNOWN,			"不明なエラーが発生しました。");
 	ADD_ERROR(INTERNAL_ERROR,		"内部エラーが発生しました。");
 	ADD_ERROR(DXLIB_INTERNAL_ERROR,	"DxLib内部エラーが発生しました。");
+	ADD_ERROR(OUTSIDE_RANGE,		"範囲外描画エラーが発生しました。");
 #undef ADD_ERROR
 	}
 	static wchar_t result[2048];
