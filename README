@@ -1,147 +1,147 @@
-ƒvƒƒOƒ‰ƒ€–¼FWizardry“ñŸ‘nìRPG`“V—³‚Ì“ƒ`
+ãƒ—ãƒ­ã‚°ãƒ©ãƒ åï¼šWizardryäºŒæ¬¡å‰µä½œRPGï½å¤©ç«œã®å¡”ï½
 
-—p“rF“¶’é‚ªl‚¦‚½–²‚ÌWizardry‚ğŒ»À‚ÉH
-
-
-g‚¢•ûF
-‚Ü‚¾—V‚×‚Ü‚¹‚ñ
-
-‘€ì•û–@F
-‚Ü‚¾‰½‚ào—ˆ‚Ü‚¹‚ñ
-
-ƒCƒ“ƒXƒg[ƒ‹F
-zip“WŠJ‚·‚é‚¾‚¯
-
-ƒAƒ“ƒCƒ“ƒXƒg[ƒ‹F
-ƒŒƒWƒXƒgƒŠ‚àƒeƒ“ƒ|ƒ‰ƒŠƒtƒ@ƒCƒ‹‚à˜M‚Á‚Ä‚¨‚è‚Ü‚¹‚ñB
-ƒtƒHƒ‹ƒ_‚²‚Æíœ‚·‚é‚¾‚¯‚Å‚·‚Á‚«‚è‚³‚Á‚Ï‚è‚¨‚³‚ç‚Î‚Å‚«‚Ü‚·B
-
-ƒtƒ@ƒCƒ‹‰ğàF
-wten.exe		ƒvƒƒOƒ‰ƒ€–{‘Ì‚Å‚·B
-README			¡“Ç‚ñ‚Å‚¢‚é‚±‚ê
-data/			g—p‚µ‚Ä‚¢‚é‰æ‘œƒf[ƒ^‚È‚Ç
+ç”¨é€”ï¼šç«¥å¸ãŒè€ƒãˆãŸå¤¢ã®Wizardryã‚’ç¾å®Ÿã«ï¼Ÿ
 
 
-Q&AF
-	Q:ƒoƒO‚ğ‚İ‚Â‚¯‚½ or “®ì‚µ‚È‚¢ or —v–]‚ª‚ ‚é
-	A:Šm”FŸ‘æ‘Î‰‰Â”\‚Å‚ ‚ê‚Î‘Î‰‚µ‚Ü‚·B
-	ŒöŠJ‚µ‚Ä‚à–â‘è‚ª–³‚¢ƒ[ƒ‹ƒAƒhƒŒƒX‚É‚Ä
-	‰º•”‚É‹LÚ‚³‚ê‚½ƒAƒhƒŒƒX‚Ü‚Åƒ[ƒ‹‚ğ‚Ç‚¤‚¼B
+ä½¿ã„æ–¹ï¼š
+ã¾ã éŠã¹ã¾ã›ã‚“
+
+æ“ä½œæ–¹æ³•ï¼š
+ã¾ã ä½•ã‚‚å‡ºæ¥ã¾ã›ã‚“
+
+ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ï¼š
+zipå±•é–‹ã™ã‚‹ã ã‘
+
+ã‚¢ãƒ³ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ï¼š
+ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚‚ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‚‚å¼„ã£ã¦ãŠã‚Šã¾ã›ã‚“ã€‚
+ãƒ•ã‚©ãƒ«ãƒ€ã”ã¨å‰Šé™¤ã™ã‚‹ã ã‘ã§ã™ã£ãã‚Šã•ã£ã±ã‚ŠãŠã•ã‚‰ã°ã§ãã¾ã™ã€‚
+
+ãƒ•ã‚¡ã‚¤ãƒ«è§£èª¬ï¼š
+wten.exe		ãƒ—ãƒ­ã‚°ãƒ©ãƒ æœ¬ä½“ã§ã™ã€‚
+README			ä»Šèª­ã‚“ã§ã„ã‚‹ã“ã‚Œ
+data/			ä½¿ç”¨ã—ã¦ã„ã‚‹ç”»åƒãƒ‡ãƒ¼ã‚¿ãªã©
 
 
-ìÒFsweetie
-ƒ[ƒ‹ƒAƒhƒŒƒXF‚‚‚‚’‚™‚˜‚˜‚R‚R‚Q‚i‚ ‚Á‚Æj‚‚‚‰‚Œ.‚‡‚‚D‚‚…D‚Š‚
+Q&Aï¼š
+	Q:ãƒã‚°ã‚’ã¿ã¤ã‘ãŸ or å‹•ä½œã—ãªã„ or è¦æœ›ãŒã‚ã‚‹
+	A:ç¢ºèªæ¬¡ç¬¬å¯¾å¿œå¯èƒ½ã§ã‚ã‚Œã°å¯¾å¿œã—ã¾ã™ã€‚
+	å…¬é–‹ã—ã¦ã‚‚å•é¡ŒãŒç„¡ã„ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã«ã¦
+	ä¸‹éƒ¨ã«è¨˜è¼‰ã•ã‚ŒãŸã‚¢ãƒ‰ãƒ¬ã‚¹ã¾ã§ãƒ¡ãƒ¼ãƒ«ã‚’ã©ã†ãã€‚
 
 
-ƒ‰ƒCƒZƒ“ƒXF
-Elibjpeg
+ä½œè€…ï¼šsweetie
+ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼šï½‚ï½ï½’ï½™ï½˜ï½˜ï¼“ï¼“ï¼’ï½ï¼ˆã‚ã£ã¨ï¼‰ï½ï½ï½‰ï½Œ.ï½‡ï½ï½ï¼ï½ï½…ï¼ï½Šï½
+
+
+ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ï¼š
+ãƒ»libjpeg
 {
-@@@libjpeg@Copyright (C) 1991-1998, Thomas G. Lane.
-@@@this software is based in part on the work of the Independent JPEG Group.
+ã€€ã€€ã€€libjpegã€€Copyright (C) 1991-1998, Thomas G. Lane.
+ã€€ã€€ã€€this software is based in part on the work of the Independent JPEG Group.
 }
-Elibpng
+ãƒ»libpng
 {
-@@@libpng@Copyright (c) 1998-2004 Glenn Randers-Pehrson.
-@@@zlib@Copyright (C) 1995-2004 Jean-loup Gailly and Mark Adler.
+ã€€ã€€ã€€libpngã€€Copyright (c) 1998-2004 Glenn Randers-Pehrson.
+ã€€ã€€ã€€zlibã€€Copyright (C) 1995-2004 Jean-loup Gailly and Mark Adler.
 }
-EOgg Vorbis
+ãƒ»Ogg Vorbis
 {
-@@@ogg_static, vorbis_static, vorbisfile_static
-@@@Copyright (C) 1994-2002 XIPHOPHORUS Company http://www.xiph.org/ .
+ã€€ã€€ã€€ogg_static, vorbis_static, vorbisfile_static
+ã€€ã€€ã€€Copyright (C) 1994-2002 XIPHOPHORUS Company http://www.xiph.org/ .
 
-@@@Please note that this is only a sample license; authoritative license terms are included with each software bundle.
-@@@@@@
-@@@c year, Xiph.Org Foundation
-@@@@@@
-@@@Redistribution and use in source and binary forms, with or without modification,
-@@@are permitted provided that the following conditions are met:
-@@@@@@
-@@@- Redistributions of source code must retain the above copyright notice,
-@@@this list of conditions and the following disclaimer.
+ã€€ã€€ã€€Please note that this is only a sample license; authoritative license terms are included with each software bundle.
+ã€€ã€€ã€€ã€€ã€€ã€€
+ã€€ã€€ã€€c year, Xiph.Org Foundation
+ã€€ã€€ã€€ã€€ã€€ã€€
+ã€€ã€€ã€€Redistribution and use in source and binary forms, with or without modification,
+ã€€ã€€ã€€are permitted provided that the following conditions are met:
+ã€€ã€€ã€€ã€€ã€€ã€€
+ã€€ã€€ã€€- Redistributions of source code must retain the above copyright notice,
+ã€€ã€€ã€€this list of conditions and the following disclaimer.
 
-@@@- Redistributions in binary form must reproduce the above copyright notice,
-@@@this list of conditions and the following disclaimer in the documentation
-@@@and/or other materials provided with the distribution.
+ã€€ã€€ã€€- Redistributions in binary form must reproduce the above copyright notice,
+ã€€ã€€ã€€this list of conditions and the following disclaimer in the documentation
+ã€€ã€€ã€€and/or other materials provided with the distribution.
 
-@@@- Neither the name of the Xiph.org Foundation nor the names of its contributors may be used
-@@@to endorse or promote products derived from this software without specific prior written permission.
+ã€€ã€€ã€€- Neither the name of the Xiph.org Foundation nor the names of its contributors may be used
+ã€€ã€€ã€€to endorse or promote products derived from this software without specific prior written permission.
 
-@@@This software is provided by the copyright holders and contributors gas ish and
-@@@any express or implied warranties, including, but not limited to, the implied warranties
-@@@of merchantability and fitness for a particular purpose are disclaimed. In no event shall
-@@@the foundation or contributors be liable for any direct, indirect, incidental, special,
-@@@exemplary, or consequential damages (including, but not limited to, procurement of
-@@@substitute goods or services; loss of use, data, or profits; or business interruption)
-@@@however caused and on any theory of liability, whether in contract, strict liability,
-@@@or tort (including negligence or otherwise) arising in any way out of the use of this
-@@@software, even if advised of the possibility of such damage.
+ã€€ã€€ã€€This software is provided by the copyright holders and contributors â€œas isâ€ and
+ã€€ã€€ã€€any express or implied warranties, including, but not limited to, the implied warranties
+ã€€ã€€ã€€of merchantability and fitness for a particular purpose are disclaimed. In no event shall
+ã€€ã€€ã€€the foundation or contributors be liable for any direct, indirect, incidental, special,
+ã€€ã€€ã€€exemplary, or consequential damages (including, but not limited to, procurement of
+ã€€ã€€ã€€substitute goods or services; loss of use, data, or profits; or business interruption)
+ã€€ã€€ã€€however caused and on any theory of liability, whether in contract, strict liability,
+ã€€ã€€ã€€or tort (including negligence or otherwise) arising in any way out of the use of this
+ã€€ã€€ã€€software, even if advised of the possibility of such damage.
 }
-EMersenne Twister
+ãƒ»Mersenne Twister
 {
-@@@Mersenne Twister
-@@@Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
-@@@All rights reserved.
+ã€€ã€€ã€€Mersenne Twister
+ã€€ã€€ã€€Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
+ã€€ã€€ã€€All rights reserved.
 
-@@@Redistribution and use in source and binary forms, with or without
-@@@modification, are permitted provided that the following conditions
-@@@are met:
+ã€€ã€€ã€€Redistribution and use in source and binary forms, with or without
+ã€€ã€€ã€€modification, are permitted provided that the following conditions
+ã€€ã€€ã€€are met:
 
-@@@1. Redistributions of source code must retain the above copyright
-@@@notice, this list of conditions and the following disclaimer.
+ã€€ã€€ã€€1. Redistributions of source code must retain the above copyright
+ã€€ã€€ã€€notice, this list of conditions and the following disclaimer.
 
-@@@2. Redistributions in binary form must reproduce the above copyright
-@@@notice, this list of conditions and the following disclaimer in the
-@@@documentation and/or other materials provided with the distribution.
+ã€€ã€€ã€€2. Redistributions in binary form must reproduce the above copyright
+ã€€ã€€ã€€notice, this list of conditions and the following disclaimer in the
+ã€€ã€€ã€€documentation and/or other materials provided with the distribution.
 
-@@@3. The name of the author may not be used to endorse or promote products
-@@@derived from this software without specific prior written permission.
+ã€€ã€€ã€€3. The name of the author may not be used to endorse or promote products
+ã€€ã€€ã€€derived from this software without specific prior written permission.
 
-@@@THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-@@@IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-@@@OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-@@@IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-@@@INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-@@@NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-@@@DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-@@@THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-@@@(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-@@@THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ã€€ã€€ã€€THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ã€€ã€€ã€€IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ã€€ã€€ã€€OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ã€€ã€€ã€€IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ã€€ã€€ã€€INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ã€€ã€€ã€€NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ã€€ã€€ã€€DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ã€€ã€€ã€€THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ã€€ã€€ã€€(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ã€€ã€€ã€€THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
-‚»‚Ì‘¼©ì•”•ª‚Ìƒ‰ƒCƒZƒ“ƒXF
-E–{ƒ‰ƒCƒZƒ“ƒX‚É‚¨‚¢‚ÄA‘S‚Ä‚Ìğ€‚Íu•ÏX‚Ì—L–³‚ğ–â‚í‚¸A–¾¦ˆÃ¦‚ğ–â‚í‚¸A¤‹Æœ‘P‚ğ–â‚í‚¸A
-	ŒÂl–@l‚ğ–â‚í‚¸A•Ûg—p‚ğ–â‚í‚¸A—L—¿–³—¿‚ğ–â‚í‚¸A‘S‘Ìˆê•”‚ğ–â‚í‚¸AƒRƒs[”h¶‚ğ–â‚í‚¸
-	Àsƒtƒ@ƒCƒ‹ƒ\[ƒXƒtƒ@ƒCƒ‹‚ğ–â‚í‚¸AŒÌˆÓöŒë‚ğ–â‚í‚¸v‚Æ‘•ü‚³‚ê‚Ä‚¢‚é•¨‚Æ‚µ‚Äˆµ‚¤B
-E’˜ìŒ Ò‚Í–{ƒ\ƒtƒgƒEƒFƒA‚ÉŠÖ‚·‚éˆêØ‚Ì•Ûá‹`–±‚ğ‚à‚½‚È‚¢B
-Eã‹Lğ€—Bˆê‚Ì—áŠO‚Æ‚µ‚ÄA–{ƒ‰ƒCƒZƒ“ƒX‚Éˆá”½‚µ‚½ê‡‚ğœ‚¢‚Ä’˜ìŒ Ò‚©‚ç
-	–{ƒ\ƒtƒgƒEƒFƒA‚ÉŠÖ‚·‚éˆêØ‚Ì–@“I‘[’u‚ğó‚¯‚é–‚ª–³‚¢–‚Ì‚İ•ÛØ‚³‚ê‚éB
-E’˜ìŒ Ò‚â‚»‚Ì‘¼•ÛÒ‚ª‚±‚Ìƒ‰ƒCƒZƒ“ƒX‚Ì”ÍˆÍ‚Ås‚¤Šˆ“®‚Éxá‚ª–³‚¢”ÍˆÍ‚Å‚ ‚ê‚Î‰½‚ğs‚Á‚Ä‚à\‚í‚È‚¢B
-Eã‹Lğ€‚Ìh‰½‚ğs‚Á‚Ä‚à\‚í‚È‚¢h‚É‚Í–{ƒ\ƒtƒgƒEƒFƒA‚Ì»ìÒ‚ğ‹U‚Á‚Ä‚ÌÄ”z•z‚àŠÜ‚Ü‚ê‚éB
-E‘S‚Ä‚ÌŒ —˜‚Ìsg‚É‚¨‚¢‚ÄA’˜ìŒ Ò‚Ö‚Ì˜A—A’˜ìŒ Ò‚âƒ‰ƒCƒZƒ“ƒXğ€‚Ì‹LÚA
-	“K—pƒ‰ƒCƒZƒ“ƒX‚È‚Ç‚Ì§ŒÀ‚ÍˆêØ‘¶İ‚µ‚È‚¢B
-’˜ìŒ Ò–¼Fsweetie
+ãã®ä»–è‡ªä½œéƒ¨åˆ†ã®ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ï¼š
+ãƒ»æœ¬ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã«ãŠã„ã¦ã€å…¨ã¦ã®æ¡é …ã¯ã€Œå¤‰æ›´ã®æœ‰ç„¡ã‚’å•ã‚ãšã€æ˜ç¤ºæš—ç¤ºã‚’å•ã‚ãšã€å•†æ¥­æ…ˆå–„ã‚’å•ã‚ãšã€
+	å€‹äººæ³•äººã‚’å•ã‚ãšã€ä¿æŒä½¿ç”¨ã‚’å•ã‚ãšã€æœ‰æ–™ç„¡æ–™ã‚’å•ã‚ãšã€å…¨ä½“ä¸€éƒ¨ã‚’å•ã‚ãšã€ã‚³ãƒ”ãƒ¼æ´¾ç”Ÿã‚’å•ã‚ãš
+	å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å•ã‚ãšã€æ•…æ„éŒ¯èª¤ã‚’å•ã‚ãšã€ã¨è£…é£¾ã•ã‚Œã¦ã„ã‚‹ç‰©ã¨ã—ã¦æ‰±ã†ã€‚
+ãƒ»è‘—ä½œæ¨©è€…ã¯æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã™ã‚‹ä¸€åˆ‡ã®ä¿éšœç¾©å‹™ã‚’ã‚‚ãŸãªã„ã€‚
+ãƒ»ä¸Šè¨˜æ¡é …å”¯ä¸€ã®ä¾‹å¤–ã¨ã—ã¦ã€æœ¬ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã«é•åã—ãŸå ´åˆã‚’é™¤ã„ã¦è‘—ä½œæ¨©è€…ã‹ã‚‰
+	æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã™ã‚‹ä¸€åˆ‡ã®æ³•çš„æªç½®ã‚’å—ã‘ã‚‹äº‹ãŒç„¡ã„äº‹ã®ã¿ä¿è¨¼ã•ã‚Œã‚‹ã€‚
+ãƒ»è‘—ä½œæ¨©è€…ã‚„ãã®ä»–ä¿æŒè€…ãŒã“ã®ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®ç¯„å›²ã§è¡Œã†æ´»å‹•ã«æ”¯éšœãŒç„¡ã„ç¯„å›²ã§ã‚ã‚Œã°ä½•ã‚’è¡Œã£ã¦ã‚‚æ§‹ã‚ãªã„ã€‚
+ãƒ»ä¸Šè¨˜æ¡é …ã®â€ä½•ã‚’è¡Œã£ã¦ã‚‚æ§‹ã‚ãªã„â€ã«ã¯æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®è£½ä½œè€…ã‚’å½ã£ã¦ã®å†é…å¸ƒã‚‚å«ã¾ã‚Œã‚‹ã€‚
+ãƒ»å…¨ã¦ã®æ¨©åˆ©ã®è¡Œä½¿ã«ãŠã„ã¦ã€è‘—ä½œæ¨©è€…ã¸ã®é€£çµ¡ã€è‘—ä½œæ¨©è€…ã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹æ¡é …ã®è¨˜è¼‰ã€
+	é©ç”¨ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ãªã©ã®åˆ¶é™ã¯ä¸€åˆ‡å­˜åœ¨ã—ãªã„ã€‚
+è‘—ä½œæ¨©è€…åï¼šsweetie
 
 
-–Ê“|‚ÈlŒü‚¯ƒ‰ƒCƒZƒ“ƒX‰ğàF
-Àsƒtƒ@ƒCƒ‹‚ÌÄ”z•z‚É‚ÍDxLib“à‚Åg—p‚³‚ê‚Ä‚¢‚éŠeíƒ‰ƒCƒuƒ‰ƒŠ‚Ì’˜ìŒ Ò‚Æƒ‰ƒCƒZƒ“ƒX‚É‚Â‚¢‚Ä‹LÚ‹`–±‚ª¶‚¶‚Ü‚·B
-ƒ\[ƒXƒR[ƒh‚É‚Â‚¢‚Ä‚Íƒ‰ƒCƒZƒ“ƒX‹LÚ‹`–±‚·‚ç‚ ‚è‚Ü‚¹‚ñB
-©•ª‚ª‘‚¢‚½ƒR[ƒh‚Ì‚²‚Æ‚­D‚«‚Éˆµ‚¦‚Ü‚·B
+é¢å€’ãªäººå‘ã‘ãƒ©ã‚¤ã‚»ãƒ³ã‚¹è§£èª¬ï¼š
+å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã®å†é…å¸ƒã«ã¯DxLibå†…ã§ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹å„ç¨®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®è‘—ä½œæ¨©è€…ã¨ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã«ã¤ã„ã¦è¨˜è¼‰ç¾©å‹™ãŒç”Ÿã˜ã¾ã™ã€‚
+ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«ã¤ã„ã¦ã¯ãƒ©ã‚¤ã‚»ãƒ³ã‚¹è¨˜è¼‰ç¾©å‹™ã™ã‚‰ã‚ã‚Šã¾ã›ã‚“ã€‚
+è‡ªåˆ†ãŒæ›¸ã„ãŸã‚³ãƒ¼ãƒ‰ã®ã”ã¨ãå¥½ãã«æ‰±ãˆã¾ã™ã€‚
 
 
-ƒXƒyƒVƒƒƒ‹ƒTƒ“ƒNƒXF
-“¶’é		Œ´ˆÄ’ñ‹Ÿ
-Sir-TechĞ	Œ´ì‚Å‚ ‚éWizardry‚ÌŠJ”­Œ³—l
-R“c I	–{ƒ\ƒtƒgƒEƒGƒA‚Åg—p‚µ‚Ä‚¢‚éDxLibƒ‰ƒCƒuƒ‰ƒŠ‚ÌìÒ—l
-‚»‚Ì‘¼A“¶’éG’kƒXƒŒZ–¯‘S‚Ä
+ã‚¹ãƒšã‚·ãƒ£ãƒ«ã‚µãƒ³ã‚¯ã‚¹ï¼š
+ç«¥å¸		åŸæ¡ˆæä¾›
+Sir-Techç¤¾	åŸä½œã§ã‚ã‚‹Wizardryã®é–‹ç™ºå…ƒæ§˜
+å±±ç”° å·§	æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ã§ä½¿ç”¨ã—ã¦ã„ã‚‹DxLibãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ä½œè€…æ§˜
+ãã®ä»–ã€ç«¥å¸é›‘è«‡ã‚¹ãƒ¬ä½æ°‘å…¨ã¦
 
 
-‹Zpî•ñ(‚ÆA‚Ç‚¤‚Å‚à‚¢‚¢˜b)F
-Boost Software License‚ÍÀsƒtƒ@ƒCƒ‹‚Ì‚İ‚Ìê‡ƒ‰ƒCƒZƒ“ƒX‚ğ‹LÚ‚·‚é•K—v‚Í–³‚¢‚»‚¤‚È‚Ì‚Å‹LÚ‚µ‚Ä‚¢‚È‚¢B
-DxLib‚É‚Â‚¢‚Ä‚àˆÈ‰º“¯•¶B
-‚È‚Ì‚ÅAƒRƒ“ƒpƒCƒ‹‚ğ‚İ‚éê‡‚Í‚»‚ê‚¼‚ê‚Ìƒ\[ƒXƒR[ƒh‚ğ•Ê“ræ“¾‚µ‚Ä‚«‚Ä‚­‚¾‚³‚¢B
-‚¿‚È‚İ‚ÉABoost‚Í1.45.0ADxLib‚Í3.04d‚ğ—p‚¢‚ÄƒRƒ“ƒpƒCƒ‹‚µ‚Ä‚¢‚Ü‚·B
-org/click3/ˆÈ‰º‚Ìƒtƒ@ƒCƒ‹‚Í https://github.com/click3/org-click3 ‚ğQÆB
-makefile‚ª“ü‚Á‚Ä‚Í‚¢‚Ü‚·‚ªA‚Ü‚¸ŠÔˆá‚¢‚È‚­“®‚©‚È‚¢‚Ì‚Å“K“–‚É‰½‚Æ‚©‚µ‚Ä‚­‚¾‚³‚¢B
-ƒRƒ“ƒpƒCƒ‰‚ÍVisualStudio2008 SP1‚ÌƒRƒ}ƒ“ƒhƒ‰ƒCƒ“”Å‚ğ“Æ©ƒc[ƒ‹‚Åƒ‰ƒbƒv‚µ‚½‚à‚ÌB
-‚Æ‚¢‚Á‚Ä‚àAŠeíŠÂ‹«•Ï”‚ğ‚²‚É‚å‚é‚¾‚¯‚È‚Ì‚ÅA‚½‚Ô‚ñmakefile‚ÉƒCƒ“ƒNƒ‹[ƒhƒpƒX‚Æƒ‰ƒCƒuƒ‰ƒŠƒpƒX’Ç‰Á‚·‚ê‚Î“®‚­‚ñ‚¶‚á‚È‚¢‚Å‚·‚©‚ËB
-“Æ©ƒ‰ƒCƒZƒ“ƒX‚¤‚º[‚Á‚Äl‚ÍƒpƒuƒŠƒbƒNƒhƒƒCƒ“‚¾‚Æv‚Á‚Ä‚¨‚­‚Æ‚¢‚¢‚Æv‚¢‚Ü‚·AŒµ–§‚É‚Íˆá‚¤‚¯‚Ç‚Ù‚Æ‚ñ‚Ç“¯‚¶ˆÓ–¡‚È‚Ì‚ÅB
+æŠ€è¡“æƒ…å ±(ã¨ã€ã©ã†ã§ã‚‚ã„ã„è©±)ï¼š
+Boost Software Licenseã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã®ã¿ã®å ´åˆãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã‚’è¨˜è¼‰ã™ã‚‹å¿…è¦ã¯ç„¡ã„ãã†ãªã®ã§è¨˜è¼‰ã—ã¦ã„ãªã„ã€‚
+DxLibã«ã¤ã„ã¦ã‚‚ä»¥ä¸‹åŒæ–‡ã€‚
+ãªã®ã§ã€ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚’è©¦ã¿ã‚‹å ´åˆã¯ãã‚Œãã‚Œã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’åˆ¥é€”å–å¾—ã—ã¦ãã¦ãã ã•ã„ã€‚
+ã¡ãªã¿ã«ã€Boostã¯1.45.0ã€DxLibã¯3.04dã‚’ç”¨ã„ã¦ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ã¦ã„ã¾ã™ã€‚
+org/click3/ä»¥ä¸‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯ https://github.com/click3/org-click3 ã‚’å‚ç…§ã€‚
+makefileãŒå…¥ã£ã¦ã¯ã„ã¾ã™ãŒã€ã¾ãšé–“é•ã„ãªãå‹•ã‹ãªã„ã®ã§é©å½“ã«ä½•ã¨ã‹ã—ã¦ãã ã•ã„ã€‚
+ã‚³ãƒ³ãƒ‘ã‚¤ãƒ©ã¯VisualStudio2008 SP1ã®ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ç‰ˆã‚’ç‹¬è‡ªãƒ„ãƒ¼ãƒ«ã§ãƒ©ãƒƒãƒ—ã—ãŸã‚‚ã®ã€‚
+ã¨ã„ã£ã¦ã‚‚ã€å„ç¨®ç’°å¢ƒå¤‰æ•°ã‚’ã”ã«ã‚‡ã‚‹ã ã‘ãªã®ã§ã€ãŸã¶ã‚“makefileã«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ‘ã‚¹ã¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãƒ‘ã‚¹è¿½åŠ ã™ã‚Œã°å‹•ãã‚“ã˜ã‚ƒãªã„ã§ã™ã‹ã­ã€‚
+ç‹¬è‡ªãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã†ãœãƒ¼ã£ã¦äººã¯ãƒ‘ãƒ–ãƒªãƒƒã‚¯ãƒ‰ãƒ¡ã‚¤ãƒ³ã ã¨æ€ã£ã¦ãŠãã¨ã„ã„ã¨æ€ã„ã¾ã™ã€å³å¯†ã«ã¯é•ã†ã‘ã©ã»ã¨ã‚“ã©åŒã˜æ„å‘³ãªã®ã§ã€‚
 
