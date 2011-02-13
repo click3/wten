@@ -33,6 +33,31 @@ boost::optional<boost::shared_ptr<Error> > AddUI(const boost::shared_ptr<windows
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > AddTextUI(const boost::shared_ptr<windows::WindowBase> window, const std::string& filename, const std::string& text, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	if(!window) {
+		return CreateError(ERROR_CODE_INTERNAL_ERROR);
+	}
+	if(filename.empty()) {
+		return CreateError(ERROR_CODE_INTERNAL_ERROR);
+	}
+
+	boost::shared_ptr<UI> ui(new uis::UIStringBox("data/ui/box1.png", text));
+	if(!ui) {
+		return CreateError(ERROR_CODE_INTERNAL_ERROR);
+	}
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = window->AddUI(ui)) {
+		return error.get();
+	}
+	if(error = ui->Move(x, y)) {
+		return error.get();
+	}
+	if(error = ui->Resize(width, height)) {
+		return error.get();
+	}
+	return boost::none;
+}
+
 } // anonymous
 
 DebugScene::DebugScene(void) {
@@ -65,7 +90,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	if(error = AddUI(window, "data/ui/box1/box1.png", 10, 25, 620, 445)) {
 		return error.get();
 	}
-	if(error = AddUI(window, "data/ui/box1/box1.png", 270, 10, 100, 30)) {
+	if(error = AddTextUI(window, "data/ui/box1/box1.png", "キャッスル：", 262, 9, 116, 32)) {
 		return error.get();
 	}
 	if(error = AddUI(window, "data/ui/box1/box1.png", 50, 100, 540, 150)) {
