@@ -29,6 +29,7 @@
 #include "window_base.h"
 #include "ui.h"
 #include "ui_base.h"
+#include "ui_box.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"
