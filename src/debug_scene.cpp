@@ -107,40 +107,31 @@ public:
 
 } // anonymous
 
-class DebugScene::DebugSceneImpl : boost::noncopyable  {
-public:
-	boost::shared_ptr<Box> box;
-};
-
-DebugScene::DebugScene(void) :
-	impl_(new DebugSceneImpl())
-{
+DebugScene::DebugScene(void) {
 }
 
-
 boost::optional<boost::shared_ptr<Error> > DebugScene::DoStart(void) {
-	impl_->box.reset(new Box(_T("data/ui/box1/box1.png")));
+	boost::optional<boost::shared_ptr<Error> > error = SceneBase::DoStart();
+	if(error) {
+		return error.get();
+	}
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
+	if(!window_manager) {
+		return boost::shared_ptr<Error>(new errors::ErrorNormal(ERROR_CODE_INTERNAL_ERROR));
+	}
+	boost::shared_ptr<windows::WindowBase> window = windows::WindowBase::CreateWindowBase();
+	if(!window) {
+		return boost::shared_ptr<Error>(new errors::ErrorNormal(ERROR_CODE_INTERNAL_ERROR));
+	}
 
-boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > DebugScene::DoNextFrame(void) {
-	static unsigned int count = 0;
-	do {
-		if(!impl_ || !impl_->box) {
-			break;
-		}
-		if(!impl_->box->Draw(0, 0, 100, 100)) {
-			break;
-		}
-		count++;
-		if(count > 120) {
-			break;
-		}
-		return boost::none;
-	} while(0);
-
-	return boost::shared_ptr<SceneExit>(new SceneExit());
+	boost::optional<boost::shared_ptr<Error> > error = window_manager->PushWindow(window);
+	if(error) {
+		return error.get();
+	}
+	return boost::none;
 }
 
 } // scenes
