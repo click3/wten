@@ -20,14 +20,15 @@
 
 #include "org/click3/notification_center.h"
 
-#include "utility.h"
 #include "error.h"
+#include "utility.h"
 #include "error_normal.h"
 #include "graph.h"
 #include "event.h"
 #include "window.h"
 #include "window_base.h"
 #include "ui.h"
+#include "ui_base.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"
