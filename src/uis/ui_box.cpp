@@ -41,28 +41,29 @@ UIBox::UIBox(const std::string& filename) {
 UIBox::~UIBox() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UIBox::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
-	boost::optional<boost::shared_ptr<Error> > error = UIBase::SetOwnerWindow(window);
-	if(error) {
-		return error.get();
-	}
-	return UIBase::Resize(width, height);
-}
-
-boost::optional<boost::shared_ptr<Error> > UIBox::Resize(unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > UIBox::PointAndSizeIsValid(void) {
 	if(width < left_up->GetWidth()+right_up->GetWidth() || height < left_up->GetHeight()+left_down->GetHeight()) {
 		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
 	}
-	return UIBase::Resize(width, height);
+	return UIBase::PointAndSizeIsValid();
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
-	BOOST_ASSERT(width >= left_up->GetWidth() + right_up->GetWidth());
-	BOOST_ASSERT(height >= left_up->GetHeight() + left_down->GetHeight());
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = PointAndSizeIsValid()) {
+		return error.get();
+	}
+
+	opt_error<boost::tuple<unsigned int, unsigned int> >::type pos_opt = GetAbsolutePoint();
+	if(pos_opt.which() == 0) {
+		return boost::get<boost::shared_ptr<Error> >(pos_opt);
+	}
+	unsigned int x;
+	unsigned int y;
+	boost::tie(x, y) = boost::get<boost::tuple<unsigned int, unsigned int> >(pos_opt);
 
 	const unsigned int bottom_x = x + width - right_up->GetWidth();
 	const unsigned int bottom_y = y + height - left_down->GetHeight();
-	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = left_up->Draw(			x,		y)) {
 		return error.get();
 	}

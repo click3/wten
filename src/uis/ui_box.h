@@ -7,10 +7,9 @@ class UIBox : public UIBase {
 public:
 	UIBox(const std::string& filename);
 	~UIBox();
-	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window);
-	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);
+	boost::optional<boost::shared_ptr<Error> > PointAndSizeIsValid(void);
 	boost::optional<boost::shared_ptr<Error> > Draw(void);
-private:
+protected:
 	boost::shared_ptr<Graph> left_up;
 	boost::shared_ptr<Graph> left_down;
 	boost::shared_ptr<Graph> right_up;

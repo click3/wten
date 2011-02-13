@@ -18,9 +18,27 @@ boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_pt
 	}
 	owner = window;
 	BOOST_ASSERT(owner.lock());
-	boost::optional<boost::shared_ptr<Error> > error = Move(x, y);
-	if(error) {
-		return error.get();
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBase::PointAndSizeIsValid(void) {
+	boost::shared_ptr<windows::WindowBase> window = owner.lock();
+	if(!window) {
+		return CreateError(ERROR_CODE_INTERNAL_ERROR);
+	}
+
+	unsigned int owner_width;
+	unsigned int owner_height;
+	{
+		opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_size = window->GetSize();
+		if(owner_size.which() == 0) {
+			return boost::get<boost::shared_ptr<Error> >(owner_size);
+		}
+		boost::tie(owner_width, owner_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_size);
+	}
+
+	if(x+width > owner_width || y+height > owner_height) {
+		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
 	}
 	return boost::none;
 }
@@ -49,20 +67,6 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetSize(void)
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Move(unsigned int x, unsigned int y) {
-	boost::shared_ptr<windows::WindowBase> window = owner.lock();
-	if(!window) {
-		return CreateError(ERROR_CODE_INTERNAL_ERROR);
-	}
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_size = window->GetSize();
-	if(owner_size.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(owner_size);
-	}
-	unsigned int owner_width;
-	unsigned int owner_height;
-	boost::tie(owner_width, owner_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_size);
-	if(x+width > owner_width || y+height > owner_height) {
-		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
-	}
 	this->x = x;
 	this->y = y;
 	return boost::none;
@@ -87,20 +91,6 @@ boost::optional<boost::shared_ptr<Error> > UIBase::AbsoluteMove(unsigned int x, 
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Resize(unsigned int width, unsigned int height) {
-	boost::shared_ptr<windows::WindowBase> window = owner.lock();
-	if(!window) {
-		return CreateError(ERROR_CODE_INTERNAL_ERROR);
-	}
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_size = window->GetSize();
-	if(owner_size.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(owner_size);
-	}
-	unsigned int owner_width;
-	unsigned int owner_height;
-	boost::tie(owner_width, owner_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_size);
-	if(x+width > owner_width || y+height > owner_height) {
-		return CreateError(ERROR_CODE_OUTSIDE_RANGE);
-	}
 	this->width = width;
 	this->height = height;
 	return boost::none;
