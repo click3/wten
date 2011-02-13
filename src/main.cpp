@@ -1,14 +1,14 @@
 #include "stdafx.h"
 
-#include <stdio.h>
-
 using namespace wten;
 
 //int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow ){
 int main() {
+	::setlocale(LC_ALL, _T(""));
+
 	boost::shared_ptr<WTen> game;
 	{
-		boost::shared_ptr<Scene> scene(reinterpret_cast<Scene*>(new scenes::DebugScene()));
+		boost::shared_ptr<Scene> scene = scenes::SceneBase::CreateScene();
 		game.reset(new WTen(scene));
 	}
 	boost::optional<boost::shared_ptr<Error> > result = game->DoStart();

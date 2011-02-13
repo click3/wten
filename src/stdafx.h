@@ -10,6 +10,9 @@
 #include "boost/variant.hpp"
 #include "boost/foreach.hpp"
 
+#include <locale.h>
+#include <stdio.h>
+
 #include <vector>
 #include <queue>
 #include <map>
