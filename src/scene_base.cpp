@@ -10,19 +10,15 @@ SceneBase::SceneBase() :
 }
 
 // static
-boost::shared_ptr<SceneBase> SceneBase::CreateScene() {
+boost::shared_ptr<Scene> SceneBase::CreateScene() {
 	SceneBase *ptr = new SceneBase();
 	BOOST_ASSERT(ptr);
 	ptr->this_ptr.reset(ptr);
 	BOOST_ASSERT(ptr->this_ptr);
-	return this_ptr;
+	return ptr->this_ptr;
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::DoStart(void) {
-	boost::weak_ptr<EventNotifyInterface> ptr;
-	if(!ptr.lock()) {
-		return boost::shared_ptr<Error>(new errors::ErrorNormal(ERROR_CODE_INTERNAL_ERROR));
-	}
 	EventNotify::Regist(this_ptr);
 	return boost::none;
 }
