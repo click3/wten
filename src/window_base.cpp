@@ -6,28 +6,13 @@ namespace windows {
 
 using namespace utility;
 
-namespace {
-
-struct EqualByPtrAddress {
-	EqualByPtrAddress(boost::shared_ptr<UI> ui) :
-		ui(ui)
-	{
-	}
-	bool operator()(boost::shared_ptr<UI> obj) const {
-		return ui.get() == obj.get();
-	}
-	boost::shared_ptr<UI> ui;
-};
-
-} // anonymous
-
 WindowBase::WindowBase() :
 	x(0),	y(0),	width(0),	height(0)
 {
 }
 
 //static
-boost::shared_ptr<WindowBase> WindowBase::CreateWindowbase() {
+boost::shared_ptr<WindowBase> WindowBase::CreateWindowBase() {
 	boost::shared_ptr<WindowBase> result(new WindowBase());
 	BOOST_ASSERT(result);
 	result->this_ptr = result;

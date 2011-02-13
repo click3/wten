@@ -3,11 +3,11 @@ namespace wten {
 
 namespace windows {
 
-class WindowBase : boost::noncopyable {
+class WindowBase : public Window {
 private:
 	WindowBase();
 public:
-	static boost::shared_ptr<WindowBase> CreateWindowbase();
+	static boost::shared_ptr<WindowBase> CreateWindowBase();
 	~WindowBase();
 	boost::optional<boost::tuple<unsigned int, unsigned int> > GetPoint(void);
 	boost::optional<boost::tuple<unsigned int, unsigned int> > GetSize(void);
