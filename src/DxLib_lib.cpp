@@ -21,8 +21,16 @@ int SCREEN_MODEToFlag(DxLibWrapper::SCREEN_MODE screen_mode) {
 
 } // anonymous
 
-DxLibWrapper::DxLibWrapper(bool window_mode){
-	ChangeWindowMode(window_mode);
+DxLibWrapper::DxLibWrapper(bool window_mode, const std::string& title){
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = ChangeWindowMode(window_mode)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+	if(error = SetWindowTitle(title)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
 	const int result = DxLib_Init();
 	BOOST_ASSERT(result != -1);
 }
@@ -33,6 +41,15 @@ DxLibWrapper::~DxLibWrapper() {
 //static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ChangeWindowMode(bool window_mode) {
 	const int result = ::ChangeWindowMode(window_mode ? TRUE : FALSE);
+	if(result == -1) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return boost::none;
+}
+
+//static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetWindowTitle(const std::string& title) {
+	const int result = ::SetMainWindowText(title.c_str());
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
 	}

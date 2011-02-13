@@ -12,10 +12,11 @@ public:
 
 class DxLibWrapper : boost::noncopyable {
 public:
-	DxLibWrapper(bool window_mode = true);
+	DxLibWrapper(bool window_mode = true, const std::string& title = std::string("Title"));
 	~DxLibWrapper();
 
 	static boost::optional<boost::shared_ptr<Error> > ChangeWindowMode(bool window_mode);
+	static boost::optional<boost::shared_ptr<Error> > SetWindowTitle(const std::string& title);
 
 	enum SCREEN_MODE {
 		SCREEN_MODE_FRONT,
