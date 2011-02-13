@@ -5,6 +5,9 @@ enum ERROR_CODE {
 	ERROR_CODE_UNKNOWN,
 	ERROR_CODE_INTERNAL_ERROR,
 	ERROR_CODE_DXLIB_INTERNAL_ERROR,
+
+	//Window関係
+	ERROR_CODE_OUTSIDE_RANGE,	/**< 座標指定などで範囲外を指定した。 */
 };
 
 class Error {
