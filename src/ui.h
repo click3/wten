@@ -3,7 +3,7 @@ namespace wten {
 
 class Window;
 
-class UI {
+class UI : boost::noncopyable {
 public:
 	virtual ~UI() { };
 	virtual bool SetOwnerWindow(boost::weak_ptr<Window> window);
