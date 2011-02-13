@@ -12,6 +12,7 @@ int main() {
 		game.reset(new WTen(scene));
 	}
 	boost::optional<boost::shared_ptr<Error> > result = game->DoStart();
+	game.reset();
 	if(result) {
 		result.get()->Abort();
 		return 1;
