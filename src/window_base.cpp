@@ -7,7 +7,7 @@ namespace windows {
 using namespace utility;
 
 WindowBase::WindowBase() :
-	x(0),	y(0),	width(0),	height(0)
+	x(0),	y(0),	width(640),	height(480)
 {
 }
 
