@@ -9,13 +9,16 @@ SceneBase::SceneBase() :
 {
 }
 
+SceneBase::~SceneBase() {
+}
+
 // static
 boost::shared_ptr<Scene> SceneBase::CreateScene() {
-	SceneBase *ptr = new SceneBase();
+	boost::shared_ptr<SceneBase> ptr(new SceneBase());
 	BOOST_ASSERT(ptr);
-	ptr->this_ptr.reset(ptr);
-	BOOST_ASSERT(ptr->this_ptr);
-	return ptr->this_ptr;
+	ptr->this_ptr = ptr;
+	BOOST_ASSERT(ptr->this_ptr.lock());
+	return ptr;
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::DoStart(void) {
