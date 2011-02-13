@@ -12,6 +12,7 @@ public:
 class EventNotify {
 private:
 	EventNotify();
+	static boost::shared_ptr<EventNotify> CreateEventNotify();
 public:
 	~EventNotify();
 	static void Regist(boost::weak_ptr<EventNotifyInterface> ptr);
@@ -28,6 +29,7 @@ private:
 	static boost::shared_ptr<EventNotify> singleton;
 	const char *event_notify_name;
 	std::vector<boost::weak_ptr<EventNotifyInterface> > notifys;
+	boost::shared_ptr<org::click3::NotificationCenter> notify_center;
 };
 
 } // wten

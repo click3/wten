@@ -27,23 +27,34 @@ EventNotify::EventNotify() :
 	event_notify_name("WTEN_EVENT_NOTIFY_NAME")
 {
 	BOOST_ASSERT(!singleton);
-
-	boost::shared_ptr<NotificationCenter> center = NotificationCenter::GetDefaultCenter();
-	BOOST_ASSERT(center);
-	boost::shared_ptr<void> user_data(this);
-	center->AddObserver(event_notify_name, &EventNotifyCallbackProxy, user_data);
 }
 
 EventNotify::~EventNotify() {
-	boost::shared_ptr<NotificationCenter> center = NotificationCenter::GetDefaultCenter();
-	BOOST_ASSERT(center);
-	BOOST_ASSERT(center->RemoveObserver(event_notify_name, &EventNotifyCallbackProxy));
+	if(!notify_center) {
+		return;
+	}
+	BOOST_ASSERT(notify_center->RemoveObserver(event_notify_name, &EventNotifyCallbackProxy));
+}
+
+//static
+boost::shared_ptr<EventNotify> EventNotify::CreateEventNotify() {
+	boost::shared_ptr<EventNotify> result(new EventNotify());
+	BOOST_ASSERT(result);
+
+	BOOST_ASSERT(!result->notify_center);
+	result->notify_center = NotificationCenter::GetDefaultCenter();
+	BOOST_ASSERT(result->notify_center);
+
+	boost::shared_ptr<void> user_data(result);
+	result->notify_center->AddObserver(result->event_notify_name, &EventNotifyCallbackProxy, user_data);
+
+	return result;
 }
 
 //static
 void EventNotify::Regist(boost::weak_ptr<EventNotifyInterface> ptr) {
 	if(!singleton) {
-		singleton.reset(new EventNotify());
+		singleton = CreateEventNotify();
 		BOOST_ASSERT(singleton);
 	}
 	singleton->notifys.push_back(ptr);
@@ -67,10 +78,9 @@ void EventNotify::Send(boost::shared_ptr<Event> event) {
 	if(!singleton) {
 		return;
 	}
-	boost::shared_ptr<NotificationCenter> center = NotificationCenter::GetDefaultCenter();
-	BOOST_ASSERT(center);
+	BOOST_ASSERT(singleton->notify_center);
 	boost::shared_ptr<void> data = event;
-	center->SendNotification(singleton->event_notify_name, data);
+	singleton->notify_center->SendNotification(singleton->event_notify_name, data);
 }
 
 void EventNotify::EventNotifyCallback(boost::shared_ptr<Event> event) {
