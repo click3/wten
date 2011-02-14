@@ -8,6 +8,11 @@ enum ERROR_CODE {
 
 	//Window関係
 	ERROR_CODE_OUTSIDE_RANGE,	/**< 座標指定などで範囲外を指定した。 */
+
+	//UISelector関係
+	ERROR_CODE_SELECTOR_TEXT_NOT_FOUND,	/**< 指定した文字列は見つからなかった。 */
+	ERROR_CODE_SELECTOR_OUTSIDE_RANGE,		/**< 指定したindexは範囲外です。 */
+	ERROR_CODE_SELECTOR_EMPTY,			/**< 中身が空なので実行できなかった。 */
 };
 
 class Error {

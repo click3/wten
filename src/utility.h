@@ -8,7 +8,8 @@ struct opt_error {
 	typedef boost::variant<boost::shared_ptr<Error>, T> type;
 };
 
-boost::shared_ptr<Error> CreateError(ERROR_CODE code);
+#define CREATE_ERROR(code) CreateError(code, __FILE__, __LINE__)
+boost::shared_ptr<Error> CreateError(ERROR_CODE code, const std::string filename, unsigned int fileline);
 
 class Color {
 public:
