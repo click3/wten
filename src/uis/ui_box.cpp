@@ -46,6 +46,9 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
 	if(error = PointAndSizeIsValid()) {
 		return error.get();
 	}
+	if(error = Move()) {
+		return error.get();
+	}
 
 	opt_error<boost::tuple<unsigned int, unsigned int> >::type pos_opt = GetAbsolutePoint();
 	if(pos_opt.which() == 0) {

@@ -31,7 +31,7 @@ boost::optional<boost::shared_ptr<Error> > OwnerRectCheck(const boost::weak_ptr<
 } // anonymous
 
 UIBase::UIBase() :
-	x(0),	y(0),	width(0),	height(0)
+	x(0),	y(0),	width(0),	height(0),	move_mode(MOVE_MODE_FREE_FREE)
 {
 }
 
@@ -64,11 +64,21 @@ boost::optional<boost::shared_ptr<Error> > UIBase::InnerRectCheck(void) {
 
 boost::optional<boost::shared_ptr<Error> > UIBase::PointAndSizeIsValid(void) {
 	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = OwnerRectCheck(owner, x, y, width, height)) {
-		return error.get();
-	}
 	if(error = InnerRectCheck()) {
-		return error.get();
+		if(error = Resize()) {
+			return error.get();
+		}
+		if(error = InnerRectCheck()) {
+			return error.get();
+		}
+	}
+	if(error = OwnerRectCheck(owner, x, y, width, height)) {
+		if(error = Move()) {
+			return error.get();
+		}
+		if(error = OwnerRectCheck(owner, x, y, width, height)) {
+			return error.get();
+		}
 	}
 	return boost::none;
 }
@@ -94,6 +104,95 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetAbsolutePo
 
 opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetSize(void) {
 	return boost::make_tuple<unsigned int, unsigned int>(width, height);
+}
+
+void UIBase::SetMoveMode(MOVE_MODE move_mode) {
+	this->move_mode = move_mode;
+}
+
+UIBase::MOVE_MODE UIBase::GetMoveMode(void) {
+	return this->move_mode;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBase::Move() {
+	unsigned int owner_width;
+	unsigned int owner_height;
+	{
+		boost::shared_ptr<windows::WindowBase> window = owner.lock();
+		if(!window) {
+			return CreateError(ERROR_CODE_INTERNAL_ERROR);
+		}
+		opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_size = window->GetSize();
+		if(owner_size.which() == 0) {
+			return boost::get<boost::shared_ptr<Error> >(owner_size);
+		}
+		boost::tie(owner_width, owner_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_size);
+	}
+
+	switch(move_mode) {
+		case MOVE_MODE_LEFT_UP:
+		case MOVE_MODE_LEFT_CENTER:
+		case MOVE_MODE_LEFT_DOWN:
+		case MOVE_MODE_LEFT_FREE: {
+			x = 0;
+			break;
+		}
+		case MOVE_MODE_CENTER_UP:
+		case MOVE_MODE_CENTER_CENTER:
+		case MOVE_MODE_CENTER_DOWN:
+		case MOVE_MODE_CENTER_FREE: {
+			x = (owner_width - width) / 2;
+			break;
+		}
+		case MOVE_MODE_FREE_UP:
+		case MOVE_MODE_FREE_CENTER:
+		case MOVE_MODE_FREE_DOWN:
+		case MOVE_MODE_FREE_FREE: {
+			if(x+width <= owner_width) {
+				break;
+			}
+		}
+		case MOVE_MODE_RIGHT_UP:
+		case MOVE_MODE_RIGHT_CENTER:
+		case MOVE_MODE_RIGHT_DOWN:
+		case MOVE_MODE_RIGHT_FREE: {
+			x = owner_width - width;
+			break;
+		}
+	}
+
+	switch(move_mode) {
+		case MOVE_MODE_LEFT_UP:
+		case MOVE_MODE_CENTER_UP:
+		case MOVE_MODE_RIGHT_UP:
+		case MOVE_MODE_FREE_UP: {
+			y = 0;
+			break;
+		}
+		case MOVE_MODE_LEFT_CENTER:
+		case MOVE_MODE_CENTER_CENTER:
+		case MOVE_MODE_RIGHT_CENTER:
+		case MOVE_MODE_FREE_CENTER: {
+			y = (owner_height - height) / 2;
+			break;
+		}
+		case MOVE_MODE_LEFT_FREE:
+		case MOVE_MODE_CENTER_FREE:
+		case MOVE_MODE_RIGHT_FREE:
+		case MOVE_MODE_FREE_FREE: {
+			if(y+height <= owner_height) {
+				break;
+			}
+		}
+		case MOVE_MODE_LEFT_DOWN:
+		case MOVE_MODE_CENTER_DOWN:
+		case MOVE_MODE_RIGHT_DOWN:
+		case MOVE_MODE_FREE_DOWN: {
+			x = owner_height - height;
+			break;
+		}
+	}
+	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Move(unsigned int x, unsigned int y) {

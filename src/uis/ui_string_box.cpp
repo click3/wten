@@ -7,26 +7,13 @@ using namespace utility;
 UIStringBox::UIStringBox(const std::string& filename, const std::string& text) :
 	UIBox(filename), text(text)
 {
-	boost::optional<boost::shared_ptr<Error> > error = Resize();
-	if(error) {
-		error.get()->Abort();
-	}
 }
 
 UIStringBox::~UIStringBox() {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIStringBox::SetText(const std::string& text) {
-	std::string temp_text = this->text;
 	this->text = text;
-	boost::optional<boost::shared_ptr<Error> > error = PointAndSizeIsValid();
-	if(error) {
-		error = Resize();
-		if(error) {
-			this->text = temp_text;
-			return error.get();
-		}
-	}
 	return boost::none;
 }
 

@@ -8,7 +8,7 @@ using namespace utility;
 
 namespace {
 
-boost::optional<boost::shared_ptr<Error> > AddUI(const boost::shared_ptr<windows::WindowBase> window, const std::string& filename, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > AddUI(const boost::shared_ptr<windows::WindowBase> window, const std::string& filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	if(!window) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -16,10 +16,11 @@ boost::optional<boost::shared_ptr<Error> > AddUI(const boost::shared_ptr<windows
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
 
-	boost::shared_ptr<UI> ui(new uis::UIBox("data/ui/box1.png"));
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIBox("data/ui/box1.png"));
 	if(!ui) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
+	ui->SetMoveMode(move_mode);
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = window->AddUI(ui)) {
 		return error.get();
@@ -33,7 +34,7 @@ boost::optional<boost::shared_ptr<Error> > AddUI(const boost::shared_ptr<windows
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > AddTextUI(const boost::shared_ptr<windows::WindowBase> window, const std::string& filename, const std::string& text, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > AddTextUI(const boost::shared_ptr<windows::WindowBase> window, const std::string& filename, const std::string& text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	if(!window) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -41,10 +42,11 @@ boost::optional<boost::shared_ptr<Error> > AddTextUI(const boost::shared_ptr<win
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
 
-	boost::shared_ptr<UI> ui(new uis::UIStringBox("data/ui/box1.png", text));
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIStringBox("data/ui/box1.png", text));
 	if(!ui) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
+	ui->SetMoveMode(move_mode);
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = window->AddUI(ui)) {
 		return error.get();
@@ -87,16 +89,16 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 		return error.get();
 	}
 
-	if(error = AddUI(window, "data/ui/box1/box1.png", 10, 25, 620, 445)) {
+	if(error = AddUI(window, "data/ui/box1/box1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445)) {
 		return error.get();
 	}
-	if(error = AddTextUI(window, "data/ui/box1/box1.png", "キャッスル：", 262, 9, 116, 32)) {
+	if(error = AddTextUI(window, "data/ui/box1/box1.png", "キャッスル：", uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32)) {
 		return error.get();
 	}
-	if(error = AddUI(window, "data/ui/box1/box1.png", 50, 100, 540, 150)) {
+	if(error = AddUI(window, "data/ui/box1/box1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 50, 100, 540, 150)) {
 		return error.get();
 	}
-	if(error = AddUI(window, "data/ui/box1/box1.png", 0, 320, 640, 160)) {
+	if(error = AddUI(window, "data/ui/box1/box1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160)) {
 		return error.get();
 	}
 	return boost::none;
