@@ -34,6 +34,7 @@
 #include "ui.h"
 #include "uis/ui_base.h"
 #include "uis/ui_box.h"
+#include "uis/ui_string.h"
 #include "uis/ui_string_box.h"
 #include "event_manager.h"
 #include "event_notify.h"

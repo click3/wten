@@ -42,7 +42,7 @@ boost::optional<boost::shared_ptr<Error> > AddTextUI(const boost::shared_ptr<win
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
 
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIStringBox("data/ui/box1.png", text));
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIString(text));
 	if(!ui) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
