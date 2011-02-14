@@ -94,7 +94,10 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Resize(void) {
 
 boost::optional<boost::shared_ptr<Error> > UIBox::SetInnerUI(boost::shared_ptr<UIBase> ui) {
 	inner_ui = ui;
-	return inner_ui->SetOwnerWindow(owner);
+	if(owner.lock()) {
+		return inner_ui->SetOwnerWindow(owner);
+	}
+	return boost::none;
 }
 
 boost::shared_ptr<UIBase> UIBox::GetInnerUI(void) {

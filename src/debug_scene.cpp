@@ -42,19 +42,21 @@ boost::optional<boost::shared_ptr<Error> > AddTextUI(const boost::shared_ptr<win
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
 
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIString(text));
-	if(!ui) {
+	boost::shared_ptr<uis::UIBox> box(new uis::UIBox("data/ui/box1.png"));
+	boost::shared_ptr<uis::UIBase> str(new uis::UIString(text));
+	if(!box || !str) {
 		return CreateError(ERROR_CODE_INTERNAL_ERROR);
 	}
-	ui->SetMoveMode(move_mode);
+	box->SetInnerUI(str);
+	box->SetMoveMode(move_mode);
 	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = window->AddUI(ui)) {
+	if(error = window->AddUI(box)) {
 		return error.get();
 	}
-	if(error = ui->Move(x, y)) {
+	if(error = box->Move(x, y)) {
 		return error.get();
 	}
-	if(error = ui->Resize(width, height)) {
+	if(error = box->Resize(width, height)) {
 		return error.get();
 	}
 	return boost::none;
