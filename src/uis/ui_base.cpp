@@ -234,7 +234,9 @@ boost::optional<boost::shared_ptr<Error> > UIBase::Resize(void) {
 	if(height.which() == 0) {
 		return boost::get<boost::shared_ptr<Error> >(height);
 	}
-	boost::optional<boost::shared_ptr<Error> > error = Resize(boost::get<unsigned int>(width), boost::get<unsigned int>(height));
+	const unsigned int w = std::max(this->width, boost::get<unsigned int>(width));
+	const unsigned int h = std::max(this->height, boost::get<unsigned int>(height));
+	boost::optional<boost::shared_ptr<Error> > error = Resize(w, h);
 	if(error) {
 		return error.get();
 	}

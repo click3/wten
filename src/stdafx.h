@@ -1,3 +1,7 @@
+//std::min‚Æstd::max‚Æ’è‹`‚ªd•¡‚·‚é‚½‚ß
+#define NOMINMAX
+#include <windows.h>
+
 #include "DxLib.h"
 
 #include "boost/utility.hpp"
