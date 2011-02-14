@@ -41,6 +41,66 @@ UIBox::UIBox(const std::string& filename) {
 UIBox::~UIBox() {
 }
 
+boost::optional<boost::shared_ptr<Error> > UIBox::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = UIBase::SetOwnerWindow(window)) {
+		return error.get();
+	}
+	if(inner_ui) {
+		if(error = inner_ui->SetOwnerWindow(window)) {
+			return error.get();
+		}
+	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBox::Move(void) {
+	return UIBase::Move();
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBox::Move(unsigned int x, unsigned int y) {
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = UIBase::Move(x, y)) {
+		return error.get();
+	}
+	if(inner_ui) {
+		const unsigned int inner_x = x + left_up->GetWidth();
+		const unsigned int inner_y = y + left_up->GetHeight();
+		if(error = inner_ui->Move(inner_x, inner_y)) {
+			return error.get();
+		}
+	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBox::Resize(unsigned int width, unsigned int height) {
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = UIBase::Resize(width, height)) {
+		return error.get();
+	}
+	if(inner_ui) {
+		const unsigned int inner_width = width - left_up->GetWidth() - right_up->GetWidth();
+		const unsigned int inner_height = height - left_up->GetHeight() - left_down->GetHeight();
+		if(error = inner_ui->Resize(inner_width, inner_height)) {
+			return error.get();
+		}
+	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBox::Resize(void) {
+	return UIBase::Resize();
+}
+
+boost::optional<boost::shared_ptr<Error> > UIBox::SetInnerUI(boost::shared_ptr<UIBase> ui) {
+	inner_ui = ui;
+	return inner_ui->SetOwnerWindow(owner);
+}
+
+boost::shared_ptr<UIBase> UIBox::GetInnerUI(void) {
+	return inner_ui;
+}
+
 boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = PointAndSizeIsValid()) {
@@ -103,15 +163,37 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
 			return error.get();
 		}
 	}
+
+	if(inner_ui) {
+		if(error = inner_ui->Draw()) {
+			return error.get();
+		}
+	}
 	return boost::none;
 }
 
 utility::opt_error<unsigned int>::type UIBox::CalcWidth() {
-	return left_up->GetWidth()+right_up->GetWidth();
+	unsigned int result = left_up->GetWidth()+right_up->GetWidth();
+	if(inner_ui) {
+		utility::opt_error<unsigned int>::type width_opt = inner_ui->CalcWidth();
+		if(width_opt.which() == 0) {
+			return boost::get<boost::shared_ptr<Error> >(width_opt);
+		}
+		result += boost::get<unsigned int>(width_opt);
+	}
+	return result;
 }
 
 utility::opt_error<unsigned int>::type UIBox::CalcHeight() {
-	return left_up->GetHeight()+left_down->GetHeight();
+	unsigned int result = left_up->GetHeight()+left_down->GetHeight();
+	if(inner_ui) {
+		utility::opt_error<unsigned int>::type height_opt = inner_ui->CalcHeight();
+		if(height_opt.which() == 0) {
+			return boost::get<boost::shared_ptr<Error> >(height_opt);
+		}
+		result += boost::get<unsigned int>(height_opt);
+	}
+	return result;
 }
 
 } // uis
