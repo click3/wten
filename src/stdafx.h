@@ -17,6 +17,7 @@
 #include <locale.h>
 #include <stdio.h>
 
+#include <string>
 #include <vector>
 #include <queue>
 #include <map>
@@ -36,6 +37,7 @@
 #include "uis/ui_box.h"
 #include "uis/ui_string.h"
 #include "uis/ui_image.h"
+#include "uis/ui_selector.h"
 #include "uis/ui_string_box.h"
 #include "event_manager.h"
 #include "event_notify.h"
