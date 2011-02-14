@@ -106,6 +106,25 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetSize(void)
 	return boost::make_tuple<unsigned int, unsigned int>(width, height);
 }
 
+boost::optional<boost::shared_ptr<Error> > UIBase::Draw(void) {
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = PointAndSizeIsValid()) {
+		return error.get();
+	}
+	if(error = Move()) {
+		return error.get();
+	}
+
+	opt_error<boost::tuple<unsigned int, unsigned int> >::type pos_opt = GetAbsolutePoint();
+	if(pos_opt.which() == 0) {
+		return boost::get<boost::shared_ptr<Error> >(pos_opt);
+	}
+	unsigned int x;
+	unsigned int y;
+	boost::tie(x, y) = boost::get<boost::tuple<unsigned int, unsigned int> >(pos_opt);
+	return Draw(x, y);
+}
+
 void UIBase::SetMoveMode(MOVE_MODE move_mode) {
 	this->move_mode = move_mode;
 }

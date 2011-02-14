@@ -17,8 +17,8 @@ boost::optional<boost::shared_ptr<Error> > UIStringBox::SetText(const std::strin
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > UIStringBox::Draw(void) {
-	boost::optional<boost::shared_ptr<Error> > error = UIBox::Draw();
+boost::optional<boost::shared_ptr<Error> > UIStringBox::Draw(unsigned int abs_x, unsigned int abs_y) {
+	boost::optional<boost::shared_ptr<Error> > error = UIBox::Draw(abs_x, abs_y);
 	if(error) {
 		return error.get();
 	}
@@ -41,18 +41,8 @@ boost::optional<boost::shared_ptr<Error> > UIStringBox::Draw(void) {
 		font_height = boost::get<unsigned int>(height_opt);
 	}
 
-	unsigned int x;
-	unsigned int y;
-	{
-		opt_error<boost::tuple<unsigned int, unsigned int> >::type pos_opt = GetAbsolutePoint();
-		if(pos_opt.which() == 0) {
-			return boost::get<boost::shared_ptr<Error> >(pos_opt);
-		}
-		boost::tie(x, y) = boost::get<boost::tuple<unsigned int, unsigned int> >(pos_opt);
-	}
-
-	const unsigned int draw_x = x + (width - font_width) / 2;
-	const unsigned int draw_y = y + (height - font_height) / 2;
+	const unsigned int draw_x = abs_x + (width - font_width) / 2;
+	const unsigned int draw_y = abs_y + (height - font_height) / 2;
 
 	error = DxLibWrapper::DrawString(draw_x, draw_y, text, Color(0xFF,0xFF,0xFF));
 	if(error) {

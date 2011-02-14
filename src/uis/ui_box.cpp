@@ -101,42 +101,28 @@ boost::shared_ptr<UIBase> UIBox::GetInnerUI(void) {
 	return inner_ui;
 }
 
-boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
+boost::optional<boost::shared_ptr<Error> > UIBox::Draw(unsigned int abs_x, unsigned int abs_y) {
 	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = PointAndSizeIsValid()) {
-		return error.get();
-	}
-	if(error = Move()) {
-		return error.get();
-	}
 
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type pos_opt = GetAbsolutePoint();
-	if(pos_opt.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(pos_opt);
-	}
-	unsigned int x;
-	unsigned int y;
-	boost::tie(x, y) = boost::get<boost::tuple<unsigned int, unsigned int> >(pos_opt);
-
-	const unsigned int bottom_x = x + width - right_up->GetWidth();
-	const unsigned int bottom_y = y + height - left_down->GetHeight();
-	if(error = left_up->Draw(			x,		y)) {
+	const unsigned int bottom_x = abs_x + width - right_up->GetWidth();
+	const unsigned int bottom_y = abs_y + height - left_down->GetHeight();
+	if(error = left_up->Draw(			abs_x,		abs_y)) {
 		return error.get();
 	}
-	if(error = left_down->Draw(			x,		bottom_y)) {
+	if(error = left_down->Draw(			abs_x,		bottom_y)) {
 		return error.get();
 	}
-	if(error = right_up->Draw(			bottom_x,	y)) {
+	if(error = right_up->Draw(			bottom_x,	abs_y)) {
 		return error.get();
 	}
 	if(error = right_down->Draw(		bottom_x,	bottom_y)) {
 		return error.get();
 	}
 	if(width > left_up->GetWidth() + right_up->GetWidth()) {
-		const unsigned int line_x = x + left_up->GetWidth();
+		const unsigned int line_x = abs_x + left_up->GetWidth();
 		const unsigned int line_len = width - left_up->GetWidth() - right_up->GetWidth();
 		const unsigned int line_thick = left_up->GetHeight();
-		if(error = up_line->DrawEx(		line_x,	y,		line_len,	line_thick)) {
+		if(error = up_line->DrawEx(		line_x,	abs_y,		line_len,	line_thick)) {
 			return error.get();
 		}
 		if(error = down_line->DrawEx(	line_x,	bottom_y,	line_len,	line_thick)) {
@@ -144,10 +130,10 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
 		}
 	}
 	if(height > left_up->GetHeight() + left_down->GetHeight()) {
-		const unsigned int line_y = y + left_up->GetHeight();
+		const unsigned int line_y = abs_y + left_up->GetHeight();
 		const unsigned int line_len = height - left_up->GetHeight() - left_down->GetHeight();
 		const unsigned int line_thick = left_up->GetWidth();
-		if(error = left_line->DrawEx(	x,		line_y,	line_thick,	line_len)) {
+		if(error = left_line->DrawEx(	abs_x,		line_y,	line_thick,	line_len)) {
 			return error.get();
 		}
 		if(error = right_line->DrawEx(	bottom_x,	line_y,	line_thick,	line_len)) {
@@ -155,8 +141,8 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void){
 		}
 	}
 	if(width > left_up->GetWidth() + right_up->GetWidth() && height > left_up->GetHeight() + left_down->GetHeight()) {
-		const unsigned int blank_x = x + left_up->GetWidth();
-		const unsigned int blank_y = y + left_up->GetHeight();
+		const unsigned int blank_x = abs_x + left_up->GetWidth();
+		const unsigned int blank_y = abs_y + left_up->GetHeight();
 		const unsigned int blank_width = width - left_up->GetWidth() - right_up->GetWidth();
 		const unsigned int blank_height = height - left_up->GetHeight() - left_down->GetHeight();
 		if(error = blank->DrawEx(		blank_x,	blank_y,	blank_width,	blank_height)) {
