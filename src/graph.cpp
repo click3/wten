@@ -64,22 +64,22 @@ unsigned int Graph::GetHeight() {
 
 boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned int y) {
 	if(!inner_ptr) {
-		return CreateError(ERROR_CODE_INTERNAL_ERROR);
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	const int result = ::DrawGraph(x, y, GetDxLibGraph(inner_ptr), TRUE);
 	if(result == -1) {
-		return CreateError(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
 	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > Graph::DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
 	if(!inner_ptr) {
-		return CreateError(ERROR_CODE_INTERNAL_ERROR);
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	const int result = ::DrawExtendGraph(x, y, x + w, y + h, GetDxLibGraph(inner_ptr), TRUE);
 	if(result == -1) {
-		return CreateError(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
 	return boost::none;
 }

@@ -5,7 +5,7 @@ namespace wten { namespace uis {
 using namespace utility;
 
 UIString::UIString(const std::string& text) :
-	text(text)
+	UIBase(), text(text)
 {
 }
 
@@ -15,6 +15,14 @@ UIString::~UIString() {
 boost::optional<boost::shared_ptr<Error> > UIString::SetText(const std::string& text) {
 	this->text = text;
 	return boost::none;
+}
+
+opt_error<std::string>::type UIString::GetText() {
+	return text;
+}
+
+boost::optional<boost::shared_ptr<Error> > UIString::Draw(void) {
+	return UIBase::Draw();
 }
 
 boost::optional<boost::shared_ptr<Error> > UIString::Draw(unsigned int abs_x, unsigned int abs_y) {
