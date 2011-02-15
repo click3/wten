@@ -127,5 +127,13 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int
 	return boost::none;
 }
 
+//static
+opt_error<unsigned int>::type DxLibWrapper::GetJoypadInputState(void) {
+	const int result = ::GetJoypadInputState(DX_INPUT_PAD1);
+	if(result == -1) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return result;
+}
 
 } // wten
