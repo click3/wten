@@ -68,12 +68,15 @@ boost::optional<boost::shared_ptr<Error> > AddImageUI(const boost::shared_ptr<wi
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > AddSelectorWindow(const boost::shared_ptr<WindowManager> manager, const std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > >& select_list, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > AddSelectorWindow(const boost::shared_ptr<WindowManager> manager, const boost::shared_ptr<std::string>& filename, const std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > >& select_list, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	if(!manager) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
+	if(!filename || filename->empty()) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
 
-	boost::shared_ptr<windows::SelectWindow> window = windows::SelectWindow::CreateSelectWindow(select_list);
+	boost::shared_ptr<windows::SelectWindow> window = windows::SelectWindow::CreateSelectWindow(select_list, filename);
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -106,7 +109,6 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 
 	boost::shared_ptr<std::string> box(new std::string("data/ui/box1.png"));
 	OPT_ERROR(AddUI(window, box, uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
-	OPT_ERROR(AddImageUI(window, boost::shared_ptr<std::string>(new std::string("data/ui/arrow1.png")), uis::UIBase::MOVE_MODE_FREE_FREE, 235, 15, 20, 20));
 	OPT_ERROR(AddTextUI(window, box, boost::shared_ptr<std::string>(new std::string("キャッスル：")), uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 	std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > > select_list;
 #define ADD_SELECT(text) select_list.push_back(boost::make_tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> >(boost::shared_ptr<std::string>(new std::string(text)), boost::shared_ptr<void>()))
@@ -116,7 +118,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	ADD_SELECT("カント寺院");
 	ADD_SELECT("町外れ");
 #undef ADD_SELECT
-	OPT_ERROR(AddSelectorWindow(window_manager, select_list, 50, 100, 540, 150));
+	OPT_ERROR(AddSelectorWindow(window_manager, box, select_list, 50, 100, 540, 150));
 	OPT_ERROR(AddUI(window, box, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
 	return boost::none;
 }

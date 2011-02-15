@@ -25,26 +25,37 @@ using namespace utility;
 SelectWindow::SelectWindow() {
 }
 
-//static
-boost::shared_ptr<SelectWindow> SelectWindow::CreateSelectWindow(const std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > >& input) {
-	boost::shared_ptr<SelectWindow> result(new SelectWindow());
-	BOOST_ASSERT(result);
-	result->this_ptr = result;
-	BOOST_ASSERT(result->this_ptr.lock());
-
-	boost::transform(input, std::back_inserter(result->data_list), TupleValues());
+void SelectWindow::Initialize(const std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > >& input, const boost::shared_ptr<std::string>& frame_filename) {
+	boost::transform(input, std::back_inserter(data_list), TupleValues());
 
 	std::vector<boost::shared_ptr<std::string> > select_list;
 	boost::transform(input, std::back_inserter(select_list), TupleTexts());
 
-	BOOST_ASSERT(!result->selector);
-	result->selector.reset(new uis::UISelector(select_list));
+	BOOST_ASSERT(!selector);
+	selector.reset(new uis::UISelector(select_list));
 
-	boost::optional<boost::shared_ptr<Error> > error = result->AddUI(result->selector);
-	if(error) {
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(frame_filename && !frame_filename->empty()) {
+		frame.reset(new uis::UIBox(frame_filename));
+		if(error = AddUI(frame)) {
+			error.get()->Abort();
+			BOOST_ASSERT(false);
+		}
+	}
+	if(error = AddUI(selector)) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+
+//static
+boost::shared_ptr<SelectWindow> SelectWindow::CreateSelectWindow(const std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > >& input, const boost::shared_ptr<std::string>& frame_filename) {
+	boost::shared_ptr<SelectWindow> result(new SelectWindow());
+	BOOST_ASSERT(result);
+	result->this_ptr = result;
+	BOOST_ASSERT(result->this_ptr.lock());
+	result->Initialize(input, frame_filename);
 	return result;
 }
 
@@ -55,11 +66,13 @@ boost::optional<boost::shared_ptr<Error> > SelectWindow::Resize(unsigned int wid
 	OPT_ERROR(WindowBase::Resize(width, height));
 	BOOST_ASSERT(selector);
 	OPT_ERROR(selector->Resize(width, height));
+	if(frame) {
+		OPT_ERROR(frame->Resize(width, height));
+	}
 	return boost::none;
 }
 
 opt_error<boost::optional<boost::shared_ptr<Event> > >::type SelectWindow::NotifyEvent(boost::shared_ptr<Event> event) {
-printf("event start\n");
 	BOOST_ASSERT(event);
 	if(event->GetEventType() != EVENT_TYPE_KEY) {
 		return event;
