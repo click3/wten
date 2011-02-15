@@ -3,6 +3,8 @@ namespace wten {
 
 namespace events {
 
+#define KEY_MAX (12)
+
 class KeyEvent : public EventBase {
 public:
 	enum ACTION {
@@ -26,6 +28,8 @@ public:
 	};
 	KeyEvent(ACTION action, KEY_TYPE key_type);
 	~KeyEvent();
+	ACTION GetAction() const;
+	KEY_TYPE GetKey() const;
 private:
 	ACTION action;
 	KEY_TYPE key_type;

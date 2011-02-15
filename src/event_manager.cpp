@@ -5,7 +5,8 @@ namespace wten {
 using namespace utility;
 
 EventManager::EventManager() {
-	//TODO
+	boost::shared_ptr<EventChecker> key_checker(new events::KeyEventChecker());
+	checker_list.push_back(key_checker);
 }
 
 boost::optional<boost::shared_ptr<Error> > EventManager::DoCheck(void) {

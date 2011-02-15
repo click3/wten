@@ -10,6 +10,14 @@ KeyEvent::KeyEvent(ACTION action, KEY_TYPE key_type) :
 KeyEvent::~KeyEvent() {
 }
 
+KeyEvent::ACTION KeyEvent::GetAction() const {
+	return action;
+}
+
+KeyEvent::KEY_TYPE KeyEvent::GetKey() const {
+	return key_type;
+}
+
 } // events
 
 } // wten
