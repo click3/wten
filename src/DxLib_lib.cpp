@@ -106,7 +106,7 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
 	}
-	return result + 2;//正確ではない値を返す事があるらしいのでマージンを取る
+	return result;
 }
 
 //static
