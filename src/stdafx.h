@@ -48,6 +48,7 @@
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
 #include "windows/select_window.h"
+#include "windows/script_window.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"
