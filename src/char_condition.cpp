@@ -3,7 +3,7 @@
 namespace wten {
 
 CharCondition::CharCondition() :
-	condition(CONDITION_OK), poison(false), silence(false)
+	condition(CONDITION_OK), poison(false), silence(false), battle_ac_bonus(0), ac_bonus(0)
 {
 }
 
@@ -206,10 +206,47 @@ bool CharCondition::IsAlive() {
 	return (GetCondition() < CONDITION_PARALYZED);
 }
 
+int CharCondition::GetACBonus() {
+	return battle_ac_bonus + ac_bonus;
+}
+
+void CharCondition::SetBattleACBonus(int bonus) {
+	battle_ac_bonus = bonus;
+}
+
+void CharCondition::AddBattleACBonus(int bonus) {
+	battle_ac_bonus += bonus;
+}
+
+bool CharCondition::ResetBattleACBonus() {
+	if(battle_ac_bonus == 0) {
+		return false;
+	}
+	battle_ac_bonus = 0;
+	return true;
+}
+
+void CharCondition::SetACBonus(int bonus) {
+	ac_bonus = bonus;
+}
+
+void CharCondition::AddACBonus(int bonus) {
+	ac_bonus += bonus;
+}
+
+bool CharCondition::ResetACBonus() {
+	if(ac_bonus == 0) {
+		return false;
+	}
+	ac_bonus = 0;
+	return true;
+}
+
 void CharCondition::BattleEnd() {
 	RecoverySilence();
 	RecoverySleep();
 	RecoveryFear();
+	ResetBattleACBonus();
 }
 
 void CharCondition::FloorChange() {
@@ -219,6 +256,7 @@ void CharCondition::FloorChange() {
 void CharCondition::DungeonOut() {
 	BattleEnd();
 	RecoveryPoison();
+	ResetACBonus();
 }
 
 } // wten

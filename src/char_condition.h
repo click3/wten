@@ -46,6 +46,13 @@ public:
 	bool RecoverySilence();
 	bool IsAction();
 	bool IsAlive();
+	int GetACBonus();
+	void SetBattleACBonus(int bonus);
+	void AddBattleACBonus(int bonus);
+	bool ResetBattleACBonus();
+	void SetACBonus(int bonus);
+	void AddACBonus(int bonus);
+	bool ResetACBonus();
 	void BattleEnd();
 	void FloorChange();
 	void DungeonOut();
@@ -53,6 +60,8 @@ private:
 	Condition condition;
 	bool poison;
 	bool silence;
+	int battle_ac_bonus;
+	int ac_bonus;
 };
 
 } // wten
