@@ -11,7 +11,7 @@ private:
 	unsigned int width;
 	unsigned int height;
 public:
-	Graph(const std::string& filename);
+	Graph(const boost::shared_ptr<std::string>& filename);
 	unsigned int GetWidth();
 	unsigned int GetHeight();
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y);

@@ -4,10 +4,11 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIImage::UIImage(const std::string& filename) :
+UIImage::UIImage(const boost::shared_ptr<std::string>& filename) :
 	UIBase()
 {
-	BOOST_ASSERT(!filename.empty());
+	BOOST_ASSERT(filename);
+	BOOST_ASSERT(!filename->empty());
 
 	image.reset(new Graph(filename));
 	BOOST_ASSERT(image);

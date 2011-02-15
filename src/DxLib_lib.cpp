@@ -21,7 +21,7 @@ int SCREEN_MODEToFlag(DxLibWrapper::SCREEN_MODE screen_mode) {
 
 } // anonymous
 
-DxLibWrapper::DxLibWrapper(bool window_mode, const std::string& title){
+DxLibWrapper::DxLibWrapper(bool window_mode, const boost::shared_ptr<std::string>& title){
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = ChangeWindowMode(window_mode)) {
 		error.get()->Abort();
@@ -48,8 +48,10 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ChangeWindowMode(bool w
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetWindowTitle(const std::string& title) {
-	const int result = ::SetMainWindowText(title.c_str());
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetWindowTitle(const boost::shared_ptr<std::string>& title) {
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(!title->empty());
+	const int result = ::SetMainWindowText(title->c_str());
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
 	}
@@ -110,8 +112,10 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
 }
 
 //static
-opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const std::string& text) {
-	const int result = ::GetDrawStringWidth(text.c_str(), text.length());
+opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const boost::shared_ptr<std::string>& text) {
+	BOOST_ASSERT(text);
+	BOOST_ASSERT(!text->empty());
+	const int result = ::GetDrawStringWidth(text->c_str(), text->length());
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
 	}
@@ -119,8 +123,10 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const std::string& text
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, const std::string& text, Color color) {
-	const int result = ::DrawString(x, y, text.c_str(), color.GetColorCode());
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, const boost::shared_ptr<std::string>& text, Color color) {
+	BOOST_ASSERT(text);
+	BOOST_ASSERT(!text->empty());
+	const int result = ::DrawString(x, y, text->c_str(), color.GetColorCode());
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
 	}

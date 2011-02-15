@@ -5,7 +5,7 @@ namespace uis {
 
 class UIImage : public UIBase {
 public:
-	UIImage(const std::string& filename);
+	UIImage(const boost::shared_ptr<std::string>& filename);
 	~UIImage();
 	boost::optional<boost::shared_ptr<Error> > Draw(void);
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y);

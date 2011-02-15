@@ -5,10 +5,10 @@ namespace uis {
 
 class UISelector : public UIBase {
 public:
-	UISelector(std::vector<std::string> texts = std::vector<std::string>(), const std::string& arrow_filename = "data/ui/arrow1.png");
+	UISelector(std::vector<boost::shared_ptr<std::string> > texts = std::vector<boost::shared_ptr<std::string> >(), const boost::shared_ptr<std::string>& arrow_filename = boost::shared_ptr<std::string>(new std::string("data/ui/arrow1.png")));
 	~UISelector();
-	boost::optional<boost::shared_ptr<Error> > AddSelect(const std::string& text);
-	boost::optional<boost::shared_ptr<Error> > Select(const std::string& text);
+	boost::optional<boost::shared_ptr<Error> > AddSelect(const boost::shared_ptr<std::string>& text);
+	boost::optional<boost::shared_ptr<Error> > Select(const boost::shared_ptr<std::string>& text);
 	boost::optional<boost::shared_ptr<Error> > Select(unsigned int index);
 	enum MOVE_FOCUS {
 		MOVE_FOCUS_UP,
@@ -16,7 +16,7 @@ public:
 	};
 	boost::optional<boost::shared_ptr<Error> > Select(MOVE_FOCUS move_mode);
 	utility::opt_error<unsigned int>::type GetIndex();
-	utility::opt_error<std::string>::type GetText();
+	utility::opt_error<boost::shared_ptr<std::string> >::type GetText();
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > Move(void);
 	boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);

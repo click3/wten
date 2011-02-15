@@ -4,8 +4,9 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIBox::UIBox(const std::string& filename) {
-	BOOST_ASSERT(!filename.empty());
+UIBox::UIBox(const boost::shared_ptr<std::string>& filename) {
+	BOOST_ASSERT(filename);
+	BOOST_ASSERT(!filename->empty());
 
 	boost::shared_ptr<Graph> src(new Graph(filename));
 	BOOST_ASSERT(src);

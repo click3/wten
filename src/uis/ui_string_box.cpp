@@ -4,7 +4,7 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIStringBox::UIStringBox(const std::string& filename, const std::string& text) :
+UIStringBox::UIStringBox(const boost::shared_ptr<std::string>& filename, const boost::shared_ptr<std::string>& text) :
 	UIBox(filename)
 {
 	boost::shared_ptr<UIString> str(new UIString(text));
@@ -19,7 +19,7 @@ UIStringBox::UIStringBox(const std::string& filename, const std::string& text) :
 UIStringBox::~UIStringBox() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UIStringBox::SetText(const std::string& text) {
+boost::optional<boost::shared_ptr<Error> > UIStringBox::SetText(const boost::shared_ptr<std::string>& text) {
 	boost::shared_ptr<UIString> str = boost::static_pointer_cast<UIString>(inner_ui);
 	return str->SetText(text);
 }

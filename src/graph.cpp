@@ -41,9 +41,10 @@ boost::optional<boost::tuple<int, int>> Graph::GetSize(void) {
 	return boost::make_tuple(x, y);
 }
 
-Graph::Graph(const std::string& filename) {
-	BOOST_ASSERT(!filename.empty());
-	const int handle = ::LoadGraph(filename.c_str());
+Graph::Graph(const boost::shared_ptr<std::string>& filename) {
+	BOOST_ASSERT(filename);
+	BOOST_ASSERT(!filename->empty());
+	const int handle = ::LoadGraph(filename->c_str());
 
 	BOOST_ASSERT(handle != -1);
 	inner_ptr = IntToDxLibGraphHandle(handle);

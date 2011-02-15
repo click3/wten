@@ -20,10 +20,10 @@ WTen::~WTen() {
 }
 
 //static
-std::string WTen::CreateWindowTitle() {
+boost::shared_ptr<std::string> WTen::CreateWindowTitle() {
 	char str[1024];
 	sprintf(str, "Wizardry `“V—³‚Ì“ƒ` %s", OPEN_VERSION);
-	return std::string(str);
+	return boost::shared_ptr<std::string>(new std::string(str));
 }
 
 boost::optional<boost::shared_ptr<Error> > WTen::DoStart() {

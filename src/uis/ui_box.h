@@ -5,7 +5,7 @@ namespace uis {
 
 class UIBox : public UIBase {
 public:
-	UIBox(const std::string& filename);
+	UIBox(const boost::shared_ptr<std::string>& filename);
 	~UIBox();
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > Move(void);
