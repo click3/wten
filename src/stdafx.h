@@ -41,6 +41,8 @@
 #include "uis/ui_image.h"
 #include "uis/ui_selector.h"
 #include "uis/ui_string_box.h"
+#include "event_checker.h"
+#include "events/event_checker_base.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"

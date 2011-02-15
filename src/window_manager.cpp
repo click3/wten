@@ -23,6 +23,7 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::EnqueueEvent(boost::sh
 }
 
 boost::optional<boost::shared_ptr<Error> > WindowManager::DoEvent(void) {
+	OPT_ERROR(event_manager->DoCheck());
 	while(true) {
 		boost::optional<boost::shared_ptr<Event> > event;
 		OPT_EVENT(event, event_manager->Dequeue());

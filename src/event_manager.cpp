@@ -4,6 +4,17 @@ namespace wten {
 
 using namespace utility;
 
+EventManager::EventManager() {
+	//TODO
+}
+
+boost::optional<boost::shared_ptr<Error> > EventManager::DoCheck(void) {
+	BOOST_FOREACH(boost::shared_ptr<EventChecker> checker, checker_list) {
+		OPT_ERROR(checker->DoCheck());
+	}
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > EventManager::Enqueue(boost::shared_ptr<Event> event) {
 	event_queue.push(event);
 	return boost::none;
