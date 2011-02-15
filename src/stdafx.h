@@ -30,6 +30,8 @@
 #include "error_normal.h"
 #include "graph.h"
 #include "event.h"
+#include "events/event_base.h"
+#include "events/key_event.h"
 #include "window.h"
 #include "window_base.h"
 #include "ui.h"
