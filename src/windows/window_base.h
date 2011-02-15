@@ -4,7 +4,7 @@ namespace wten {
 namespace windows {
 
 class WindowBase : public Window {
-private:
+protected:
 	WindowBase();
 public:
 	static boost::shared_ptr<WindowBase> CreateWindowBase();
@@ -18,9 +18,10 @@ public:
 
 	boost::optional<boost::shared_ptr<Error> > AddUI(boost::shared_ptr<UI> ui);
 	utility::opt_error<bool>::type RemoveUI(boost::shared_ptr<UI> ui);
+protected:
+	boost::weak_ptr<WindowBase> this_ptr;
 private:
 	std::vector<boost::shared_ptr<UI> > ui_stack;
-	boost::weak_ptr<WindowBase> this_ptr;
 	unsigned int x;
 	unsigned int y;
 	unsigned int width;

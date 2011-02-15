@@ -13,6 +13,8 @@
 #include "boost/tuple/tuple.hpp"
 #include "boost/variant.hpp"
 #include "boost/foreach.hpp"
+#include "boost/range/adaptor/transformed.hpp"
+#include "boost/range/algorithm.hpp"
 
 #include <locale.h>
 #include <stdio.h>
@@ -44,6 +46,7 @@
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
+#include "windows/select_window.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"
