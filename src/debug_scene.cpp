@@ -109,14 +109,15 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 
 	boost::shared_ptr<std::string> box(new std::string("data/ui/box1.png"));
 	OPT_ERROR(AddUI(window, box, uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
-	OPT_ERROR(AddTextUI(window, box, boost::shared_ptr<std::string>(new std::string("キャッスル：")), uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
+	OPT_ERROR(AddTextUI(window, box, boost::shared_ptr<std::string>(new std::string("城郭都市「ジークフロント」")), uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 	std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > > select_list;
 #define ADD_SELECT(text) select_list.push_back(boost::make_tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> >(boost::shared_ptr<std::string>(new std::string(text)), boost::shared_ptr<void>()))
-	ADD_SELECT("ギルガメッシュの酒場");
-	ADD_SELECT("冒険者の宿");
-	ADD_SELECT("ボルタック商店");
-	ADD_SELECT("カント寺院");
-	ADD_SELECT("町外れ");
+	ADD_SELECT("宿屋「ローゼンメイデン」");
+	ADD_SELECT("ベストバル商店街");
+	ADD_SELECT("トート寺院");
+	ADD_SELECT("酒場「超兄貴」");
+	ADD_SELECT("ジークフロント騎士団兵舎");
+	ADD_SELECT("天龍の塔　付近");
 #undef ADD_SELECT
 	OPT_ERROR(AddSelectorWindow(window_manager, box, select_list, 50, 100, 540, 150));
 	OPT_ERROR(AddUI(window, box, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
