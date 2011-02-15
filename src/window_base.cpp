@@ -32,18 +32,12 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type WindowBase::GetSize(v
 }
 
 boost::optional<boost::shared_ptr<Error> > WindowBase::Move(unsigned int x, unsigned int y) {
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type opt_size = DxLibWrapper::GetWindowSize();
-	if(opt_size.which() == 0) {
-		boost::shared_ptr<Error> error = boost::get<boost::shared_ptr<Error> >(opt_size);
-		return error;
-	}
 	unsigned int max_width;
 	unsigned int max_height;
-	boost::tie(max_width, max_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(opt_size);
+	OPT_PAIR_UINT(max_width, max_height, DxLibWrapper::GetWindowSize());
 
 	if(x+width > max_width || y+height > max_height) {
-		boost::shared_ptr<Error> error(new errors::ErrorNormal(ERROR_CODE_OUTSIDE_RANGE));
-		return error;
+		return CREATE_ERROR(ERROR_CODE_OUTSIDE_RANGE);
 	}
 	this->x = x;
 	this->y = y;
@@ -51,18 +45,12 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::Move(unsigned int x, unsi
 }
 
 boost::optional<boost::shared_ptr<Error> > WindowBase::Resize(unsigned int width, unsigned int height) {
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type opt_size = DxLibWrapper::GetWindowSize();
-	if(opt_size.which() == 0) {
-		boost::shared_ptr<Error> error = boost::get<boost::shared_ptr<Error> >(opt_size);
-		return error;
-	}
 	unsigned int max_width;
 	unsigned int max_height;
-	boost::tie(max_width, max_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(opt_size);
+	OPT_PAIR_UINT(max_width, max_height, DxLibWrapper::GetWindowSize());
 
 	if(x+width > max_width || y+height > max_height) {
-		boost::shared_ptr<Error> error(new errors::ErrorNormal(ERROR_CODE_OUTSIDE_RANGE));
-		return error;
+		return CREATE_ERROR(ERROR_CODE_OUTSIDE_RANGE);
 	}
 	this->width = width;
 	this->height = height;
@@ -71,10 +59,7 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::Resize(unsigned int width
 
 boost::optional<boost::shared_ptr<Error> > WindowBase::Draw(void) {
 	BOOST_FOREACH(boost::shared_ptr<UI> ui, ui_stack) {
-		boost::optional<boost::shared_ptr<Error> > error = ui->Draw();
-		if(error) {
-			return error.get();
-		}
+		OPT_ERROR(ui->Draw());
 	}
 	return boost::none;
 }
@@ -85,7 +70,7 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type WindowBase::NotifyE
 
 boost::optional<boost::shared_ptr<Error> > WindowBase::AddUI(boost::shared_ptr<UI> ui) {
 	ui_stack.push_back(ui);
-	ui->SetOwnerWindow(this_ptr);
+	OPT_ERROR(ui->SetOwnerWindow(this_ptr));
 	return boost::none;
 }
 

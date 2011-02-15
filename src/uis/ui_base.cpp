@@ -14,13 +14,7 @@ boost::optional<boost::shared_ptr<Error> > OwnerRectCheck(const boost::weak_ptr<
 
 	unsigned int owner_width;
 	unsigned int owner_height;
-	{
-		opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_size = window->GetSize();
-		if(owner_size.which() == 0) {
-			return boost::get<boost::shared_ptr<Error> >(owner_size);
-		}
-		boost::tie(owner_width, owner_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_size);
-	}
+	OPT_PAIR_UINT(owner_width, owner_height, window->GetSize());
 
 	if(x+width > owner_width || y+height > owner_height) {
 		return CREATE_ERROR(ERROR_CODE_OUTSIDE_RANGE);
@@ -48,15 +42,12 @@ boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_pt
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::InnerRectCheck(void) {
-	opt_error<unsigned int>::type width = CalcWidth();
-	if(width.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(width);
-	}
-	opt_error<unsigned int>::type height = CalcHeight();
-	if(height.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(height);
-	}
-	if(this->width < boost::get<unsigned int>(width) || this->height < boost::get<unsigned int>(height)) {
+	unsigned int width;
+	OPT_UINT(width, CalcWidth());
+	unsigned int height;
+	OPT_UINT(height, CalcHeight());
+
+	if(this->width < width || this->height < height) {
 		return CREATE_ERROR(ERROR_CODE_OUTSIDE_RANGE);
 	}
 	return boost::none;
@@ -65,20 +56,12 @@ boost::optional<boost::shared_ptr<Error> > UIBase::InnerRectCheck(void) {
 boost::optional<boost::shared_ptr<Error> > UIBase::PointAndSizeIsValid(void) {
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = InnerRectCheck()) {
-		if(error = Resize()) {
-			return error.get();
-		}
-		if(error = InnerRectCheck()) {
-			return error.get();
-		}
+		OPT_ERROR(Resize());
+		OPT_ERROR(InnerRectCheck());
 	}
 	if(error = OwnerRectCheck(owner, x, y, width, height)) {
-		if(error = Move()) {
-			return error.get();
-		}
-		if(error = OwnerRectCheck(owner, x, y, width, height)) {
-			return error.get();
-		}
+		OPT_ERROR(Move());
+		OPT_ERROR(OwnerRectCheck(owner, x, y, width, height));
 	}
 	return boost::none;
 }
@@ -92,13 +75,9 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetAbsolutePo
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_point = window->GetPoint();
-	if(owner_point.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(owner_point);
-	}
 	unsigned int owner_x;
 	unsigned int owner_y;
-	boost::tie(owner_x, owner_y) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_point);
+	OPT_PAIR_UINT(owner_x, owner_y, window->GetPoint());
 	return boost::make_tuple<unsigned int, unsigned int>(owner_x + x, owner_y + y);
 }
 
@@ -107,21 +86,12 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetSize(void)
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Draw(void) {
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = PointAndSizeIsValid()) {
-		return error.get();
-	}
-	if(error = Move()) {
-		return error.get();
-	}
+	OPT_ERROR(PointAndSizeIsValid());
+	OPT_ERROR(Move());
 
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type pos_opt = GetAbsolutePoint();
-	if(pos_opt.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(pos_opt);
-	}
 	unsigned int x;
 	unsigned int y;
-	boost::tie(x, y) = boost::get<boost::tuple<unsigned int, unsigned int> >(pos_opt);
+	OPT_PAIR_UINT(x, y, GetAbsolutePoint());
 	return Draw(x, y);
 }
 
@@ -134,19 +104,14 @@ UIBase::MOVE_MODE UIBase::GetMoveMode(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Move() {
+	boost::shared_ptr<windows::WindowBase> window = owner.lock();
+	if(!window) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+
 	unsigned int owner_width;
 	unsigned int owner_height;
-	{
-		boost::shared_ptr<windows::WindowBase> window = owner.lock();
-		if(!window) {
-			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-		}
-		opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_size = window->GetSize();
-		if(owner_size.which() == 0) {
-			return boost::get<boost::shared_ptr<Error> >(owner_size);
-		}
-		boost::tie(owner_width, owner_height) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_size);
-	}
+	OPT_PAIR_UINT(owner_width, owner_height, window->GetSize());
 
 	unsigned int x = this->x;
 	unsigned int y = this->y;
@@ -227,13 +192,10 @@ boost::optional<boost::shared_ptr<Error> > UIBase::AbsoluteMove(unsigned int x, 
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type owner_point = window->GetPoint();
-	if(owner_point.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(owner_point);
-	}
+
 	unsigned int owner_x;
 	unsigned int owner_y;
-	boost::tie(owner_x, owner_y) = boost::get<boost::tuple<unsigned int, unsigned int> >(owner_point);
+	OPT_PAIR_UINT(owner_x, owner_y, window->GetPoint());
 	if(x < owner_x || y < owner_y) {
 		return CREATE_ERROR(ERROR_CODE_OUTSIDE_RANGE);
 	}
@@ -247,20 +209,16 @@ boost::optional<boost::shared_ptr<Error> > UIBase::Resize(unsigned int width, un
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Resize(void) {
-	opt_error<unsigned int>::type width = CalcWidth();
-	if(width.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(width);
-	}
-	opt_error<unsigned int>::type height = CalcHeight();
-	if(height.which() == 0) {
-		return boost::get<boost::shared_ptr<Error> >(height);
-	}
-	const unsigned int w = std::max(this->width, boost::get<unsigned int>(width));
-	const unsigned int h = std::max(this->height, boost::get<unsigned int>(height));
-	boost::optional<boost::shared_ptr<Error> > error = Resize(w, h);
-	if(error) {
-		return error.get();
-	}
+	unsigned int width;
+	unsigned int height;
+	OPT_UINT(width, CalcWidth());
+	OPT_UINT(height, CalcHeight());
+
+	const unsigned int w = std::max(this->width, width);
+	const unsigned int h = std::max(this->height, height);
+
+	OPT_ERROR(Resize(w, h));
+
 	return boost::none;
 }
 

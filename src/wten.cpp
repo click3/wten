@@ -30,10 +30,7 @@ boost::optional<boost::shared_ptr<Error> > WTen::DoStart() {
 	bool initialize = true;
 	while(scene) {
 		if(initialize) {
-			boost::optional<boost::shared_ptr<Error> > result = scene->DoStart();
-			if(result) {
-				return result;
-			}
+			OPT_ERROR(scene->DoStart());
 			initialize = false;
 		}
 		LoopResult result = DoMainLoop();
@@ -54,17 +51,12 @@ boost::optional<boost::shared_ptr<Error> > WTen::DoStart() {
 }
 
 WTen::LoopResult WTen::DoMainLoop(void) {
-	boost::optional<boost::shared_ptr<Error> > error;
 	if(!lib->ProcessMessage()) {
 		return boost::shared_ptr<SceneExit>(new SceneExit());
 	}
-	if(error = lib->ClearDrawScreen()) {
-		return error.get();
-	}
+	OPT_ERROR(lib->ClearDrawScreen());
 	LoopResult result = scene->DoNextFrame();
-	if(error = lib->ScreenFlip()) {
-		return error.get();
-	}
+	OPT_ERROR(lib->ScreenFlip());
 	return result;
 }
 

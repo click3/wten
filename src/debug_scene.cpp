@@ -21,16 +21,10 @@ boost::optional<boost::shared_ptr<Error> > AddUI(const boost::shared_ptr<windows
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	ui->SetMoveMode(move_mode);
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = window->AddUI(ui)) {
-		return error.get();
-	}
-	if(error = ui->Move(x, y)) {
-		return error.get();
-	}
-	if(error = ui->Resize(width, height)) {
-		return error.get();
-	}
+
+	OPT_ERROR(window->AddUI(ui));
+	OPT_ERROR(ui->Move(x, y));
+	OPT_ERROR(ui->Resize(width, height));
 	return boost::none;
 }
 
@@ -47,16 +41,10 @@ boost::optional<boost::shared_ptr<Error> > AddTextUI(const boost::shared_ptr<win
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	ui->SetMoveMode(move_mode);
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = window->AddUI(ui)) {
-		return error.get();
-	}
-	if(error = ui->Move(x, y)) {
-		return error.get();
-	}
-	if(error = ui->Resize(width, height)) {
-		return error.get();
-	}
+
+	OPT_ERROR(window->AddUI(ui));
+	OPT_ERROR(ui->Move(x, y));
+	OPT_ERROR(ui->Resize(width, height));
 	return boost::none;
 }
 
@@ -73,16 +61,10 @@ boost::optional<boost::shared_ptr<Error> > AddImageUI(const boost::shared_ptr<wi
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	ui->SetMoveMode(move_mode);
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = window->AddUI(ui)) {
-		return error.get();
-	}
-	if(error = ui->Move(x, y)) {
-		return error.get();
-	}
-	if(error = ui->Resize(width, height)) {
-		return error.get();
-	}
+
+	OPT_ERROR(window->AddUI(ui));
+	OPT_ERROR(ui->Move(x, y));
+	OPT_ERROR(ui->Resize(width, height));
 	return boost::none;
 }
 
@@ -101,16 +83,10 @@ boost::optional<boost::shared_ptr<Error> > AddSelectorUI(const boost::shared_ptr
 	}
 	box->SetInnerUI(selector);
 	box->SetMoveMode(move_mode);
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = window->AddUI(box)) {
-		return error.get();
-	}
-	if(error = box->Move(x, y)) {
-		return error.get();
-	}
-	if(error = box->Resize(width, height)) {
-		return error.get();
-	}
+
+	OPT_ERROR(window->AddUI(box));
+	OPT_ERROR(box->Move(x, y));
+	OPT_ERROR(box->Resize(width, height));
 	return boost::none;
 }
 
@@ -120,15 +96,11 @@ DebugScene::DebugScene(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > DebugScene::DoStart(void) {
-	boost::optional<boost::shared_ptr<Error> > error = SceneBase::DoStart();
-	if(error) {
-		return error.get();
-	}
+	OPT_ERROR(SceneBase::DoStart());
 	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
-	boost::optional<boost::shared_ptr<Error> > error;
 	if(!window_manager) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -136,34 +108,20 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
-	if(error = window_manager->PushWindow(window)) {
-		return error.get();
-	}
-	if(error = window->Resize(640, 480)) {
-		return error.get();
-	}
+	OPT_ERROR(window_manager->PushWindow(window));
+	OPT_ERROR(window->Resize(640, 480));
 
-	if(error = AddUI(window, "data/ui/box1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445)) {
-		return error.get();
-	}
-	if(error = AddImageUI(window, "data/ui/arrow1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 235, 15, 20, 20)) {
-		return error.get();
-	}
-	if(error = AddTextUI(window, "data/ui/box1.png", "キャッスル：", uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32)) {
-		return error.get();
-	}
+	OPT_ERROR(AddUI(window, "data/ui/box1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
+	OPT_ERROR(AddImageUI(window, "data/ui/arrow1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 235, 15, 20, 20));
+	OPT_ERROR(AddTextUI(window, "data/ui/box1.png", "キャッスル：", uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 	std::vector<std::string> select_list;
 	select_list.push_back("ギルガメッシュの酒場");
 	select_list.push_back("冒険者の宿");
 	select_list.push_back("ボルタック商店");
 	select_list.push_back("カント寺院");
 	select_list.push_back("町外れ");
-	if(error = AddSelectorUI(window, "data/ui/box1.png", select_list, uis::UIBase::MOVE_MODE_FREE_FREE, 50, 100, 540, 150)) {
-		return error.get();
-	}
-	if(error = AddUI(window, "data/ui/box1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160)) {
-		return error.get();
-	}
+	OPT_ERROR(AddSelectorUI(window, "data/ui/box1.png", select_list, uis::UIBase::MOVE_MODE_FREE_FREE, 50, 100, 540, 150));
+	OPT_ERROR(AddUI(window, "data/ui/box1.png", uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
 	return boost::none;
 }
 

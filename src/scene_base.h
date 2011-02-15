@@ -27,33 +27,26 @@ public:
 		EventNotify::Regist(this_ptr);
 		boost::shared_ptr<T> ptr = this_ptr.lock();
 		if(!ptr) {
-			return boost::shared_ptr<Error>(new errors::ErrorNormal(ERROR_CODE_INTERNAL_ERROR));
+			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 		}
-		boost::optional<boost::shared_ptr<Error> > error = ptr->SceneInitialize();
-		if(error) {
-			return error.get();
-		}
+		OPT_ERROR(ptr->SceneInitialize());
 		return boost::none;
 	}
 
 	boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > DoNextFrame(void)  {
 		if(!window_manager) {
-			return boost::shared_ptr<Error>(new errors::ErrorNormal(ERROR_CODE_INTERNAL_ERROR));
+			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 		}
-
-		if(boost::optional<boost::shared_ptr<Error> > error = window_manager->DoEvent()) {
-			return error.get();
-		}
-
-		if(boost::optional<boost::shared_ptr<Error> > error = window_manager->Draw()) {
-			return error.get();
-		}
+		OPT_ERROR(window_manager->DoEvent());
+		OPT_ERROR(window_manager->Draw());
 
 		return boost::none;
 	}
 	void EventNotifyCallback(boost::shared_ptr<Event> event) {
 		BOOST_ASSERT(window_manager);
-		window_manager->EnqueueEvent(event);
+		if(boost::optional<boost::shared_ptr<Error> > error = window_manager->EnqueueEvent(event)) {
+			error.get()->Abort();
+		}
 	}
 
 	/**

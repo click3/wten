@@ -42,14 +42,9 @@ UIBox::~UIBox() {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBox::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = UIBase::SetOwnerWindow(window)) {
-		return error.get();
-	}
+	OPT_ERROR(UIBase::SetOwnerWindow(window));
 	if(inner_ui) {
-		if(error = inner_ui->SetOwnerWindow(window)) {
-			return error.get();
-		}
+		OPT_ERROR(inner_ui->SetOwnerWindow(window));
 	}
 	return boost::none;
 }
@@ -59,31 +54,21 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Move(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBox::Move(unsigned int x, unsigned int y) {
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = UIBase::Move(x, y)) {
-		return error.get();
-	}
+	OPT_ERROR(UIBase::Move(x, y));
 	if(inner_ui) {
 		const unsigned int inner_x = x + left_up->GetWidth();
 		const unsigned int inner_y = y + left_up->GetHeight();
-		if(error = inner_ui->Move(inner_x, inner_y)) {
-			return error.get();
-		}
+		OPT_ERROR(inner_ui->Move(inner_x, inner_y));
 	}
 	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBox::Resize(unsigned int width, unsigned int height) {
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(error = UIBase::Resize(width, height)) {
-		return error.get();
-	}
+	OPT_ERROR(UIBase::Resize(width, height));
 	if(inner_ui) {
 		const unsigned int inner_width = width - left_up->GetWidth() - right_up->GetWidth();
 		const unsigned int inner_height = height - left_up->GetHeight() - left_down->GetHeight();
-		if(error = inner_ui->Resize(inner_width, inner_height)) {
-			return error.get();
-		}
+		OPT_ERROR(inner_ui->Resize(inner_width, inner_height));
 	}
 	return boost::none;
 }
@@ -105,58 +90,40 @@ boost::shared_ptr<UIBase> UIBox::GetInnerUI(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBox::Draw(unsigned int abs_x, unsigned int abs_y) {
-	boost::optional<boost::shared_ptr<Error> > error;
 
 	const unsigned int bottom_x = abs_x + width - right_up->GetWidth();
 	const unsigned int bottom_y = abs_y + height - left_down->GetHeight();
-	if(error = left_up->Draw(			abs_x,		abs_y)) {
-		return error.get();
-	}
-	if(error = left_down->Draw(			abs_x,		bottom_y)) {
-		return error.get();
-	}
-	if(error = right_up->Draw(			bottom_x,	abs_y)) {
-		return error.get();
-	}
-	if(error = right_down->Draw(		bottom_x,	bottom_y)) {
-		return error.get();
-	}
+	OPT_ERROR(left_up->Draw(			abs_x,		abs_y));
+	OPT_ERROR(left_down->Draw(			abs_x,		bottom_y));
+	OPT_ERROR(right_up->Draw(			bottom_x,	abs_y));
+	OPT_ERROR(right_down->Draw(		bottom_x,	bottom_y));
+
 	if(width > left_up->GetWidth() + right_up->GetWidth()) {
 		const unsigned int line_x = abs_x + left_up->GetWidth();
 		const unsigned int line_len = width - left_up->GetWidth() - right_up->GetWidth();
 		const unsigned int line_thick = left_up->GetHeight();
-		if(error = up_line->DrawEx(		line_x,	abs_y,		line_len,	line_thick)) {
-			return error.get();
-		}
-		if(error = down_line->DrawEx(	line_x,	bottom_y,	line_len,	line_thick)) {
-			return error.get();
-		}
+		OPT_ERROR(up_line->DrawEx(		line_x,	abs_y,		line_len,	line_thick));
+		OPT_ERROR(down_line->DrawEx(	line_x,	bottom_y,	line_len,	line_thick));
 	}
+
 	if(height > left_up->GetHeight() + left_down->GetHeight()) {
 		const unsigned int line_y = abs_y + left_up->GetHeight();
 		const unsigned int line_len = height - left_up->GetHeight() - left_down->GetHeight();
 		const unsigned int line_thick = left_up->GetWidth();
-		if(error = left_line->DrawEx(	abs_x,		line_y,	line_thick,	line_len)) {
-			return error.get();
-		}
-		if(error = right_line->DrawEx(	bottom_x,	line_y,	line_thick,	line_len)) {
-			return error.get();
-		}
+		OPT_ERROR(left_line->DrawEx(	abs_x,		line_y,	line_thick,	line_len));
+		OPT_ERROR(right_line->DrawEx(	bottom_x,	line_y,	line_thick,	line_len));
 	}
+
 	if(width > left_up->GetWidth() + right_up->GetWidth() && height > left_up->GetHeight() + left_down->GetHeight()) {
 		const unsigned int blank_x = abs_x + left_up->GetWidth();
 		const unsigned int blank_y = abs_y + left_up->GetHeight();
 		const unsigned int blank_width = width - left_up->GetWidth() - right_up->GetWidth();
 		const unsigned int blank_height = height - left_up->GetHeight() - left_down->GetHeight();
-		if(error = blank->DrawEx(		blank_x,	blank_y,	blank_width,	blank_height)) {
-			return error.get();
-		}
+		OPT_ERROR(blank->DrawEx(		blank_x,	blank_y,	blank_width,	blank_height));
 	}
 
 	if(inner_ui) {
-		if(error = inner_ui->Draw()) {
-			return error.get();
-		}
+		OPT_ERROR(inner_ui->Draw());
 	}
 	return boost::none;
 }
@@ -164,11 +131,9 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(unsigned int abs_x, unsig
 utility::opt_error<unsigned int>::type UIBox::CalcWidth() {
 	unsigned int result = left_up->GetWidth()+right_up->GetWidth();
 	if(inner_ui) {
-		utility::opt_error<unsigned int>::type width_opt = inner_ui->CalcWidth();
-		if(width_opt.which() == 0) {
-			return boost::get<boost::shared_ptr<Error> >(width_opt);
-		}
-		result += boost::get<unsigned int>(width_opt);
+		unsigned int width;
+		OPT_UINT(width, inner_ui->CalcWidth());
+		result += width;
 	}
 	return result;
 }
@@ -176,11 +141,9 @@ utility::opt_error<unsigned int>::type UIBox::CalcWidth() {
 utility::opt_error<unsigned int>::type UIBox::CalcHeight() {
 	unsigned int result = left_up->GetHeight()+left_down->GetHeight();
 	if(inner_ui) {
-		utility::opt_error<unsigned int>::type height_opt = inner_ui->CalcHeight();
-		if(height_opt.which() == 0) {
-			return boost::get<boost::shared_ptr<Error> >(height_opt);
-		}
-		result += boost::get<unsigned int>(height_opt);
+		unsigned int height;
+		OPT_UINT(height, inner_ui->CalcHeight());
+		result += height;
 	}
 	return result;
 }
