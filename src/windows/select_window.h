@@ -13,6 +13,8 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);
 	utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type NotifyEvent(boost::shared_ptr<Event> event);
 private:
+	boost::optional<boost::shared_ptr<Error> > OnSelect(void);
+
 	boost::shared_ptr<uis::UISelector> selector;
 	boost::shared_ptr<uis::UIBox> frame;
 	std::vector<boost::shared_ptr<void> > data_list;

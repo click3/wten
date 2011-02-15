@@ -3,6 +3,7 @@ namespace wten {
 
 enum EVENT_TYPE {
 	EVENT_TYPE_KEY,
+	EVENT_TYPE_ON_SELECT,
 };
 
 class Event : boost::noncopyable {

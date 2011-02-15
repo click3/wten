@@ -74,21 +74,37 @@ boost::optional<boost::shared_ptr<Error> > SelectWindow::Resize(unsigned int wid
 
 opt_error<boost::optional<boost::shared_ptr<Event> > >::type SelectWindow::NotifyEvent(boost::shared_ptr<Event> event) {
 	BOOST_ASSERT(event);
-	if(event->GetEventType() != EVENT_TYPE_KEY) {
-		return event;
-	}
-	BOOST_ASSERT(selector);
-	boost::shared_ptr<events::KeyEvent> key = boost::static_pointer_cast<events::KeyEvent>(event);
-	if(key->GetAction() == events::KeyEvent::KEY_PRESS) {
-		switch(key->GetKey()) {
-			case events::KeyEvent::KEY_UP:
-				OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_UP));
-				break;
-			case events::KeyEvent::KEY_DOWN:
-				OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_DOWN));
-				break;
+	if(event->GetEventType() == EVENT_TYPE_KEY) {
+		BOOST_ASSERT(selector);
+		boost::shared_ptr<events::KeyEvent> key = boost::static_pointer_cast<events::KeyEvent>(event);
+		if(key->GetAction() == events::KeyEvent::KEY_PRESS) {
+			switch(key->GetKey()) {
+				case events::KeyEvent::KEY_UP:
+					OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_UP));
+					return boost::none;
+				case events::KeyEvent::KEY_DOWN:
+					OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_DOWN));
+					return boost::none;
+				case events::KeyEvent::KEY_A:
+					OPT_ERROR(OnSelect());
+					return boost::none;
+			}
 		}
 	}
+	return event;
+}
+
+
+boost::optional<boost::shared_ptr<Error> > SelectWindow::OnSelect(void) {
+	BOOST_ASSERT(selector);
+	unsigned int index;
+	OPT_UINT(index, selector->GetIndex());
+	BOOST_ASSERT(!data_list.empty());
+	BOOST_ASSERT(index < data_list.size());
+	boost::shared_ptr<void> data = data_list[index];
+	boost::shared_ptr<Event> event(new events::OnSelectEvent(data));
+	BOOST_ASSERT(event);
+	EventNotify::Send(event);
 	return boost::none;
 }
 
