@@ -3,7 +3,7 @@ namespace wten {
 
 typedef boost::shared_ptr<void> DxLibGraphHandle;
 
-class Graph {
+class Graph : boost::noncopyable {
 private:
 	DxLibGraphHandle inner_ptr;
 	Graph(const DxLibGraphHandle& handle);
