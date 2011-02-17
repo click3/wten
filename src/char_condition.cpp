@@ -3,7 +3,7 @@
 namespace wten {
 
 CharCondition::CharCondition() :
-	condition(CONDITION_OK), poison(false), silence(false), battle_ac_bonus(0), ac_bonus(0)
+	condition(CONDITION_OK), poison(false), silence(false), battle_ac_bonus(0), ac_bonus(0), parry(false)
 {
 }
 
@@ -242,7 +242,21 @@ bool CharCondition::ResetACBonus() {
 	return true;
 }
 
+bool CharCondition::IsParry() {
+	return parry;
+}
+
+void CharCondition::SetParry() {
+	BOOST_ASSERT(!parry);
+	parry = true;
+}
+
+void CharCondition::TurnEnd() {
+	parry = false;
+}
+
 void CharCondition::BattleEnd() {
+	TurnEnd();
 	RecoverySilence();
 	RecoverySleep();
 	RecoveryFear();
@@ -254,7 +268,7 @@ void CharCondition::FloorChange() {
 }
 
 void CharCondition::DungeonOut() {
-	BattleEnd();
+	FloorChange();
 	RecoveryPoison();
 	ResetACBonus();
 }

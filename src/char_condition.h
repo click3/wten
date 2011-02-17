@@ -53,6 +53,9 @@ public:
 	void SetACBonus(int bonus);
 	void AddACBonus(int bonus);
 	bool ResetACBonus();
+	bool IsParry();
+	void SetParry();
+	void TurnEnd();
 	void BattleEnd();
 	void FloorChange();
 	void DungeonOut();
@@ -62,6 +65,7 @@ private:
 	bool silence;
 	int battle_ac_bonus;
 	int ac_bonus;
+	bool parry;
 };
 
 } // wten
