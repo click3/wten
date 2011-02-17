@@ -3,7 +3,7 @@ namespace wten {
 
 class CharCondition {
 public:
-	enum Condition {
+	enum CONDITION {
 		CONDITION_OK,
 		CONDITION_SLEEP,
 		CONDITION_FEAR,
@@ -15,7 +15,7 @@ public:
 	};
 	CharCondition();
 	~CharCondition();
-	Condition GetCondition();
+	CONDITION GetCondition();
 	bool IsOk();
 	bool IsSleep();
 	bool IsFear();
@@ -57,7 +57,7 @@ public:
 	void FloorChange();
 	void DungeonOut();
 private:
-	Condition condition;
+	CONDITION condition;
 	bool poison;
 	bool silence;
 	int battle_ac_bonus;

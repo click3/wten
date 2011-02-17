@@ -10,7 +10,7 @@ CharCondition::CharCondition() :
 CharCondition::~CharCondition() {
 }
 
-CharCondition::Condition CharCondition::GetCondition() {
+CharCondition::CONDITION CharCondition::GetCondition() {
 	return condition;
 }
 
