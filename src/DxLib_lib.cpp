@@ -142,4 +142,9 @@ opt_error<unsigned int>::type DxLibWrapper::GetJoypadInputState(void) {
 	return result;
 }
 
+//static
+unsigned int DxLibWrapper::GetRand(unsigned int max) {
+	return ::GetRand(max);
+}
+
 } // wten

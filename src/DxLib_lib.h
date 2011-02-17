@@ -33,6 +33,7 @@ public:
 	static utility::opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const boost::shared_ptr<std::string>& text);
 	static boost::optional<boost::shared_ptr<Error> > DrawString(unsigned int x, unsigned int y, const boost::shared_ptr<std::string>& text, utility::Color color);
 	static utility::opt_error<unsigned int>::type GetJoypadInputState(void);
+	static unsigned int GetRand(unsigned int max);
 };
 
 } // wten
