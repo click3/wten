@@ -53,6 +53,8 @@ public:
 	unsigned int blue;
 };
 
+unsigned int dice(unsigned int base, unsigned int count, unsigned int bonus = 0);
+
 } // utility
 
 } // wten
