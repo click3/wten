@@ -33,6 +33,7 @@
 #include "graph.h"
 #include "char_condition.h"
 #include "pt_condition.h"
+#include "enemy_info.h"
 #include "event.h"
 #include "events/event_base.h"
 #include "events/key_event.h"
