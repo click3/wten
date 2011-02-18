@@ -68,7 +68,7 @@ bool EnemyInfo::CheckResist() const {
 	return DxLibWrapper::GetRand(255) >= resist;
 }
 
-bool EnemyInfo::IsResitType(Action::ACTION_TYPE type) const {
+bool EnemyInfo::IsResistType(Action::ACTION_TYPE type) const {
 	std::vector<Action::ACTION_TYPE>::const_iterator it = std::find(resist_actions.begin(), resist_actions.end(), type);
 	return (it != resist_actions.end());
 }

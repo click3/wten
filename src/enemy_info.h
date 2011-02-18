@@ -33,7 +33,7 @@ public:
 	unsigned int GetAtkCount() const;
 	unsigned int CalcAtkDamage(unsigned int hit_count) const;
 	bool CheckResist() const;
-	bool IsResitType(Action::ACTION_TYPE type) const;
+	bool IsResistType(Action::ACTION_TYPE type) const;
 	unsigned int GetExp() const;
 	unsigned int CalcTg(unsigned int thief_skill) const;
 	boost::optional<boost::shared_ptr<const ItemInfo> > CalcDrop(unsigned int thief_skill) const;

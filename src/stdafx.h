@@ -35,6 +35,7 @@
 #include "pt_condition.h"
 #include "enemy_condition.h"
 #include "enemy_info.h"
+#include "enemy_status.h"
 #include "event.h"
 #include "events/event_base.h"
 #include "events/key_event.h"
