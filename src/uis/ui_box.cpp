@@ -4,45 +4,103 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIBox::UIBox(const boost::shared_ptr<std::string>& filename) {
-	BOOST_ASSERT(filename);
-	BOOST_ASSERT(!filename->empty());
+namespace {
 
-	boost::shared_ptr<Graph> src(new Graph(filename));
+#define RETURN_DERIVATION_GRAPH(src, x, y, w, h) 							\
+{														\
+	opt_error<boost::shared_ptr<Graph>>::type graph_opt = src->Derivation(x, y, w, h);\
+	BOOST_ASSERT(graph_opt.which() == 1);								\
+	return boost::get<boost::shared_ptr<Graph> >(graph_opt);					\
+}
+
+boost::shared_ptr<Graph> GetLeftUp(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = (src->GetWidth() - 1) / 2;
+	const unsigned int height = (src->GetHeight() - 1) / 2;
+	const unsigned int x = 0;
+	const unsigned int y = 0;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetLeftDown(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = (src->GetWidth() - 1) / 2;
+	const unsigned int height = (src->GetHeight() - 1) / 2;
+	const unsigned int x = 0;
+	const unsigned int y = height + 1;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetRightUp(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = (src->GetWidth() - 1) / 2;
+	const unsigned int height = (src->GetHeight() - 1) / 2;
+	const unsigned int x = width + 1;
+	const unsigned int y = 0;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetRightDown(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = (src->GetWidth() - 1) / 2;
+	const unsigned int height = (src->GetHeight() - 1) / 2;
+	const unsigned int x = width + 1;
+	const unsigned int y = height + 1;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetLeftLine(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = (src->GetWidth() - 1) / 2;
+	const unsigned int height = 1;
+	const unsigned int x = 0;
+	const unsigned int y = (src->GetHeight() - 1) / 2;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetRightLine(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = (src->GetWidth() - 1) / 2;
+	const unsigned int height = 1;
+	const unsigned int x = width + 1;
+	const unsigned int y = (src->GetHeight() - 1) / 2;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetTopLine(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = 1;
+	const unsigned int height = (src->GetHeight() - 1) / 2;
+	const unsigned int x = (src->GetWidth() - 1) / 2;
+	const unsigned int y = 0;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetBottomLine(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = 1;
+	const unsigned int height = (src->GetHeight() - 1) / 2;
+	const unsigned int x = (src->GetWidth() - 1) / 2;
+	const unsigned int y = height + 1;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+boost::shared_ptr<Graph> GetBlank(boost::shared_ptr<const Graph> src) {
+	const unsigned int width = 1;
+	const unsigned int height = 1;
+	const unsigned int x = (src->GetWidth() - 1) / 2;
+	const unsigned int y = (src->GetHeight() - 1) / 2;
+	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
+}
+
+} // anonymous
+
+UIBox::UIBox(boost::shared_ptr<const Graph> src) :
+	left_up(GetLeftUp(src)), left_down(GetLeftDown(src)), right_up(GetRightUp(src)), right_down(GetRightDown(src)),
+	left_line(GetLeftLine(src)), right_line(GetRightLine(src)), top_line(GetTopLine(src)), bottom_line(GetBottomLine(src)),
+	blank(GetBlank(src))
+{
 	BOOST_ASSERT(src);
 	BOOST_ASSERT((src->GetWidth() % 2) == 1);
 	BOOST_ASSERT(src->GetHeight() == src->GetHeight());
-
-	const unsigned int corner_width = src->GetWidth() / 2;
-	const unsigned int corner_height = src->GetHeight() / 2;
-	const unsigned int line_len = 1;
-	const unsigned int line_thick = src->GetWidth() / 2;
-	const unsigned int blank_size = 1;
-#define LOAD_DERIVATION(name, x, y, w, h) 								\
-	{													\
-		boost::optional<boost::shared_ptr<Graph>> name = src->Derivation(x, y, w, h);	\
-		BOOST_ASSERT(name);										\
-		this->name = name.get();									\
-	}
-	LOAD_DERIVATION(left_up,	0,				0,				corner_width,	corner_height);
-	LOAD_DERIVATION(left_down,	0,				corner_height + line_len,	corner_width,	corner_height);
-	LOAD_DERIVATION(right_up,	corner_width + line_len,	0,				corner_width,	corner_height);
-	LOAD_DERIVATION(right_down,	corner_width + line_len,	corner_height + line_len,	corner_width,	corner_height);
-	LOAD_DERIVATION(left_line,	0,				corner_height,		line_thick,	line_len);
-	LOAD_DERIVATION(right_line,	corner_width + line_len,	corner_height,		line_thick,	line_len);
-	LOAD_DERIVATION(up_line,	corner_width,			0,				line_len,	line_thick);
-	LOAD_DERIVATION(down_line,	corner_width,			corner_height + line_len,	line_len,	line_thick);
-	LOAD_DERIVATION(blank,	corner_width,			corner_height,		blank_size,	blank_size);
-#undef LOAD_DERIVATION
-
-	width = src->GetWidth();
-	height = src->GetHeight();
 }
 
 UIBox::~UIBox() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UIBox::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
+boost::optional<boost::shared_ptr<Error> > UIBox::SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window) {
 	OPT_ERROR(UIBase::SetOwnerWindow(window));
 	if(inner_ui) {
 		OPT_ERROR(inner_ui->SetOwnerWindow(window));
@@ -86,12 +144,15 @@ boost::optional<boost::shared_ptr<Error> > UIBox::SetInnerUI(boost::shared_ptr<U
 	return boost::none;
 }
 
-boost::shared_ptr<UIBase> UIBox::GetInnerUI(void) {
+boost::shared_ptr<UIBase> UIBox::GetInnerUI(void) const {
 	return inner_ui;
 }
 
-boost::optional<boost::shared_ptr<Error> > UIBox::Draw(unsigned int abs_x, unsigned int abs_y) {
+boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void) {
+	return UIBase::Draw();
+}
 
+boost::optional<boost::shared_ptr<Error> > UIBox::Draw(unsigned int abs_x, unsigned int abs_y) {
 	const unsigned int bottom_x = abs_x + width - right_up->GetWidth();
 	const unsigned int bottom_y = abs_y + height - left_down->GetHeight();
 	OPT_ERROR(left_up->Draw(			abs_x,		abs_y));
@@ -103,8 +164,8 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(unsigned int abs_x, unsig
 		const unsigned int line_x = abs_x + left_up->GetWidth();
 		const unsigned int line_len = width - left_up->GetWidth() - right_up->GetWidth();
 		const unsigned int line_thick = left_up->GetHeight();
-		OPT_ERROR(up_line->DrawEx(		line_x,	abs_y,		line_len,	line_thick));
-		OPT_ERROR(down_line->DrawEx(	line_x,	bottom_y,	line_len,	line_thick));
+		OPT_ERROR(top_line->DrawEx(		line_x,	abs_y,		line_len,	line_thick));
+		OPT_ERROR(bottom_line->DrawEx(	line_x,	bottom_y,	line_len,	line_thick));
 	}
 
 	if(height > left_up->GetHeight() + left_down->GetHeight()) {
@@ -129,7 +190,7 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Draw(unsigned int abs_x, unsig
 	return boost::none;
 }
 
-utility::opt_error<unsigned int>::type UIBox::CalcWidth() {
+utility::opt_error<unsigned int>::type UIBox::CalcWidth() const {
 	unsigned int result = left_up->GetWidth()+right_up->GetWidth();
 	if(inner_ui) {
 		unsigned int width;
@@ -139,7 +200,7 @@ utility::opt_error<unsigned int>::type UIBox::CalcWidth() {
 	return result;
 }
 
-utility::opt_error<unsigned int>::type UIBox::CalcHeight() {
+utility::opt_error<unsigned int>::type UIBox::CalcHeight() const {
 	unsigned int result = left_up->GetHeight()+left_down->GetHeight();
 	if(inner_ui) {
 		unsigned int height;

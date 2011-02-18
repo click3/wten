@@ -21,7 +21,7 @@ int SCREEN_MODEToFlag(DxLibWrapper::SCREEN_MODE screen_mode) {
 
 } // anonymous
 
-DxLibWrapper::DxLibWrapper(bool window_mode, const boost::shared_ptr<std::string>& title){
+DxLibWrapper::DxLibWrapper(bool window_mode, boost::shared_ptr<const std::string> title){
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = ChangeWindowMode(window_mode)) {
 		error.get()->Abort();
@@ -48,7 +48,7 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ChangeWindowMode(bool w
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetWindowTitle(const boost::shared_ptr<std::string>& title) {
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetWindowTitle(boost::shared_ptr<const std::string> title) {
 	BOOST_ASSERT(title);
 	BOOST_ASSERT(!title->empty());
 	const int result = ::SetMainWindowText(title->c_str());
@@ -112,7 +112,7 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
 }
 
 //static
-opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const boost::shared_ptr<std::string>& text) {
+opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const std::string> text) {
 	BOOST_ASSERT(text);
 	BOOST_ASSERT(!text->empty());
 	const int result = ::GetDrawStringWidth(text->c_str(), text->length());
@@ -123,7 +123,7 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(const boost::shared_ptr
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, const boost::shared_ptr<std::string>& text, Color color) {
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, boost::shared_ptr<const std::string> text, Color color) {
 	BOOST_ASSERT(text);
 	BOOST_ASSERT(!text->empty());
 	const int result = ::DrawString(x, y, text->c_str(), color.GetColorCode());

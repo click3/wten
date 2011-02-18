@@ -6,10 +6,10 @@ using namespace utility;
 
 namespace {
 
-boost::optional<boost::shared_ptr<Error> > OwnerRectCheck(const boost::weak_ptr<windows::WindowBase> owner, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<windows::WindowBase> window = owner.lock();
+boost::optional<boost::shared_ptr<Error> > OwnerRectCheck(boost::weak_ptr<const windows::WindowBase> owner, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	boost::shared_ptr<const windows::WindowBase> window = owner.lock();
 	if(!window) {
-		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
 
 	unsigned int owner_width;
@@ -32,7 +32,10 @@ UIBase::UIBase() :
 UIBase::~UIBase() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
+boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window) {
+	if(!window.lock()) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	if(owner.lock()) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -66,12 +69,12 @@ boost::optional<boost::shared_ptr<Error> > UIBase::PointAndSizeIsValid(void) {
 	return boost::none;
 }
 
-opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetPoint(void) {
+opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetPoint(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(x, y);
 }
 
-opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetAbsolutePoint(void) {
-	boost::shared_ptr<windows::WindowBase> window = owner.lock();
+opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetAbsolutePoint(void) const {
+	boost::shared_ptr<const windows::WindowBase> window = owner.lock();
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -81,7 +84,7 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetAbsolutePo
 	return boost::make_tuple<unsigned int, unsigned int>(owner_x + x, owner_y + y);
 }
 
-opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetSize(void) {
+opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetSize(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(width, height);
 }
 
@@ -99,12 +102,12 @@ void UIBase::SetMoveMode(MOVE_MODE move_mode) {
 	this->move_mode = move_mode;
 }
 
-UIBase::MOVE_MODE UIBase::GetMoveMode(void) {
-	return this->move_mode;
+UIBase::MOVE_MODE UIBase::GetMoveMode(void) const {
+	return move_mode;
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Move() {
-	boost::shared_ptr<windows::WindowBase> window = owner.lock();
+	boost::shared_ptr<const windows::WindowBase> window = owner.lock();
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -188,7 +191,7 @@ boost::optional<boost::shared_ptr<Error> > UIBase::Move(unsigned int x, unsigned
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::AbsoluteMove(unsigned int x, unsigned int y) {
-	boost::shared_ptr<windows::WindowBase> window = owner.lock();
+	boost::shared_ptr<const windows::WindowBase> window = owner.lock();
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -222,11 +225,11 @@ boost::optional<boost::shared_ptr<Error> > UIBase::Resize(void) {
 	return boost::none;
 }
 
-utility::opt_error<unsigned int>::type UIBase::CalcWidth() {
+utility::opt_error<unsigned int>::type UIBase::CalcWidth() const {
 	return 0;
 }
 
-utility::opt_error<unsigned int>::type UIBase::CalcHeight() {
+utility::opt_error<unsigned int>::type UIBase::CalcHeight() const {
 	return 0;
 }
 

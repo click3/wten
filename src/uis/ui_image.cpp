@@ -4,13 +4,11 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIImage::UIImage(const boost::shared_ptr<std::string>& filename) :
-	UIBase()
+UIImage::UIImage(boost::shared_ptr<const std::string> filename) :
+	UIBase(), image(new Graph(filename))
 {
 	BOOST_ASSERT(filename);
 	BOOST_ASSERT(!filename->empty());
-
-	image.reset(new Graph(filename));
 	BOOST_ASSERT(image);
 
 	boost::optional<boost::shared_ptr<Error> > error = Resize(image->GetWidth(), image->GetHeight());
@@ -28,9 +26,7 @@ boost::optional<boost::shared_ptr<Error> > UIImage::Draw(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIImage::Draw(unsigned int abs_x, unsigned int abs_y) {
-	if(!image) {
-		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-	}
+	BOOST_ASSERT(image);
 	boost::optional<boost::shared_ptr<Error> > error = image->Draw(abs_x, abs_y);
 	if(error) {
 		return error.get();
@@ -38,17 +34,13 @@ boost::optional<boost::shared_ptr<Error> > UIImage::Draw(unsigned int abs_x, uns
 	return boost::none;
 }
 
-utility::opt_error<unsigned int>::type UIImage::CalcWidth() {
-	if(!image) {
-		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-	}
+utility::opt_error<unsigned int>::type UIImage::CalcWidth() const {
+	BOOST_ASSERT(image);
 	return image->GetWidth();
 }
 
-utility::opt_error<unsigned int>::type UIImage::CalcHeight() {
-	if(!image) {
-		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-	}
+utility::opt_error<unsigned int>::type UIImage::CalcHeight() const {
+	BOOST_ASSERT(image);
 	return image->GetHeight();
 }
 

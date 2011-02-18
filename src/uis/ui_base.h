@@ -7,12 +7,12 @@ class UIBase : public UI {
 public:
 	UIBase();
 	~UIBase();
-	virtual boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window);
+	virtual boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > InnerRectCheck(void);
 	virtual boost::optional<boost::shared_ptr<Error> > PointAndSizeIsValid(void);
-	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void);
-	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetAbsolutePoint(void);
-	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetSize(void);
+	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void) const;
+	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetAbsolutePoint(void) const;
+	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetSize(void) const;
 	virtual boost::optional<boost::shared_ptr<Error> > Draw(void);
 	virtual boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y) = 0;
 
@@ -35,16 +35,16 @@ public:
 		MOVE_MODE_FREE_FREE,
 	};
 	virtual void SetMoveMode(MOVE_MODE move_mode);
-	virtual MOVE_MODE GetMoveMode(void);
+	virtual MOVE_MODE GetMoveMode(void) const;
 	virtual boost::optional<boost::shared_ptr<Error> > Move();
 	virtual boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);
 	virtual boost::optional<boost::shared_ptr<Error> > AbsoluteMove(unsigned int x, unsigned int y);
 	virtual boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);
 	virtual boost::optional<boost::shared_ptr<Error> > Resize(void);
-	virtual utility::opt_error<unsigned int>::type CalcWidth();
-	virtual utility::opt_error<unsigned int>::type CalcHeight();
+	virtual utility::opt_error<unsigned int>::type CalcWidth() const;
+	virtual utility::opt_error<unsigned int>::type CalcHeight() const;
 protected:
-	boost::weak_ptr<windows::WindowBase> owner;
+	boost::weak_ptr<const windows::WindowBase> owner;
 	unsigned int x;
 	unsigned int y;
 	unsigned int width;

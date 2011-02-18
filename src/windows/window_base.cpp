@@ -23,11 +23,11 @@ boost::shared_ptr<WindowBase> WindowBase::CreateWindowBase() {
 WindowBase::~WindowBase() {
 }
 
-opt_error<boost::tuple<unsigned int, unsigned int> >::type WindowBase::GetPoint(void) {
+opt_error<boost::tuple<unsigned int, unsigned int> >::type WindowBase::GetPoint(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(x, y);
 }
 
-opt_error<boost::tuple<unsigned int, unsigned int> >::type WindowBase::GetSize(void) {
+opt_error<boost::tuple<unsigned int, unsigned int> >::type WindowBase::GetSize(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(width, height);
 }
 

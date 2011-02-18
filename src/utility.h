@@ -44,7 +44,7 @@ public:
 	{
 	}
 
-	int GetColorCode() {
+	int GetColorCode() const {
 		return ::GetColor(red, green, blue);
 	}
 
@@ -53,7 +53,7 @@ public:
 	unsigned int blue;
 };
 
-unsigned int dice(unsigned int base, unsigned int count, unsigned int bonus = 0);
+unsigned int Dice(unsigned int base, unsigned int count, unsigned int bonus = 0);
 
 } // utility
 

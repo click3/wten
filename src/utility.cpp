@@ -6,7 +6,7 @@ boost::shared_ptr<Error> CreateError(ERROR_CODE code, const std::string filename
 	return boost::shared_ptr<Error>(new errors::ErrorNormal(code, filename, fileline));
 }
 
-unsigned int dice(unsigned int base, unsigned int count, unsigned int bonus) {
+unsigned int Dice(unsigned int base, unsigned int count, unsigned int bonus) {
 	BOOST_ASSERT(base > 0);
 	BOOST_ASSERT(count > 0);
 	unsigned int result = 0;

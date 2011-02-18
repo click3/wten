@@ -4,12 +4,12 @@ namespace wten {
 
 using namespace utility;
 
-EnemyInfo::EnemyInfo(const boost::shared_ptr<std::string> uncertainty_name, const boost::shared_ptr<std::string> name,
+EnemyInfo::EnemyInfo(boost::shared_ptr<const std::string> uncertainty_name, boost::shared_ptr<const std::string> name,
 	MONSTER_TYPE type, unsigned int lv, unsigned int hp_base, unsigned int hp_bonus, int ac,
 	unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
 	unsigned int resist, const std::vector<Action::ACTION_TYPE>& resist_actions,
 	unsigned int exp, unsigned int tg_base, unsigned int drop_base,
-	const boost::shared_ptr<ItemInfo> drop_item) 
+	boost::shared_ptr<const ItemInfo> drop_item) 
 :
 	uncertainty_name(uncertainty_name), name(name), type(type), lv(lv), hp_base(hp_base), hp_bonus(hp_bonus), ac(ac),
 	atk_base(atk_base), atk_count(atk_count), atk_bonus(atk_bonus), resist(resist), resist_actions(resist_actions),
@@ -32,11 +32,11 @@ EnemyInfo::EnemyInfo(const boost::shared_ptr<std::string> uncertainty_name, cons
 EnemyInfo::~EnemyInfo() {
 }
 
-const boost::shared_ptr<std::string> EnemyInfo::GetUncertaintyName() const {
+boost::shared_ptr<const std::string> EnemyInfo::GetUncertaintyName() const {
 	return uncertainty_name;
 }
 
-const boost::shared_ptr<std::string> EnemyInfo::GetName() const {
+boost::shared_ptr<const std::string> EnemyInfo::GetName() const {
 	return name;
 }
 
@@ -49,7 +49,7 @@ unsigned int EnemyInfo::GetLv() const {
 }
 
 unsigned int EnemyInfo::CalcMaxHP() const {
-	return dice(hp_base, lv, hp_bonus);
+	return Dice(hp_base, lv, hp_bonus);
 }
 
 int EnemyInfo::GetAC() const {
@@ -61,7 +61,7 @@ unsigned int EnemyInfo::GetAtkCount() const {
 }
 
 unsigned int EnemyInfo::CalcAtkDamage(unsigned int hit_count) const {
-	return dice(atk_base, hit_count, atk_bonus);
+	return Dice(atk_base, hit_count, atk_bonus);
 }
 
 bool EnemyInfo::CheckResist() const {
@@ -78,10 +78,10 @@ unsigned int EnemyInfo::GetExp() const {
 }
 
 unsigned int EnemyInfo::CalcTg(unsigned int thief_skill) const {
-	return dice(tg_base, thief_skill);
+	return Dice(tg_base, thief_skill);
 }
 
-boost::optional<const boost::shared_ptr<ItemInfo> > EnemyInfo::CalcDrop(unsigned int thief_skill) const {
+boost::optional<boost::shared_ptr<const ItemInfo> > EnemyInfo::CalcDrop(unsigned int thief_skill) const {
 	for(unsigned int i = 0; i < thief_skill; i++) {
 		if(DxLibWrapper::GetRand(255) >= drop_base) {
 			return drop_item;

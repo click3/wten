@@ -10,39 +10,39 @@ CharCondition::CharCondition() :
 CharCondition::~CharCondition() {
 }
 
-CharCondition::CONDITION CharCondition::GetCondition() {
+CharCondition::CONDITION CharCondition::GetCondition() const {
 	return condition;
 }
 
-bool CharCondition::IsOk() {
+bool CharCondition::IsOk() const {
 	return (condition == CONDITION_OK);
 }
 
-bool CharCondition::IsSleep() {
+bool CharCondition::IsSleep() const {
 	return (condition == CONDITION_SLEEP);
 }
 
-bool CharCondition::IsFear() {
+bool CharCondition::IsFear() const {
 	return (condition == CONDITION_FEAR);
 }
 
-bool CharCondition::IsParalyzed() {
+bool CharCondition::IsParalyzed() const {
 	return (condition == CONDITION_PARALYZED);
 }
 
-bool CharCondition::IsStoned() {
+bool CharCondition::IsStoned() const {
 	return (condition == CONDITION_STONED);
 }
 
-bool CharCondition::IsDead() {
+bool CharCondition::IsDead() const {
 	return (condition == CONDITION_DEAD);
 }
 
-bool CharCondition::IsAshed() {
+bool CharCondition::IsAshed() const {
 	return (condition == CONDITION_ASHED);
 }
 
-bool CharCondition::IsLost() {
+bool CharCondition::IsLost() const {
 	return (condition == CONDITION_LOST);
 }
 
@@ -158,7 +158,7 @@ bool CharCondition::RecoveryLost() {
 	return true;
 }
 
-bool CharCondition::IsPoison() {
+bool CharCondition::IsPoison() const {
 	return poison;
 }
 
@@ -178,7 +178,7 @@ bool CharCondition::RecoveryPoison() {
 	return true;
 }
 
-bool CharCondition::IsSilence() {
+bool CharCondition::IsSilence() const {
 	return silence;
 }
 
@@ -198,15 +198,15 @@ bool CharCondition::RecoverySilence() {
 	return true;
 }
 
-bool CharCondition::IsAction() {
+bool CharCondition::IsAction() const {
 	return (GetCondition() < CONDITION_FEAR);
 }
 
-bool CharCondition::IsAlive() {
+bool CharCondition::IsAlive() const {
 	return (GetCondition() < CONDITION_PARALYZED);
 }
 
-int CharCondition::GetACBonus() {
+int CharCondition::GetACBonus() const {
 	return battle_ac_bonus + ac_bonus;
 }
 
@@ -242,7 +242,7 @@ bool CharCondition::ResetACBonus() {
 	return true;
 }
 
-bool CharCondition::IsParry() {
+bool CharCondition::IsParry() const {
 	return parry;
 }
 

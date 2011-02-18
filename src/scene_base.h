@@ -34,9 +34,7 @@ public:
 	}
 
 	boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > DoNextFrame(void)  {
-		if(!window_manager) {
-			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-		}
+		BOOST_ASSERT(window_manager);
 		OPT_ERROR(window_manager->DoEvent());
 		OPT_ERROR(window_manager->Draw());
 
@@ -52,13 +50,13 @@ public:
 	/**
 	 * 派生クラスではここに初期化コードを実装する
 	 */
-	boost::optional<boost::shared_ptr<Error> > SceneInitialize(void) {
+	virtual boost::optional<boost::shared_ptr<Error> > SceneInitialize(void) {
 		return boost::none;
 	}
 private:
 	boost::weak_ptr<T> this_ptr;
 protected:
-	boost::shared_ptr<WindowManager> window_manager;
+	const boost::shared_ptr<WindowManager> window_manager;
 };
 
 } // scenes

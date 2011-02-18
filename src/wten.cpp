@@ -15,8 +15,6 @@ WTen::WTen(boost::shared_ptr<Scene> start_scene) :
 }
 
 WTen::~WTen() {
-	scene.reset();
-	lib.reset();
 }
 
 //static

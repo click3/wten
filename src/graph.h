@@ -5,18 +5,18 @@ typedef boost::shared_ptr<void> DxLibGraphHandle;
 
 class Graph : boost::noncopyable {
 private:
-	DxLibGraphHandle inner_ptr;
-	Graph(const DxLibGraphHandle& handle);
-	boost::optional<boost::tuple<int, int>> GetSize(void);
-	unsigned int width;
-	unsigned int height;
+	Graph(DxLibGraphHandle handle);
 public:
-	Graph(const boost::shared_ptr<std::string>& filename);
-	unsigned int GetWidth();
-	unsigned int GetHeight();
-	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y);
-	boost::optional<boost::shared_ptr<Error> > DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
-	boost::optional<boost::shared_ptr<Graph>> Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
+	Graph(boost::shared_ptr<const std::string> filename);
+	unsigned int GetWidth() const;
+	unsigned int GetHeight() const;
+	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y) const;
+	boost::optional<boost::shared_ptr<Error> > DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const;
+	utility::opt_error<boost::shared_ptr<Graph> >::type Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const;
+private:
+	const DxLibGraphHandle inner_ptr;
+	const unsigned int width;
+	const unsigned int height;
 };
 
 } // wten

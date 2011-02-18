@@ -5,14 +5,14 @@ namespace uis {
 
 class UIImage : public UIBase {
 public:
-	UIImage(const boost::shared_ptr<std::string>& filename);
+	UIImage(boost::shared_ptr<const std::string> filename);
 	~UIImage();
 	boost::optional<boost::shared_ptr<Error> > Draw(void);
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y);
-	utility::opt_error<unsigned int>::type CalcWidth();
-	utility::opt_error<unsigned int>::type CalcHeight();
+	utility::opt_error<unsigned int>::type CalcWidth() const;
+	utility::opt_error<unsigned int>::type CalcHeight() const;
 protected:
-	boost::shared_ptr<Graph> image;
+	const boost::shared_ptr<const Graph> image;
 };
 
 } // uis

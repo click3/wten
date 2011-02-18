@@ -7,36 +7,52 @@ namespace windows {
 namespace {
 
 struct TupleValues {
-	boost::shared_ptr<void> operator ()(const boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> >& data) {
+	boost::shared_ptr<void> operator ()(const boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> >& data) {
 		return data.get<1>();
 	}
 };
 
 struct TupleTexts {
-	boost::shared_ptr<std::string> operator ()(const boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> >& data) {
+	boost::shared_ptr<const std::string> operator ()(const boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> >& data) {
 		return data.get<0>();
 	}
 };
+
+std::vector<boost::shared_ptr<const std::string> > CreateSelectList(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input) {
+	std::vector<boost::shared_ptr<const std::string> > result;
+	boost::transform(input, std::back_inserter(result), TupleTexts());
+	return result;
+}
+
+std::vector<boost::shared_ptr<void> > CreateDataList(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input) {
+	std::vector<boost::shared_ptr<void> > result;
+	boost::transform(input, std::back_inserter(result), TupleValues());
+	return result;
+}
 
 } // anonymous
 
 using namespace utility;
 
-SelectWindow::SelectWindow() {
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<Graph> frame) :
+	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), frame(new uis::UIBox(frame))
+{
+	BOOST_ASSERT(selector);
+	BOOST_ASSERT(selector->GetCount() == data_list.size());
+	BOOST_ASSERT(frame);
 }
 
-void SelectWindow::Initialize(const std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > >& input, const boost::shared_ptr<std::string>& frame_filename) {
-	boost::transform(input, std::back_inserter(data_list), TupleValues());
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input) :
+	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input))
+{
+	BOOST_ASSERT(selector);
+	BOOST_ASSERT(selector->GetCount() == data_list.size());
+	BOOST_ASSERT(frame);
+}
 
-	std::vector<boost::shared_ptr<std::string> > select_list;
-	boost::transform(input, std::back_inserter(select_list), TupleTexts());
-
-	BOOST_ASSERT(!selector);
-	selector.reset(new uis::UISelector(select_list));
-
+void SelectWindow::InitializeUI() {
 	boost::optional<boost::shared_ptr<Error> > error;
-	if(frame_filename && !frame_filename->empty()) {
-		frame.reset(new uis::UIBox(frame_filename));
+	if(frame) {
 		if(error = AddUI(frame)) {
 			error.get()->Abort();
 			BOOST_ASSERT(false);
@@ -50,12 +66,20 @@ void SelectWindow::Initialize(const std::vector<boost::tuple<boost::shared_ptr<s
 
 
 //static
-boost::shared_ptr<SelectWindow> SelectWindow::CreateSelectWindow(const std::vector<boost::tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> > >& input, const boost::shared_ptr<std::string>& frame_filename) {
-	boost::shared_ptr<SelectWindow> result(new SelectWindow());
+boost::shared_ptr<SelectWindow> SelectWindow::CreateSelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<const std::string> frame_filename) {
+	BOOST_ASSERT(frame_filename);
+	BOOST_ASSERT(!frame_filename->empty());
+	boost::shared_ptr<SelectWindow> result;
+	if(frame_filename) {
+		boost::shared_ptr<Graph> frame(new Graph(frame_filename));
+		result.reset(new SelectWindow(input, frame));
+	} else {
+		result.reset(new SelectWindow(input));
+	}
 	BOOST_ASSERT(result);
 	result->this_ptr = result;
 	BOOST_ASSERT(result->this_ptr.lock());
-	result->Initialize(input, frame_filename);
+	result->InitializeUI();
 	return result;
 }
 

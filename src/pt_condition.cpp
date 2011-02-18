@@ -10,7 +10,7 @@ PTCondition::PTCondition() :
 PTCondition::~PTCondition() {
 }
 
-bool PTCondition::IsLight() {
+bool PTCondition::IsLight() const {
 	return light_full || light > 0;
 }
 
@@ -55,7 +55,7 @@ bool PTCondition::ResetLight() {
 	return true;
 }
 
-bool PTCondition::IsIdentifies() {
+bool PTCondition::IsIdentifies() const {
 	return identifies;
 }
 
@@ -75,7 +75,7 @@ bool PTCondition::ResetIdentifies() {
 	return true;
 }
 
-bool PTCondition::IsSpellDisable() {
+bool PTCondition::IsSpellDisable() const {
 	return spell_disable;
 }
 

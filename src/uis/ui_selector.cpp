@@ -7,61 +7,47 @@ using namespace utility;
 namespace {
 
 struct MaxFindByUIStringWidth {
-bool operator ()(const boost::shared_ptr<UIString>& left, const boost::shared_ptr<UIString>& right) {
-	opt_error<unsigned int>::type left_opt = left->CalcWidth();
-	BOOST_ASSERT(left_opt.which() == 1);
-	opt_error<unsigned int>::type right_opt = right->CalcWidth();
-	BOOST_ASSERT(right_opt.which() == 1);
+	bool operator ()(const boost::shared_ptr<UIString>& left, const boost::shared_ptr<UIString>& right) {
+		opt_error<unsigned int>::type left_opt = left->CalcWidth();
+		BOOST_ASSERT(left_opt.which() == 1);
+		opt_error<unsigned int>::type right_opt = right->CalcWidth();
+		BOOST_ASSERT(right_opt.which() == 1);
 
-	return boost::get<unsigned int>(left_opt) < boost::get<unsigned int>(right_opt);
-}
+		return boost::get<unsigned int>(left_opt) < boost::get<unsigned int>(right_opt);
+	}
 };
+
+std::vector<boost::shared_ptr<UIString> > CreateSelectList(const std::vector<boost::shared_ptr<const std::string> >& texts) {
+	std::vector<boost::shared_ptr<UIString> > result;
+	BOOST_FOREACH(boost::shared_ptr<const std::string> text, texts) {
+		BOOST_ASSERT(text);
+		BOOST_ASSERT(!text->empty());
+		boost::shared_ptr<UIString> row(new UIString(text));
+		BOOST_ASSERT(row);
+		result.push_back(row);
+	}
+	return result;
+}
 
 
 } // anonymous
 
-UISelector::UISelector(std::vector<boost::shared_ptr<std::string> > texts, const boost::shared_ptr<std::string>& arrow_filename) :
-	UIBase()
+UISelector::UISelector(const std::vector<boost::shared_ptr<const std::string> >& texts, boost::shared_ptr<const std::string> arrow_filename) :
+	UIBase(), select_list(CreateSelectList(texts)), arrow(new UIImage(arrow_filename)), index(0)
 {
+	BOOST_ASSERT(select_list.size() == texts.size());
 	BOOST_ASSERT(arrow_filename);
 	BOOST_ASSERT(!arrow_filename->empty());
-	arrow.reset(new UIImage(arrow_filename));
 	BOOST_ASSERT(arrow);
-
-	BOOST_FOREACH(boost::shared_ptr<std::string> text, texts) {
-		BOOST_ASSERT(text);
-		BOOST_ASSERT(!text->empty());
-		boost::optional<boost::shared_ptr<Error> > error = AddSelect(text);
-		if(error) {
-			error.get()->Abort();
-			BOOST_ASSERT(false);
-		}
-	}
-
-	index = 0;
 }
 
 UISelector::~UISelector() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UISelector::AddSelect(const boost::shared_ptr<std::string>& text) {
-	boost::shared_ptr<UIString> str(new UIString(text));
-	if(!str) {
-		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-	}
-	select_list.push_back(str);
-	if(owner.lock()) {
-		return Move();
-	}
-	return boost::none;
-}
-
-boost::optional<boost::shared_ptr<Error> > UISelector::Select(const boost::shared_ptr<std::string>& text) {
+boost::optional<boost::shared_ptr<Error> > UISelector::Select(boost::shared_ptr<const std::string> text) {
 	unsigned int index = 0;
 	BOOST_FOREACH(boost::shared_ptr<UIString> select, select_list) {
-		boost::shared_ptr<std::string> str;
-		OPT_STRING_PTR(str, select->GetText());
-		if(*str == *text) {
+		if(*select->GetText() == *text) {
 			this->index = index;
 			return boost::none;
 		}
@@ -95,24 +81,22 @@ boost::optional<boost::shared_ptr<Error> > UISelector::Select(MOVE_FOCUS move_mo
 	return boost::none;
 }
 
-utility::opt_error<unsigned int>::type UISelector::GetIndex() {
+utility::opt_error<unsigned int>::type UISelector::GetIndex() const {
 	if(select_list.empty()) {
 		return CREATE_ERROR(ERROR_CODE_SELECTOR_EMPTY);
 	}
 	return index;
 }
 
-utility::opt_error<boost::shared_ptr<std::string> >::type UISelector::GetText() {
+utility::opt_error<boost::shared_ptr<const std::string> >::type UISelector::GetText() const {
 	if(select_list.empty()) {
 		return CREATE_ERROR(ERROR_CODE_SELECTOR_EMPTY);
 	}
 	BOOST_ASSERT(index < select_list.size());
-	boost::shared_ptr<std::string> str;
-	OPT_STRING_PTR(str, select_list[index]->GetText());
-	return str;
+	return select_list[index]->GetText();
 }
 
-boost::optional<boost::shared_ptr<Error> > UISelector::SetOwnerWindow(boost::weak_ptr<windows::WindowBase> window) {
+boost::optional<boost::shared_ptr<Error> > UISelector::SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window) {
 	BOOST_ASSERT(arrow);
 	OPT_ERROR(arrow->SetOwnerWindow(window));
 
@@ -191,6 +175,10 @@ boost::optional<boost::shared_ptr<Error> > UISelector::Resize(void) {
 	return UIBase::Resize();
 }
 
+boost::optional<boost::shared_ptr<Error> > UISelector::Draw(void) {
+	return UIBase::Draw();
+}
+
 boost::optional<boost::shared_ptr<Error> > UISelector::Draw(unsigned int abs_x, unsigned int abs_y) {
 	BOOST_ASSERT(arrow);
 	OPT_ERROR(arrow->Draw());
@@ -203,14 +191,14 @@ boost::optional<boost::shared_ptr<Error> > UISelector::Draw(unsigned int abs_x, 
 	return boost::none;
 }
 
-opt_error<unsigned int>::type UISelector::CalcWidth() {
+opt_error<unsigned int>::type UISelector::CalcWidth() const {
 	unsigned int result;
 
 	unsigned int arrow_width;
 	OPT_UINT(arrow_width, arrow->CalcWidth());
 	result = arrow_width;
 
-	std::vector<boost::shared_ptr<UIString> >::iterator it = std::max_element(select_list.begin(), select_list.end(), MaxFindByUIStringWidth());
+	std::vector<boost::shared_ptr<UIString> >::const_iterator it = std::max_element(select_list.begin(), select_list.end(), MaxFindByUIStringWidth());
 	BOOST_ASSERT(it != select_list.end());
 	boost::shared_ptr<UIString> max_select = *it;
 	BOOST_ASSERT(max_select);
@@ -222,7 +210,7 @@ opt_error<unsigned int>::type UISelector::CalcWidth() {
 	return result;
 }
 
-opt_error<unsigned int>::type UISelector::CalcHeight() {
+opt_error<unsigned int>::type UISelector::CalcHeight() const {
 	unsigned int arrow_height;
 	OPT_UINT(arrow_height, arrow->CalcHeight());
 
@@ -235,6 +223,10 @@ opt_error<unsigned int>::type UISelector::CalcHeight() {
 	}
 
 	return result;
+}
+
+unsigned int UISelector::GetCount() const {
+	return select_list.size();
 }
 
 } // uis

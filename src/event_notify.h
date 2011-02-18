@@ -27,7 +27,7 @@ public:
 	void EventNotifyCallback(boost::shared_ptr<Event> event);
 private:
 	static boost::shared_ptr<EventNotify> singleton;
-	const char *event_notify_name;
+	const char * const event_notify_name;
 	std::vector<boost::weak_ptr<EventNotifyInterface> > notifys;
 	boost::shared_ptr<org::click3::NotificationCenter> notify_center;
 };

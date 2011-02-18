@@ -4,7 +4,7 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIString::UIString(const boost::shared_ptr<std::string>& text) :
+UIString::UIString(boost::shared_ptr<const std::string> text) :
 	UIBase(), text(text)
 {
 }
@@ -12,12 +12,15 @@ UIString::UIString(const boost::shared_ptr<std::string>& text) :
 UIString::~UIString() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UIString::SetText(const boost::shared_ptr<std::string>& text) {
+boost::optional<boost::shared_ptr<Error> > UIString::SetText(boost::shared_ptr<const std::string> text) {
+	if(!text) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	this->text = text;
 	return boost::none;
 }
 
-opt_error<boost::shared_ptr<std::string> >::type UIString::GetText() {
+boost::shared_ptr<const std::string> UIString::GetText() const {
 	return text;
 }
 
@@ -39,13 +42,13 @@ boost::optional<boost::shared_ptr<Error> > UIString::Draw(unsigned int abs_x, un
 	return boost::none;
 }
 
-opt_error<unsigned int>::type UIString::CalcWidth() {
+opt_error<unsigned int>::type UIString::CalcWidth() const {
 	unsigned int font_width;
 	OPT_UINT(font_width, DxLibWrapper::GetFontWidth(text));
 	return font_width;
 }
 
-opt_error<unsigned int>::type UIString::CalcHeight() {
+opt_error<unsigned int>::type UIString::CalcHeight() const {
 	unsigned int font_height;
 	OPT_UINT(font_height, DxLibWrapper::GetFontHeight());
 	return font_height;

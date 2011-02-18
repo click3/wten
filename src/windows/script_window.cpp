@@ -10,11 +10,11 @@ ScriptWindow::ScriptWindow() {
 ScriptWindow::~ScriptWindow() {
 }
 
-opt_error<boost::tuple<unsigned int, unsigned int> >::type ScriptWindow::GetPoint(void) {
+opt_error<boost::tuple<unsigned int, unsigned int> >::type ScriptWindow::GetPoint(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(0, 0);
 }
 
-opt_error<boost::tuple<unsigned int, unsigned int> >::type ScriptWindow::GetSize(void) {
+opt_error<boost::tuple<unsigned int, unsigned int> >::type ScriptWindow::GetSize(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(0, 0);
 }
 

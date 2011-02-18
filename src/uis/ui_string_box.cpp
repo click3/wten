@@ -4,8 +4,8 @@ namespace wten { namespace uis {
 
 using namespace utility;
 
-UIStringBox::UIStringBox(const boost::shared_ptr<std::string>& filename, const boost::shared_ptr<std::string>& text) :
-	UIBox(filename)
+UIStringBox::UIStringBox(boost::shared_ptr<const std::string> filename, boost::shared_ptr<const std::string> text) :
+	UIBox(boost::shared_ptr<Graph>(new Graph(filename)))
 {
 	boost::shared_ptr<UIString> str(new UIString(text));
 	BOOST_ASSERT(str);
@@ -19,7 +19,14 @@ UIStringBox::UIStringBox(const boost::shared_ptr<std::string>& filename, const b
 UIStringBox::~UIStringBox() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UIStringBox::SetText(const boost::shared_ptr<std::string>& text) {
+
+boost::shared_ptr<const std::string> UIStringBox::GetText() const {
+	boost::shared_ptr<UIString> str = boost::static_pointer_cast<UIString>(inner_ui);
+	BOOST_ASSERT(str);
+	return str->GetText();
+}
+
+boost::optional<boost::shared_ptr<Error> > UIStringBox::SetText(boost::shared_ptr<const std::string> text) {
 	boost::shared_ptr<UIString> str = boost::static_pointer_cast<UIString>(inner_ui);
 	return str->SetText(text);
 }

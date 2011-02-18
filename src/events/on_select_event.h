@@ -7,9 +7,9 @@ class OnSelectEvent : public EventBase {
 public:
 	OnSelectEvent(boost::shared_ptr<void> data);
 	~OnSelectEvent();
-	boost::shared_ptr<void> GetUserData(void);
+	boost::shared_ptr<void> GetUserData(void) const;
 private:
-	boost::shared_ptr<void> data;
+	const boost::shared_ptr<void> data;
 };
 
 } // events

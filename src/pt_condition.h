@@ -5,17 +5,17 @@ class PTCondition {
 public:
 	PTCondition();
 	~PTCondition();
-	bool IsLight();
+	bool IsLight() const;
 	bool AddLight(unsigned int value);
 	bool SetLightFull();
 	bool DecLight(unsigned int value);
 	bool ResetLight();
 
-	bool IsIdentifies();
+	bool IsIdentifies() const;
 	bool SetIdentifies();
 	bool ResetIdentifies();
 
-	bool IsSpellDisable();
+	bool IsSpellDisable() const;
 	bool DisableSpell();
 	bool EnableSpell();
 

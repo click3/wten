@@ -10,7 +10,7 @@ OnSelectEvent::OnSelectEvent(boost::shared_ptr<void> data) :
 OnSelectEvent::~OnSelectEvent() {
 }
 
-boost::shared_ptr<void> OnSelectEvent::GetUserData(void) {
+boost::shared_ptr<void> OnSelectEvent::GetUserData(void) const {
 	return data;
 }
 

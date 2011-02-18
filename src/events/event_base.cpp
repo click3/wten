@@ -12,12 +12,8 @@ EventBase::EventBase(EVENT_TYPE event_type) :
 EventBase::~EventBase() {
 }
 
-EVENT_TYPE EventBase::GetEventType(void) {
+EVENT_TYPE EventBase::GetEventType(void) const {
 	return event_type;
-}
-
-void EventBase::SetEventType(EVENT_TYPE event_type) {
-	this->event_type = event_type;
 }
 
 } // events

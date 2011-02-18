@@ -31,8 +31,8 @@ public:
 	ACTION GetAction() const;
 	KEY_TYPE GetKey() const;
 private:
-	ACTION action;
-	KEY_TYPE key_type;
+	const ACTION action;
+	const KEY_TYPE key_type;
 };
 
 } // events

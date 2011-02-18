@@ -9,7 +9,7 @@ enum EVENT_TYPE {
 class Event : boost::noncopyable {
 public:
 	virtual ~Event() { }
-	virtual EVENT_TYPE GetEventType(void) = 0;
+	virtual EVENT_TYPE GetEventType(void) const = 0;
 };
 
 } // wten

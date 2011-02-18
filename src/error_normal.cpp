@@ -7,7 +7,7 @@ ErrorNormal::ErrorNormal(ERROR_CODE error_code, const std::string& filename, uns
 {
 }
 
-const wchar_t* ErrorNormal::ToString(void) {
+const wchar_t* ErrorNormal::ToString(void) const {
 	static wchar_t result[2048];
 	switch(code) {
 #define ADD_ERROR(name, message)	\
@@ -29,7 +29,7 @@ const wchar_t* ErrorNormal::ToString(void) {
 	return result;
 }
 
-ERROR_CODE ErrorNormal::GetErrorCode(void) {
+ERROR_CODE ErrorNormal::GetErrorCode(void) const {
 	return code;
 }
 

@@ -11,27 +11,27 @@ public:
 		CONDITION_SLEEP,
 		CONDITION_DEAD,
 	};
-	CONDITION GetCondition();
-	bool IsOk();
-	bool IsSleep();
-	bool IsDead();
+	CONDITION GetCondition() const;
+	bool IsOk() const;
+	bool IsSleep() const;
+	bool IsDead() const;
 	bool SetSleep();
 	bool SetDead();
 	bool RecoverySleep();
 	bool RecoveryDead();
-	bool IsPoison();
+	bool IsPoison() const;
 	bool SetPoison();
 	bool RecoveryPoison();
-	bool IsSilence();
+	bool IsSilence() const;
 	bool SetSilence();
 	bool RecoverySilence();
-	bool IsAction();
-	bool IsAlive();
-	int GetACBonus();
+	bool IsAction() const;
+	bool IsAlive() const;
+	int GetACBonus() const;
 	void SetACBonus(int bonus);
 	void AddACBonus(int bonus);
 	bool ResetACBonus();
-	bool IsParry();
+	bool IsParry() const;
 	void SetParry();
 	void TurnEnd();
 private:

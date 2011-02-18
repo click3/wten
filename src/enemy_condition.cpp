@@ -10,25 +10,25 @@ EnemyCondition::EnemyCondition() :
 EnemyCondition::~EnemyCondition() {
 }
 
-EnemyCondition::CONDITION EnemyCondition::GetCondition() {
+EnemyCondition::CONDITION EnemyCondition::GetCondition() const {
 	return condition;
 }
 
-bool EnemyCondition::IsOk() {
+bool EnemyCondition::IsOk() const {
 	if(GetCondition() == CONDITION_OK) {
 		return true;
 	}
 	return false;
 }
 
-bool EnemyCondition::IsSleep() {
+bool EnemyCondition::IsSleep() const {
 	if(GetCondition() == CONDITION_SLEEP) {
 		return true;
 	}
 	return false;
 }
 
-bool EnemyCondition::IsDead() {
+bool EnemyCondition::IsDead() const {
 	if(GetCondition() == CONDITION_DEAD) {
 		return true;
 	}
@@ -67,7 +67,7 @@ bool EnemyCondition::RecoveryDead() {
 	return true;
 }
 
-bool EnemyCondition::IsPoison() {
+bool EnemyCondition::IsPoison() const {
 	return poison;
 }
 
@@ -87,7 +87,7 @@ bool EnemyCondition::RecoveryPoison() {
 	return true;
 }
 
-bool EnemyCondition::IsSilence() {
+bool EnemyCondition::IsSilence() const {
 	return silence;
 }
 
@@ -107,15 +107,15 @@ bool EnemyCondition::RecoverySilence() {
 	return true;
 }
 
-bool EnemyCondition::IsAction() {
+bool EnemyCondition::IsAction() const {
 	return (GetCondition() < CONDITION_SLEEP);
 }
 
-bool EnemyCondition::IsAlive() {
+bool EnemyCondition::IsAlive() const {
 	return (GetCondition() < CONDITION_DEAD);
 }
 
-int EnemyCondition::GetACBonus() {
+int EnemyCondition::GetACBonus() const {
 	return ac_bonus;
 }
 
@@ -135,7 +135,7 @@ bool EnemyCondition::ResetACBonus() {
 	return true;
 }
 
-bool EnemyCondition::IsParry() {
+bool EnemyCondition::IsParry() const {
 	return parry;
 }
 
