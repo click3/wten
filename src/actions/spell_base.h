@@ -11,9 +11,9 @@ public:
 	};
 	SpellBase(unsigned int id, TARGET_TYPE target_type, ACTION_TYPE action_type, SPELL_JOB use_job, unsigned int lv, boost::shared_ptr<const std::string> description);
 	~SpellBase();
-	SPELL_JOB GetUseJob();
-	unsigned int GetLv();
-	boost::shared_ptr<const std::string> GetDescription();
+	SPELL_JOB GetUseJob() const;
+	unsigned int GetLv() const;
+	boost::shared_ptr<const std::string> GetDescription() const;
 
 	boost::optional<boost::shared_ptr<Error> > EnemyAction(boost::shared_ptr<EnemyData> enemy, boost::shared_ptr<PTData> pt, unsigned int target_index) const;
 	boost::optional<boost::shared_ptr<Error> > CharAction(boost::shared_ptr<CharData> character, boost::shared_ptr<EnemyPTData> pt, unsigned int target_index) const;

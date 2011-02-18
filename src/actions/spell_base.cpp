@@ -14,15 +14,15 @@ SpellBase::SpellBase(unsigned int id, TARGET_TYPE target_type, ACTION_TYPE actio
 SpellBase::~SpellBase() {
 }
 
-SpellBase::SPELL_JOB SpellBase::GetUseJob() {
+SpellBase::SPELL_JOB SpellBase::GetUseJob() const {
 	return use_job;
 }
 
-unsigned int SpellBase::GetLv() {
+unsigned int SpellBase::GetLv() const {
 	return lv;
 }
 
-boost::shared_ptr<const std::string> SpellBase::GetDescription() {
+boost::shared_ptr<const std::string> SpellBase::GetDescription() const {
 	return description;
 }
 
