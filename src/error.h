@@ -14,6 +14,9 @@ enum ERROR_CODE {
 	ERROR_CODE_SELECTOR_TEXT_NOT_FOUND,	/**< 指定した文字列は見つからなかった。 */
 	ERROR_CODE_SELECTOR_OUTSIDE_RANGE,		/**< 指定したindexは範囲外です。 */
 	ERROR_CODE_SELECTOR_EMPTY,			/**< 中身が空なので実行できなかった。 */
+
+	//Action関係
+	ERROR_CODE_MP_SHORTAGE,			/**< MPが足らなかった。 */
 };
 
 class Error {
