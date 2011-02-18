@@ -13,6 +13,7 @@
 #include "boost/tuple/tuple.hpp"
 #include "boost/variant.hpp"
 #include "boost/foreach.hpp"
+#include "boost/range/adaptor/filtered.hpp"
 #include "boost/range/adaptor/transformed.hpp"
 #include "boost/range/algorithm.hpp"
 
@@ -32,6 +33,7 @@
 #include "error_normal.h"
 #include "graph.h"
 #include "action.h"
+#include "job.h"
 #include "char_condition.h"
 #include "pt_condition.h"
 #include "enemy_condition.h"
