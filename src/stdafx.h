@@ -31,6 +31,7 @@
 #include "utility.h"
 #include "error_normal.h"
 #include "graph.h"
+#include "action.h"
 #include "char_condition.h"
 #include "pt_condition.h"
 #include "enemy_condition.h"

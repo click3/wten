@@ -1,13 +1,6 @@
 
 namespace wten {
 
-class Action {
-public:
-	enum ACTION_TYPE {
-		ACTION_TYPE_NORMAL,
-	};
-};
-
 class ItemInfo;
 
 enum MONSTER_TYPE {
