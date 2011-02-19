@@ -37,6 +37,7 @@ public:
 	boost::optional<boost::shared_ptr<Error> > UseBattle(boost::shared_ptr<CharData> charcter, boost::shared_ptr<PTData> pt, boost::shared_ptr<EnemyPTData> enemy_pt);
 	boost::optional<boost::shared_ptr<Error> > UseField(boost::shared_ptr<CharData> charcter, boost::shared_ptr<PTData> pt);
 	boost::optional<boost::shared_ptr<Error> > EquipStatus(boost::shared_ptr<CharData> charcter) const;
+	boost::optional<boost::shared_ptr<Error> > PossessionStatus(boost::shared_ptr<CharData> charcter) const;
 	boost::optional<boost::shared_ptr<Error> > OnEquip(boost::shared_ptr<CharData> charcter);
 	boost::optional<boost::shared_ptr<Error> > OnDetach();
 	boost::optional<boost::shared_ptr<Error> > OnIdentification(boost::shared_ptr<CharData> charcter);

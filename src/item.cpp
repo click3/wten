@@ -98,6 +98,11 @@ boost::optional<boost::shared_ptr<Error> > Item::EquipStatus(boost::shared_ptr<C
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > Item::PossessionStatus(boost::shared_ptr<CharData> charcter) const {
+	// TODO
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > Item::OnEquip(boost::shared_ptr<CharData> charcter) {
 	switch(GetCondition()) {
 		case CONDITION_UNCERTAIN_BROKEN:
