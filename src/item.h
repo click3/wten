@@ -23,6 +23,7 @@ public:
 	Item(boost::shared_ptr<const ItemInfo> info, CONDITION condition = CONDITION_NORMAL);
 	~Item();
 	bool IsUncertain() const;
+	bool IsEquip() const;
 	boost::shared_ptr<const std::string> GetName() const;
 	boost::optional<boost::shared_ptr<const std::string> > GetDescription() const;
 	unsigned int GetSalePrice() const;

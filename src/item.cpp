@@ -15,6 +15,19 @@ bool Item::IsUncertain() const {
 	return (GetCondition() < CONDITION_NORMAL);
 }
 
+bool Item::IsEquip() const {
+	switch(GetCondition()) {
+		case CONDITION_UNCERTAIN_EQUIP:
+		case CONDITION_UNCERTAIN_EQUIP_CURSE:
+		case CONDITION_EQUIP:
+		case CONDITION_EQUIP_CURSE:
+			break;
+		default:
+			return false;
+	}
+	return true;
+}
+
 boost::shared_ptr<const std::string> Item::GetName() const {
 	BOOST_ASSERT(info);
 	if(IsUncertain()) {
