@@ -112,8 +112,8 @@ unsigned int Job::GetLuk() const {
 	return luk;
 }
 
-unsigned int Job::GetThiefSkill(void) const {
-	return thief_skill;
+unsigned int Job::CalcThiefSkill(unsigned lv, unsigned int current_agi) const {
+	return thief_skill + (lv / 5 + current_agi) / 10;
 }
 
 std::vector<boost::shared_ptr<const actions::SpellBase> > Job::GetSpell(unsigned int lv, unsigned int current_iq) const {

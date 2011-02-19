@@ -23,7 +23,7 @@ public:
 	unsigned int GetVit(void) const;
 	unsigned int GetAgi(void) const;
 	unsigned int GetLuk(void) const;
-	unsigned int GetThiefSkill(void) const;
+	unsigned int CalcThiefSkill(unsigned lv, unsigned int current_agi) const;
 	std::vector<boost::shared_ptr<const actions::SpellBase> > GetSpell(unsigned int lv, unsigned int current_iq) const;
 	unsigned int CalcLv(unsigned int exp) const;
 	unsigned int CalcExp(unsigned int level) const;
