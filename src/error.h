@@ -17,6 +17,15 @@ enum ERROR_CODE {
 
 	//Action関係
 	ERROR_CODE_MP_SHORTAGE,			/**< MPが足らなかった。 */
+
+	//Item関係
+	ERROR_CODE_ITEM_BROKEN,			/**< 壊れたアイテムです。 */
+	ERROR_CODE_ITEM_EQUIPED,			/**< 装備されたアイテムです。 */
+	ERROR_CODE_ITEM_NONE_EQUIPED,		/**< 装備されていないアイテムです。 */
+	ERROR_CODE_ITEM_CURSE,			/**< 呪われたアイテムです。 */
+	ERROR_CODE_ITEM_CERTAIN,			/**< 鑑定済みアイテムです。 */
+	ERROR_CODE_ITEM_NONE_CURSE,			/**< 呪われていないアイテムです。 */
+	ERROR_CODE_ITEM_DISPEL_FAILURE,		/**< 解呪に失敗した。 */
 };
 
 class Error {
