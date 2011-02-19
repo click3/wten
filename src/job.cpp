@@ -33,12 +33,12 @@ Job::Job(unsigned int id, boost::shared_ptr<const std::string> name,
 	unsigned int hp_base, unsigned int hp_count_bonus,
 	unsigned int str, unsigned int iq, unsigned int pie,
 	unsigned int vit, unsigned int agi, unsigned int luk,
-	const std::vector<SPELL_PAIR>& spells,
+	unsigned int thief_skill, const std::vector<SPELL_PAIR>& spells,
 	const std::vector<unsigned int>& exp_list)
 :
 	id(id), name(name), hp_base(hp_base), hp_count_bonus(hp_count_bonus),
 	str(str), iq(iq), pie(pie), vit(vit), agi(agi), luk(luk),
-	spells(spells), exp_list(exp_list)
+	thief_skill(thief_skill), spells(spells), exp_list(exp_list)
 {
 	BOOST_ASSERT(id > 0);
 	BOOST_ASSERT(name);
@@ -110,6 +110,10 @@ unsigned int Job::GetAgi() const {
 
 unsigned int Job::GetLuk() const {
 	return luk;
+}
+
+unsigned int Job::GetThiefSkill(void) const {
+	return thief_skill;
 }
 
 std::vector<boost::shared_ptr<const actions::SpellBase> > Job::GetSpell(unsigned int lv, unsigned int current_iq) const {
