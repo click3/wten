@@ -34,6 +34,7 @@
 #include "graph.h"
 #include "action.h"
 #include "job.h"
+#include "item_info.h"
 #include "char_condition.h"
 #include "pt_condition.h"
 #include "enemy_condition.h"
