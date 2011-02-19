@@ -25,6 +25,7 @@ public:
 	unsigned int GetLuk() const;
 	std::vector<boost::shared_ptr<const actions::SpellBase> > GetSpell(unsigned int lv, unsigned int current_iq) const;
 	unsigned int CalcLv(unsigned int exp) const;
+	unsigned int CalcExp(unsigned int level) const;
 protected:
 	unsigned int id;
 	boost::shared_ptr<const std::string> name;

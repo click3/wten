@@ -126,12 +126,18 @@ unsigned int Job::CalcLv(unsigned int exp) const {
 	unsigned int lv = 0;
 	BOOST_FOREACH(unsigned int total, exp_list) {
 		if(total < exp) {
-			break;
+			return lv;
 		}
 		lv++;
 	}
-	BOOST_ASSERT(lv > 0);
+	BOOST_ASSERT(false);
 	return lv;
+}
+
+unsigned int Job::CalcExp(unsigned int level) const {
+	BOOST_ASSERT(level > 0);
+	BOOST_ASSERT(exp_list.size() >= level);
+	return exp_list[level - 1];
 }
 
 } // wten
