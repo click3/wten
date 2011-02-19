@@ -3,12 +3,11 @@ namespace wten {
 
 namespace windows {
 
-class WindowBase : public Window {
-protected:
-	WindowBase();
+class WindowBase : public Window, public boost::enable_shared_from_this<WindowBase> {
 public:
-	static boost::shared_ptr<WindowBase> CreateWindowBase();
+	WindowBase();
 	~WindowBase();
+	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void) const;
 	utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetSize(void) const;
 	boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);
@@ -18,8 +17,6 @@ public:
 
 	boost::optional<boost::shared_ptr<Error> > AddUI(boost::shared_ptr<UI> ui);
 	utility::opt_error<bool>::type RemoveUI(boost::shared_ptr<UI> ui);
-protected:
-	boost::weak_ptr<WindowBase> this_ptr;
 private:
 	std::vector<boost::shared_ptr<UI> > ui_stack;
 	unsigned int x;

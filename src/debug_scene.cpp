@@ -77,7 +77,7 @@ boost::optional<boost::shared_ptr<Error> > AddSelectorWindow(const boost::shared
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 
-	boost::shared_ptr<windows::SelectWindow> window = windows::SelectWindow::CreateSelectWindow(select_list, filename);
+	boost::shared_ptr<windows::SelectWindow> window(new windows::SelectWindow(select_list, filename));
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -101,7 +101,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	if(!window_manager) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
-	boost::shared_ptr<windows::WindowBase> window = windows::WindowBase::CreateWindowBase();
+	boost::shared_ptr<windows::WindowBase> window(new windows::WindowBase());
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}

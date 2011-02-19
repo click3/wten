@@ -44,7 +44,7 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::DoEvent(void) {
 
 boost::optional<boost::shared_ptr<Error> > WindowManager::PushWindow(boost::shared_ptr<Window> window) {
 	window_stack.push_back(window);
-	return boost::none;
+	return window->WindowInitialize();
 }
 
 boost::optional<boost::shared_ptr<Error> > WindowManager::PopWindow(void) {

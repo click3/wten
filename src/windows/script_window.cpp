@@ -10,6 +10,10 @@ ScriptWindow::ScriptWindow() {
 ScriptWindow::~ScriptWindow() {
 }
 
+boost::optional<boost::shared_ptr<Error> > ScriptWindow::WindowInitialize(void) {
+	return WindowBase::WindowInitialize();
+}
+
 opt_error<boost::tuple<unsigned int, unsigned int> >::type ScriptWindow::GetPoint(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(0, 0);
 }

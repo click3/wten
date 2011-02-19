@@ -8,7 +8,7 @@ int main() {
 
 	boost::shared_ptr<WTen> game;
 	{
-		boost::shared_ptr<Scene> scene = scenes::DebugScene::CreateScene();
+		boost::shared_ptr<Scene> scene(new scenes::DebugScene());
 		game.reset(new WTen(scene));
 	}
 	boost::optional<boost::shared_ptr<Error> > result = game->DoStart();

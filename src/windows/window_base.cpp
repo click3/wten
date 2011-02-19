@@ -11,16 +11,11 @@ WindowBase::WindowBase() :
 {
 }
 
-//static
-boost::shared_ptr<WindowBase> WindowBase::CreateWindowBase() {
-	boost::shared_ptr<WindowBase> result(new WindowBase());
-	BOOST_ASSERT(result);
-	result->this_ptr = result;
-	BOOST_ASSERT(result->this_ptr.lock());
-	return result;
+WindowBase::~WindowBase() {
 }
 
-WindowBase::~WindowBase() {
+boost::optional<boost::shared_ptr<Error> > WindowBase::WindowInitialize(void) {
+	return boost::none;
 }
 
 opt_error<boost::tuple<unsigned int, unsigned int> >::type WindowBase::GetPoint(void) const {
@@ -64,6 +59,8 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type WindowBase::NotifyE
 
 boost::optional<boost::shared_ptr<Error> > WindowBase::AddUI(boost::shared_ptr<UI> ui) {
 	ui_stack.push_back(ui);
+	boost::shared_ptr<WindowBase> this_ptr = shared_from_this();
+	BOOST_ASSERT(this_ptr);
 	OPT_ERROR(ui->SetOwnerWindow(this_ptr));
 	return boost::none;
 }

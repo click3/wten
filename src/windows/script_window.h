@@ -3,10 +3,11 @@ namespace wten {
 
 namespace windows {
 
-class ScriptWindow : public Window {
+class ScriptWindow : public WindowBase {
 public:
 	ScriptWindow();
 	~ScriptWindow();
+	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void) const;
 	utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetSize(void) const;
 	boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);

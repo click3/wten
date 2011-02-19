@@ -34,6 +34,16 @@ std::vector<boost::shared_ptr<void> > CreateDataList(const std::vector<boost::tu
 
 using namespace utility;
 
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<const std::string> frame_filename) :
+	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), frame(new uis::UIBox(boost::shared_ptr<Graph>(new Graph(frame_filename))))
+{
+	BOOST_ASSERT(selector);
+	BOOST_ASSERT(selector->GetCount() == data_list.size());
+	BOOST_ASSERT(frame_filename);
+	BOOST_ASSERT(!frame_filename->empty());
+	BOOST_ASSERT(frame);
+}
+
 SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<Graph> frame) :
 	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), frame(new uis::UIBox(frame))
 {
@@ -50,40 +60,16 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	BOOST_ASSERT(frame);
 }
 
-void SelectWindow::InitializeUI() {
-	boost::optional<boost::shared_ptr<Error> > error;
-	if(frame) {
-		if(error = AddUI(frame)) {
-			error.get()->Abort();
-			BOOST_ASSERT(false);
-		}
-	}
-	if(error = AddUI(selector)) {
-		error.get()->Abort();
-		BOOST_ASSERT(false);
-	}
-}
-
-
-//static
-boost::shared_ptr<SelectWindow> SelectWindow::CreateSelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<const std::string> frame_filename) {
-	BOOST_ASSERT(frame_filename);
-	BOOST_ASSERT(!frame_filename->empty());
-	boost::shared_ptr<SelectWindow> result;
-	if(frame_filename) {
-		boost::shared_ptr<Graph> frame(new Graph(frame_filename));
-		result.reset(new SelectWindow(input, frame));
-	} else {
-		result.reset(new SelectWindow(input));
-	}
-	BOOST_ASSERT(result);
-	result->this_ptr = result;
-	BOOST_ASSERT(result->this_ptr.lock());
-	result->InitializeUI();
-	return result;
-}
-
 SelectWindow::~SelectWindow() {
+}
+
+boost::optional<boost::shared_ptr<Error> > SelectWindow::WindowInitialize(void) {
+	OPT_ERROR(WindowBase::WindowInitialize());
+	if(frame) {
+		OPT_ERROR(AddUI(frame));
+	}
+	OPT_ERROR(AddUI(selector));
+	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > SelectWindow::Resize(unsigned int width, unsigned int height) {

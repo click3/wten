@@ -1,7 +1,7 @@
 
 namespace wten { namespace scenes {
 
-class DebugScene : public SceneBase<DebugScene> {
+class DebugScene : public SceneBase {
 public:
 	DebugScene();
 	boost::optional<boost::shared_ptr<Error> > DoStart(void);

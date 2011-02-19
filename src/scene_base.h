@@ -5,31 +5,18 @@ class WindowManager;
 
 namespace scenes {
 
-template<class T = SceneBase>
-class SceneBase : public Scene, public EventNotifyInterface {
-protected:
+class SceneBase : public Scene, public EventNotifyInterface, public boost::enable_shared_from_this<SceneBase> {
+public:
 	SceneBase() :
 		window_manager(new WindowManager())
 	{ }
-
-public:
 	~SceneBase() { }
 
-	static boost::shared_ptr<Scene> CreateScene() {
-		boost::shared_ptr<T> ptr(new T());
-		BOOST_ASSERT(ptr);
-		ptr->this_ptr = ptr;
-		BOOST_ASSERT(ptr->this_ptr.lock());
-		return ptr;
-	}
-
 	boost::optional<boost::shared_ptr<Error> > DoStart(void) {
+		boost::shared_ptr<SceneBase> this_ptr = shared_from_this();
+		BOOST_ASSERT(this_ptr);
 		EventNotify::Regist(this_ptr);
-		boost::shared_ptr<T> ptr = this_ptr.lock();
-		if(!ptr) {
-			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-		}
-		OPT_ERROR(ptr->SceneInitialize());
+		OPT_ERROR(this_ptr->SceneInitialize());
 		return boost::none;
 	}
 
@@ -53,8 +40,6 @@ public:
 	virtual boost::optional<boost::shared_ptr<Error> > SceneInitialize(void) {
 		return boost::none;
 	}
-private:
-	boost::weak_ptr<T> this_ptr;
 protected:
 	const boost::shared_ptr<WindowManager> window_manager;
 };
