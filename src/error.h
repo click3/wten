@@ -26,6 +26,11 @@ enum ERROR_CODE {
 	ERROR_CODE_ITEM_CERTAIN,			/**< 鑑定済みアイテムです。 */
 	ERROR_CODE_ITEM_NONE_CURSE,			/**< 呪われていないアイテムです。 */
 	ERROR_CODE_ITEM_DISPEL_FAILURE,		/**< 解呪に失敗した。 */
+	ERROR_CODE_ITEM_COUNT_OVER,			/**< 所持限界数オーバー。 */
+	ERROR_CODE_ITEM_NOT_FOUND,			/**< 指定アイテムが見つかりませんでした。 */
+
+	//charcter関係
+	ERROR_CODE_CHAR_LOST,			/**< キャラがロストしました。 */
 };
 
 class Error {

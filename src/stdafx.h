@@ -15,6 +15,9 @@
 #include "boost/foreach.hpp"
 #include "boost/range/adaptor/filtered.hpp"
 #include "boost/range/adaptor/transformed.hpp"
+#include "boost/range/adaptor/uniqued.hpp"
+#include "boost/range/algorithm/copy.hpp"
+#include "boost/assign.hpp"
 #include "boost/range/algorithm.hpp"
 
 #include <locale.h>
@@ -58,6 +61,7 @@
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
 #include "actions/spell_base.h"
+#include "char_status.h"
 #include "windows/select_window.h"
 #include "windows/script_window.h"
 #include "event_manager.h"
