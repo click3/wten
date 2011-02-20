@@ -18,6 +18,14 @@ PTData::PTData(boost::shared_ptr<PTCondition> condition, const std::vector<boost
 		BOOST_ASSERT(x == 0);
 		BOOST_ASSERT(y == 0);
 	}
+	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+		BOOST_ASSERT(character);
+		boost::optional<boost::shared_ptr<Error> > error = character->ReloadStatus();
+		if(error) {
+			error.get()->Abort();
+			BOOST_ASSERT(false);
+		}
+	}
 }
 
 PTData::~PTData() {

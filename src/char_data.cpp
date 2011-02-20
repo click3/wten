@@ -11,7 +11,7 @@ boost::optional<boost::shared_ptr<Error> > CharData::InitializeStatus(void) {
 	hp = status->GetHP();
 	mage_mp = status->GetMageMP();
 	priest_mp = status->GetPriestMP();
-	return ReloadStatus();
+	return boost::none;
 }
 
 CharData::CharData(boost::shared_ptr<CharStatus> status, boost::shared_ptr<CharCondition> condition) :
@@ -140,6 +140,7 @@ boost::optional<boost::shared_ptr<Error> > CharData::ReloadStatus(void) {
 	thief_skill =0;
 
 	boost::shared_ptr<CharData> this_ptr = shared_from_this();
+	BOOST_ASSERT(this_ptr);
 	BOOST_FOREACH(boost::shared_ptr<Item> item, status->GetItemList()) {
 		BOOST_ASSERT(item);
 		if(item->IsEquip()) {
@@ -149,6 +150,7 @@ boost::optional<boost::shared_ptr<Error> > CharData::ReloadStatus(void) {
 	}
 
 	thief_skill += status->GetJob()->CalcThiefSkill(status->GetLv(), agi);
+	return boost::none;
 }
 
 
