@@ -33,44 +33,46 @@ namespace {
 		return col_split.get();
 	}
 
+	unsigned int GetUIWidth(boost::shared_ptr<const UIBase> ui) {
+		opt_error<unsigned int>::type calc = ui->CalcWidth();
+		BOOST_ASSERT(calc.which() == 1);
+		opt_error<boost::tuple<unsigned int, unsigned int> >::type size = ui->GetSize();
+		BOOST_ASSERT(size.which() == 1);
+		return std::max(
+			boost::get<unsigned int>(calc),
+			boost::get<boost::tuple<unsigned int, unsigned int> >(size).get<0>()
+		);
+	}
+
+	unsigned int GetUIHeight(boost::shared_ptr<const UIBase> ui) {
+		opt_error<unsigned int>::type calc = ui->CalcHeight();
+		BOOST_ASSERT(calc.which() == 1);
+		opt_error<boost::tuple<unsigned int, unsigned int> >::type size = ui->GetSize();
+		BOOST_ASSERT(size.which() == 1);
+		return std::max(
+			boost::get<unsigned int>(calc),
+			boost::get<boost::tuple<unsigned int, unsigned int> >(size).get<1>()
+		);
+	}
+
 	struct UIMaxHeight {
 		bool operator() (const UI_PAIR& left, const UI_PAIR& right) const {
-			opt_error<unsigned int>::type left_value = left.get<1>()->CalcHeight();
-			opt_error<unsigned int>::type right_value = right.get<1>()->CalcHeight();
-			BOOST_ASSERT(left_value.which() == 1);
-			BOOST_ASSERT(right_value.which() == 1);
-			return boost::get<unsigned int>(left_value) < boost::get<unsigned int>(right_value);
+			return GetUIHeight(left.get<1>()) < GetUIHeight(right.get<1>());
 		}
 	};
 	struct UIMaxWidth {
 		bool operator() (const UI_PAIR& left, const UI_PAIR& right) const {
-			opt_error<unsigned int>::type left_value = left.get<1>()->CalcWidth();
-			opt_error<unsigned int>::type right_value = right.get<1>()->CalcWidth();
-			BOOST_ASSERT(left_value.which() == 1);
-			BOOST_ASSERT(right_value.which() == 1);
-			return boost::get<unsigned int>(left_value) < boost::get<unsigned int>(right_value);
+			return GetUIWidth(left.get<1>()) < GetUIWidth(right.get<1>());
 		}
 	};
 	struct UISumHeight {
 		int operator() (const int value, const UI_PAIR& obj) const {
-			opt_error<unsigned int>::type obj_value = obj.get<1>()->CalcHeight();
-			if(obj_value.which() == 0) {
-				boost::get<boost::shared_ptr<Error> >(obj_value)->Abort();
-				BOOST_ASSERT(false);
-				return 0;
-			}
-			return value + boost::get<unsigned int>(obj_value);
+			return value + GetUIHeight(obj.get<1>());
 		}
 	};
 	struct UISumWidth {
 		int operator() (const int value, const UI_PAIR& obj) const {
-			opt_error<unsigned int>::type obj_value = obj.get<1>()->CalcWidth();
-			if(obj_value.which() == 0) {
-				boost::get<boost::shared_ptr<Error> >(obj_value)->Abort();
-				BOOST_ASSERT(false);
-				return 0;
-			}
-			return value + boost::get<unsigned int>(obj_value);
+			return value + GetUIWidth(obj.get<1>());
 		}
 	};
 } // anonymous
@@ -113,13 +115,15 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::Resize(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIQueue::Draw(void) {
+	BOOST_FOREACH(UI_PAIR pair, ui_list) {
+		boost::shared_ptr<UIBase> ui = pair.get<1>();
+		OPT_ERROR(ui->Draw());
+	}
 	return UIBase::Draw();
 }
 
 boost::optional<boost::shared_ptr<Error> > UIQueue::Draw(unsigned int abs_x, unsigned int abs_y) {
-	BOOST_FOREACH(UI_PAIR pair, ui_list) {
-		OPT_ERROR(pair.get<1>()->Draw(abs_x, abs_y));
-	}
+	return boost::none;
 }
 
 opt_error<unsigned int>::type UIQueue::CalcWidth() const {
@@ -145,6 +149,11 @@ opt_error<unsigned int>::type UIQueue::CalcHeight() const {
 boost::optional<boost::shared_ptr<Error> > UIQueue::ReloadInnerUI(void) {
 	unsigned int x = this->x;
 	unsigned int y = this->y;
+	unsigned int this_min_width;
+	OPT_UINT(this_min_width, CalcWidth());
+	unsigned int this_min_height;
+	OPT_UINT(this_min_height, CalcHeight());
+
 	bool split = true;
 	BOOST_FOREACH(UI_PAIR pair, ui_list) {
 		POSITION pos;
@@ -153,24 +162,20 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::ReloadInnerUI(void) {
 
 		if(split && (pos == COL_POSITION_RIGHT || pos == ROW_POSITION_BOTTOM)) {
 			if(col_split) {
-				unsigned int width;
-				OPT_UINT(width, CalcWidth());
-				x += this->width - width;
+				x += this->width - this_min_width;
 			} else {
-				unsigned int height;
-				OPT_UINT(height, CalcHeight());
-				y += this->height - height;
+				y += this->height - this_min_height;
 			}
 			split = false;
 		}
 		ui->Move(x, y);
+		ui->Resize();
+		unsigned int width;
+		unsigned int height;
+		OPT_PAIR_UINT(width, height, ui->GetSize());
 		if(col_split) {
-			unsigned int width;
-			OPT_UINT(width, ui->CalcWidth());
 			x += width;
 		} else {
-			unsigned int height;
-			OPT_UINT(height, ui->CalcHeight());
 			y += height;
 		}
 	}
