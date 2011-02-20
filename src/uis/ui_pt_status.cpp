@@ -9,6 +9,16 @@ namespace {
 
 typedef boost::tuple<UIQueue::POSITION, boost::shared_ptr<UIBase> >  QUEUE_UI_PAIR;
 
+boost::shared_ptr<std::string> GetHPString(boost::shared_ptr<const CharData> character) {
+	char hp_str[256];
+	sprintf(hp_str, "%d/%d", character->GetHP(), character->GetStatus()->GetHP());
+	return boost::shared_ptr<std::string>(new std::string(hp_str));
+}
+
+boost::shared_ptr<std::string> GetStatusString(boost::shared_ptr<const CharData> character) {
+	return character->GetCondition()->ToString();
+}
+
 std::vector<const std::vector<boost::shared_ptr<std::string> > > CreateTextList(boost::shared_ptr<const PTData> pt_data) {
 	BOOST_ASSERT(pt_data);
 	BOOST_ASSERT(pt_data->GetCharacters().size() <= 6);
@@ -18,8 +28,8 @@ std::vector<const std::vector<boost::shared_ptr<std::string> > > CreateTextList(
 		BOOST_ASSERT(character->GetStatus());
 		std::vector<boost::shared_ptr<std::string> > row;
 		boost::shared_ptr<std::string> ac(new std::string(boost::lexical_cast<std::string>(character->GetAC())));
-		boost::shared_ptr<std::string> hp(new std::string(boost::lexical_cast<std::string>(character->GetHP())));
-		boost::shared_ptr<std::string> max_hp(new std::string(boost::lexical_cast<std::string>(character->GetStatus()->GetHP())));
+		boost::shared_ptr<std::string> hp = GetHPString(character);
+		boost::shared_ptr<std::string> max_hp = GetStatusString(character);
 		row += ac, hp, max_hp;
 		result += row;
 	}
@@ -29,11 +39,11 @@ std::vector<const std::vector<boost::shared_ptr<std::string> > > CreateTextList(
 void SetColumnTitle(std::vector<std::vector<QUEUE_UI_PAIR> > *ui_list) {
 	typedef boost::tuple<const char *, unsigned int> TITLE_TUPLE;
 	std::vector<boost::tuple<const char *, unsigned int> > title_list;
-	title_list +=	boost::make_tuple("ñºëO", 100);
- 	title_list +=	boost::make_tuple("êEã∆", 100);
- 	title_list +=	boost::make_tuple("AC", 100);
- 	title_list +=	boost::make_tuple("HP", 100);
- 	title_list +=	boost::make_tuple("STATUS", 100);
+	title_list +=	boost::make_tuple("ñºëO", 215);
+ 	title_list +=	boost::make_tuple("êEã∆", 125);
+ 	title_list +=	boost::make_tuple("AC", 40);
+ 	title_list +=	boost::make_tuple("HP", 110);
+ 	title_list +=	boost::make_tuple("STATUS", 120);
 
 	unsigned int index = 0;
 	BOOST_FOREACH(TITLE_TUPLE title, title_list) {
@@ -78,13 +88,14 @@ std::vector<QUEUE_UI_PAIR> CreateUIRowList(const std::vector<std::vector<QUEUE_U
 	BOOST_FOREACH(std::vector<QUEUE_UI_PAIR> row, ui_list) {
 		boost::shared_ptr<UIQueue> ui(new UIQueue(row, position_list[index]));
 		result += make_tuple(UIQueue::COL_POSITION_LEFT, ui);
+		index++;
 	}
 	return result;
 }
 boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::string> > >&text_list) {
 	std::vector<std::vector<QUEUE_UI_PAIR> > ui_list = CreateUIList(pt_data, text_list);
 	std::vector<UIQueue::INNER_POSITION> position_list;
-	position_list += UIQueue::INNER_POSITION_LEFT, UIQueue::INNER_POSITION_LEFT, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_RIGHT;
+	position_list += UIQueue::INNER_POSITION_LEFT, UIQueue::INNER_POSITION_CENTER, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_CENTER;
 	std::vector<QUEUE_UI_PAIR> row_list = CreateUIRowList(ui_list, position_list);
 	return boost::shared_ptr<UIQueue>(new UIQueue(row_list));
 }
