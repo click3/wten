@@ -64,6 +64,7 @@
 #include "actions/spell_base.h"
 #include "char_status.h"
 #include "char_data.h"
+#include "pt_data.h"
 #include "windows/select_window.h"
 #include "windows/script_window.h"
 #include "event_manager.h"
