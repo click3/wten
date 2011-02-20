@@ -11,7 +11,14 @@ public:
 		ROW_POSITION_TOP,
 		ROW_POSITION_BOTTOM,
 	};
-	UIQueue(const std::vector<boost::tuple<POSITION, boost::shared_ptr<UIBase> > >& ui_list);
+	enum INNER_POSITION {
+		INNER_POSITION_LEFT,
+		INNER_POSITION_RIGHT,
+		INNER_POSITION_CENTER,
+		INNER_POSITION_TOP,
+		INNER_POSITION_BOTTOM,
+	};
+	UIQueue(const std::vector<boost::tuple<POSITION, boost::shared_ptr<UIBase> > >& ui_list, boost::optional<INNER_POSITION> inner_position = boost::none);
 	~UIQueue();
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > Move(void);
@@ -27,6 +34,7 @@ protected:
 
 	const bool col_split;
 	const std::vector<boost::tuple<POSITION, boost::shared_ptr<UIBase> > > ui_list;
+	const INNER_POSITION inner_position;
 };
 
 } // uis

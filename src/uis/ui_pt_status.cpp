@@ -71,17 +71,21 @@ std::vector<std::vector<QUEUE_UI_PAIR> > CreateUIList(boost::shared_ptr<const PT
 	return ui_list;
 }
 
-std::vector<QUEUE_UI_PAIR> CreateUIRowList(const std::vector<std::vector<QUEUE_UI_PAIR> >& ui_list) {
+std::vector<QUEUE_UI_PAIR> CreateUIRowList(const std::vector<std::vector<QUEUE_UI_PAIR> >& ui_list, std::vector<UIQueue::INNER_POSITION> position_list) {
+	BOOST_ASSERT(ui_list.size() == position_list.size());
 	std::vector<QUEUE_UI_PAIR> result;
+	unsigned int index = 0;
 	BOOST_FOREACH(std::vector<QUEUE_UI_PAIR> row, ui_list) {
-		boost::shared_ptr<UIQueue> ui(new UIQueue(row));
+		boost::shared_ptr<UIQueue> ui(new UIQueue(row, position_list[index]));
 		result += make_tuple(UIQueue::COL_POSITION_LEFT, ui);
 	}
 	return result;
 }
 boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::string> > >&text_list) {
 	std::vector<std::vector<QUEUE_UI_PAIR> > ui_list = CreateUIList(pt_data, text_list);
-	std::vector<QUEUE_UI_PAIR> row_list = CreateUIRowList(ui_list);
+	std::vector<UIQueue::INNER_POSITION> position_list;
+	position_list += UIQueue::INNER_POSITION_LEFT, UIQueue::INNER_POSITION_LEFT, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_RIGHT;
+	std::vector<QUEUE_UI_PAIR> row_list = CreateUIRowList(ui_list, position_list);
 	return boost::shared_ptr<UIQueue>(new UIQueue(row_list));
 }
 

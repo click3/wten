@@ -75,12 +75,65 @@ namespace {
 			return value + GetUIWidth(obj.get<1>());
 		}
 	};
+
+	UIQueue::INNER_POSITION CalcInnerPosition(boost::optional<UIQueue::INNER_POSITION> inner_position, bool col_split) {
+		if(inner_position) {
+			return inner_position.get();
+		}
+		if(col_split) {
+			return UIQueue::INNER_POSITION_TOP;
+		} else {
+			return UIQueue::INNER_POSITION_LEFT;
+		}
+	}
+
+	boost::tuple<unsigned int, unsigned int> CalcInnerPosition(unsigned int x, unsigned int y, unsigned int width, unsigned int height, unsigned int owner_width, unsigned int owner_height, bool col_split, UIQueue::INNER_POSITION inner_position) {
+		unsigned int move_x = x;
+		unsigned int move_y = y;
+		if(!col_split) {
+			BOOST_ASSERT(owner_width >= width);
+			switch(inner_position) {
+				case UIQueue::INNER_POSITION_LEFT:
+					break;
+				case UIQueue::INNER_POSITION_RIGHT:
+					move_x = x + owner_width - width;
+					break;
+				case UIQueue::INNER_POSITION_CENTER:
+					move_x = x + (owner_width - width) / 2;
+					break;
+				default:
+					BOOST_ASSERT(false);
+			}
+		} else {
+			BOOST_ASSERT(owner_height >= height);
+			switch(inner_position) {
+				case UIQueue::INNER_POSITION_TOP:
+					break;
+				case UIQueue::INNER_POSITION_BOTTOM:
+					move_y =y + owner_height - height;
+					break;
+				case UIQueue::INNER_POSITION_CENTER:
+					move_y = y + (owner_height - height) / 2;
+					break;
+				default:
+					BOOST_ASSERT(false);
+			}
+		}
+		return boost::make_tuple(move_x, move_y);
+	}
 } // anonymous
 
-UIQueue::UIQueue(const std::vector<UI_PAIR>& ui_list) :
-	ui_list(ui_list), col_split(IsColSplit(ui_list))
+UIQueue::UIQueue(const std::vector<UI_PAIR>& ui_list, boost::optional<INNER_POSITION> inner_position) :
+	ui_list(ui_list), col_split(IsColSplit(ui_list)), inner_position(CalcInnerPosition(inner_position, col_split))
 {
 	BOOST_ASSERT(ui_list.size() > 0);
+	if(col_split) {
+		BOOST_ASSERT(this->inner_position != INNER_POSITION_LEFT);
+		BOOST_ASSERT(this->inner_position != INNER_POSITION_RIGHT);
+	} else {
+		BOOST_ASSERT(this->inner_position != INNER_POSITION_TOP);
+		BOOST_ASSERT(this->inner_position != INNER_POSITION_BOTTOM);
+	}
 }
 
 UIQueue::~UIQueue() {
@@ -132,7 +185,7 @@ opt_error<unsigned int>::type UIQueue::CalcWidth() const {
 	} else { // ècï¿Ç—
 		std::vector<UI_PAIR>::const_iterator it = std::max_element(ui_list.begin(), ui_list.end(), UIMaxWidth());
 		BOOST_ASSERT(it != ui_list.end());
-		return it->get<1>()->CalcWidth();
+		return GetUIWidth(it->get<1>());
 	}
 }
 
@@ -140,7 +193,7 @@ opt_error<unsigned int>::type UIQueue::CalcHeight() const {
 	if(col_split) { // â°ï¿Ç—
 		std::vector<UI_PAIR>::const_iterator it = std::max_element(ui_list.begin(), ui_list.end(), UIMaxHeight());
 		BOOST_ASSERT(it != ui_list.end());
-		return it->get<1>()->CalcHeight();
+		return GetUIHeight(it->get<1>());
 	} else { // ècï¿Ç—
 		return std::accumulate(ui_list.begin(), ui_list.end(), 0, UISumHeight());
 	}
@@ -153,6 +206,8 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::ReloadInnerUI(void) {
 	OPT_UINT(this_min_width, CalcWidth());
 	unsigned int this_min_height;
 	OPT_UINT(this_min_height, CalcHeight());
+	this->width = std::max(this->width, this_min_width);
+	this->height = std::max(this->height, this_min_height);
 
 	bool split = true;
 	BOOST_FOREACH(UI_PAIR pair, ui_list) {
@@ -160,29 +215,34 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::ReloadInnerUI(void) {
 		boost::shared_ptr<UIBase> ui;
 		boost::tie(pos, ui) = pair;
 
-		if(split && (pos == COL_POSITION_RIGHT || pos == ROW_POSITION_BOTTOM)) {
-			if(col_split) {
-				x += this->width - this_min_width;
-			} else {
-				y += this->height - this_min_height;
+		if(split) {
+			if(pos == COL_POSITION_RIGHT || pos == ROW_POSITION_BOTTOM) {
+				if(col_split) {
+					x += this->width - this_min_width;
+				} else {
+					y += this->height - this_min_height;
+				}
+				split = false;
 			}
-			split = false;
+		} else {
+			BOOST_ASSERT(pos == COL_POSITION_RIGHT || pos == ROW_POSITION_BOTTOM);
 		}
-		ui->Move(x, y);
 		ui->Resize();
 		unsigned int width;
 		unsigned int height;
 		OPT_PAIR_UINT(width, height, ui->GetSize());
+		{
+			unsigned int move_x;
+			unsigned int move_y;
+			boost::tie(move_x, move_y) = CalcInnerPosition(x, y, width, height, this_min_width, this_min_height, col_split, inner_position);
+			ui->Move(move_x, move_y);
+		}
+		BOOST_ASSERT(x+width <= this->x + this->width);
+		BOOST_ASSERT(y+height <= this->y + this->height);
 		if(col_split) {
 			x += width;
 		} else {
 			y += height;
-		}
-		if(x+width > this->x + this->width) {
-			this->width = x+width - this->x;
-		}
-		if(y+height > this->y + this->height) {
-			this->height = y+height - this->y;
 		}
 	}
 	return boost::none;
