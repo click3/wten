@@ -29,6 +29,7 @@
 #include <queue>
 #include <map>
 #include <algorithm>
+#include <numeric>
 
 #include "org/click3/notification_center.h"
 
@@ -58,6 +59,7 @@
 #include "uis/ui_image.h"
 #include "uis/ui_selector.h"
 #include "uis/ui_string_box.h"
+#include "uis/ui_queue.h"
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
