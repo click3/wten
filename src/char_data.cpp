@@ -29,8 +29,20 @@ CharData::CharData(boost::shared_ptr<CharStatus> status, boost::shared_ptr<CharC
 CharData::~CharData() {
 }
 
-boost::shared_ptr<CharStatus> CharData::GetStatus(void) const {
+boost::shared_ptr<const CharStatus> CharData::GetStatus(void) const {
 	return status;
+}
+
+boost::shared_ptr<const CharCondition> CharData::GetCondition(void) const {
+	return condition;
+}
+
+boost::shared_ptr<CharStatus> CharData::GetStatus(void) {
+	return status;
+}
+
+boost::shared_ptr<CharCondition> CharData::GetCondition(void) {
+	return condition;
 }
 
 unsigned int CharData::GetHP(void) const {
