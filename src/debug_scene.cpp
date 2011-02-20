@@ -164,7 +164,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	OPT_ERROR(AddSelectorWindow(window_manager, box, select_list, 50, 100, 540, 150));
 
 	//OPT_ERROR(AddUI(window, box, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
-	OPT_ERROR(AddPTStatusUI(window, box, CreateDummyPT(), uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
+	OPT_ERROR(AddPTStatusUI(window, box, CreateDummyPT(), uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
 	return boost::none;
 }
 
