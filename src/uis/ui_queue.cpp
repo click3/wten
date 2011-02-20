@@ -178,6 +178,12 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::ReloadInnerUI(void) {
 		} else {
 			y += height;
 		}
+		if(x+width > this->x + this->width) {
+			this->width = x+width - this->x;
+		}
+		if(y+height > this->y + this->height) {
+			this->height = y+height - this->y;
+		}
 	}
 	return boost::none;
 }
