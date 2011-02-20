@@ -16,8 +16,8 @@ private:
 
 	LoopResult DoMainLoop(void);
 
-	boost::shared_ptr<Scene> scene;
 	const boost::shared_ptr<DxLibWrapper> lib;
+	boost::shared_ptr<Scene> scene;
 };
 
 } // wten
