@@ -21,6 +21,10 @@
 #include "boost/assign.hpp"
 #include "boost/range/algorithm.hpp"
 
+//‚È‚º‚©linkƒGƒ‰[‚ªo‚é‚Ì‚Å
+#define BOOST_LEXICAL_CAST_ASSUME_C_LOCALE
+#include "boost/lexical_cast.hpp"
+
 #include <locale.h>
 #include <stdio.h>
 
@@ -60,6 +64,7 @@
 #include "uis/ui_selector.h"
 #include "uis/ui_string_box.h"
 #include "uis/ui_queue.h"
+#include "uis/ui_pt_status.h"
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"

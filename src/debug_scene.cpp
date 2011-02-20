@@ -5,6 +5,7 @@
 namespace wten { namespace scenes {
 
 using namespace utility;
+using namespace boost::assign;
 
 namespace {
 
@@ -67,7 +68,7 @@ boost::optional<boost::shared_ptr<Error> > AddSelectorWindow(const boost::shared
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > AddQueueUI(const boost::shared_ptr<windows::WindowBase> window, boost::shared_ptr<const std::string> filename, const std::vector<boost::tuple<uis::UIQueue::POSITION, boost::shared_ptr<uis::UIBase> > >& ui_list, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > AddPTStatusUI(boost::shared_ptr<windows::WindowBase> window, boost::shared_ptr<const std::string> filename, boost::shared_ptr<const PTData> pt_data, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	if(!window) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -75,10 +76,7 @@ boost::optional<boost::shared_ptr<Error> > AddQueueUI(const boost::shared_ptr<wi
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 
-	boost::shared_ptr<Graph> src(new Graph(filename));
-	boost::shared_ptr<uis::UIBase> queue(new uis::UIQueue(ui_list));
-	boost::shared_ptr<uis::UIBox> ui(new uis::UIBox(src));
-	ui->SetInnerUI(queue);
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIPTStatus(filename, pt_data));
 	if(!ui) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
@@ -88,6 +86,46 @@ boost::optional<boost::shared_ptr<Error> > AddQueueUI(const boost::shared_ptr<wi
 	OPT_ERROR(ui->Move(x, y));
 	OPT_ERROR(ui->Resize(width, height));
 	return boost::none;
+}
+
+boost::shared_ptr<const Job> CreateDummyJob() {
+	static unsigned int id = 1;
+	boost::shared_ptr<const std::string> name(new std::string("DUMMY"));
+	unsigned int hp_base = 10, hp_count_bonus = 0, str = 10, iq = 10, pie = 10, vit = 10, agi = 10, luk = 10, thief_skill = 0;
+	std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > > spells;
+	std::vector<unsigned int> exp_list;
+	exp_list += 0,10,100;
+	boost::shared_ptr<const Job> job(new Job(id, name, hp_base, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, spells, exp_list));
+	id++;
+	return job;
+}
+
+boost::shared_ptr<CharData> CreateDummyCharData(const char *char_name) {
+	boost::shared_ptr<const Job> job = CreateDummyJob();
+	boost::shared_ptr<const std::string> name(new std::string(char_name));
+	unsigned int lv = 1;
+	unsigned int hp = job->CalcMaxHP(lv, 1);
+	unsigned int str,iq,pie,vit,agi,luk,tg,exp;
+	str = iq = pie = vit = agi = luk = tg = exp = 0;
+	std::vector<boost::shared_ptr<Item> > item_list;
+	std::vector<boost::tuple<boost::shared_ptr<const Job>, boost::shared_ptr<const actions::SpellBase> > > spell_list;
+	boost::shared_ptr<CharStatus> char_status(new CharStatus(name, job, lv, hp, str, iq, pie, vit, agi, luk, tg, exp, item_list, spell_list));
+	boost::shared_ptr<CharCondition> char_condition(new CharCondition());
+	boost::shared_ptr<CharData> character(new CharData(char_status, char_condition));
+	return character;
+}
+
+boost::shared_ptr<PTData> CreateDummyPT() {
+	std::vector<boost::shared_ptr<CharData> > characters;
+	characters += CreateDummyCharData("やる夫");
+	characters += CreateDummyCharData("やらない夫");
+	characters += CreateDummyCharData("坂本美緒");
+	characters += CreateDummyCharData("黒沢");
+	characters += CreateDummyCharData("高槻やよい");
+	characters += CreateDummyCharData("コクリコ");
+	boost::shared_ptr<PTCondition> pt_condition(new PTCondition());
+	boost::shared_ptr<PTData> pt(new PTData(pt_condition, characters, false));
+	return pt;
 }
 
 } // anonymous
@@ -125,23 +163,8 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 #undef ADD_SELECT
 	OPT_ERROR(AddSelectorWindow(window_manager, box, select_list, 50, 100, 540, 150));
 
-	std::vector<boost::tuple<uis::UIQueue::POSITION, boost::shared_ptr<uis::UIBase> > > ui_list;
-#define ADD_UI(pos, text, width)																\
-do {																				\
-	boost::shared_ptr<std::string> str(new std::string(text));											\
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIString(str));											\
-	OPT_ERROR(ui->Resize(width, 0));															\
-	ui_list.push_back(boost::make_tuple<uis::UIQueue::POSITION, boost::shared_ptr<uis::UIBase> >(uis::UIQueue::COL_POSITION_##pos, ui));	\
-} while(false)
-
-	ADD_UI(LEFT, "名前", 100);
-	ADD_UI(RIGHT, "職業", 100);
-	ADD_UI(RIGHT, "AC", 100);
-	ADD_UI(RIGHT, "HP", 100);
-	ADD_UI(RIGHT, "STATUS", 100);
-#undef ADD_UI
 	//OPT_ERROR(AddUI(window, box, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
-	OPT_ERROR(AddQueueUI(window, box, ui_list, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
+	OPT_ERROR(AddPTStatusUI(window, box, CreateDummyPT(), uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
 	return boost::none;
 }
 
