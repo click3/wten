@@ -114,6 +114,7 @@ boost::optional<boost::shared_ptr<Error> > SelectWindow::OnSelect(void) {
 	boost::shared_ptr<void> data = data_list[index];
 	boost::shared_ptr<Event> event(new events::OnSelectEvent(data));
 	BOOST_ASSERT(event);
+	OPT_ERROR(RemoveThisWindow());
 	EventNotify::Send(event);
 	return boost::none;
 }
