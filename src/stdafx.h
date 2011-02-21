@@ -20,6 +20,8 @@
 #include "boost/range/algorithm/copy.hpp"
 #include "boost/assign.hpp"
 #include "boost/range/algorithm.hpp"
+#include "boost/function.hpp"
+#include "boost/bind.hpp"
 
 //‚È‚º‚©linkƒGƒ‰[‚ªo‚é‚Ì‚Å
 #define BOOST_LEXICAL_CAST_ASSUME_C_LOCALE

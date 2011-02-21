@@ -14,6 +14,10 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);
 	boost::optional<boost::shared_ptr<Error> > Draw(void);
 	utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type NotifyEvent(boost::shared_ptr<Event> event);
+
+	boost::optional<boost::shared_ptr<Error> > AddEventProc(EVENT_TYPE event_type, boost::function<boost::optional<boost::shared_ptr<Error> > (boost::shared_ptr<Event>)> proc);
+protected:
+	std::multimap<EVENT_TYPE, boost::function<boost::optional<boost::shared_ptr<Error> > (boost::shared_ptr<Event>)> > proc_list;
 };
 
 } // windows
