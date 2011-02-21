@@ -9,7 +9,11 @@ SceneBase::SceneBase() :
 
 SceneBase::~SceneBase() { }
 
-boost::optional<boost::shared_ptr<Error> > SceneBase::DoStart(void) {
+boost::optional<boost::shared_ptr<Error> > SceneBase::DoStart(boost::shared_ptr<PTData> pt) {
+	if(!pt) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	this->pt = pt;
 	boost::shared_ptr<SceneBase> this_ptr = shared_from_this();
 	BOOST_ASSERT(this_ptr);
 	EventNotify::Regist(this_ptr);

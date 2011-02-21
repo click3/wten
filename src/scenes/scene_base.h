@@ -10,7 +10,7 @@ public:
 	SceneBase();
 	~SceneBase();
 
-	boost::optional<boost::shared_ptr<Error> > DoStart(void);
+	boost::optional<boost::shared_ptr<Error> > DoStart(boost::shared_ptr<PTData> pt);
 
 	boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > DoNextFrame(void);
 	void EventNotifyCallback(boost::shared_ptr<Event> event);
@@ -26,6 +26,7 @@ public:
 	virtual boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > EnterFrame(void) = 0;
 protected:
 	const boost::shared_ptr<WindowManager> window_manager;
+	boost::shared_ptr<PTData> pt;
 };
 
 } // scenes

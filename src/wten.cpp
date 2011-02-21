@@ -18,17 +18,17 @@ WTen::~WTen() {
 }
 
 //static
-boost::shared_ptr<std::string> WTen::CreateWindowTitle() {
+boost::shared_ptr<std::string> WTen::CreateWindowTitle(void) {
 	char str[1024];
 	sprintf(str, "Wizardry Å`ìVó≥ÇÃìÉÅ` %s", OPEN_VERSION);
 	return boost::shared_ptr<std::string>(new std::string(str));
 }
 
-boost::optional<boost::shared_ptr<Error> > WTen::DoStart() {
+boost::optional<boost::shared_ptr<Error> > WTen::DoStart(boost::shared_ptr<PTData> pt) {
 	bool initialize = true;
 	while(scene) {
 		if(initialize) {
-			OPT_ERROR(scene->DoStart());
+			OPT_ERROR(scene->DoStart(pt));
 			initialize = false;
 		}
 		LoopResult result = DoMainLoop();
