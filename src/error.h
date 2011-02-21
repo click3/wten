@@ -31,6 +31,9 @@ enum ERROR_CODE {
 
 	//charcter関係
 	ERROR_CODE_CHAR_LOST,			/**< キャラがロストしました。 */
+
+	//Event関係
+	ERROR_CODE_POP_WINDOW_INVALID_WINDOW,	/**< 最前面のWindow以外を対象にPopWindowのEventが発生した。 */
 };
 
 class Error {

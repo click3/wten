@@ -38,6 +38,20 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::DoEvent(void) {
 			}
 			event = next_event;
 		}
+		if(event) {
+			OPT_ERROR(ManageEventProcedure(event.get()));
+		}
+	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowManager::ManageEventProcedure(boost::shared_ptr<Event> event) {
+	if(!event) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	switch(event->GetEventType()) {
+		case EVENT_TYPE_POP_WINDOW:
+			return PopWindowEvent(event);
 	}
 	return boost::none;
 }
@@ -50,6 +64,22 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::PushWindow(boost::shar
 boost::optional<boost::shared_ptr<Error> > WindowManager::PopWindow(void) {
 	window_stack.pop_back();
 	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowManager::PopWindowEvent(boost::shared_ptr<Event> event) {
+	if(!event) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(event->GetEventType() != EVENT_TYPE_POP_WINDOW) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	boost::shared_ptr<events::PopWindowEvent> pop_event = boost::static_pointer_cast<events::PopWindowEvent>(event);
+	boost::shared_ptr<Window> window = pop_event->GetWindow();
+	BOOST_ASSERT(window);
+	if(window_stack.empty() || window_stack.back() != window) {
+		return CREATE_ERROR(ERROR_CODE_POP_WINDOW_INVALID_WINDOW);
+	}
+	return PopWindow();
 }
 
 } // wten
