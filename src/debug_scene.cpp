@@ -133,11 +133,6 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 DebugScene::DebugScene(void) {
 }
 
-boost::optional<boost::shared_ptr<Error> > DebugScene::DoStart(void) {
-	OPT_ERROR(SceneBase::DoStart());
-	return boost::none;
-}
-
 boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	if(!window_manager) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
@@ -163,7 +158,6 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 #undef ADD_SELECT
 	OPT_ERROR(AddSelectorWindow(window_manager, box, select_list, 50, 100, 540, 150));
 
-	//OPT_ERROR(AddUI(window, box, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 320, 640, 160));
 	OPT_ERROR(AddPTStatusUI(window, box, CreateDummyPT(), uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
 	return boost::none;
 }
