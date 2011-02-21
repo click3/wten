@@ -168,6 +168,10 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	return boost::none;
 }
 
+boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > DebugScene::EnterFrame(void) {
+	return boost::none;
+}
+
 } // scenes
 
 } // wten

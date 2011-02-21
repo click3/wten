@@ -20,18 +20,18 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::DoStart(void) {
 boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > SceneBase::DoNextFrame(void) {
 	BOOST_ASSERT(window_manager);
 	OPT_ERROR(window_manager->DoEvent());
-	OPT_ERROR(window_manager->Draw());
-	return boost::none;
+	boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > result;
+	result = EnterFrame();
+	if(result.which() == 1) {
+		OPT_ERROR(window_manager->Draw());
+	}
+	return result;
 }
 void SceneBase::EventNotifyCallback(boost::shared_ptr<Event> event) {
 	BOOST_ASSERT(window_manager);
 	if(boost::optional<boost::shared_ptr<Error> > error = window_manager->EnqueueEvent(event)) {
 		error.get()->Abort();
 	}
-}
-
-boost::optional<boost::shared_ptr<Error> > SceneBase::SceneInitialize(void) {
-	return boost::none;
 }
 
 } // scenes
