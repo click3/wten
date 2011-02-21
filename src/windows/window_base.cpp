@@ -74,6 +74,14 @@ opt_error<bool>::type WindowBase::RemoveUI(boost::shared_ptr<UI> ui) {
 	return true;
 }
 
+boost::optional<boost::shared_ptr<Error> > WindowBase::RemoveThisWindow(void) {
+	boost::shared_ptr<WindowBase> this_ptr = shared_from_this();
+	BOOST_ASSERT(this_ptr);
+	boost::shared_ptr<events::PopWindowEvent> event(new events::PopWindowEvent(this_ptr));
+	EventNotify::Send(event);
+	return boost::none;
+}
+
 } // windows
 
 } // wten
