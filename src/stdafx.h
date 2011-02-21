@@ -54,6 +54,7 @@
 #include "events/event_base.h"
 #include "events/key_event.h"
 #include "events/on_select_event.h"
+#include "events/pop_window_event.h"
 #include "window.h"
 #include "windows/window_base.h"
 #include "ui.h"
