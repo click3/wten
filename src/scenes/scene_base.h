@@ -26,6 +26,7 @@ public:
 	virtual boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > EnterFrame(void) = 0;
 protected:
 	const boost::shared_ptr<WindowManager> window_manager;
+	const boost::shared_ptr<windows::WindowBase> base_window;
 	boost::shared_ptr<PTData> pt;
 };
 

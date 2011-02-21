@@ -3,8 +3,20 @@
 namespace wten { namespace scenes {
 
 SceneBase::SceneBase() :
-	window_manager(new WindowManager())
+	window_manager(new WindowManager()), base_window(new windows::WindowBase())
 {
+	BOOST_ASSERT(window_manager);
+	BOOST_ASSERT(base_window);
+
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = window_manager->PushWindow(base_window)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+	if(error = base_window->Resize(640, 480)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
 }
 
 SceneBase::~SceneBase() { }
@@ -14,9 +26,11 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::DoStart(boost::shared_ptr<
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
 	this->pt = pt;
+
 	boost::shared_ptr<SceneBase> this_ptr = shared_from_this();
 	BOOST_ASSERT(this_ptr);
 	EventNotify::Regist(this_ptr);
+
 	OPT_ERROR(this_ptr->SceneInitialize());
 	return boost::none;
 }
