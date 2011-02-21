@@ -30,4 +30,11 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type EventManager::Deque
 	return result;
 }
 
+boost::optional<boost::shared_ptr<Error> > EventManager::Clear(void) {
+	while(!event_queue.empty()) {
+		event_queue.pop();
+	}
+	return boost::none;
+}
+
 } // wten

@@ -74,6 +74,11 @@ opt_error<bool>::type WindowBase::RemoveUI(boost::shared_ptr<UI> ui) {
 	return true;
 }
 
+boost::optional<boost::shared_ptr<Error> > WindowBase::ClearUI(void) {
+	ui_stack.clear();
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > WindowBase::RemoveThisWindow(void) {
 	boost::shared_ptr<WindowBase> this_ptr = shared_from_this();
 	BOOST_ASSERT(this_ptr);

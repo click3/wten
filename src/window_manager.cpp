@@ -82,4 +82,9 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::PopWindowEvent(boost::
 	return PopWindow();
 }
 
+boost::optional<boost::shared_ptr<Error> > WindowManager::Clear(void) {
+	window_stack.clear();
+	return event_manager->Clear();
+}
+
 } // wten

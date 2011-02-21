@@ -17,6 +17,7 @@ public:
 
 	boost::optional<boost::shared_ptr<Error> > AddUI(boost::shared_ptr<UI> ui);
 	utility::opt_error<bool>::type RemoveUI(boost::shared_ptr<UI> ui);
+	boost::optional<boost::shared_ptr<Error> > ClearUI(void);
 	boost::optional<boost::shared_ptr<Error> > RemoveThisWindow(void);
 private:
 	std::vector<boost::shared_ptr<UI> > ui_stack;
