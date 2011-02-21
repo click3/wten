@@ -60,9 +60,14 @@ boost::optional<boost::shared_ptr<Error> > ReloadTextList(boost::shared_ptr<cons
 }
 
 std::vector<const std::vector<boost::shared_ptr<std::string> > > CreateTextList(boost::shared_ptr<const PTData> pt_data) {
-	boost::shared_ptr<std::string> col(new std::string(""));
-	std::vector<boost::shared_ptr<std::string> > row(3, col);
-	std::vector<const std::vector<boost::shared_ptr<std::string> > > result(6, row);
+	std::vector<const std::vector<boost::shared_ptr<std::string> > > result;
+	for(unsigned int i = 0; i < 6; i++) {
+		std::vector<boost::shared_ptr<std::string> > row;
+		row.push_back(boost::shared_ptr<std::string>(new std::string("")));
+		row.push_back(boost::shared_ptr<std::string>(new std::string("")));
+		row.push_back(boost::shared_ptr<std::string>(new std::string("")));
+		result += row;
+	}
 	boost::optional<boost::shared_ptr<Error> > error = ReloadTextList(pt_data, &result);
 	if(error) {
 		error.get()->Abort();
