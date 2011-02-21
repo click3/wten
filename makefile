@@ -11,7 +11,7 @@ $(exe).exe: $(obj)
 	version.exe
 	$(cc) $(opt) /Fe$* $** $(lib)
 
-src/stdafx.h: src/DxLib_lib.h src/error.h src/char_condition.h src/pt_condition.h src/enemy_condition.h src/enemy_info.h src/enemy_status.h src/action.h src/job.h src/item_info.h src/item.h src/actions/spell_base.h src/char_status.h src/char_data.h src/pt_data.h src/event.h src/events/event_base.h src/events/key_event.h src/events/on_select_event.h src/events/pop_window_event.h src/event_checker.h src/events/event_checker_base.h src/events/key_event_checker.h src/event_manager.h src/graph.h src/ui.h src/utility.h src/window.h src/window_manager.h src/scene.h src/wten.h src/debug_scene.h src/error_normal.h src/event_notify.h src/scene_base.h src/windows/window_base.h src/windows/script_window.h src/windows/select_window.h src/uis/ui_base.h src/uis/ui_box.h src/uis/ui_string.h src/uis/ui_image.h src/uis/ui_selector.h src/uis/ui_string_box.h src/uis/ui_queue.h src/uis/ui_pt_status.h
+src/stdafx.h: src/DxLib_lib.h src/error.h src/char_condition.h src/pt_condition.h src/enemy_condition.h src/enemy_info.h src/enemy_status.h src/action.h src/job.h src/item_info.h src/item.h src/actions/spell_base.h src/char_status.h src/char_data.h src/pt_data.h src/event.h src/events/event_base.h src/events/key_event.h src/events/on_select_event.h src/events/pop_window_event.h src/event_checker.h src/events/event_checker_base.h src/events/key_event_checker.h src/event_manager.h src/graph.h src/ui.h src/utility.h src/window.h src/window_manager.h src/scene.h src/wten.h src/debug_scene.h src/error_normal.h src/event_notify.h src/scenes/scene_base.h src/windows/window_base.h src/windows/script_window.h src/windows/select_window.h src/uis/ui_base.h src/uis/ui_box.h src/uis/ui_string.h src/uis/ui_image.h src/uis/ui_selector.h src/uis/ui_string_box.h src/uis/ui_queue.h src/uis/ui_pt_status.h
 	touch src/stdafx.h
 stdafx.obj: src/stdafx.h
         $(cc) $(opt) /c /Yc /Tp src/stdafx.cpp
@@ -53,7 +53,7 @@ key_event_checker.obj: src/events/key_event_checker.cpp stdafx.obj
 event_manager.obj: src/event_manager.cpp stdafx.obj
 event_notify.obj: src/event_notify.cpp stdafx.obj
 error_normal.obj: src/error_normal.cpp stdafx.obj
-scene_base.obj: src/scene_base.cpp stdafx.obj
+scene_base.obj: src/scenes/scene_base.cpp stdafx.obj
 wten.obj: src/wten.cpp stdafx.obj src/version.h
 main.obj: src/main.cpp stdafx.obj
 

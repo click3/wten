@@ -79,7 +79,7 @@
 #include "event_notify.h"
 #include "window_manager.h"
 #include "scene.h"
-#include "scene_base.h"
+#include "scenes/scene_base.h"
 #include "DxLib_lib.h"
 #include "wten.h"
 
