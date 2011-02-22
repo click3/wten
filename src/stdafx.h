@@ -59,6 +59,7 @@
 #include "events/on_select_event.h"
 #include "events/on_select_change_event.h"
 #include "events/pop_window_event.h"
+#include "events/input_string_event.h"
 #include "window.h"
 #include "windows/window_base.h"
 #include "ui.h"
