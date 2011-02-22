@@ -22,7 +22,7 @@ boost::optional<boost::shared_ptr<Error> > UIInputString::Draw(unsigned int abs_
 
 utility::opt_error<unsigned int>::type UIInputString::CalcWidth() const {
 	unsigned int font_width;
-	boost::shared_ptr<std::string> str(new std::string("‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ ‚ "));
+	boost::shared_ptr<std::string> str(new std::string("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 	OPT_UINT(font_width, DxLibWrapper::GetFontWidth(str));
 	return font_width;
 }
