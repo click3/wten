@@ -31,7 +31,7 @@ unsigned int GetGraphWidth(DxLibGraphHandle handle) {
 }
 
 unsigned int GetGraphHeight(DxLibGraphHandle handle) {
-	return GetGraphSize(handle).get<0>();
+	return GetGraphSize(handle).get<1>();
 }
 
 DxLibGraphHandle GetGraphHandle(boost::shared_ptr<const std::string> filename) {
