@@ -85,6 +85,24 @@ boost::shared_ptr<Graph> GetBlank(boost::shared_ptr<const Graph> src) {
 	RETURN_DERIVATION_GRAPH(src, x, y, width, height);
 }
 
+opt_error<unsigned int>::type GetUIWidth(boost::shared_ptr<UIBase> ui) {
+	unsigned int calc;
+	OPT_UINT(calc, ui->CalcWidth());
+	unsigned int width;
+	unsigned int height;
+	OPT_PAIR_UINT(width, height, ui->GetSize());
+	return std::max(calc, width);
+}
+
+opt_error<unsigned int>::type GetUIHeight(boost::shared_ptr<UIBase> ui) {
+	unsigned int calc;
+	OPT_UINT(calc, ui->CalcHeight());
+	unsigned int width;
+	unsigned int height;
+	OPT_PAIR_UINT(width, height, ui->GetSize());
+	return std::max(calc, height);
+}
+
 } // anonymous
 
 UIBox::UIBox(boost::shared_ptr<const Graph> src) :
@@ -125,6 +143,8 @@ boost::optional<boost::shared_ptr<Error> > UIBox::Move(unsigned int x, unsigned 
 boost::optional<boost::shared_ptr<Error> > UIBox::Resize(unsigned int width, unsigned int height) {
 	OPT_ERROR(UIBase::Resize(width, height));
 	if(inner_ui) {
+		BOOST_ASSERT(width >= left_up->GetWidth() - right_up->GetWidth());
+		BOOST_ASSERT(height >= left_up->GetHeight() - left_down->GetHeight());
 		const unsigned int inner_width = width - left_up->GetWidth() - right_up->GetWidth();
 		const unsigned int inner_height = height - left_up->GetHeight() - left_down->GetHeight();
 		OPT_ERROR(inner_ui->Resize(inner_width, inner_height));
@@ -194,7 +214,7 @@ utility::opt_error<unsigned int>::type UIBox::CalcWidth() const {
 	unsigned int result = left_up->GetWidth()+right_up->GetWidth();
 	if(inner_ui) {
 		unsigned int width;
-		OPT_UINT(width, inner_ui->CalcWidth());
+		OPT_UINT(width, GetUIWidth(inner_ui));
 		result += width;
 	}
 	return result;
@@ -204,7 +224,7 @@ utility::opt_error<unsigned int>::type UIBox::CalcHeight() const {
 	unsigned int result = left_up->GetHeight()+left_down->GetHeight();
 	if(inner_ui) {
 		unsigned int height;
-		OPT_UINT(height, inner_ui->CalcHeight());
+		OPT_UINT(height, GetUIHeight(inner_ui));
 		result += height;
 	}
 	return result;
