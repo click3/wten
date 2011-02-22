@@ -21,7 +21,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		boost::shared_ptr<Scene>(new scenes::DebugScene()),
 		boost::shared_ptr<Scene>(new scenes::DebugScene()),
 		boost::shared_ptr<Scene>(new scenes::CastleScene()),
-		boost::shared_ptr<Scene>(new scenes::DebugScene())
+		boost::shared_ptr<Scene>(new scenes::TowerGateScene())
 	};
 	for(unsigned int i = 0; i < 6; i++) {
 		boost::shared_ptr<const std::string> text(new std::string(text_list[i]));

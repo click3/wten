@@ -12,6 +12,7 @@ enum DATA_INDEX {
 	DATA_INDEX_GuildName = 0,
 	DATA_INDEX_CurrentCastleStep,
 	DATA_INDEX_GuildCreate,
+	DATA_INDEX_CurrentTowerStep,
 
 	DATA_INDEX_MAX
 };
@@ -43,6 +44,7 @@ void Set##name(boost::shared_ptr<const type> value) {					\
 	ADD_STRING_PROPERTY(GuildName, "")
 	ADD_UINT_PROPERTY(CurrentCastleStep, 0)
 	ADD_BOOL_PROPERTY(GuildCreate, false)
+	ADD_UINT_PROPERTY(CurrentTowerStep, 0)
 
 #undef ADD_PROPERTY_PTR
 #undef ADD_PROPERTY

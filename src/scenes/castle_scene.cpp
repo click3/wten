@@ -35,6 +35,17 @@ void SendNextStepEvent(void) {
 	EventNotify::Send(event);
 }
 
+void SetGuildName(boost::shared_ptr<const std::string> guild_name) {
+	GlobalData::GetCurrentInstance()->SetGuildName(guild_name);
+}
+
+void SetCurrentCastleStep(STEP step) {
+	GlobalData::GetCurrentInstance()->SetCurrentCastleStep(step);
+}
+
+void GuildCreateSuccess(void) {
+	return GlobalData::GetCurrentInstance()->SetGuildCreate(true);
+}
 
 } // anonymous
 
@@ -103,9 +114,9 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			if(temp_data) {
 				boost::shared_ptr<const std::string> text = boost::static_pointer_cast<const std::string>(temp_data);
 				if(!text->empty()) {
-					BOOST_ASSERT(GlobalData::GetCurrentInstance());
-					GlobalData::GetCurrentInstance()->SetGuildName(text);
-					GlobalData::GetCurrentInstance()->SetCurrentCastleStep(NORMAL_STEP);
+					SetGuildName(text);
+					SetCurrentCastleStep(NORMAL_STEP);
+					GuildCreateSuccess();
 					next_step = GUILD_CREATE_SUCCESS_STEP;
 				} else {
 					next_step = GUILD_CREATE_FAILURE_STEP;
