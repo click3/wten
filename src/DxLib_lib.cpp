@@ -118,7 +118,9 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
 //static
 opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const std::string> text) {
 	BOOST_ASSERT(text);
-	BOOST_ASSERT(!text->empty());
+	if(text->empty()) {
+		return 0;
+	}
 	const int result = ::GetDrawStringWidth(text->c_str(), text->length());
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
@@ -129,7 +131,9 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const
 //static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, boost::shared_ptr<const std::string> text, Color color) {
 	BOOST_ASSERT(text);
-	BOOST_ASSERT(!text->empty());
+	if(text->empty()) {
+		return boost::none;
+	}
 	const int result = ::DrawString(x, y, text->c_str(), color.GetColorCode());
 	if(result == -1) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);

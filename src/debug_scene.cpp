@@ -17,18 +17,27 @@ DebugScene::DebugScene(void) {
 boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
 	OPT_ERROR(AddTextUI(boost::shared_ptr<std::string>(new std::string("デバッグモード")), uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > select_list;
-#define ADD_SELECT(text) select_list.push_back(boost::make_tuple<boost::shared_ptr<std::string>, boost::shared_ptr<void> >(boost::shared_ptr<std::string>(new std::string(text)), boost::shared_ptr<void>()))
-	ADD_SELECT("宿屋「ローゼンメイデン」");
-	ADD_SELECT("ベストバル商店街");
-	ADD_SELECT("トート寺院");
-	ADD_SELECT("酒場「超兄貴」");
-	ADD_SELECT("ジークフロント騎士団兵舎");
-	ADD_SELECT("天龍の塔　付近");
-#undef ADD_SELECT
-	OPT_ERROR(AddSelectorWindow(select_list, 50, 100, 540, 150));
-
 	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
+	const char char_text[] =
+		"ひとりの屈強なドワーフが現れて告げた\n"
+		"\n"
+		"＊＊ おめでとう ＊＊\n"
+		"\n"
+		"きみたちは大君主トレボーの試験に合格した。\n"
+		"\n"
+		"ワードナの魔除けを取り戻したことにより、\n"
+		"トレボーは諸君に 50,000 の経験値と金を与えたうえに\n"
+		"諸君を近衛兵の将校に任命しました。\n"
+		"\n"
+		"誇りを持って階級章(>)を付けるように。\n"
+		"\n"
+		"ただし、諸君は更なる鍛錬を続けなくてはならない。\n"
+		"トレボーは限りなくレベルの高い衛兵を必要としているのです。\n"
+		"\n"
+		"そしてそれは…\n"
+		"新たなる冒険への準備でもあるのです。";
+	boost::shared_ptr<std::string> text(new std::string(char_text));
+	OPT_ERROR(AddTextUI(text, uis::UIBase::MOVE_MODE_CENTER_FREE, 50, 100, 540, 150));
 	return boost::none;
 }
 

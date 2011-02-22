@@ -14,7 +14,7 @@ public:
 	utility::opt_error<unsigned int>::type CalcWidth() const;
 	utility::opt_error<unsigned int>::type CalcHeight() const;
 protected:
-	boost::shared_ptr<const std::string> text;
+	std::vector<boost::shared_ptr<const std::string> > text_list;
 };
 
 } // uis

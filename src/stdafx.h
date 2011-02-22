@@ -19,6 +19,7 @@
 #include "boost/range/adaptor/uniqued.hpp"
 #include "boost/range/algorithm/copy.hpp"
 #include "boost/assign.hpp"
+#include "boost/algorithm/string.hpp"
 #include "boost/range/algorithm.hpp"
 #include "boost/function.hpp"
 #include "boost/bind.hpp"
