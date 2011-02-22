@@ -206,6 +206,15 @@ boost::optional<boost::shared_ptr<Error> > UIBase::AbsoluteMove(unsigned int x, 
 }
 
 boost::optional<boost::shared_ptr<Error> > UIBase::Resize(unsigned int width, unsigned int height) {
+	unsigned int min_width;
+	unsigned int min_height;
+	OPT_UINT(min_width, CalcWidth());
+	OPT_UINT(min_height, CalcHeight());
+	if(width < min_width || height < min_height) {
+		this->width = std::max(width, min_width);
+		this->height = std::max(height, min_height);
+		return boost::none;
+	}
 	this->width = width;
 	this->height = height;
 	return boost::none;
