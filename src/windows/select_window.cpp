@@ -57,7 +57,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
-	BOOST_ASSERT(frame);
+	BOOST_ASSERT(!frame);
 }
 
 SelectWindow::~SelectWindow() {
