@@ -155,4 +155,14 @@ unsigned int DxLibWrapper::GetRand(unsigned int max) {
 	return ::GetRand(max);
 }
 
+//static
+opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(unsigned int x, unsigned int y, unsigned int max) {
+	char buffer[1024];
+	const int result = ::KeyInputString(x, y, max, buffer, FALSE);
+	if(result != 1) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return boost::shared_ptr<std::string>(new std::string(buffer));
+}
+
 } // wten

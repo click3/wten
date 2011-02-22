@@ -70,6 +70,7 @@
 #include "uis/ui_string_box.h"
 #include "uis/ui_queue.h"
 #include "uis/ui_pt_status.h"
+#include "uis/ui_input_string.h"
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
