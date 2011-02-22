@@ -95,6 +95,7 @@
 #include "scenes/scene_selector_scene.h"
 #include "scenes/town_scene.h"
 #include "scenes/castle_scene.h"
+#include "scenes/opening_scene.h"
 #include "DxLib_lib.h"
 #include "wten.h"
 

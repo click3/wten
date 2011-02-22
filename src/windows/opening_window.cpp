@@ -70,6 +70,7 @@ boost::optional<boost::shared_ptr<Error> > OpeningWindow::Draw(void) {
 	if(frame_counter == 2266) {
 		OPT_ERROR(OnOK());
 	}
+	frame_counter++;
 	return boost::none;
 }
 

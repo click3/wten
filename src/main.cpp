@@ -57,7 +57,7 @@ int main() {
 		game.reset(new WTen(scene));
 	}*/
 	{
-		boost::shared_ptr<Scene> scene(new scenes::TownScene());
+		boost::shared_ptr<Scene> scene(new scenes::OpeningScene());
 		game.reset(new WTen(scene));
 	}
 	boost::optional<boost::shared_ptr<Error> > result = game->DoStart(CreateDummyPT());
