@@ -37,7 +37,7 @@ boost::optional<boost::shared_ptr<Error> > OpeningScene::NextStep(boost::shared_
 	if(event->GetEventType() != EVENT_TYPE_NEXT_STEP) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
-	next_scene.reset(new scenes::TownScene());
+	next_scene.reset(new scenes::TitleScene());
 	return boost::none;
 }
 

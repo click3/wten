@@ -2,6 +2,9 @@
 
 namespace wten { namespace scenes {
 
+using namespace utility;
+using namespace boost::assign;
+
 SceneBase::SceneBase(boost::shared_ptr<const std::string> default_frame_filename) :
 	window_manager(new WindowManager()), base_window(new windows::WindowBase()), default_frame_filename(default_frame_filename)
 {
@@ -84,6 +87,11 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::AddBoxUI(uis::UIBase::MOVE
 	boost::shared_ptr<Graph> src(new Graph(default_frame_filename));
 	boost::shared_ptr<uis::UIBase> ui(new uis::UIBox(src));
 	return AddUI(ui, move_mode, x, y, width, height);
+}
+
+boost::optional<boost::shared_ptr<Error> > SceneBase::AddImageUI(boost::shared_ptr<const std::string> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y) {
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIImage(image_filename));
+	return AddUI(ui, move_mode, x, y, 0, 0);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddTextUI(boost::shared_ptr<const std::string> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
