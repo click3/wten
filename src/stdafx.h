@@ -84,6 +84,7 @@
 #include "windows/select_window.h"
 #include "windows/script_window.h"
 #include "windows/text_window.h"
+#include "windows/input_dlg_window.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"

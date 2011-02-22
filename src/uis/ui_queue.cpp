@@ -168,11 +168,12 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::Resize(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIQueue::Draw(void) {
+	OPT_ERROR(UIBase::Draw());
 	BOOST_FOREACH(UI_PAIR pair, ui_list) {
 		boost::shared_ptr<UIBase> ui = pair.get<1>();
 		OPT_ERROR(ui->Draw());
 	}
-	return UIBase::Draw();
+	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > UIQueue::Draw(unsigned int abs_x, unsigned int abs_y) {
@@ -234,7 +235,7 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::ReloadInnerUI(void) {
 		{
 			unsigned int move_x;
 			unsigned int move_y;
-			boost::tie(move_x, move_y) = CalcInnerPosition(x, y, width, height, this_min_width, this_min_height, col_split, inner_position);
+			boost::tie(move_x, move_y) = CalcInnerPosition(x, y, width, height, this->width, this->height, col_split, inner_position);
 			ui->Move(move_x, move_y);
 		}
 		BOOST_ASSERT(x+width <= this->x + this->width);

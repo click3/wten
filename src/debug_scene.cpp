@@ -42,8 +42,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	OPT_ERROR(AddTextWindow(text, 50, 50, 540, 380));
 
 	boost::shared_ptr<std::string> message(new std::string("ƒMƒ‹ƒh–¼‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢"));
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIInputDlg(message, default_frame_filename));
-	OPT_ERROR(AddUI(ui, uis::UIBase::MOVE_MODE_CENTER_CENTER, 10, 25, 0, 0));
+	OPT_ERROR(AddInputDlgWindow(message, 150, 205, 340, 70));
 	return boost::none;
 }
 

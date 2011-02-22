@@ -7,7 +7,9 @@ namespace {
 enum STEP {
 	GUILD_CREATE_DESCRIPTION_STEP,
 	GUILD_NAME_INPUT_STEP,
-	GUILD_CREATE_STEP,
+	GUILD_CREATE_CHECK_STEP,
+	GUILD_CREATE_FAILURE_STEP,
+	GUILD_CREATE_SUCCESS_STEP,
 	GUILD_CREATE_END_STEP,
 	NORMAL_STEP,
 };
@@ -22,17 +24,27 @@ unsigned int GetCurrentStep(void) {
 	return 0;
 }
 
+void SendNextStepEvent(void) {
+	boost::shared_ptr<Event> event(new events::NextStepEvent());
+	EventNotify::Send(event);
+}
+
+
 } // anonymous
 
 
 CastleScene::CastleScene() :
-	step(GetCurrentStep()), title(GetCastleName()), script_window(new windows::ScriptWindow())
+	current_step(GetCurrentStep()), title(GetCastleName()), script_window(new windows::ScriptWindow())
 {
 	BOOST_ASSERT(title);
 	BOOST_ASSERT(script_window);
 
-	boost::optional<boost::shared_ptr<Error> > error = AddEvent(EVENT_TYPE_NEXT_STEP);
-	if(error) {
+	boost::optional<boost::shared_ptr<Error> > error;
+	if(error = AddEvent(EVENT_TYPE_NEXT_STEP)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+	if(error = AddEvent(EVENT_TYPE_INPUT_STRING)) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
@@ -51,8 +63,9 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::SceneInitialize(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
-	switch(step) {
+	switch(current_step) {
 		case GUILD_CREATE_DESCRIPTION_STEP: {
+			next_step = GUILD_NAME_INPUT_STEP;
 			const char *text_char = 
 				"君達が城内へと足を踏み入れると、\n"
 				"貴族然とした人物に声をかけられた。\n"
@@ -70,18 +83,46 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			break;
 		}
 		case GUILD_NAME_INPUT_STEP: {
+			next_step = GUILD_CREATE_CHECK_STEP;
+			const char *message_char = "ギルド名を入力してください";
+			boost::shared_ptr<const std::string> message(new std::string(message_char));
+			OPT_ERROR(AddInputDlgWindow(message));
+			break;
+		}
+		case GUILD_CREATE_CHECK_STEP: {
+			if(temp_data) {
+				boost::shared_ptr<const std::string> text = boost::static_pointer_cast<const std::string>(temp_data);
+				if(!text->empty()) {
+					next_step = GUILD_CREATE_SUCCESS_STEP;
+				} else {
+					next_step = GUILD_CREATE_FAILURE_STEP;
+				}
+			} else {
+				next_step = GUILD_CREATE_FAILURE_STEP;
+			}
+			SendNextStepEvent();
+			break;
+		}
+		case GUILD_CREATE_FAILURE_STEP: {
+			next_step = GUILD_NAME_INPUT_STEP;
 			const char *text_char = 
-				"まだできていません";
+				"彼に書き終えた書類を渡すと、さっと目を通した後\n"
+				"ギルド名の空欄を指摘された。\n"
+				"\n"
+				"どうやらギルド名は必須のようだ\n"
+				"\n"
+				"君達は再度書類に向かい、ギルド名を考えなおす事にする。";
 			boost::shared_ptr<const std::string> text(new std::string(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
-		case GUILD_CREATE_STEP: {
+		case GUILD_CREATE_SUCCESS_STEP: {
+			next_step = GUILD_CREATE_END_STEP;
 			const char *text_char = 
 				"彼に書き終えた書類を渡すと、さっと目を通した後\n"
 				"複雑な意匠が施されたメダルのような物を渡された。\n"
 				"\n"
-				"どうやら無事ギルドの結成を終えたようだ。\n"
+				"どうやら無事ギルドの結成を終えられたようだ。\n"
 				"これで塔に入る事も可能だろう。\n"
 				"\n"
 				"君達は彼に礼を言うとその場を後にした。";
@@ -99,10 +140,18 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 
 boost::optional<boost::shared_ptr<Error> > CastleScene::OnEvent(boost::shared_ptr<Event> event) {
 	if(event->GetEventType() == EVENT_TYPE_NEXT_STEP) {
-		step++;
+		current_step = next_step;
 		return StepInitialize();
 	}
-	switch(step) {
+	switch(current_step) {
+		case GUILD_NAME_INPUT_STEP: {
+			if(event->GetEventType() == EVENT_TYPE_INPUT_STRING) {
+				boost::shared_ptr<events::InputStringEvent> input_string_event = boost::static_pointer_cast<events::InputStringEvent>(event);
+				temp_data = input_string_event->GetText();
+				SendNextStepEvent();
+			}
+			break;
+		}
 	}
 	return boost::none;
 }

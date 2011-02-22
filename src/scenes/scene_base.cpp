@@ -106,6 +106,11 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::AddTextWindow(boost::share
 	return AddWindow(window, x, y, width, height);
 }
 
+boost::optional<boost::shared_ptr<Error> > SceneBase::AddInputDlgWindow(boost::shared_ptr<const std::string> message, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	boost::shared_ptr<windows::InputDlgWindow> window(new windows::InputDlgWindow(message, default_frame_filename));
+	return AddWindow(window, x, y, width, height);
+}
+
 boost::optional<boost::shared_ptr<Error> > SceneBase::Clear(void) {
 	OPT_ERROR(window_manager->Clear());
 	OPT_ERROR(base_window->ClearUI());
