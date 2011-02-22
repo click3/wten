@@ -51,9 +51,27 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 int main() {
 	::setlocale(LC_ALL, _T(""));
 
-	boost::shared_ptr<WTen> game;
+	boost::shared_ptr<WTen> game;/*
 	{
 		boost::shared_ptr<Scene> scene(new scenes::DebugScene());
+		game.reset(new WTen(scene));
+	}*/
+	{
+		std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<Scene> > > scene_list;
+		const char *text_list[] = {
+			"宿屋「ローゼンメイデン」",
+			"ベストバル商店街",
+			"トート寺院",
+			"酒場「超兄貴」",
+			"ジークフロント騎士団兵舎",
+			"天龍の塔　付近"
+		};
+		for(unsigned int i = 0; i < 6; i++) {
+			boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+			boost::shared_ptr<Scene> scene(new scenes::DebugScene());
+			scene_list.push_back(make_tuple(text, scene));
+		}
+		boost::shared_ptr<Scene> scene(new scenes::SceneSelectorScene(boost::shared_ptr<const std::string>(new std::string("城郭都市「ジークフロント」")), scene_list));
 		game.reset(new WTen(scene));
 	}
 	boost::optional<boost::shared_ptr<Error> > result = game->DoStart(CreateDummyPT());
