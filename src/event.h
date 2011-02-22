@@ -5,6 +5,7 @@ enum EVENT_TYPE {
 	EVENT_TYPE_KEY,
 	EVENT_TYPE_ON_SELECT,
 	EVENT_TYPE_POP_WINDOW,
+	EVENT_TYPE_NEXT_STEP,
 };
 
 class Event : boost::noncopyable {

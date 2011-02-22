@@ -72,6 +72,7 @@
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
+#include "events/next_step_event.h"
 #include "actions/spell_base.h"
 #include "char_status.h"
 #include "char_data.h"
