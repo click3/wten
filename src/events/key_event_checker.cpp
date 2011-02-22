@@ -15,9 +15,6 @@ boost::optional<boost::shared_ptr<Error> > SendKeyEvent(KeyEvent::ACTION action,
 } // anonymous
 
 KeyEventChecker::KeyEventChecker() {
-	for(unsigned int i = 0; i < KEY_MAX; i++) {
-		prev[i] = KeyEvent::KEY_RELEASE;
-	}
 }
 
 KeyEventChecker::~KeyEventChecker() {
@@ -38,7 +35,9 @@ boost::optional<boost::shared_ptr<Error> > KeyEventChecker::DoCheck(void) {
 
 	BOOST_FOREACH(KeyMap key, key_map) {
 		const KeyEvent::ACTION act = (key_state & key.DxLibKey) ? KeyEvent::KEY_PRESS : KeyEvent::KEY_RELEASE;
-		if(prev[key.WTenKey] != act) {
+		if(!prev[key.WTenKey]) {
+			prev[key.WTenKey] = act;
+		} else if(prev[key.WTenKey] != act) {
 			prev[key.WTenKey] = act;
 			press_frame[key.WTenKey] = 0;
 			OPT_ERROR(SendKeyEvent(act, key.WTenKey));
