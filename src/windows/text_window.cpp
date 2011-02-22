@@ -68,7 +68,7 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type TextWindow::NotifyE
 		if(key->GetAction() == events::KeyEvent::KEY_PRESS) {
 			switch(key->GetKey()) {
 				case events::KeyEvent::KEY_A:
-					// TODO
+					OPT_ERROR(OnOK());
 					return boost::none;
 			}
 		}
