@@ -20,7 +20,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		boost::shared_ptr<Scene>(new scenes::DebugScene()),
 		boost::shared_ptr<Scene>(new scenes::DebugScene()),
 		boost::shared_ptr<Scene>(new scenes::DebugScene()),
-		boost::shared_ptr<Scene>(new scenes::DebugScene()),
+		boost::shared_ptr<Scene>(new scenes::CastleScene()),
 		boost::shared_ptr<Scene>(new scenes::DebugScene())
 	};
 	for(unsigned int i = 0; i < 6; i++) {
