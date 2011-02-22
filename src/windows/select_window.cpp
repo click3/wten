@@ -91,9 +91,11 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type SelectWindow::Notif
 			switch(key->GetKey()) {
 				case events::KeyEvent::KEY_UP:
 					OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_UP));
+					OPT_ERROR(OnSelectChange());
 					return boost::none;
 				case events::KeyEvent::KEY_DOWN:
 					OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_DOWN));
+					OPT_ERROR(OnSelectChange());
 					return boost::none;
 				case events::KeyEvent::KEY_A:
 					OPT_ERROR(OnSelect());
@@ -109,12 +111,21 @@ boost::optional<boost::shared_ptr<Error> > SelectWindow::OnSelect(void) {
 	BOOST_ASSERT(selector);
 	unsigned int index;
 	OPT_UINT(index, selector->GetIndex());
-	BOOST_ASSERT(!data_list.empty());
 	BOOST_ASSERT(index < data_list.size());
 	boost::shared_ptr<void> data = data_list[index];
 	boost::shared_ptr<Event> event(new events::OnSelectEvent(data));
-	BOOST_ASSERT(event);
 	OPT_ERROR(RemoveThisWindow());
+	EventNotify::Send(event);
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > SelectWindow::OnSelectChange(void) {
+	BOOST_ASSERT(selector);
+	unsigned int index;
+	OPT_UINT(index, selector->GetIndex());
+	BOOST_ASSERT(index < data_list.size());
+	boost::shared_ptr<void> data = data_list[index];
+	boost::shared_ptr<Event> event(new events::OnSelectChangeEvent(data));
 	EventNotify::Send(event);
 	return boost::none;
 }

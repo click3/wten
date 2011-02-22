@@ -14,6 +14,7 @@ public:
 	utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type NotifyEvent(boost::shared_ptr<Event> event);
 private:
 	boost::optional<boost::shared_ptr<Error> > OnSelect(void);
+	boost::optional<boost::shared_ptr<Error> > OnSelectChange(void);
 
 	const boost::shared_ptr<uis::UISelector> selector;
 	const boost::shared_ptr<uis::UIBox> frame;
