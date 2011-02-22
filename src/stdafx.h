@@ -87,6 +87,7 @@
 #include "scene.h"
 #include "scenes/scene_base.h"
 #include "scenes/scene_selector_scene.h"
+#include "scenes/town_scene.h"
 #include "DxLib_lib.h"
 #include "wten.h"
 

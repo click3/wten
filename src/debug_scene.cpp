@@ -13,6 +13,8 @@ namespace {
 
 DebugScene::DebugScene(void) {
 }
+DebugScene::~DebugScene() {
+}
 
 boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
