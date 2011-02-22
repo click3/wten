@@ -37,7 +37,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 		"‚»‚µ‚Ä‚»‚ê‚Íc\n"
 		"V‚½‚È‚é–`Œ¯‚Ö‚Ì€”õ‚Å‚à‚ ‚é‚Ì‚Å‚·B";
 	boost::shared_ptr<std::string> text(new std::string(char_text));
-	OPT_ERROR(AddTextUI(text, uis::UIBase::MOVE_MODE_CENTER_FREE, 50, 100, 540, 150));
+	OPT_ERROR(AddTextWindow(text, 50, 50, 540, 380));
 	return boost::none;
 }
 
