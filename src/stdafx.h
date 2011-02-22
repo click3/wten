@@ -71,6 +71,7 @@
 #include "uis/ui_queue.h"
 #include "uis/ui_pt_status.h"
 #include "uis/ui_input_string.h"
+#include "uis/ui_input_dlg.h"
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"

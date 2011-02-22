@@ -62,7 +62,11 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::AddUI(boost::shared_ptr<ui
 	ui->SetMoveMode(move_mode);
 	OPT_ERROR(base_window->AddUI(ui));
 	OPT_ERROR(ui->Move(x, y));
-	OPT_ERROR(ui->Resize(width, height));
+	if(width == 0 && height == 0) {
+		OPT_ERROR(ui->Resize());
+	} else {
+		OPT_ERROR(ui->Resize(width, height));
+	}
 	return boost::none;
 }
 
