@@ -12,6 +12,13 @@ enum STEP {
 	GUILD_CREATE_SUCCESS_STEP,
 	GUILD_CREATE_END_STEP,
 	NORMAL_STEP,
+	NEW_MISSON_STEP,
+	MISSON_REPORT_STEP,
+	JOB_CHANGE_STEP,
+	CONTRIBUTION_STEP,
+	MONSTER_LIST_STEP,
+	ITEM_LIST_STEP,
+	RETURN_STEP,
 };
 
 boost::shared_ptr<const std::string> GetCastleName(void) {
@@ -20,8 +27,7 @@ boost::shared_ptr<const std::string> GetCastleName(void) {
 }
 
 unsigned int GetCurrentStep(void) {
-	// TODO
-	return 0;
+	return GlobalData::GetCurrentInstance()->GetCurrentCastleStep();
 }
 
 void SendNextStepEvent(void) {
@@ -45,6 +51,10 @@ CastleScene::CastleScene() :
 		BOOST_ASSERT(false);
 	}
 	if(error = AddEvent(EVENT_TYPE_INPUT_STRING)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+	if(error = AddEvent(EVENT_TYPE_ON_SELECT)) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
@@ -93,6 +103,9 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			if(temp_data) {
 				boost::shared_ptr<const std::string> text = boost::static_pointer_cast<const std::string>(temp_data);
 				if(!text->empty()) {
+					BOOST_ASSERT(GlobalData::GetCurrentInstance());
+					GlobalData::GetCurrentInstance()->SetGuildName(text);
+					GlobalData::GetCurrentInstance()->SetCurrentCastleStep(NORMAL_STEP);
 					next_step = GUILD_CREATE_SUCCESS_STEP;
 				} else {
 					next_step = GUILD_CREATE_FAILURE_STEP;
@@ -134,6 +147,50 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			next_scene.reset(new TownScene());
 			break;
 		}
+		case NORMAL_STEP: {
+			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
+			const char *text_list[] = {
+				"ミッションを受ける",
+				"ミッションを報告する",
+				"転職する",
+				"寄付する",
+				"モンスター図鑑を見る",
+				"アイテム図鑑を見る",
+				"外に出る"
+			};
+			boost::shared_ptr<void> step_list[] = {
+				boost::shared_ptr<void>(new STEP(NEW_MISSON_STEP)),
+				boost::shared_ptr<void>(new STEP(MISSON_REPORT_STEP)),
+				boost::shared_ptr<void>(new STEP(JOB_CHANGE_STEP)),
+				boost::shared_ptr<void>(new STEP(CONTRIBUTION_STEP)),
+				boost::shared_ptr<void>(new STEP(MONSTER_LIST_STEP)),
+				boost::shared_ptr<void>(new STEP(ITEM_LIST_STEP)),
+				boost::shared_ptr<void>(new STEP(RETURN_STEP))
+			};
+			for(unsigned int i = 0; i < 7; i++) {
+				boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+				boost::shared_ptr<void> step(step_list[i]);
+				ui_list.push_back(make_tuple(text, step));
+			}
+			OPT_ERROR(AddSelectorWindow(ui_list, 50, 100, 540, 180));
+			break;
+		}
+		case NEW_MISSON_STEP:
+		case MISSON_REPORT_STEP:
+		case JOB_CHANGE_STEP:
+		case CONTRIBUTION_STEP:
+		case MONSTER_LIST_STEP:
+		case ITEM_LIST_STEP: {
+			next_step = NORMAL_STEP;
+			const char *text_char = "現在未実装です。";
+			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			OPT_ERROR(AddTextWindow(text));
+			break;
+		}
+		case RETURN_STEP: {
+			next_scene.reset(new TownScene());
+			break;
+		}
 	}
 	return boost::none;
 }
@@ -148,6 +205,14 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::OnEvent(boost::shared_pt
 			if(event->GetEventType() == EVENT_TYPE_INPUT_STRING) {
 				boost::shared_ptr<events::InputStringEvent> input_string_event = boost::static_pointer_cast<events::InputStringEvent>(event);
 				temp_data = input_string_event->GetText();
+				SendNextStepEvent();
+			}
+			break;
+		}
+		case NORMAL_STEP: {
+			if(event->GetEventType() == EVENT_TYPE_ON_SELECT) {
+				boost::shared_ptr<events::OnSelectEvent> on_select_event = boost::static_pointer_cast<events::OnSelectEvent>(event);
+				next_step = *boost::static_pointer_cast<STEP>(on_select_event->GetUserData());
 				SendNextStepEvent();
 			}
 			break;
