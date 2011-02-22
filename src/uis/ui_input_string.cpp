@@ -33,7 +33,7 @@ utility::opt_error<unsigned int>::type UIInputString::CalcHeight() const {
 	return font_height;
 }
 
-boost::shared_ptr<std::string> UIInputString::GetText(void) {
+boost::shared_ptr<std::string> UIInputString::GetText(void) const {
 	return text;
 }
 
