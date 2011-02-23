@@ -43,6 +43,7 @@
 #include "error.h"
 #include "utility.h"
 #include "global_data.h"
+#include "play_time.h"
 #include "error_normal.h"
 #include "graph.h"
 #include "action.h"
