@@ -58,11 +58,15 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::ManageEventProcedure(b
 
 boost::optional<boost::shared_ptr<Error> > WindowManager::PushWindow(boost::shared_ptr<Window> window) {
 	window_stack.push_back(window);
+	OPT_ERROR(window_stack.back()->OnForeground());
 	return window->WindowInitialize();
 }
 
 boost::optional<boost::shared_ptr<Error> > WindowManager::PopWindow(void) {
 	window_stack.pop_back();
+	if(!window_stack.empty()) {
+		OPT_ERROR(window_stack.back()->OnForeground());
+	}
 	return boost::none;
 }
 

@@ -8,6 +8,7 @@ public:
 	WindowBase(boost::shared_ptr<const std::string> default_frame_filename = boost::shared_ptr<const std::string>());
 	~WindowBase();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
+	boost::optional<boost::shared_ptr<Error> > OnForeground(void);
 	utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void) const;
 	utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetSize(void) const;
 	boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);

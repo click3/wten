@@ -9,6 +9,7 @@ class Window : boost::noncopyable {
 public:
 	virtual ~Window() { };
 	virtual boost::optional<boost::shared_ptr<Error> > WindowInitialize(void) = 0;
+	virtual boost::optional<boost::shared_ptr<Error> > OnForeground(void) = 0;
 	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void) const = 0;
 	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetSize(void) const = 0;
 	virtual boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y) = 0;

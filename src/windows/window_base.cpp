@@ -18,6 +18,10 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::WindowInitialize(void) {
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > WindowBase::OnForeground(void) {
+	return boost::none;
+}
+
 opt_error<boost::tuple<unsigned int, unsigned int> >::type WindowBase::GetPoint(void) const {
 	return boost::make_tuple<unsigned int, unsigned int>(x, y);
 }
