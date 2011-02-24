@@ -6,7 +6,7 @@ namespace {
 
 unsigned int GetCurrentSystemTime(void) {
 	time_t current;
-	BOOST_ASSERT(time(&current) == -1);
+	BOOST_ASSERT(time(&current) != -1);
 	return current;
 }
 
