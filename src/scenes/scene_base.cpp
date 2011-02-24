@@ -6,7 +6,7 @@ using namespace utility;
 using namespace boost::assign;
 
 SceneBase::SceneBase(boost::shared_ptr<const std::string> default_frame_filename) :
-	window_manager(new WindowManager()), base_window(new windows::WindowBase()), default_frame_filename(default_frame_filename)
+	window_manager(new WindowManager()), base_window(new windows::WindowBase(default_frame_filename)), default_frame_filename(default_frame_filename)
 {
 	BOOST_ASSERT(window_manager);
 	BOOST_ASSERT(base_window);
@@ -60,17 +60,7 @@ void SceneBase::EventNotifyCallback(boost::shared_ptr<Event> event) {
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddUI(boost::shared_ptr<uis::UIBase> ui, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	BOOST_ASSERT(base_window);
-	BOOST_ASSERT(ui);
-
-	ui->SetMoveMode(move_mode);
-	OPT_ERROR(base_window->AddUI(ui));
-	OPT_ERROR(ui->Move(x, y));
-	if(width == 0 && height == 0) {
-		OPT_ERROR(ui->Resize());
-	} else {
-		OPT_ERROR(ui->Resize(width, height));
-	}
-	return boost::none;
+	return base_window->AddUI(ui, move_mode, x, y, width, height);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddWindow(boost::shared_ptr<windows::WindowBase> window, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
@@ -84,24 +74,23 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::AddWindow(boost::shared_pt
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddBoxUI(uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<Graph> src(new Graph(default_frame_filename));
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIBox(src));
-	return AddUI(ui, move_mode, x, y, width, height);
+	BOOST_ASSERT(base_window);
+	return base_window->AddBoxUI(move_mode, x, y, width, height);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddImageUI(boost::shared_ptr<const std::string> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y) {
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIImage(image_filename));
-	return AddUI(ui, move_mode, x, y, 0, 0);
+	BOOST_ASSERT(base_window);
+	return base_window->AddImageUI(image_filename, move_mode, x, y);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddTextUI(boost::shared_ptr<const std::string> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIStringBox(default_frame_filename, text));
-	return AddUI(ui, move_mode, x, y, width, height);
+	BOOST_ASSERT(base_window);
+	return base_window->AddTextUI(text, move_mode, x, y, width, height);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddPTStatusUI(boost::shared_ptr<const PTData> pt_data, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<uis::UIBase> ui(new uis::UIPTStatus(default_frame_filename, pt_data));
-	return AddUI(ui, move_mode, x, y, width, height);
+	BOOST_ASSERT(base_window);
+	return base_window->AddPTStatusUI(pt_data, move_mode, x, y, width, height);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddSelectorWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& select_list, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {

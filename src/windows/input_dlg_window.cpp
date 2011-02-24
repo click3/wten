@@ -6,7 +6,7 @@ using namespace utility;
 using namespace boost::assign;
 
 InputDlgWindow::InputDlgWindow(boost::shared_ptr<const std::string> message, boost::shared_ptr<const std::string> frame_filename) :
-	ui_input_dlg(new uis::UIInputDlg(message, frame_filename))
+	WindowBase(frame_filename), ui_input_dlg(new uis::UIInputDlg(message, frame_filename))
 {
 	BOOST_ASSERT(ui_input_dlg);
 	BOOST_ASSERT(frame_filename);

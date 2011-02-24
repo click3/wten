@@ -6,8 +6,8 @@ namespace windows {
 
 using namespace utility;
 
-WindowBase::WindowBase() :
-	x(0),	y(0),	width(640),	height(480)
+WindowBase::WindowBase(boost::shared_ptr<const std::string> default_frame_filename) :
+	x(0),	y(0),	width(640),	height(480), default_frame_filename(default_frame_filename)
 {
 }
 
@@ -85,6 +85,41 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::RemoveThisWindow(void) {
 	boost::shared_ptr<events::PopWindowEvent> event(new events::PopWindowEvent(this_ptr));
 	EventNotify::Send(event);
 	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddUI(boost::shared_ptr<uis::UIBase> ui, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	BOOST_ASSERT(ui);
+
+	ui->SetMoveMode(move_mode);
+	OPT_ERROR(AddUI(ui));
+	OPT_ERROR(ui->Move(x, y));
+	if(width == 0 && height == 0) {
+		OPT_ERROR(ui->Resize());
+	} else {
+		OPT_ERROR(ui->Resize(width, height));
+	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddBoxUI(uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	boost::shared_ptr<Graph> src(new Graph(default_frame_filename));
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIBox(src));
+	return AddUI(ui, move_mode, x, y, width, height);
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddImageUI(boost::shared_ptr<const std::string> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y) {
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIImage(image_filename));
+	return AddUI(ui, move_mode, x, y, 0, 0);
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddTextUI(boost::shared_ptr<const std::string> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIStringBox(default_frame_filename, text));
+	return AddUI(ui, move_mode, x, y, width, height);
+}
+
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddPTStatusUI(boost::shared_ptr<const PTData> pt_data, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	boost::shared_ptr<uis::UIBase> ui(new uis::UIPTStatus(default_frame_filename, pt_data));
+	return AddUI(ui, move_mode, x, y, width, height);
 }
 
 } // windows

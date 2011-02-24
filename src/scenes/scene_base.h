@@ -37,9 +37,9 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Clear(void);
 protected:
 	boost::shared_ptr<PTData> pt;
-	boost::shared_ptr<const std::string> default_frame_filename;
 	const boost::shared_ptr<windows::WindowBase> base_window;
 	const boost::shared_ptr<WindowManager> window_manager;
+	const boost::shared_ptr<const std::string> default_frame_filename;
 };
 
 } // scenes
