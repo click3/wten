@@ -8,6 +8,7 @@ enum EVENT_TYPE {
 	EVENT_TYPE_POP_WINDOW,
 	EVENT_TYPE_NEXT_STEP,
 	EVENT_TYPE_INPUT_STRING,
+	EVENT_TYPE_NEXT_WINDOW,
 };
 
 class Event : boost::noncopyable {

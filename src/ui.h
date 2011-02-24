@@ -1,7 +1,9 @@
 
 namespace wten {
 
-class windows::WindowBase;
+namespace windows {
+	class WindowBase;
+} // windows
 
 class UI : boost::noncopyable {
 public:

@@ -1,6 +1,10 @@
 
 namespace wten {
 
+namespace windows {
+	class WindowBase;
+} // windows
+
 namespace uis {
 
 class UIBase : public UI {
