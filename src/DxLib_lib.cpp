@@ -93,17 +93,15 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ScreenFlip() {
 
 //static
 opt_error<boost::tuple<unsigned int,unsigned int> >::type DxLibWrapper::GetWindowSize() {
-	// 最小化やフルスクリーン時に0が帰るようになるため、固定にしておく
-	return boost::make_tuple(640, 480);
-/*
 	int width;
 	int height;
-	const int result = ::GetWindowSize(&width, &height);
+	// 最小化やフルスクリーン時に0が帰るようになるため、別の方法で取得
+	//const int result = ::GetWindowSize(&width, &height);
+	const int result = ::GetDrawScreenSize(&width, &height);
 	if(result == -1 || width < 0 || height < 0) {
 		return boost::shared_ptr<Error>(new errors::DxLibError);
 	}
 	return boost::make_tuple<unsigned int,unsigned int>(width, height);
-*/
 }
 
 //static
