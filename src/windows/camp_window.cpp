@@ -118,6 +118,7 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampWindow
 			return boost::none;
 		}
 		case EVENT_TYPE_POP_WINDOW:
+		case EVENT_TYPE_NEXT_WINDOW:
 			break;
 		case EVENT_TYPE_KEY: {
 			boost::shared_ptr<events::KeyEvent> key_event = boost::static_pointer_cast<events::KeyEvent>(event);
