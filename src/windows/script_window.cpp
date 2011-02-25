@@ -47,7 +47,7 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type ScriptWind
 	for(; its.first != its.second; its.first++) {
 		OPT_ERROR(its.first->second(event));
 	}
-	return boost::none;
+	return event;
 }
 
 boost::optional<boost::shared_ptr<Error> > ScriptWindow::AddEventProc(EVENT_TYPE event_type, boost::function<boost::optional<boost::shared_ptr<Error> > (boost::shared_ptr<Event>)> proc) {
