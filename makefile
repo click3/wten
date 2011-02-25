@@ -1,8 +1,8 @@
 cc  = cc
 !if $(RELEASE) == y
-	opt = /errorReport:none /W1 /MT /EHsc /Ox /Fpwten.pch /DBOOST_DISABLE_ASSERTS
+	opt = /errorReport:none /we4715 /W1 /MT /EHsc /Ox /Fpwten.pch /DBOOST_DISABLE_ASSERTS
 !else
-	opt = /errorReport:none /W1 /MT /EHsc /Ox /Fpwten.pch
+	opt = /errorReport:none /we4715 /W1 /MT /EHsc /Ox /Fpwten.pch
 !endif
 obj = DxLib_lib.obj utility.obj global_data.obj play_time.obj graph.obj char_condition.obj pt_condition.obj enemy_condition.obj enemy_info.obj enemy_status.obj action.obj job.obj item_info.obj item.obj spell_base.obj char_status.obj char_data.obj pt_data.obj ui_base.obj ui_box.obj ui_string.obj ui_image.obj ui_selector.obj ui_string_box.obj ui_queue.obj ui_pt_status.obj ui_input_string.obj ui_input_dlg.obj event_base.obj key_event.obj on_select_event.obj on_select_change_event.obj pop_window_event.obj next_step_event.obj input_string_event.obj next_window_event.obj select_window.obj script_window.obj text_window.obj input_dlg_window.obj opening_window.obj camp_window.obj camp_base_window.obj window_base.obj window_manager.obj event_checker_base.obj key_event_checker.obj event_manager.obj debug_scene.obj error_normal.obj event_notify.obj scene_base.obj scene_selector_scene.obj camp_scene.obj town_scene.obj castle_scene.obj opening_scene.obj title_scene.obj tower_gate.obj wten.obj stdafx.obj main.obj
 exe = wten.exe
