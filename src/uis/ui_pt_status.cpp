@@ -143,7 +143,7 @@ boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data
 } // anonymous
 
 UIPTStatus::UIPTStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<const PTData> pt_data) :
-	UIBox(boost::shared_ptr<Graph>(new Graph(frame_filename))), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
+	UIBox(frame_filename), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
 {
 	BOOST_ASSERT(pt_data);
 	boost::optional<boost::shared_ptr<Error> > error = SetInnerUI(queue_ui);

@@ -6,11 +6,11 @@ using namespace utility;
 using namespace boost::assign;
 
 UIInputDlg::UIInputDlg(boost::shared_ptr<const std::string> message, boost::shared_ptr<const std::string> frame_filename) :
-	UIBox(boost::shared_ptr<Graph>(new Graph(frame_filename))), ui_input_string(new UIInputString())
+	UIBox(frame_filename), ui_input_string(new UIInputString())
 {
 	boost::optional<boost::shared_ptr<Error> > error;
 	BOOST_ASSERT(ui_input_string);
-	boost::shared_ptr<UIBox> ui_box(new UIBox(boost::shared_ptr<Graph>(new Graph(frame_filename))));
+	boost::shared_ptr<UIBox> ui_box(new UIBox(frame_filename));
 	if(error = ui_box->SetInnerUI(ui_input_string)) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);

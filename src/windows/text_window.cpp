@@ -6,7 +6,7 @@ using namespace utility;
 using namespace boost::assign;
 
 TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<const std::string> frame_filename) :
-	WindowBase(frame_filename), ui_string(new uis::UIString(text)), frame(new uis::UIBox(boost::shared_ptr<Graph>(new Graph(frame_filename))))
+	WindowBase(frame_filename), ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame_filename))
 {
 	BOOST_ASSERT(ui_string);
 	BOOST_ASSERT(frame_filename);

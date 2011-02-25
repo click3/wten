@@ -106,6 +106,7 @@ opt_error<unsigned int>::type GetUIHeight(boost::shared_ptr<UIBase> ui) {
 } // anonymous
 
 UIBox::UIBox(boost::shared_ptr<const Graph> src) :
+	src(src),
 	left_up(GetLeftUp(src)), left_down(GetLeftDown(src)), right_up(GetRightUp(src)), right_down(GetRightDown(src)),
 	left_line(GetLeftLine(src)), right_line(GetRightLine(src)), top_line(GetTopLine(src)), bottom_line(GetBottomLine(src)),
 	blank(GetBlank(src))
@@ -114,6 +115,20 @@ UIBox::UIBox(boost::shared_ptr<const Graph> src) :
 	BOOST_ASSERT((src->GetWidth() % 2) == 1);
 	BOOST_ASSERT(src->GetHeight() == src->GetHeight());
 }
+
+UIBox::UIBox(boost::shared_ptr<const std::string> filename) :
+	src(new Graph(filename)),
+	left_up(GetLeftUp(src)), left_down(GetLeftDown(src)), right_up(GetRightUp(src)), right_down(GetRightDown(src)),
+	left_line(GetLeftLine(src)), right_line(GetRightLine(src)), top_line(GetTopLine(src)), bottom_line(GetBottomLine(src)),
+	blank(GetBlank(src))
+{
+	BOOST_ASSERT(src);
+	BOOST_ASSERT(filename);
+	BOOST_ASSERT(!filename->empty());
+	BOOST_ASSERT((src->GetWidth() % 2) == 1);
+	BOOST_ASSERT(src->GetHeight() == src->GetHeight());
+}
+
 
 UIBox::~UIBox() {
 }

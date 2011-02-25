@@ -5,7 +5,7 @@ namespace wten { namespace uis {
 using namespace utility;
 
 UIStringBox::UIStringBox(boost::shared_ptr<const std::string> filename, boost::shared_ptr<const std::string> text) :
-	UIBox(boost::shared_ptr<Graph>(new Graph(filename)))
+	UIBox(filename)
 {
 	boost::shared_ptr<UIString> str(new UIString(text));
 	BOOST_ASSERT(str);

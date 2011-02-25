@@ -6,6 +6,7 @@ namespace uis {
 class UIBox : public UIBase {
 public:
 	UIBox(boost::shared_ptr<const Graph> src);
+	UIBox(boost::shared_ptr<const std::string> filename);
 	~UIBox();
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > Move(void);
@@ -19,15 +20,17 @@ public:
 	utility::opt_error<unsigned int>::type CalcWidth() const;
 	utility::opt_error<unsigned int>::type CalcHeight() const;
 protected:
-	const boost::shared_ptr<Graph> left_up;
-	const boost::shared_ptr<Graph> left_down;
-	const boost::shared_ptr<Graph> right_up;
-	const boost::shared_ptr<Graph> right_down;
-	const boost::shared_ptr<Graph> left_line;
-	const boost::shared_ptr<Graph> right_line;
-	const boost::shared_ptr<Graph> top_line;
-	const boost::shared_ptr<Graph> bottom_line;
-	const boost::shared_ptr<Graph> blank;
+	const boost::shared_ptr<const Graph> src;
+
+	const boost::shared_ptr<const Graph> left_up;
+	const boost::shared_ptr<const Graph> left_down;
+	const boost::shared_ptr<const Graph> right_up;
+	const boost::shared_ptr<const Graph> right_down;
+	const boost::shared_ptr<const Graph> left_line;
+	const boost::shared_ptr<const Graph> right_line;
+	const boost::shared_ptr<const Graph> top_line;
+	const boost::shared_ptr<const Graph> bottom_line;
+	const boost::shared_ptr<const Graph> blank;
 
 	boost::shared_ptr<UIBase> inner_ui;
 };

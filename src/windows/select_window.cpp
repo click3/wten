@@ -38,7 +38,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	WindowBase(frame_filename),
 	selector(new uis::UISelector(CreateSelectList(input))),
 	data_list(CreateDataList(input)),
-	frame(new uis::UIBox(boost::shared_ptr<Graph>(new Graph(frame_filename))))
+	frame(new uis::UIBox(frame_filename))
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
