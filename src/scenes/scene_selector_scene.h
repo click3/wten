@@ -1,7 +1,7 @@
 
 namespace wten { namespace scenes {
 
-class SceneSelectorScene : public SceneBase {
+class SceneSelectorScene : public CampScene {
 public:
 	typedef boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<Scene> > SCENE_PAIR;
 

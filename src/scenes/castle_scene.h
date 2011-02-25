@@ -1,7 +1,7 @@
 
 namespace wten { namespace scenes {
 
-class CastleScene : public SceneBase {
+class CastleScene : public CampScene {
 public:
 
 	CastleScene();

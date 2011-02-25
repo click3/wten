@@ -62,6 +62,7 @@ TowerGateScene::~TowerGateScene() {
 }
 
 boost::optional<boost::shared_ptr<Error> > TowerGateScene::SceneInitialize(void) {
+	OPT_ERROR(CampScene::SceneInitialize());
 	next_scene.reset();
 	OPT_ERROR(AddWindow(script_window, 0, 0, 0, 0));
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
