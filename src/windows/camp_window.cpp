@@ -40,7 +40,7 @@ void SendPopWindowEvent(boost::shared_ptr<Window> window) {
 	EventNotify::Send(event);
 }
 
-std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt) {
+std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) {
 	const char *text_list[] = {
 		"ÉAÉCÉeÉÄ",
 		"ëïîı",
@@ -49,11 +49,11 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		"ê›íË"
 	};
 	boost::shared_ptr<void> window_list[] = {
-		boost::shared_ptr<void>(new WindowBase()),
-		boost::shared_ptr<void>(new WindowBase()),
-		boost::shared_ptr<void>(new WindowBase()),
-		boost::shared_ptr<void>(new WindowBase()),
-		boost::shared_ptr<void>(new WindowBase())
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename))
 	};
 	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > result;
 	for(unsigned int i = 0; i < 5; i++) {
@@ -92,7 +92,7 @@ boost::optional<boost::shared_ptr<Error> > CampWindow::WindowInitialize(void) {
 
 boost::optional<boost::shared_ptr<Error> > CampWindow::OnForeground(void) {
 	if(!select_window) {
-		select_window.reset(new SelectWindow(CreateSelectList(pt), default_frame_filename));
+		select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_filename), default_frame_filename));
 		select_window->Move(50, 100);
 		select_window->Resize(540, 150);
 		SendNextWindowEvent(select_window);

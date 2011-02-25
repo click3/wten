@@ -90,6 +90,7 @@
 #include "windows/input_dlg_window.h"
 #include "windows/opening_window.h"
 #include "windows/camp_window.h"
+#include "windows/camp_base_window.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"
