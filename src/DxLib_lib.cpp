@@ -165,4 +165,13 @@ opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(un
 	return boost::shared_ptr<std::string>(new std::string(buffer));
 }
 
+//static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawBox(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, utility::Color color) {
+	const int result = ::DrawBox(x1, y1, x2, y2, color.GetColorCode(), TRUE);
+	if(result == -1) {
+		return boost::shared_ptr<Error>(new errors::DxLibError);
+	}
+	return boost::none;
+}
+
 } // wten

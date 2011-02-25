@@ -35,6 +35,7 @@ public:
 	static utility::opt_error<unsigned int>::type GetJoypadInputState(void);
 	static unsigned int GetRand(unsigned int max);
 	static utility::opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(unsigned int x, unsigned int y, unsigned int max);
+	static boost::optional<boost::shared_ptr<Error> > DrawBox(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, utility::Color color);
 };
 
 } // wten
