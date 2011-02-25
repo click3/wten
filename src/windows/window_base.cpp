@@ -51,6 +51,8 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::Draw(void) {
 		return CREATE_ERROR(ERROR_CODE_OUTSIDE_RANGE);
 	}
 
+	OPT_ERROR(DxLibWrapper::DrawBox(x, y, x+width, y+height, Color(0,0,0)));
+
 	BOOST_FOREACH(boost::shared_ptr<UI> ui, ui_stack) {
 		OPT_ERROR(ui->Draw());
 	}
