@@ -20,9 +20,6 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
 	OPT_ERROR(AddTextUI(boost::shared_ptr<std::string>(new std::string("デバッグモード")), uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 
-	boost::shared_ptr<windows::CampWindow> camp(new windows::CampWindow(pt, boost::shared_ptr<std::string>(new std::string("data/ui/box1.png"))));
-	OPT_ERROR(AddWindow(camp, 0, 0, 640, 480));
-/*
 	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
 	const char char_text[] =
 		"ひとりの屈強なドワーフが現れて告げた\n"
@@ -44,7 +41,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 		"新たなる冒険への準備でもあるのです。";
 	boost::shared_ptr<std::string> text(new std::string(char_text));
 	OPT_ERROR(AddTextWindow(text, 50, 50, 540, 380));
-
+/*
 	boost::shared_ptr<std::string> message(new std::string("ギルド名を入力してください"));
 	OPT_ERROR(AddInputDlgWindow(message, 150, 205, 340, 70));
 */
@@ -52,7 +49,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 }
 
 boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > DebugScene::EnterFrame(void) {
-	return boost::none;
+	return boost::shared_ptr<Scene>(new TownScene());
 }
 
 } // scenes
