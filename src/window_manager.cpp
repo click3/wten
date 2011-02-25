@@ -30,7 +30,8 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::DoEvent(void) {
 		if(!event) {
 			break;
 		}
-		BOOST_REVERSE_FOREACH(boost::shared_ptr<Window> window, window_stack) {
+		std::vector<boost::shared_ptr<Window> > window_list = window_stack;
+		BOOST_REVERSE_FOREACH(boost::shared_ptr<Window> window, window_list) {
 			boost::optional<boost::shared_ptr<Event> > next_event;
 			OPT_EVENT(next_event, window->NotifyEvent(event.get()));
 			if(!next_event) {
