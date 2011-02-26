@@ -38,7 +38,8 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	WindowBase(frame_filename),
 	selector(new uis::UISelector(CreateSelectList(input))),
 	data_list(CreateDataList(input)),
-	frame(new uis::UIBox(frame_filename))
+	frame(new uis::UIBox(frame_filename)),
+	select_close(true)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
@@ -48,7 +49,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 }
 
 SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<Graph> frame) :
-	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), frame(new uis::UIBox(frame))
+	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
@@ -56,7 +57,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 }
 
 SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input) :
-	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input))
+	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), select_close(true)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
@@ -64,6 +65,14 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 }
 
 SelectWindow::~SelectWindow() {
+}
+
+bool SelectWindow::IsSelectClose(void) const {
+	return select_close;
+}
+
+void SelectWindow::SetSelectClose(bool flag) {
+	select_close = flag;
 }
 
 boost::optional<boost::shared_ptr<Error> > SelectWindow::WindowInitialize(void) {
@@ -117,7 +126,9 @@ boost::optional<boost::shared_ptr<Error> > SelectWindow::OnSelect(void) {
 	BOOST_ASSERT(index < data_list.size());
 	boost::shared_ptr<void> data = data_list[index];
 	boost::shared_ptr<Event> event(new events::OnSelectEvent(data));
-	OPT_ERROR(RemoveThisWindow());
+	if(select_close) {
+		OPT_ERROR(RemoveThisWindow());
+	}
 	EventNotify::Send(event);
 	return boost::none;
 }
