@@ -14,13 +14,10 @@ CampBaseWindow::~CampBaseWindow() {
 }
 
 boost::optional<boost::shared_ptr<Error> > CampBaseWindow::WindowInitialize(void) {
+	OPT_ERROR(WindowBase::WindowInitialize());
 	unsigned int width, height;
 	OPT_PAIR_UINT(width, height, DxLibWrapper::GetWindowSize());
 	OPT_ERROR(Resize(width, height));
-	return boost::none;
-}
-
-boost::optional<boost::shared_ptr<Error> > CampBaseWindow::OnForeground(void) {
 	return boost::none;
 }
 
@@ -66,7 +63,7 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampBaseWi
 			// 別のWindowと併用するため、ここでイベントを握りつぶしておく
 			return boost::none;
 	}
-	return event;
+	return WindowBase::NotifyEvent(event);
 }
 
 } // windows
