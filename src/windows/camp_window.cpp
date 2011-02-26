@@ -87,16 +87,16 @@ boost::optional<boost::shared_ptr<Error> > CampWindow::WindowInitialize(void) {
 	boost::shared_ptr<std::string> title(new std::string("ƒLƒƒƒ“ƒv"));
 	OPT_ERROR(AddTextUI(title, uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
+
+	select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_filename), default_frame_filename));
+	select_window->Move(50, 100);
+	select_window->Resize(540, 150);
+	select_window->SetSelectClose(false);
+	SendNextWindowEvent(select_window);
 	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > CampWindow::OnForeground(void) {
-	if(!select_window) {
-		select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_filename), default_frame_filename));
-		select_window->Move(50, 100);
-		select_window->Resize(540, 150);
-		SendNextWindowEvent(select_window);
-	}
 	return boost::none;
 }
 
@@ -111,7 +111,6 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampWindow
 	BOOST_ASSERT(event);
 	switch(event->GetEventType()) {
 		case EVENT_TYPE_ON_SELECT: {
-			select_window.reset();
 			boost::shared_ptr<events::OnSelectEvent> on_select_event = boost::static_pointer_cast<events::OnSelectEvent>(event);
 			boost::shared_ptr<Window> window = boost::static_pointer_cast<Window>(on_select_event->GetUserData());
 			SendNextWindowEvent(window);
