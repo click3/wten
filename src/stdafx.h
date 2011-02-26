@@ -4,6 +4,10 @@
 
 #include "DxLib.h"
 
+//なぜかlinkエラーが出るので
+#define BOOST_NO_STD_LOCALE
+#define BOOST_LEXICAL_CAST_ASSUME_C_LOCALE
+
 #include "boost/utility.hpp"
 #include "boost/assert.hpp"
 #include "boost/scope_exit.hpp"
@@ -23,9 +27,7 @@
 #include "boost/range/algorithm.hpp"
 #include "boost/function.hpp"
 #include "boost/bind.hpp"
-
-//なぜかlinkエラーが出るので
-#define BOOST_LEXICAL_CAST_ASSUME_C_LOCALE
+#include "boost/format.hpp"
 #include "boost/lexical_cast.hpp"
 
 #include <locale.h>
@@ -74,6 +76,8 @@
 #include "uis/ui_pt_status.h"
 #include "uis/ui_input_string.h"
 #include "uis/ui_input_dlg.h"
+#include "uis/ui_dummy.h"
+#include "uis/ui_char_status.h"
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
