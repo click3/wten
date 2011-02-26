@@ -26,7 +26,7 @@ boost::shared_ptr<CharData> CreateDummyCharData(const char *char_name) {
 	str = iq = pie = vit = agi = luk = tg = exp = 0;
 	std::vector<boost::shared_ptr<Item> > item_list;
 	std::vector<boost::tuple<boost::shared_ptr<const Job>, boost::shared_ptr<const actions::SpellBase> > > spell_list;
-	boost::shared_ptr<CharStatus> char_status(new CharStatus(name, job, lv, hp, str, iq, pie, vit, agi, luk, tg, exp, item_list, spell_list));
+	boost::shared_ptr<CharStatus> char_status(new CharStatus(name, job, CharStatus::ALIGNMENT_GOOD, lv, hp, str, iq, pie, vit, agi, luk, tg, exp, item_list, spell_list));
 	boost::shared_ptr<CharCondition> char_condition(new CharCondition());
 	boost::shared_ptr<CharData> character(new CharData(char_status, char_condition));
 	return character;

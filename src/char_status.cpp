@@ -92,12 +92,12 @@ std::vector<boost::optional<bool> > RankUpChallenge(std::vector<unsigned int> st
 
 } // anonymous
 
-CharStatus::CharStatus(boost::shared_ptr<const std::string> name, boost::shared_ptr<const Job> job, unsigned int lv, unsigned int hp,
+CharStatus::CharStatus(boost::shared_ptr<const std::string> name, boost::shared_ptr<const Job> job, ALIGNMENT alignment, unsigned int lv, unsigned int hp,
 	unsigned int str, unsigned int iq, unsigned int pie, unsigned int vit, unsigned int agi, unsigned int luk,
 	unsigned int tg, unsigned int exp, const std::vector<boost::shared_ptr<Item> >& item_list,
 	const std::vector<SPELL_PAIR>& spell_list)
 :
-	name(name), job(job), lv(lv), hp(hp), str(str), iq(iq), pie(pie), vit(vit), agi(agi), luk(luk),
+	name(name), job(job), alignment(alignment), lv(lv), hp(hp), str(str), iq(iq), pie(pie), vit(vit), agi(agi), luk(luk),
 	tg(tg), exp(exp), item_list(item_list), spell_list(spell_list)
 {
 	BOOST_ASSERT(name);
@@ -127,6 +127,10 @@ boost::shared_ptr<const std::string> CharStatus::GetName(void) const {
 
 boost::shared_ptr<const Job> CharStatus::GetJob(void) const {
 	return job;
+}
+
+CharStatus::ALIGNMENT CharStatus::GetAlignment(void) const {
+	return alignment;
 }
 
 unsigned int CharStatus::GetLv(void) const {

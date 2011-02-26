@@ -3,13 +3,19 @@ namespace wten {
 
 class CharStatus : boost::noncopyable {
 public:
-	CharStatus(boost::shared_ptr<const std::string> name, boost::shared_ptr<const Job> job, unsigned int lv, unsigned int hp,
+	enum ALIGNMENT {
+		ALIGNMENT_GOOD,
+		ALIGNMENT_NEUTRAL,
+		ALIGNMENT_EVIL,
+	};
+	CharStatus(boost::shared_ptr<const std::string> name, boost::shared_ptr<const Job> job, ALIGNMENT alignment, unsigned int lv, unsigned int hp,
 		unsigned int str, unsigned int iq, unsigned int pie, unsigned int vit, unsigned int agi, unsigned int luk,
 		unsigned int tg, unsigned int exp, const std::vector<boost::shared_ptr<Item> >& item_list,
 		const std::vector<boost::tuple<boost::shared_ptr<const Job>, boost::shared_ptr<const actions::SpellBase> > >& spell_list);
 	~CharStatus(void);
 	boost::shared_ptr<const std::string> GetName(void) const;
 	boost::shared_ptr<const Job> GetJob(void) const;
+	ALIGNMENT GetAlignment(void) const;
 	unsigned int GetLv(void) const;
 	unsigned int GetHP(void) const;
 	unsigned int GetStr(void) const;
@@ -37,6 +43,7 @@ protected:
 
 	boost::shared_ptr<const std::string> name;
 	boost::shared_ptr<const Job> job;
+	ALIGNMENT alignment;
 	unsigned int lv;
 	unsigned int hp;
 	unsigned int str;
