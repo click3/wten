@@ -128,6 +128,11 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::AddPTStatusUI(boost::shar
 	return AddUI(ui, move_mode, x, y, width, height);
 }
 
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddCharStatusUI(boost::shared_ptr<const PTData> pt_data, unsigned int char_index, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	boost::shared_ptr<uis::UIBase> ui(new uis::UICharStatus(default_frame_filename, pt_data, char_index));
+	return AddUI(ui, move_mode, x, y, width, height);
+}
+
 } // windows
 
 } // wten

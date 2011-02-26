@@ -7,7 +7,7 @@ namespace uis {
 
 class UICharStatus : public UIBox {
 public:
-	UICharStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<PTData> pt_data, unsigned int char_index);
+	UICharStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index);
 	~UICharStatus();
 	enum CHANGE_INDEX {
 		CHANGE_INDEX_NEXT,
@@ -16,9 +16,9 @@ public:
 	boost::optional<boost::shared_ptr<Error> > ChangeChar(CHANGE_INDEX change_index);
 	boost::optional<boost::shared_ptr<Error> > ReloadStatus(void);
 protected:
-	boost::shared_ptr<CharData> char_data;
+	boost::shared_ptr<const CharData> char_data;
 	unsigned int char_index;
-	const boost::shared_ptr<PTData> pt_data;
+	const boost::shared_ptr<const PTData> pt_data;
 
 	const std::vector<boost::shared_ptr<std::string> > text_list;
 };

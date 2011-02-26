@@ -26,6 +26,7 @@ public:
 	boost::optional<boost::shared_ptr<Error> > AddImageUI(boost::shared_ptr<const std::string> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y);
 	boost::optional<boost::shared_ptr<Error> > AddTextUI(boost::shared_ptr<const std::string> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	boost::optional<boost::shared_ptr<Error> > AddPTStatusUI(boost::shared_ptr<const PTData> pt_data, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+	boost::optional<boost::shared_ptr<Error> > AddCharStatusUI(boost::shared_ptr<const PTData> pt_data, unsigned int char_index, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 protected:
 	std::vector<boost::shared_ptr<UI> > ui_stack;
 	unsigned int x;

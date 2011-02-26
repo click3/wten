@@ -93,6 +93,11 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::AddPTStatusUI(boost::share
 	return base_window->AddPTStatusUI(pt_data, move_mode, x, y, width, height);
 }
 
+boost::optional<boost::shared_ptr<Error> > SceneBase::AddCharStatusUI(boost::shared_ptr<const PTData> pt_data, unsigned int char_index, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	BOOST_ASSERT(base_window);
+	return base_window->AddCharStatusUI(pt_data, char_index, move_mode, x, y, width, height);
+}
+
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddSelectorWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& select_list, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	boost::shared_ptr<windows::SelectWindow> window(new windows::SelectWindow(select_list, default_frame_filename));
 	return AddWindow(window, x, y, width, height);

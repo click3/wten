@@ -235,7 +235,7 @@ const char* AlignmentToString(CharStatus::ALIGNMENT alignment) {
 
 } // anonymous
 
-UICharStatus::UICharStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<PTData> pt_data, unsigned int char_index) :
+UICharStatus::UICharStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index) :
 	UIBox(frame_filename), pt_data(pt_data), text_list(CreateTextList())
 {
 	BOOST_ASSERT(pt_data);
