@@ -12,7 +12,6 @@ public:
 	boost::shared_ptr<const CharCondition> GetCondition(void) const;
 	boost::shared_ptr<CharStatus> GetStatus(void);
 	boost::shared_ptr<CharCondition> GetCondition(void);
-	unsigned int GetLv(void) const;
 	unsigned int GetHP(void) const;
 	unsigned int GetStr(void) const;
 	unsigned int GetIQ(void) const;
