@@ -141,6 +141,14 @@ boost::optional<boost::shared_ptr<Error> > UIBox::SetOwnerWindow(boost::weak_ptr
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > UIBox::ClearOwnerWindow(void) {
+	OPT_ERROR(UIBase::ClearOwnerWindow());
+	if(inner_ui) {
+		OPT_ERROR(inner_ui->ClearOwnerWindow());
+	}
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > UIBox::Move(void) {
 	return UIBase::Move();
 }

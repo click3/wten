@@ -21,6 +21,7 @@ public:
 	UIQueue(const std::vector<boost::tuple<POSITION, boost::shared_ptr<UIBase> > >& ui_list, boost::optional<INNER_POSITION> inner_position = boost::none);
 	~UIQueue();
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
+	boost::optional<boost::shared_ptr<Error> > ClearOwnerWindow(void);
 	boost::optional<boost::shared_ptr<Error> > Move(void);
 	boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);

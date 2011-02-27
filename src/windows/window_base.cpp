@@ -15,6 +15,7 @@ WindowBase::~WindowBase() {
 }
 
 boost::optional<boost::shared_ptr<Error> > WindowBase::WindowInitialize(void) {
+	OPT_ERROR(ClearUI());
 	return boost::none;
 }
 
@@ -81,6 +82,9 @@ opt_error<bool>::type WindowBase::RemoveUI(boost::shared_ptr<UI> ui) {
 }
 
 boost::optional<boost::shared_ptr<Error> > WindowBase::ClearUI(void) {
+	BOOST_FOREACH(boost::shared_ptr<UI> ui, ui_stack) {
+		OPT_ERROR(ui->ClearOwnerWindow());
+	}
 	ui_stack.clear();
 	return boost::none;
 }

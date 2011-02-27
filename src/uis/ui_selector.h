@@ -17,6 +17,7 @@ public:
 	utility::opt_error<unsigned int>::type GetIndex() const;
 	utility::opt_error<boost::shared_ptr<const std::string> >::type GetText() const;
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
+	boost::optional<boost::shared_ptr<Error> > ClearOwnerWindow(void);
 	boost::optional<boost::shared_ptr<Error> > Move(void);
 	boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);

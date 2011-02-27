@@ -44,6 +44,12 @@ boost::optional<boost::shared_ptr<Error> > UIBase::SetOwnerWindow(boost::weak_pt
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > UIBase::ClearOwnerWindow(void) {
+	owner.reset();
+	BOOST_ASSERT(!owner.lock());
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > UIBase::InnerRectCheck(void) {
 	unsigned int width;
 	OPT_UINT(width, CalcWidth());

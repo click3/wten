@@ -108,6 +108,18 @@ boost::optional<boost::shared_ptr<Error> > UISelector::SetOwnerWindow(boost::wea
 	return UIBase::SetOwnerWindow(window);
 }
 
+boost::optional<boost::shared_ptr<Error> > UISelector::ClearOwnerWindow(void) {
+	BOOST_ASSERT(arrow);
+	OPT_ERROR(arrow->ClearOwnerWindow());
+
+	BOOST_FOREACH(boost::shared_ptr<UIString> select, select_list) {
+		BOOST_ASSERT(select);
+		OPT_ERROR(select->ClearOwnerWindow());
+	}
+
+	return UIBase::ClearOwnerWindow();
+}
+
 boost::optional<boost::shared_ptr<Error> > UISelector::Move(void) {
 	return UIBase::Move();
 }

@@ -12,6 +12,7 @@ public:
 	UIBase();
 	~UIBase();
 	virtual boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
+	virtual boost::optional<boost::shared_ptr<Error> > ClearOwnerWindow(void);
 	boost::optional<boost::shared_ptr<Error> > InnerRectCheck(void);
 	virtual boost::optional<boost::shared_ptr<Error> > PointAndSizeIsValid(void);
 	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void) const;

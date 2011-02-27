@@ -147,6 +147,14 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::SetOwnerWindow(boost::weak_p
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > UIQueue::ClearOwnerWindow(void) {
+	OPT_ERROR(UIBase::ClearOwnerWindow());
+	BOOST_FOREACH(UI_PAIR pair, ui_list) {
+		OPT_ERROR(pair.get<1>()->ClearOwnerWindow());
+	}
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > UIQueue::Move(void) {
 	OPT_ERROR(UIBase::Move());
 	return ReloadInnerUI();
