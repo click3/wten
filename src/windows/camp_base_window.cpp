@@ -66,6 +66,16 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampBaseWi
 	return WindowBase::NotifyEvent(event);
 }
 
+void CampBaseWindow::SendNextWindowEvent(boost::shared_ptr<Window> window) {
+	boost::shared_ptr<Event> event(new events::NextWindowEvent(window));
+	EventNotify::Send(event);
+}
+
+void CampBaseWindow::SendPopWindowEvent(boost::shared_ptr<Window> window) {
+	boost::shared_ptr<Event> event(new events::PopWindowEvent(window));
+	EventNotify::Send(event);
+}
+
 } // windows
 
 } // wten
