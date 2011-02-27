@@ -12,6 +12,27 @@ boost::shared_ptr<uis::UICharStatus> CreateCharStatusUI(boost::shared_ptr<PTData
 	return result;
 }
 
+std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) {
+	const char *text_list[] = {
+		"A:SPELLˆê——‚Ö",
+		"B:–ß‚é",
+	};
+	boost::shared_ptr<void> window_list[] = {
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampStatusWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename))
+	};
+	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > result;
+	for(unsigned int i = 0; i < 5; i++) {
+		boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+		boost::shared_ptr<void> user_data = window_list[i];
+		result += boost::make_tuple(text, user_data);
+	}
+	return result;
+}
+
 } // anonymous
 
 CampStatusWindow::CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) :
@@ -25,12 +46,27 @@ CampStatusWindow::~CampStatusWindow() {
 boost::optional<boost::shared_ptr<Error> > CampStatusWindow::WindowInitialize(void) {
 	OPT_ERROR(CampBaseWindow::WindowInitialize());
 	OPT_ERROR(AddUI(char_status_ui, uis::UIBase::MOVE_MODE_CENTER_FREE, 50, 100, 540, 150));
+
+	const char char_text[] =
+		"A:Žô•¶ˆê——\n"
+		"B:–ß‚é";
+	boost::shared_ptr<std::string> text(new std::string(char_text));
+	text_window.reset(new TextWindow(text, default_frame_filename));
+	OPT_ERROR(text_window->Move(380, 280));
+	OPT_ERROR(text_window->Resize(180, 50));
+	text_window->SetOkClose(false);
+	SendNextWindowEvent(text_window);
+
 	return boost::none;
 }
 
 utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampStatusWindow::NotifyEvent(boost::shared_ptr<Event> event) {
 	BOOST_ASSERT(event);
 	switch(event->GetEventType()) {
+		case EVENT_TYPE_NEXT_STEP: {
+			// TODO
+			return boost::none;
+		}
 		case EVENT_TYPE_KEY: {
 			boost::shared_ptr<events::KeyEvent> key_event = boost::static_pointer_cast<events::KeyEvent>(event);
 			if(key_event->GetAction() == events::KeyEvent::KEY_PRESS) {
@@ -41,8 +77,13 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampStatus
 					case events::KeyEvent::KEY_R:
 						OPT_ERROR(char_status_ui->ChangeChar(uis::UICharStatus::CHANGE_INDEX_BACK));
 						break;
+					case events::KeyEvent::KEY_B:
+						SendPopWindowEvent(text_window);
+						OPT_ERROR(RemoveThisWindow());
+						break;
 				}
 			}
+			return boost::none;
 		}
 	}
 	return CampBaseWindow::NotifyEvent(event);
