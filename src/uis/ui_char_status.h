@@ -20,7 +20,7 @@ protected:
 	unsigned int char_index;
 	const boost::shared_ptr<const PTData> pt_data;
 
-	const std::vector<boost::shared_ptr<std::string> > text_list;
+	const std::vector<boost::shared_ptr<uis::UIString> > text_ui_list;
 };
 
 } // uis
