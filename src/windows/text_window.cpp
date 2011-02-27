@@ -6,7 +6,7 @@ using namespace utility;
 using namespace boost::assign;
 
 TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<const std::string> frame_filename) :
-	WindowBase(frame_filename), ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame_filename))
+	WindowBase(frame_filename), ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame_filename)), ok_close(true)
 {
 	BOOST_ASSERT(ui_string);
 	BOOST_ASSERT(frame_filename);
@@ -20,7 +20,7 @@ TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_
 }
 
 TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<Graph> frame) :
-	ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame))
+	ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame)), ok_close(true)
 {
 	BOOST_ASSERT(ui_string);
 	BOOST_ASSERT(frame);
@@ -32,13 +32,21 @@ TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_
 }
 
 TextWindow::TextWindow(boost::shared_ptr<const std::string> text) :
-	ui_string(new uis::UIString(text))
+	ui_string(new uis::UIString(text)), ok_close(true)
 {
 	BOOST_ASSERT(ui_string);
 	BOOST_ASSERT(!frame);
 }
 
 TextWindow::~TextWindow() {
+}
+
+bool TextWindow::IsOkClose(void) const {
+	return ok_close;
+}
+
+void TextWindow::SetOkClose(bool flag) {
+	ok_close = flag;
 }
 
 boost::optional<boost::shared_ptr<Error> > TextWindow::WindowInitialize(void) {
@@ -78,7 +86,9 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type TextWindow::NotifyE
 
 boost::optional<boost::shared_ptr<Error> > TextWindow::OnOK(void) {
 	boost::shared_ptr<Event> event(new events::NextStepEvent());
-	OPT_ERROR(RemoveThisWindow());
+	if(ok_close) {
+		OPT_ERROR(RemoveThisWindow());
+	}
 	EventNotify::Send(event);
 	return boost::none;
 }
