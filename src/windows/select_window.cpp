@@ -34,9 +34,9 @@ std::vector<boost::shared_ptr<void> > CreateDataList(const std::vector<boost::tu
 
 using namespace utility;
 
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<const std::string> frame_filename) :
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<const std::string> frame_filename) :
 	WindowBase(frame_filename),
-	selector(new uis::UISelector(CreateSelectList(input))),
+	selector(new uis::UISelector(CreateSelectList(input), line_count)),
 	data_list(CreateDataList(input)),
 	frame(new uis::UIBox(frame_filename)),
 	select_close(true)
@@ -48,16 +48,16 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	BOOST_ASSERT(frame);
 }
 
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, boost::shared_ptr<Graph> frame) :
-	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true)
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<Graph> frame) :
+	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
 	BOOST_ASSERT(frame);
 }
 
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input) :
-	selector(new uis::UISelector(CreateSelectList(input))), data_list(CreateDataList(input)), select_close(true)
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, unsigned int line_count) :
+	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), select_close(true)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
@@ -107,6 +107,14 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type SelectWindow::Notif
 					return boost::none;
 				case events::KeyEvent::KEY_DOWN:
 					OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_DOWN));
+					OPT_ERROR(OnSelectChange());
+					return boost::none;
+				case events::KeyEvent::KEY_RIGHT:
+					OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_RIGHT));
+					OPT_ERROR(OnSelectChange());
+					return boost::none;
+				case events::KeyEvent::KEY_LEFT:
+					OPT_ERROR(selector->Select(uis::UISelector::MOVE_FOCUS_LEFT));
 					OPT_ERROR(OnSelectChange());
 					return boost::none;
 				case events::KeyEvent::KEY_A:

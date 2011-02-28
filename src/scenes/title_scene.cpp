@@ -48,7 +48,7 @@ boost::optional<boost::shared_ptr<Error> > TitleScene::SceneInitialize(void) {
 		boost::shared_ptr<void> next(next_list[i]);
 		ui_list.push_back(make_tuple(text, next));
 	}
-	OPT_ERROR(AddSelectorWindow(ui_list, 250, 300, 140, 80));
+	OPT_ERROR(AddSelectorWindow(ui_list, 1, 250, 300, 140, 80));
 	return boost::none;
 }
 

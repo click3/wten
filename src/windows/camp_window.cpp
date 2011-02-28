@@ -88,7 +88,7 @@ boost::optional<boost::shared_ptr<Error> > CampWindow::WindowInitialize(void) {
 	OPT_ERROR(AddTextUI(title, uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
 
-	select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_filename), default_frame_filename));
+	select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_filename), 1, default_frame_filename));
 	select_window->Move(50, 100);
 	select_window->Resize(540, 150);
 	select_window->SetSelectClose(false);
