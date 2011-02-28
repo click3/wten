@@ -12,6 +12,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		"ベストバル商店街",
 		"トート寺院",
 		"酒場「超兄貴」",
+		"冒険者ギルド",
 		"ジークフロント騎士団兵舎",
 		"天龍の塔　付近"
 	};
@@ -20,10 +21,11 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		boost::shared_ptr<Scene>(new scenes::DebugScene()),
 		boost::shared_ptr<Scene>(new scenes::DebugScene()),
 		boost::shared_ptr<Scene>(new scenes::BarScene()),
+		boost::shared_ptr<Scene>(new scenes::GuildScene()),
 		boost::shared_ptr<Scene>(new scenes::CastleScene()),
 		boost::shared_ptr<Scene>(new scenes::TowerGateScene())
 	};
-	for(unsigned int i = 0; i < 6; i++) {
+	for(unsigned int i = 0; i < 7; i++) {
 		boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
 		boost::shared_ptr<Scene> scene(scene_list[i]);
 		result.push_back(make_tuple(text, scene));
