@@ -244,20 +244,19 @@ boost::optional<boost::shared_ptr<Error> > UICharStatus::ChangeChar(CHANGE_INDEX
 	const unsigned int size = pt_data->GetCharacters().size();
 	if(char_index == 0 && change_index == CHANGE_INDEX_BACK) {
 		char_index = size-1;
-		return boost::none;
-	}
-	if(char_index == (size - 1) && change_index == CHANGE_INDEX_NEXT) {
+	} else if(char_index == (size - 1) && change_index == CHANGE_INDEX_NEXT) {
 		char_index = 0;
-		return boost::none;
-	}
-
-	switch(change_index) {
-		case CHANGE_INDEX_NEXT:
-			char_index++;
-			break;
-		case CHANGE_INDEX_BACK:
-			char_index--;
-			break;
+	} else {
+		switch(change_index) {
+			case CHANGE_INDEX_NEXT:
+				char_index++;
+				break;
+			case CHANGE_INDEX_BACK:
+				char_index--;
+				break;
+			default:
+				BOOST_ASSERT(false);
+		}
 	}
 	char_data = (*pt_data)[char_index];
 	OPT_ERROR(ReloadStatus());
