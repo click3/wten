@@ -87,6 +87,7 @@
 #include "char_status.h"
 #include "char_data.h"
 #include "pt_data.h"
+#include "pt_list.h"
 #include "windows/window_base.h"
 #include "windows/select_window.h"
 #include "windows/script_window.h"

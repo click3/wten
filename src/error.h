@@ -34,6 +34,9 @@ enum ERROR_CODE {
 
 	//Event関係
 	ERROR_CODE_POP_WINDOW_INVALID_WINDOW,	/**< 最前面のWindow以外を対象にPopWindowのEventが発生した。 */
+
+	//PT関係
+	ERROR_CODE_PT_NOT_FOUND,			/**< 指定したPTは見つからなかった。 */
 };
 
 class Error {
