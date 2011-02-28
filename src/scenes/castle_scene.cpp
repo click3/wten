@@ -188,11 +188,18 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			break;
 		}
 		case NEW_MISSON_STEP:
+			// TODO
 		case MISSON_REPORT_STEP:
+			// TODO
 		case JOB_CHANGE_STEP:
+			// TODO
 		case CONTRIBUTION_STEP:
+			// TODO
 		case MONSTER_LIST_STEP:
-		case ITEM_LIST_STEP: {
+			// TODO
+		case ITEM_LIST_STEP:
+			// TODO
+		{
 			next_step = NORMAL_STEP;
 			const char *text_char = "åªç›ñ¢é¿ëïÇ≈Ç∑ÅB";
 			boost::shared_ptr<const std::string> text(new std::string(text_char));

@@ -109,7 +109,8 @@
 #include "scenes/castle_scene.h"
 #include "scenes/opening_scene.h"
 #include "scenes/title_scene.h"
-#include "scenes/tower_gate.h"
+#include "scenes/tower_gate_scene.h"
+#include "scenes/bar_scene.h"
 #include "DxLib_lib.h"
 #include "wten.h"
 
