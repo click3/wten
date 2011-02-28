@@ -16,6 +16,9 @@ PTList::PTList(const std::vector<boost::shared_ptr<PTData> >& list) :
 {
 }
 
+PTList::~PTList() {
+}
+
 //static
 boost::shared_ptr<PTList> PTList::GetCurrentInstance(void) {
 	if(!instance) {

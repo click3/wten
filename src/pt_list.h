@@ -5,6 +5,7 @@ class PTList : boost::noncopyable {
 private:
 	PTList(const std::vector<boost::shared_ptr<PTData> >& list);
 public:
+	~PTList();
 	static boost::shared_ptr<PTList> GetCurrentInstance(void);
 	std::vector<boost::shared_ptr<PTData> > GetList(void);
 	std::vector<boost::shared_ptr<PTData> >::iterator Begin(void);
