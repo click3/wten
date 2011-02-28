@@ -98,6 +98,7 @@
 #include "windows/camp_window.h"
 #include "windows/camp_base_window.h"
 #include "windows/camp_status_window.h"
+#include "windows/camp_item_window.h"
 #include "event_manager.h"
 #include "event_notify.h"
 #include "window_manager.h"

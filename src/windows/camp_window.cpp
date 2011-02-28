@@ -49,7 +49,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		"ê›íË"
 	};
 	boost::shared_ptr<void> window_list[] = {
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
+		boost::shared_ptr<void>(new CampItemWindow(pt, default_frame_filename)),
 		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
 		boost::shared_ptr<void>(new CampStatusWindow(pt, default_frame_filename)),
 		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),

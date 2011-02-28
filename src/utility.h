@@ -31,6 +31,7 @@ do {											\
 } while(false)
 
 #define OPT_UINT(out, in)			OPT_VALUE(out, in, unsigned int)
+#define OPT_BOOL(out, in)			OPT_VALUE(out, in, bool)
 #define OPT_STRING(out, in)			OPT_VALUE(out, in, std::string)
 #define OPT_STRING_PTR(out, in)		OPT_VALUE(out, in, boost::shared_ptr<std::string>)
 typedef boost::tuple<unsigned int, unsigned int> PAIR_UINT;
