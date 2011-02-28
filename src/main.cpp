@@ -29,6 +29,7 @@ boost::shared_ptr<CharData> CreateDummyCharData(const char *char_name) {
 	boost::shared_ptr<CharStatus> char_status(new CharStatus(name, job, CharStatus::ALIGNMENT_GOOD, lv, hp, str, iq, pie, vit, agi, luk, tg, exp, item_list, spell_list));
 	boost::shared_ptr<CharCondition> char_condition(new CharCondition());
 	boost::shared_ptr<CharData> character(new CharData(char_status, char_condition, false));
+	CharacterList::GetCurrentInstance()->AddChar(character);
 	return character;
 }
 
@@ -42,6 +43,7 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 	characters += CreateDummyCharData("ÉRÉNÉäÉR");
 	boost::shared_ptr<PTCondition> pt_condition(new PTCondition());
 	boost::shared_ptr<PTData> pt(new PTData(pt_condition, characters, false));
+	PTList::GetCurrentInstance()->AddPT(pt);
 	return pt;
 }
 
@@ -60,9 +62,7 @@ int main() {
 		boost::shared_ptr<Scene> scene(new scenes::OpeningScene());
 		game.reset(new WTen(scene));
 	}
-	boost::shared_ptr<PTData> pt = CreateDummyPT();
-	PTList::GetCurrentInstance()->AddPT(pt);
-	boost::optional<boost::shared_ptr<Error> > result = game->DoStart(pt);
+	boost::optional<boost::shared_ptr<Error> > result = game->DoStart(CreateDummyPT());
 	game.reset();
 	if(result) {
 		result.get()->Abort();
