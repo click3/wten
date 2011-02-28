@@ -245,10 +245,6 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::AddEvent(EVENT_TYPE even
 	return script_window->AddEventProc(event_type, boost::bind(&CastleScene::OnEvent, this, _1));
 }
 
-boost::optional<boost::shared_ptr<Error> > CastleScene::AddTextWindow(boost::shared_ptr<const std::string> text) {
-	return SceneBase::AddTextWindow(text, 50, 50, 540, 380);
-}
-
 } // scenes
 
 } // wten
