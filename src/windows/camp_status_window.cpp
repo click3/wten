@@ -12,27 +12,6 @@ boost::shared_ptr<uis::UICharStatus> CreateCharStatusUI(boost::shared_ptr<PTData
 	return result;
 }
 
-std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) {
-	const char *text_list[] = {
-		"A:SPELLˆê——‚Ö",
-		"B:–ß‚é",
-	};
-	boost::shared_ptr<void> window_list[] = {
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampStatusWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename))
-	};
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > result;
-	for(unsigned int i = 0; i < 5; i++) {
-		boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
-		boost::shared_ptr<void> user_data = window_list[i];
-		result += boost::make_tuple(text, user_data);
-	}
-	return result;
-}
-
 } // anonymous
 
 CampStatusWindow::CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) :
