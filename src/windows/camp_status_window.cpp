@@ -71,10 +71,10 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampStatus
 			boost::shared_ptr<events::KeyEvent> key_event = boost::static_pointer_cast<events::KeyEvent>(event);
 			if(key_event->GetAction() == events::KeyEvent::KEY_PRESS) {
 				switch(key_event->GetKey()) {
-					case events::KeyEvent::KEY_L:
+					case events::KeyEvent::KEY_R:
 						OPT_ERROR(char_status_ui->ChangeChar(uis::UICharStatus::CHANGE_INDEX_NEXT));
 						break;
-					case events::KeyEvent::KEY_R:
+					case events::KeyEvent::KEY_L:
 						OPT_ERROR(char_status_ui->ChangeChar(uis::UICharStatus::CHANGE_INDEX_BACK));
 						break;
 					case events::KeyEvent::KEY_B:
