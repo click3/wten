@@ -113,6 +113,7 @@
 #include "scenes/bar_scene.h"
 #include "scenes/guild_scene.h"
 #include "scenes/temple_scene.h"
+#include "scenes/shop_scene.h"
 #include "DxLib_lib.h"
 #include "wten.h"
 
