@@ -114,6 +114,7 @@
 #include "scenes/guild_scene.h"
 #include "scenes/temple_scene.h"
 #include "scenes/shop_scene.h"
+#include "scenes/hotel_scene.h"
 #include "DxLib_lib.h"
 #include "wten.h"
 

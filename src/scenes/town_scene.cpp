@@ -17,7 +17,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		"“V—´‚Ì“ƒ@•t‹ß"
 	};
 	boost::shared_ptr<Scene> scene_list[] = {
-		boost::shared_ptr<Scene>(new scenes::DebugScene()),
+		boost::shared_ptr<Scene>(new scenes::HotelScene()),
 		boost::shared_ptr<Scene>(new scenes::ShopScene()),
 		boost::shared_ptr<Scene>(new scenes::TempleScene()),
 		boost::shared_ptr<Scene>(new scenes::BarScene()),
