@@ -5,7 +5,7 @@ class CharData : boost::noncopyable, public boost::enable_shared_from_this<CharD
 private:
 	boost::optional<boost::shared_ptr<Error> > InitializeStatus(void);
 public:
-	CharData(boost::shared_ptr<CharStatus> status, boost::shared_ptr<CharCondition> condition);
+	CharData(boost::shared_ptr<CharStatus> status, boost::shared_ptr<CharCondition> condition, bool dungeon, unsigned int floor = 0, unsigned int x = 0, unsigned int y = 0);
 	~CharData();
 
 	boost::shared_ptr<const CharStatus> GetStatus(void) const;
@@ -35,6 +35,13 @@ public:
 	void AddAC(unsigned int value);
 	void AddThiefSkill(unsigned int value);
 	boost::optional<boost::shared_ptr<Error> > ReloadStatus(void);
+
+	bool IsDungeon(void);
+	boost::optional<boost::shared_ptr<Error> > DungeonStart(unsigned int floor, unsigned int x, unsigned int y);
+	boost::optional<boost::shared_ptr<Error> > DungeonEnd(void);
+	boost::tuple<unsigned int, unsigned int, unsigned int> GetPoint(void) const;
+	boost::optional<boost::shared_ptr<Error> > Move(unsigned int x, unsigned int y);
+	boost::optional<boost::shared_ptr<Error> > MoveFloor(unsigned int floor, unsigned int x, unsigned int y);
 protected:
 	const boost::shared_ptr<CharStatus> status;
 	const boost::shared_ptr<CharCondition> condition;
@@ -52,6 +59,11 @@ protected:
 
 	std::vector<unsigned int> mage_mp;
 	std::vector<unsigned int> priest_mp;
+
+	bool dungeon;
+	unsigned int floor;
+	unsigned int x;
+	unsigned int y;
 };
 
 } // wten

@@ -14,11 +14,14 @@ boost::optional<boost::shared_ptr<Error> > CharData::InitializeStatus(void) {
 	return boost::none;
 }
 
-CharData::CharData(boost::shared_ptr<CharStatus> status, boost::shared_ptr<CharCondition> condition) :
-	status(status), condition(condition)
+CharData::CharData(boost::shared_ptr<CharStatus> status, boost::shared_ptr<CharCondition> condition, bool dungeon, unsigned int floor, unsigned int x, unsigned int y) :
+	status(status), condition(condition), dungeon(dungeon), floor(floor), x(x), y(y)
 {
 	BOOST_ASSERT(status);
 	BOOST_ASSERT(condition);
+	if(dungeon) {
+		BOOST_ASSERT(floor > 0);
+	}
 	boost::optional<boost::shared_ptr<Error> > error = InitializeStatus();
 	if(error) {
 		error.get()->Abort();
@@ -165,5 +168,45 @@ boost::optional<boost::shared_ptr<Error> > CharData::ReloadStatus(void) {
 	return boost::none;
 }
 
+bool CharData::IsDungeon(void) {
+	return dungeon;
+}
+
+boost::optional<boost::shared_ptr<Error> > CharData::DungeonStart(unsigned int floor, unsigned int x, unsigned int y) {
+	BOOST_ASSERT(!dungeon);
+	dungeon = true;
+	this->floor = floor;
+	this->x = x;
+	this->y = y;
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > CharData::DungeonEnd(void) {
+	BOOST_ASSERT(dungeon);
+	dungeon = false;
+	floor = 0;
+	x = y = 0;
+	return boost::none;
+}
+
+boost::tuple<unsigned int, unsigned int, unsigned int> CharData::GetPoint(void) const {
+	BOOST_ASSERT(dungeon);
+	return boost::make_tuple(floor, x, y);
+}
+
+boost::optional<boost::shared_ptr<Error> > CharData::Move(unsigned int x, unsigned int y) {
+	BOOST_ASSERT(dungeon);
+	this->x = x;
+	this->y = y;
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > CharData::MoveFloor(unsigned int floor, unsigned int x, unsigned int y) {
+	BOOST_ASSERT(dungeon);
+	this->floor = floor;
+	this->x = x;
+	this->y = y;
+	return boost::none;
+}
 
 } // wten

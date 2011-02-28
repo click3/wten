@@ -68,12 +68,18 @@ boost::optional<boost::shared_ptr<Error> > PTData::DungeonStart(unsigned int flo
 	dir = dir;
 	this->x = x;
 	this->y = y;
+	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+		OPT_ERROR(character->DungeonStart(floor, x, y));
+	}
 	// TODO 色々
 	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > PTData::DungeonEnd(void) {
 	BOOST_ASSERT(dungeon);
+	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+		OPT_ERROR(character->DungeonEnd());
+	}
 	dungeon = false;
 	floor = 0;
 	x = 0;
@@ -91,6 +97,9 @@ boost::optional<boost::shared_ptr<Error> > PTData::Move(DIRECTION dir, unsigned 
 	BOOST_ASSERT(dungeon);
 	BOOST_ASSERT(x < 20);
 	BOOST_ASSERT(y < 20);
+	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+		OPT_ERROR(character->Move(x, y));
+	}
 	this->dir = dir;
 	this->x = x;
 	this->y = y;
@@ -129,6 +138,9 @@ boost::optional<boost::shared_ptr<Error> > PTData::Move(DIRECTION dir) {
 		y = 19;
 	}
 	// TODO 移動可否判定
+	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+		OPT_ERROR(character->Move(x, y));
+	}
 	this->x = x;
 	this->y = y;
 	// TODO 色々
@@ -201,6 +213,9 @@ boost::optional<boost::shared_ptr<Error> > PTData::MoveFloor(unsigned int floor,
 	BOOST_ASSERT(floor > 0);
 	BOOST_ASSERT(x < 20);
 	BOOST_ASSERT(y < 20);
+	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+		OPT_ERROR(character->MoveFloor(floor, x, y));
+	}
 	this->floor = floor;
 	this->dir = dir;
 	this->x = x;
