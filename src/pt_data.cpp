@@ -41,6 +41,14 @@ std::vector<boost::shared_ptr<const CharData> > PTData::GetCharacters(void) cons
 	return result;
 }
 
+std::vector<boost::shared_ptr<CharData> >::const_iterator PTData::Begin(void) const {
+	return characters.begin();
+}
+
+std::vector<boost::shared_ptr<CharData> >::const_iterator PTData::End(void) const {
+	return characters.end();
+}
+
 boost::shared_ptr<const CharData> PTData::operator[](unsigned int index) const {
 	BOOST_ASSERT(index < characters.size());
 	return characters[index];
@@ -52,6 +60,14 @@ boost::shared_ptr<PTCondition> PTData::GetCondition(void) {
 
 std::vector<boost::shared_ptr<CharData> > PTData::GetCharacters(void) {
 	return characters;
+}
+
+std::vector<boost::shared_ptr<CharData> >::iterator PTData::Begin(void) {
+	return characters.begin();
+}
+
+std::vector<boost::shared_ptr<CharData> >::iterator PTData::End(void) {
+	return characters.end();
 }
 
 boost::shared_ptr<CharData> PTData::operator[](unsigned int index) {

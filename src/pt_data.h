@@ -15,10 +15,14 @@ public:
 	~PTData();
 	boost::shared_ptr<const PTCondition> GetCondition(void) const;
 	std::vector<boost::shared_ptr<const CharData> > GetCharacters(void) const;
+	std::vector<boost::shared_ptr<CharData> >::const_iterator Begin(void) const;
+	std::vector<boost::shared_ptr<CharData> >::const_iterator End(void) const;
 	boost::shared_ptr<const CharData> operator[](unsigned int index) const;
 
 	boost::shared_ptr<PTCondition> GetCondition(void);
 	std::vector<boost::shared_ptr<CharData> > GetCharacters(void);
+	std::vector<boost::shared_ptr<CharData> >::iterator Begin(void);
+	std::vector<boost::shared_ptr<CharData> >::iterator End(void);
 	boost::shared_ptr<CharData> operator[](unsigned int index);
 
 	boost::optional<boost::shared_ptr<Error> > DungeonStart(unsigned int floor, DIRECTION dir, unsigned int x, unsigned int y);
