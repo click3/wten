@@ -6,14 +6,33 @@ using namespace utility;
 
 namespace {
 
-struct MaxFindByUIStringWidth {
-	bool operator ()(const boost::shared_ptr<UIString>& left, const boost::shared_ptr<UIString>& right) {
-		opt_error<unsigned int>::type left_opt = left->CalcWidth();
-		BOOST_ASSERT(left_opt.which() == 1);
-		opt_error<unsigned int>::type right_opt = right->CalcWidth();
-		BOOST_ASSERT(right_opt.which() == 1);
+unsigned int GetUIWidth(boost::shared_ptr<uis::UIBase> ui) {
+	opt_error<unsigned int>::type width_opt = ui->CalcWidth();
+	BOOST_ASSERT(width_opt.which() == 1);
+	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = ui->GetSize();
+	BOOST_ASSERT(size_opt.which() == 1);
+	return std::max(boost::get<unsigned int>(width_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<0>());
+}
 
-		return boost::get<unsigned int>(left_opt) < boost::get<unsigned int>(right_opt);
+unsigned int GetUIHeight(boost::shared_ptr<uis::UIBase> ui) {
+	opt_error<unsigned int>::type height_opt = ui->CalcHeight();
+	BOOST_ASSERT(height_opt.which() == 1);
+	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = ui->GetSize();
+	BOOST_ASSERT(size_opt.which() == 1);
+	return std::max(boost::get<unsigned int>(height_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<1>());
+}
+
+struct MaxFindByUIStringWidth {
+	bool operator ()(boost::shared_ptr<UIString> left, boost::shared_ptr<UIString> right) {
+		return GetUIWidth(left) < GetUIWidth(right);
+	}
+};
+
+struct SumByUIStringHeight {
+	SumByUIStringHeight(unsigned int min) : min(min) { }
+	const unsigned int min;
+	unsigned int operator ()(unsigned int value, boost::shared_ptr<UIString> obj) {
+		return value + std::max(min, GetUIHeight(obj));
 	}
 };
 
@@ -32,13 +51,16 @@ std::vector<boost::shared_ptr<UIString> > CreateSelectList(const std::vector<boo
 
 } // anonymous
 
-UISelector::UISelector(const std::vector<boost::shared_ptr<const std::string> >& texts, boost::shared_ptr<const std::string> arrow_filename) :
-	UIBase(), select_list(CreateSelectList(texts)), arrow(new UIImage(arrow_filename)), index(0)
+UISelector::UISelector(const std::vector<boost::shared_ptr<const std::string> >& texts, unsigned int line_count, boost::shared_ptr<const std::string> arrow_filename) :
+	UIBase(), select_list(CreateSelectList(texts)), arrow(new UIImage(arrow_filename)), index(0), line_count(line_count), line_size(ceil(select_list.size() / (double)line_count))
 {
 	BOOST_ASSERT(select_list.size() == texts.size());
 	BOOST_ASSERT(arrow_filename);
 	BOOST_ASSERT(!arrow_filename->empty());
 	BOOST_ASSERT(arrow);
+	BOOST_ASSERT(line_count > 0);
+	BOOST_ASSERT(line_count <= select_list.size());
+	BOOST_ASSERT(line_size > 0);
 }
 
 UISelector::~UISelector() {
@@ -64,19 +86,40 @@ boost::optional<boost::shared_ptr<Error> > UISelector::Select(unsigned int index
 }
 
 boost::optional<boost::shared_ptr<Error> > UISelector::Select(MOVE_FOCUS move_mode) {
-	if(move_mode == MOVE_FOCUS_UP) {
-		if(index == 0) {
-			index = select_list.size() - 1;
-		} else {
-			index--;
-		}
-	} else if(move_mode == MOVE_FOCUS_DOWN) {
-		index++;
-		if(index == select_list.size()) {
-			index = 0;
-		}
-	} else {
-		BOOST_ASSERT(false);
+	switch(move_mode) {
+		case MOVE_FOCUS_UP:
+			if((index % line_size) == 0) {
+				index += line_size - 1;
+			} else {
+				index--;
+			}
+			break;
+		case MOVE_FOCUS_DOWN:
+			index++;
+			if((index % line_size) == 0) {
+				index -= line_size;
+			}
+			break;
+		case MOVE_FOCUS_RIGHT:
+			if(index + line_size >= select_list.size()) {
+				index = index % line_size;
+			} else {
+				index += line_size;
+			}
+			break;
+		case MOVE_FOCUS_LEFT:
+			if(index < line_size) {
+				if(((select_list.size()-1) % line_size) + 1 > index) {
+					index = line_size * (line_count - 1) + index;
+				} else {
+					index = line_size * (line_count - 2) + index;
+				}
+			} else {
+				index -= line_size;
+			}
+			break;
+		default:
+			BOOST_ASSERT(false);
 	}
 	return boost::none;
 }
@@ -141,43 +184,31 @@ boost::optional<boost::shared_ptr<Error> > UISelector::Resize(unsigned int width
 	BOOST_ASSERT(height >= this_height);
 
 	BOOST_ASSERT(arrow);
-	unsigned int arrow_width;
-	OPT_UINT(arrow_width, arrow->CalcWidth());
+	const unsigned int arrow_width = GetUIWidth(arrow);
+	const unsigned int arrow_height = GetUIHeight(arrow);
 
-	unsigned int arrow_height;
-	OPT_UINT(arrow_height, arrow->CalcHeight());
+	const unsigned int blank_x = (width - this_width) / 2;
+	const unsigned int blank_y = (height - this_height) / 2;
 
-	unsigned int arrow_x;
-	unsigned int text_x;
-	if(width == this_width) {
-		arrow_x = 0;
-		text_x = arrow_width;
-	} else {
-		arrow_x = (width - this_width) / 2;
-		text_x = arrow_width + arrow_x;
-	}
-
-	unsigned blank_y;
-	if(height == this_height) {
-		blank_y = 0;
-	} else {
-		blank_y = (height - this_height) / 2;
-	}
-	unsigned int i = 0;
-	unsigned int current_y = blank_y;
-	BOOST_FOREACH(boost::shared_ptr<UIString> select, select_list) {
-		unsigned int select_height;
-		OPT_UINT(select_height, select->CalcHeight());
-
-		const unsigned int text_y = current_y + (arrow_height > select_height ? (arrow_height - select_height) / 2 : 0);
-		OPT_ERROR(select->Move(this->x + text_x, this->y + text_y));
-
-		if(i == index) {
-			const unsigned int arrow_y = current_y + (select_height > arrow_height ? (select_height - arrow_height) / 2 : 0);
-			OPT_ERROR(arrow->Move(this->x + arrow_x, this->y + arrow_y));
+	unsigned int current_x = blank_x;
+	for(unsigned int line_index = 0; line_index < line_count; line_index++) {
+		unsigned int current_y = blank_y;
+		for(unsigned int i = 0; i < line_size; i++) {
+			const unsigned int index = line_index * line_size + i;
+			const unsigned int select_height = GetUIHeight(select_list[index]);
+			const unsigned int text_x = current_x + arrow_width;
+			const unsigned int text_y = current_y + (arrow_height > select_height ? (arrow_height - select_height) / 2 : 0);
+			OPT_ERROR(select_list[index]->Move(text_x, text_y));
+			if(index == this->index) {
+				const unsigned int arrow_x = current_x;
+				const unsigned int arrow_y = current_y + (select_height > arrow_height ? (select_height - arrow_height) / 2 : 0);
+				OPT_ERROR(arrow->Move(arrow_x, arrow_y));
+			}
+			current_y += std::max(select_height, arrow_height);
 		}
-		current_y += std::max(select_height, arrow_height);
-		i++;
+		unsigned int line_width;
+		OPT_UINT(line_width, CalcLineWidth(line_index));
+		current_x += line_width;
 	}
 
 	return boost::none;
@@ -204,37 +235,49 @@ boost::optional<boost::shared_ptr<Error> > UISelector::Draw(unsigned int abs_x, 
 }
 
 opt_error<unsigned int>::type UISelector::CalcWidth() const {
-	unsigned int result;
-
-	unsigned int arrow_width;
-	OPT_UINT(arrow_width, arrow->CalcWidth());
-	result = arrow_width;
-
-	std::vector<boost::shared_ptr<UIString> >::const_iterator it = std::max_element(select_list.begin(), select_list.end(), MaxFindByUIStringWidth());
-	BOOST_ASSERT(it != select_list.end());
-	boost::shared_ptr<UIString> max_select = *it;
-	BOOST_ASSERT(max_select);
-
-	unsigned int width;
-	OPT_UINT(width, max_select->CalcWidth());
-	result += width;
-
+	unsigned int result = 0;
+	for(unsigned int i = 0; i < line_count; i++) {
+		unsigned int line_width;
+		OPT_UINT(line_width, CalcLineWidth(i));
+		result += line_width;
+	}
 	return result;
 }
 
 opt_error<unsigned int>::type UISelector::CalcHeight() const {
-	unsigned int arrow_height;
-	OPT_UINT(arrow_height, arrow->CalcHeight());
-
 	unsigned int result = 0;
-	BOOST_FOREACH(boost::shared_ptr<UIString> select, select_list) {
-		BOOST_ASSERT(select);
-		unsigned int height;
-		OPT_UINT(height, select->CalcHeight());
-		result += std::max(height, arrow_height);
+	for(unsigned int i = 0; i < line_count; i++) {
+		unsigned int line_height;
+		OPT_UINT(line_height, CalcLineHeight(i));
+		result = std::max(result, line_height);
 	}
+	return result;
+}
+
+utility::opt_error<unsigned int>::type UISelector::CalcLineWidth(unsigned int index) const {
+	unsigned int result = GetUIWidth(arrow);
+	std::vector<boost::shared_ptr<UIString> >::const_iterator start, end, it;
+	start = select_list.begin() + line_size * index;
+	if(line_size * (index + 1) >= select_list.size()) {
+		end = select_list.end();
+	} else {
+		end = start + line_size;
+	}
+	it = std::max_element(start, end, MaxFindByUIStringWidth());
+	result += GetUIWidth(*it);
 
 	return result;
+}
+
+utility::opt_error<unsigned int>::type UISelector::CalcLineHeight(unsigned int index) const {
+	std::vector<boost::shared_ptr<UIString> >::const_iterator start, end;
+	start = select_list.begin() + line_size * index;
+	if(line_size * (index + 1) >= select_list.size()) {
+		end = select_list.end();
+	} else {
+		end = start + line_size;
+	}
+	return std::accumulate(start, end, 0, SumByUIStringHeight(GetUIHeight(arrow)));
 }
 
 unsigned int UISelector::GetCount() const {
