@@ -16,6 +16,9 @@ boost::shared_ptr<SelectWindow> CreateCharSelectWindow(boost::shared_ptr<PTData>
 		text_list += boost::make_tuple(text, user_data);
 	}
 	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	result->SetSelectClose(false);
+	BOOST_ASSERT(!result->Move(50, 50));
+	BOOST_ASSERT(!result->Resize());
 	return result;
 }
 
@@ -32,6 +35,8 @@ boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<Ch
 	}
 
 	boost::shared_ptr<uis::UIStringBox> result(new uis::UIStringBox(text, default_frame_filename));
+	BOOST_ASSERT(!result->Move(0, 350));
+	BOOST_ASSERT(!result->Resize(640, 130));
 	return result;
 }
 
@@ -44,6 +49,9 @@ boost::shared_ptr<SelectWindow> CreateItemSelectWindow(boost::shared_ptr<CharDat
 		text_list += boost::make_tuple(text, user_data);
 	}
 	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	result->SetSelectClose(false);
+	BOOST_ASSERT(!result->Move(75, 75));
+	BOOST_ASSERT(!result->Resize());
 	return result;
 }
 
@@ -135,6 +143,9 @@ boost::shared_ptr<SelectWindow> CreateCommandSelectWindow(boost::shared_ptr<Item
 		text_list += boost::make_tuple(text, user_data);
 	}
 	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	result->SetSelectClose(false);
+	BOOST_ASSERT(!result->Move(100, 100));
+	BOOST_ASSERT(!result->Resize());
 	return result;
 }
 
@@ -147,8 +158,10 @@ boost::shared_ptr<SelectWindow> CreateTargetSelectWindow(boost::shared_ptr<PTDat
 		text_list += boost::make_tuple(text, user_data);
 	}
 	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	result->SetSelectClose(false);
+	BOOST_ASSERT(!result->Move(125, 125));
+	BOOST_ASSERT(!result->Resize());
 	return result;
-	
 }
 
 } // anonymous
@@ -168,6 +181,7 @@ CampItemWindow::CampItemWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<c
 	BOOST_ASSERT(!selected_command);
 	BOOST_ASSERT(!item_target_select_window);
 	BOOST_ASSERT(!target_char);
+	BOOST_ASSERT(!error_message);
 }
 
 CampItemWindow::~CampItemWindow() {
@@ -188,6 +202,10 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampItemWi
 		OPT_ERROR(OnSelectEvent(event));
 		return boost::none;
 	}
+	if(event->GetEventType() == EVENT_TYPE_NEXT_STEP) {
+		OPT_ERROR(OnNextStepEvent(event));
+		return boost::none;
+	}
 	return CampBaseWindow::NotifyEvent(event);
 }
 
@@ -197,7 +215,9 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::OnKeyEvent(boost::sha
 	if(key_event->GetAction() == events::KeyEvent::KEY_PRESS) {
 		switch(key_event->GetKey()) {
 			case events::KeyEvent::KEY_B:
-				OPT_ERROR(StateBack());
+				if(!error_message) {
+					OPT_ERROR(StateBack());
+				}
 				break;
 		}
 	}
@@ -227,12 +247,33 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::OnSelectEvent(boost::
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > CampItemWindow::OnNextStepEvent(boost::shared_ptr<Event> event) {
+	BOOST_ASSERT(event->GetEventType() == EVENT_TYPE_NEXT_STEP);
+	boost::shared_ptr<events::NextStepEvent> next_step_event = boost::static_pointer_cast<events::NextStepEvent>(event);
+	switch(state) {
+		case STATE_CHAR_SELECT:
+			error_message.reset();
+			OPT_ERROR(RemoveThisWindow());
+			break;
+		case STATE_ITEM_SELECT:
+			error_message.reset();
+			selected_char.reset();
+			state = STATE_CHAR_SELECT;
+			break;
+		default:
+			BOOST_ASSERT(false);
+			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateBack(void) {
 	switch(state) {
 		case STATE_CHAR_SELECT:
 			SendPopWindowEvent(char_select_window);
 			char_select_window.reset();
 			OPT_ERROR(RemoveThisWindow());
+			state = STATE_INITIALIZE;
 			break;
 		case STATE_ITEM_SELECT:
 			{
@@ -274,10 +315,17 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateBack(void) {
 boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToCharSelect(void) {
 	BOOST_ASSERT(state == STATE_INITIALIZE);
 
-	char_select_window = CreateCharSelectWindow(pt, default_frame_filename);
-	BOOST_ASSERT(char_select_window);
+	if(pt->GetCharacters().size() > 0) {
+		char_select_window = CreateCharSelectWindow(pt, default_frame_filename);
+		BOOST_ASSERT(char_select_window);
 
-	SendNextWindowEvent(char_select_window);
+		SendNextWindowEvent(char_select_window);
+	} else {
+		const char *text = "PTに所属しているキャラクターが居ません";
+		error_message.reset(new std::string(text));
+		OPT_ERROR(SendNextTextWindowEvent(error_message));
+	}
+
 	state = STATE_CHAR_SELECT;
 	return boost::none;
 }
@@ -287,13 +335,20 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToItemSelect(boo
 	selected_char = boost::static_pointer_cast<CharData>(data);
 	BOOST_ASSERT(selected_char);
 
-	item_description_ui = CreateItemDescriptionUI(selected_char, default_frame_filename);
-	BOOST_ASSERT(item_description_ui);
-	item_select_window = CreateItemSelectWindow(selected_char, default_frame_filename);
-	BOOST_ASSERT(item_select_window);
+	if(selected_char->GetStatus()->GetItemList().size() > 0) {
+		item_description_ui = CreateItemDescriptionUI(selected_char, default_frame_filename);
+		BOOST_ASSERT(item_description_ui);
+		item_select_window = CreateItemSelectWindow(selected_char, default_frame_filename);
+		BOOST_ASSERT(item_select_window);
 
-	OPT_ERROR(AddUI(item_description_ui));
-	SendNextWindowEvent(item_select_window);
+		OPT_ERROR(AddUI(item_description_ui));
+		SendNextWindowEvent(item_select_window);
+	} else {
+		const char *text = "そのキャラクターはアイテムを所持していません";
+		error_message.reset(new std::string(text));
+		OPT_ERROR(SendNextTextWindowEvent(error_message));
+	}
+
 	state = STATE_ITEM_SELECT;
 	return boost::none;
 }

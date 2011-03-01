@@ -29,6 +29,7 @@ public:
 protected:
 	boost::optional<boost::shared_ptr<Error> > OnKeyEvent(boost::shared_ptr<Event> event);
 	boost::optional<boost::shared_ptr<Error> > OnSelectEvent(boost::shared_ptr<Event> event);
+	boost::optional<boost::shared_ptr<Error> > OnNextStepEvent(boost::shared_ptr<Event> event);
 	boost::optional<boost::shared_ptr<Error> > StateBack(void);
 
 	boost::optional<boost::shared_ptr<Error> > StateToCharSelect(void);
@@ -57,6 +58,8 @@ protected:
 
 	boost::shared_ptr<SelectWindow> item_target_select_window;
 	boost::shared_ptr<CharData> target_char;
+
+	boost::shared_ptr<const std::string> error_message;
 };
 
 } // windows
