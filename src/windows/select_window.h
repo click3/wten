@@ -12,6 +12,7 @@ public:
 	bool IsSelectClose(void) const;
 	void SetSelectClose(bool flag);
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
+	boost::optional<boost::shared_ptr<Error> > Resize();
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);
 	utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type NotifyEvent(boost::shared_ptr<Event> event);
 private:

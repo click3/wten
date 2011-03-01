@@ -84,6 +84,20 @@ boost::optional<boost::shared_ptr<Error> > SelectWindow::WindowInitialize(void) 
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > SelectWindow::Resize() {
+	unsigned int width, height;
+	OPT_ERROR(selector->Resize());
+	OPT_PAIR_UINT(width, height, selector->GetSize());
+	if(frame) {
+		unsigned int frame_w, frame_h;
+		OPT_ERROR(frame->Resize());
+		OPT_PAIR_UINT(frame_w, frame_h, frame->GetSize());
+		width += frame_w;
+		height += frame_h;
+	}
+	return Resize(width, height);
+}
+
 boost::optional<boost::shared_ptr<Error> > SelectWindow::Resize(unsigned int width, unsigned int height) {
 	OPT_ERROR(WindowBase::Resize(width, height));
 	BOOST_ASSERT(selector);
