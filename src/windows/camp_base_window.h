@@ -13,6 +13,7 @@ public:
 protected:
 	void SendNextWindowEvent(boost::shared_ptr<Window> window);
 	void SendPopWindowEvent(boost::shared_ptr<Window> window);
+	boost::optional<boost::shared_ptr<Error> > SendNextTextWindowEvent(boost::shared_ptr<const std::string> text, unsigned int x = 50, unsigned int y = 50, unsigned int width = 540, unsigned int height = 380);
 
 	const boost::shared_ptr<PTData> pt;
 };

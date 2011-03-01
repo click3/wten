@@ -76,6 +76,15 @@ void CampBaseWindow::SendPopWindowEvent(boost::shared_ptr<Window> window) {
 	EventNotify::Send(event);
 }
 
+
+boost::optional<boost::shared_ptr<Error> > CampBaseWindow::SendNextTextWindowEvent(boost::shared_ptr<const std::string> text, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+	boost::shared_ptr<TextWindow> window(new TextWindow(text, default_frame_filename));
+	OPT_ERROR(window->Move(x, y));
+	OPT_ERROR(window->Resize(width, height));
+	SendNextWindowEvent(window);
+	return boost::none;
+}
+
 } // windows
 
 } // wten
