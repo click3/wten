@@ -1,4 +1,4 @@
-cc  = cc
+cc  = cl
 !if $(RELEASE) == y
 	opt = /errorReport:none /we4715 /W1 /MT /EHsc /Ox /Fpwten.pch /DBOOST_DISABLE_ASSERTS
 !else
