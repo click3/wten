@@ -3,13 +3,12 @@ namespace wten {
 
 class ItemInfo;
 
-enum MONSTER_TYPE {
-	MONSTER_TYPE_ANIMAL,
-	MONSTER_TYPE_UNDEAD,
-};
-
 class EnemyInfo : boost::noncopyable {
 public:
+	enum MONSTER_TYPE {
+		MONSTER_TYPE_ANIMAL,
+		MONSTER_TYPE_UNDEAD,
+	};
 	EnemyInfo(boost::shared_ptr<const std::string> uncertainty_name, boost::shared_ptr<const std::string> name,
 		MONSTER_TYPE type, unsigned int lv, unsigned int hp_base, unsigned int hp_bonus, int ac,
 		unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,

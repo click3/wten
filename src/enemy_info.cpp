@@ -40,7 +40,7 @@ boost::shared_ptr<const std::string> EnemyInfo::GetName() const {
 	return name;
 }
 
-MONSTER_TYPE EnemyInfo::GetType() const {
+EnemyInfo::MONSTER_TYPE EnemyInfo::GetType() const {
 	return type;
 }
 
