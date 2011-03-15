@@ -55,6 +55,7 @@ public:
 };
 
 unsigned int Dice(unsigned int base, unsigned int count, unsigned int bonus = 0);
+boost::shared_ptr<FILE> MyFOpen(const std::string &path, const char *type);
 
 } // utility
 
