@@ -52,7 +52,7 @@ std::vector<boost::shared_ptr<UIString> > CreateSelectList(const std::vector<boo
 } // anonymous
 
 UISelector::UISelector(const std::vector<boost::shared_ptr<const std::string> >& texts, unsigned int line_count, boost::shared_ptr<const std::string> arrow_filename) :
-	UIBase(), select_list(CreateSelectList(texts)), arrow(new UIImage(arrow_filename)), index(0), line_count(line_count), line_size(ceil(select_list.size() / (double)line_count))
+	UIBase(), select_list(CreateSelectList(texts)), arrow(new UIImage(arrow_filename)), index(0), line_count(line_count), line_size(static_cast<unsigned int>(ceil(select_list.size() / (double)line_count)))
 {
 	BOOST_ASSERT(select_list.size() == texts.size());
 	BOOST_ASSERT(arrow_filename);
