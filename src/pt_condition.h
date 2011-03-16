@@ -1,7 +1,10 @@
 
 namespace wten {
 
-class PTCondition {
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
+class PTCondition : boost::noncopyable {
 public:
 	PTCondition();
 	~PTCondition();
@@ -28,5 +31,6 @@ private:
 	bool identifies;
 	bool spell_disable;
 };
+#pragma warning(pop)
 
 } // wten
