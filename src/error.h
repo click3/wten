@@ -40,12 +40,16 @@ enum ERROR_CODE {
 	ERROR_CODE_PT_NOT_FOUND,			/**< Žw’è‚µ‚½PT‚ÍŒ©‚Â‚©‚ç‚È‚©‚Á‚½B */
 };
 
-class Error {
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
+class Error : boost::noncopyable {
 public:
 	virtual ~Error() { }
 	virtual const wchar_t* ToString(void) const = 0;
 	virtual ERROR_CODE GetErrorCode(void) const = 0;
 	virtual void Abort(void) = 0;
 };
+#pragma warning(pop)
 
 } // wten
