@@ -1,8 +1,10 @@
 cc  = cl
 !if $(RELEASE) == y
-	opt = /nologo /errorReport:none /RTCu /MP8 /Wall /WX /MT /EHac /Ox /GL /Fpwten.pch /Zm300 /DBOOST_DISABLE_ASSERTS
+	opt = /nologo /errorReport:none /MP8 /Wall /WX /MT  /EHa /Ox /GL /GF /Gy /Fpwten.pch /Zm300
+	link_opt = /link /OPT:REF,ICF
 !else
-	opt = /nologo /errorReport:none /RTCu /MP8 /Wall /WX /MT /EHac         /Fpwten.pch /Zm300
+	opt = /nologo /errorReport:none /MP8 /Wall /WX /MTd /EHa /Od             /Fpwten.pch /Zm300
+	link_opt = /link /OPT:NOREF,NOICF
 !endif
 obj = DxLib_lib.obj utility.obj global_data.obj play_time.obj graph.obj char_condition.obj pt_condition.obj enemy_condition.obj enemy_info.obj enemy_status.obj action.obj job.obj item_info.obj item_info_list.obj item.obj spell_base.obj char_status.obj char_data.obj pt_data.obj pt_list.obj character_list.obj ui_base.obj ui_box.obj ui_string.obj ui_image.obj ui_selector.obj ui_string_box.obj ui_queue.obj ui_pt_status.obj ui_input_string.obj ui_input_dlg.obj ui_char_status.obj ui_dummy.obj event_base.obj key_event.obj on_select_event.obj on_select_change_event.obj pop_window_event.obj next_step_event.obj input_string_event.obj next_window_event.obj select_window.obj script_window.obj text_window.obj input_dlg_window.obj opening_window.obj camp_window.obj camp_base_window.obj camp_status_window.obj camp_item_window.obj window_base.obj window_manager.obj event_checker_base.obj key_event_checker.obj event_manager.obj debug_scene.obj error_normal.obj event_notify.obj scene_base.obj scene_selector_scene.obj camp_scene.obj town_scene.obj castle_scene.obj opening_scene.obj title_scene.obj tower_gate_scene.obj bar_scene.obj guild_scene.obj temple_scene.obj shop_scene.obj hotel_scene.obj wten.obj stdafx.obj main.obj
 exe = wten.exe
@@ -13,7 +15,7 @@ exe = wten.exe
 	$(cc) /c /Yustdafx.h $(opt) /Tp $<
 $(exe).exe: $(obj)
 	version.exe
-	$(cc) $(opt) /Fe$* $** $(lib)
+	$(cc) $(opt) /Fe$* $** $(lib) $(link_opt)
 
 src/stdafx.h: src/DxLib_lib.h src/global_data.h src/play_time.h src/error.h src/char_condition.h src/pt_condition.h src/enemy_condition.h src/enemy_info.h src/enemy_status.h src/action.h src/job.h src/item_info.h src/item_info_list.h src/item.h src/actions/spell_base.h src/char_status.h src/char_data.h src/pt_data.h src/pt_list.h src/character_list.h src/event.h src/events/event_base.h src/events/key_event.h src/events/on_select_event.h src/events/on_select_change_event.h src/events/pop_window_event.h src/events/next_step_event.h src/events/input_string_event.h src/events/next_window_event.h src/event_checker.h src/events/event_checker_base.h src/events/key_event_checker.h src/event_manager.h src/graph.h src/ui.h src/utility.h src/window.h src/window_manager.h src/scene.h src/wten.h src/debug_scene.h src/error_normal.h src/event_notify.h src/scenes/scene_base.h src/scenes/scene_selector_scene.h src/scenes/camp_scene.h src/scenes/town_scene.h src/scenes/castle_scene.h src/scenes/opening_scene.h src/scenes/title_scene.h src/scenes/tower_gate_scene.h src/scenes/bar_scene.h src/scenes/guild_scene.h src/scenes/temple_scene.h src/scenes/shop_scene.h src/scenes/hotel_scene.h src/windows/window_base.h src/windows/select_window.h src/windows/script_window.h src/windows/text_window.h src/windows/input_dlg_window.h src/windows/opening_window.h src/windows/camp_window.h src/windows/camp_base_window.h src/windows/camp_status_window.h src/windows/camp_item_window.h src/uis/ui_base.h src/uis/ui_box.h src/uis/ui_string.h src/uis/ui_image.h src/uis/ui_selector.h src/uis/ui_string_box.h src/uis/ui_queue.h src/uis/ui_pt_status.h src/uis/ui_input_string.h src/uis/ui_input_dlg.h src/uis/ui_char_status.h src/uis/ui_dummy.h
 	touch src/stdafx.h

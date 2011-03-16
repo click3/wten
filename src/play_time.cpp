@@ -5,9 +5,9 @@ namespace wten {
 namespace {
 
 unsigned int GetCurrentSystemTime(void) {
-	time_t current;
-	BOOST_ASSERT(time(&current) != -1);
-	return static_cast<unsigned int>(current);
+	const time_t result = time(NULL);
+	BOOST_ASSERT(result != -1);
+	return static_cast<unsigned int>(result);
 }
 
 boost::shared_ptr<PlayTime> this_ptr;
