@@ -41,11 +41,11 @@ protected:
 	boost::optional<boost::shared_ptr<Error> > StateToTargetSelect(boost::shared_ptr<void> data);
 	boost::optional<boost::shared_ptr<Error> > StateToApply(boost::shared_ptr<void> data);
 
-	boost::optional<boost::shared_ptr<Error> > Move(void);
-	boost::optional<boost::shared_ptr<Error> > Use(void);
-	boost::optional<boost::shared_ptr<Error> > Equip(void);
-	boost::optional<boost::shared_ptr<Error> > EquipRelease(void);
-	boost::optional<boost::shared_ptr<Error> > Delete(void);
+	boost::optional<boost::shared_ptr<Error> > CommandMove(void);
+	boost::optional<boost::shared_ptr<Error> > CommandUse(void);
+	boost::optional<boost::shared_ptr<Error> > CommandEquip(void);
+	boost::optional<boost::shared_ptr<Error> > CommandEquipRelease(void);
+	boost::optional<boost::shared_ptr<Error> > CommandDelete(void);
 
 	STATE state;
 

@@ -387,19 +387,19 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToApply(boost::s
 
 	switch(*selected_command) {
 		case COMMAND_MOVE:
-			OPT_ERROR(Move());
+			OPT_ERROR(CommandMove());
 			break;
 		case COMMAND_USE:
-			OPT_ERROR(Use());
+			OPT_ERROR(CommandUse());
 			break;
 		case COMMAND_EQUIP:
-			OPT_ERROR(Equip());
+			OPT_ERROR(CommandEquip());
 			break;
 		case COMMAND_EQUIP_RELEASE:
-			OPT_ERROR(EquipRelease());
+			OPT_ERROR(CommandEquipRelease());
 			break;
 		case COMMAND_DELETE:
-			OPT_ERROR(Delete());
+			OPT_ERROR(CommandDelete());
 			break;
 		default:
 			BOOST_ASSERT(false);
@@ -415,27 +415,27 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToApply(boost::s
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > CampItemWindow::Move(void) {
+boost::optional<boost::shared_ptr<Error> > CampItemWindow::CommandMove(void) {
 	// TODO
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > CampItemWindow::Use(void) {
+boost::optional<boost::shared_ptr<Error> > CampItemWindow::CommandUse(void) {
 	// TODO
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > CampItemWindow::Equip(void) {
+boost::optional<boost::shared_ptr<Error> > CampItemWindow::CommandEquip(void) {
 	// TODO
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > CampItemWindow::EquipRelease(void) {
+boost::optional<boost::shared_ptr<Error> > CampItemWindow::CommandEquipRelease(void) {
 	// TODO
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > CampItemWindow::Delete(void) {
+boost::optional<boost::shared_ptr<Error> > CampItemWindow::CommandDelete(void) {
 	// TODO
 	return boost::none;
 }
