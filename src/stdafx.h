@@ -9,6 +9,7 @@
 #pragma warning(disable: 4350) // constなしの参照渡しはリテラルを受け取ることができないため、別のコンストラクタが呼ばれます
 #pragma warning(disable: 4365) // signed/unsignedが違う型変換が行われました
 #pragma warning(disable: 4512) // 代入演算子を生成するために必要なコンストラクタがアクセスできません、代入演算子を作れませんでした
+#pragma warning(disable: 4555) // 副作用のない式
 #pragma warning(disable: 4619) // 無効化を試みた警告番号は存在しません
 #pragma warning(disable: 4625) // 基本クラスのコピーコンストラクタがアクセス不能なのでコピーコンストラクタが作れませんでした
 #pragma warning(disable: 4626) // 基本クラスの代入演算子がアクセス不能なので代入演算子が作れませんでした
@@ -55,6 +56,7 @@
 #pragma warning(pop)
 #include "boost/spirit/include/phoenix.hpp"
 
+#include <limits.h>
 #include <locale.h>
 #include <stdio.h>
 
@@ -68,8 +70,10 @@
 #pragma warning(pop)
 //外部ライブラリーの警告無効ここまで
 
-#pragma warning(disable: 4514) //使用されていない関数/メソッドが削除されました
-#pragma warning(disable: 4503) //装飾名が4096文字を超えたため切り捨てられます
+#pragma warning(disable: 4350) // constなしの参照渡しはリテラルを受け取ることができないため、別のコンストラクタが呼ばれます
+#pragma warning(disable: 4503) // 装飾名が4096文字を超えたため切り捨てられます
+#pragma warning(disable: 4514) // 使用されていない関数/メソッドが削除されました
+#pragma warning(disable: 4710) // インライン関数として選択されましたがインライン展開できませんでした
 
 #include "org/click3/notification_center.h"
 

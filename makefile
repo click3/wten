@@ -1,8 +1,8 @@
 cc  = cl
 !if $(RELEASE) == y
-	opt = /nologo /errorReport:none /RTCu /MP8 /Wall /WX /MT /EHsc /Ox /GL /Fpwten.pch /Zm300 /DBOOST_DISABLE_ASSERTS
+	opt = /nologo /errorReport:none /RTCu /MP8 /Wall /WX /MT /EHac /Ox /GL /Fpwten.pch /Zm300 /DBOOST_DISABLE_ASSERTS
 !else
-	opt = /nologo /errorReport:none /RTCu /MP8 /Wall /WX /MT /EHsc         /Fpwten.pch /Zm300
+	opt = /nologo /errorReport:none /RTCu /MP8 /Wall /WX /MT /EHac         /Fpwten.pch /Zm300
 !endif
 obj = DxLib_lib.obj utility.obj global_data.obj play_time.obj graph.obj char_condition.obj pt_condition.obj enemy_condition.obj enemy_info.obj enemy_status.obj action.obj job.obj item_info.obj item_info_list.obj item.obj spell_base.obj char_status.obj char_data.obj pt_data.obj pt_list.obj character_list.obj ui_base.obj ui_box.obj ui_string.obj ui_image.obj ui_selector.obj ui_string_box.obj ui_queue.obj ui_pt_status.obj ui_input_string.obj ui_input_dlg.obj ui_char_status.obj ui_dummy.obj event_base.obj key_event.obj on_select_event.obj on_select_change_event.obj pop_window_event.obj next_step_event.obj input_string_event.obj next_window_event.obj select_window.obj script_window.obj text_window.obj input_dlg_window.obj opening_window.obj camp_window.obj camp_base_window.obj camp_status_window.obj camp_item_window.obj window_base.obj window_manager.obj event_checker_base.obj key_event_checker.obj event_manager.obj debug_scene.obj error_normal.obj event_notify.obj scene_base.obj scene_selector_scene.obj camp_scene.obj town_scene.obj castle_scene.obj opening_scene.obj title_scene.obj tower_gate_scene.obj bar_scene.obj guild_scene.obj temple_scene.obj shop_scene.obj hotel_scene.obj wten.obj stdafx.obj main.obj
 exe = wten.exe
