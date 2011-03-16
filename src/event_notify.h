@@ -27,6 +27,7 @@ public:
 	static void Send(boost::shared_ptr<Event> event);
 
 	void EventNotifyCallback(boost::shared_ptr<Event> event);
+	const char *GetEventNotifyName(void) const;
 private:
 	static boost::shared_ptr<EventNotify> singleton;
 	const char * const event_notify_name;

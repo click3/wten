@@ -9,6 +9,8 @@ namespace {
 
 void EventNotifyCallbackProxy(const char *notify_name, boost::shared_ptr<void> user_data, boost::shared_ptr<void> data) {
 	boost::shared_ptr<EventNotify> owner = boost::static_pointer_cast<EventNotify>(user_data);
+	BOOST_ASSERT(owner);
+	BOOST_ASSERT(owner->GetEventNotifyName() == notify_name);
 	boost::shared_ptr<Event> event = boost::static_pointer_cast<Event>(data);
 	owner->EventNotifyCallback(event);
 }
@@ -33,7 +35,8 @@ EventNotify::~EventNotify() {
 	if(!notify_center) {
 		return;
 	}
-	BOOST_ASSERT(notify_center->RemoveObserver(event_notify_name, &EventNotifyCallbackProxy));
+	bool result = notify_center->RemoveObserver(event_notify_name, &EventNotifyCallbackProxy);
+	BOOST_ASSERT(result);
 }
 
 //static
@@ -89,6 +92,10 @@ void EventNotify::EventNotifyCallback(boost::shared_ptr<Event> event) {
 			ptr->EventNotifyCallback(event);
 		}
 	}
+}
+
+const char *EventNotify::GetEventNotifyName(void) const {
+	return event_notify_name;
 }
 
 boost::shared_ptr<EventNotify> EventNotify::singleton;
