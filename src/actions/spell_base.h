@@ -3,6 +3,9 @@ namespace wten {
 
 namespace actions {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class SpellBase : public Action {
 public:
 	enum SPELL_JOB {
@@ -25,6 +28,7 @@ protected:
 	const unsigned int lv;
 	const boost::shared_ptr<const std::string> description;
 };
+#pragma warning(pop)
 
 } // actions
 

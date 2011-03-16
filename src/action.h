@@ -6,7 +6,10 @@ class EnemyPTData;
 class CharData;
 class PTData;
 
-class Action {
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
+class Action : boost::noncopyable {
 public:
 	enum TARGET_TYPE {
 		TARGET_TYPE_THIS,
@@ -38,5 +41,6 @@ private:
 	TARGET_TYPE target_type;
 	ACTION_TYPE action_type;
 };
+#pragma warning(pop)
 
 } // wten
