@@ -69,6 +69,7 @@
 //外部ライブラリーの警告無効ここまで
 
 #pragma warning(disable: 4514) //使用されていない関数/メソッドが削除されました
+#pragma warning(disable: 4503) //装飾名が4096文字を超えたため切り捨てられます
 
 #include "org/click3/notification_center.h"
 
