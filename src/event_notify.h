@@ -11,7 +11,7 @@ public:
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
-class EventNotify : boost::noncopuable {
+class EventNotify : boost::noncopyable {
 private:
 	EventNotify();
 	static boost::shared_ptr<EventNotify> CreateEventNotify();
