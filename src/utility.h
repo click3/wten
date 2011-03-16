@@ -51,8 +51,8 @@ public:
 		BOOST_ASSERT(blue <= 255);
 	}
 
-	DWORD GetColorCode() const {
-		return ::GetColor(red, green, blue);
+	int GetColorCode() const {
+		return static_cast<int>(::GetColor(red, green, blue));
 	}
 
 	int red;
