@@ -7,7 +7,7 @@ namespace {
 unsigned int GetCurrentSystemTime(void) {
 	time_t current;
 	BOOST_ASSERT(time(&current) != -1);
-	return current;
+	return static_cast<unsigned int>(current);
 }
 
 boost::shared_ptr<PlayTime> this_ptr;
