@@ -1,15 +1,6 @@
 
 namespace wten {
 
-namespace errors {
-
-class DxLibError : public ErrorNormal {
-public:
-	DxLibError() : ErrorNormal(ERROR_CODE_DXLIB_INTERNAL_ERROR) {}
-};
-
-} // errors
-
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
