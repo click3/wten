@@ -101,7 +101,7 @@ opt_error<boost::tuple<unsigned int,unsigned int> >::type DxLibWrapper::GetWindo
 	if(result == -1 || width < 0 || height < 0) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
-	return boost::make_tuple<unsigned int,unsigned int>(width, height);
+	return boost::make_tuple<unsigned int,unsigned int>(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
 }
 
 //static
@@ -119,7 +119,7 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const
 	if(text->empty()) {
 		return 0;
 	}
-	const int result = ::GetDrawStringWidth(text->c_str(), text->length());
+	const int result = ::GetDrawStringWidth(text->c_str(), static_cast<int>(text->length()));
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
@@ -132,7 +132,9 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int
 	if(text->empty()) {
 		return boost::none;
 	}
-	const int result = ::DrawString(x, y, text->c_str(), color.GetColorCode());
+	BOOST_ASSERT(x <= INT_MAX);
+	BOOST_ASSERT(y <= INT_MAX);
+	const int result = ::DrawString(static_cast<int>(x), static_cast<int>(y), text->c_str(), color.GetColorCode());
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
@@ -150,13 +152,17 @@ opt_error<unsigned int>::type DxLibWrapper::GetJoypadInputState(void) {
 
 //static
 unsigned int DxLibWrapper::GetRand(unsigned int max) {
-	return ::GetRand(max);
+	BOOST_ASSERT(max <= INT_MAX);
+	return static_cast<unsigned int>(::GetRand(static_cast<int>(max)));
 }
 
 //static
 opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(unsigned int x, unsigned int y, unsigned int max) {
 	char buffer[1024];
-	const int result = ::KeyInputString(x, y, max, buffer, FALSE);
+	BOOST_ASSERT(x <= INT_MAX);
+	BOOST_ASSERT(y <= INT_MAX);
+	BOOST_ASSERT(max <= INT_MAX);
+	const int result = ::KeyInputString(static_cast<int>(x), static_cast<int>(y), static_cast<int>(max), buffer, FALSE);
 	if(result != 1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
@@ -165,7 +171,11 @@ opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(un
 
 //static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawBox(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, utility::Color color) {
-	const int result = ::DrawBox(x1, y1, x2, y2, color.GetColorCode(), TRUE);
+	BOOST_ASSERT(x1 <= INT_MAX);
+	BOOST_ASSERT(y1 <= INT_MAX);
+	BOOST_ASSERT(x2 <= INT_MAX);
+	BOOST_ASSERT(y2 <= INT_MAX);
+	const int result = ::DrawBox(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2), color.GetColorCode(), TRUE);
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
