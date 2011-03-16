@@ -3,6 +3,9 @@ namespace wten {
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UIQueue : public UIBase {
 public:
 	enum POSITION {
@@ -37,6 +40,7 @@ protected:
 	const std::vector<boost::tuple<POSITION, boost::shared_ptr<UIBase> > > ui_list;
 	const INNER_POSITION inner_position;
 };
+#pragma warning(pop)
 
 } // uis
 

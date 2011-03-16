@@ -1,6 +1,9 @@
 
 namespace wten {
-
+	
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class EnemyStatus : boost::noncopyable {
 public:
 	EnemyStatus(boost::shared_ptr<const EnemyInfo> info);
@@ -21,5 +24,6 @@ private:
 	boost::shared_ptr<const std::string> name;
 	const unsigned int hp;
 };
+#pragma warning(pop)
 
 } // wten

@@ -11,10 +11,14 @@ enum EVENT_TYPE {
 	EVENT_TYPE_NEXT_WINDOW,
 };
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class Event : boost::noncopyable {
 public:
 	virtual ~Event() { }
 	virtual EVENT_TYPE GetEventType(void) const = 0;
 };
+#pragma warning(pop)
 
 } // wten

@@ -5,6 +5,9 @@ class EnemyPTData;
 class CharData;
 class PTData;
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class Item : boost::noncopyable {
 public:
 	enum CONDITION {
@@ -47,5 +50,6 @@ protected:
 	const boost::shared_ptr<const ItemInfo> info;
 	CONDITION condition;
 };
+#pragma warning(pop)
 
 } // wten

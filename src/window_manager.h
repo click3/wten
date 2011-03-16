@@ -5,6 +5,9 @@ class Window;
 class EventManager;
 class Error;
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class WindowManager : boost::noncopyable {
 public:
 	WindowManager();
@@ -20,5 +23,6 @@ private:
 	std::vector<boost::shared_ptr<Window> > window_stack;
 	const boost::shared_ptr<EventManager> event_manager;
 };
+#pragma warning(pop)
 
 } // wten

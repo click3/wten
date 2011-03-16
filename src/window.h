@@ -5,6 +5,9 @@ class UI;
 class Event;
 class Error;
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class Window : boost::noncopyable {
 public:
 	virtual ~Window() { };
@@ -21,5 +24,6 @@ public:
 	 */
 	virtual utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type NotifyEvent(boost::shared_ptr<Event> event) = 0;
 };
+#pragma warning(pop)
 
 } // wten

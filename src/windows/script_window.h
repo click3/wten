@@ -3,6 +3,9 @@ namespace wten {
 
 namespace windows {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class ScriptWindow : public WindowBase {
 public:
 	ScriptWindow();
@@ -19,6 +22,7 @@ public:
 protected:
 	std::multimap<EVENT_TYPE, boost::function<boost::optional<boost::shared_ptr<Error> > (boost::shared_ptr<Event>)> > proc_list;
 };
+#pragma warning(pop)
 
 } // windows
 

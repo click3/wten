@@ -3,6 +3,9 @@ namespace wten {
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UIString : public UIBase {
 public:
 	UIString(boost::shared_ptr<const std::string> text);
@@ -16,6 +19,7 @@ public:
 protected:
 	std::vector<boost::shared_ptr<const std::string> > text_list;
 };
+#pragma warning(pop)
 
 } // uis
 

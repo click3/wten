@@ -3,6 +3,9 @@ namespace wten {
 
 namespace windows {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class SelectWindow : public WindowBase {
 public:
 	SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<const std::string> frame_filename);
@@ -24,6 +27,7 @@ private:
 	const boost::shared_ptr<uis::UIBox> frame;
 	const std::vector<boost::shared_ptr<void> > data_list;
 };
+#pragma warning(pop)
 
 } // windows
 

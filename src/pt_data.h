@@ -1,6 +1,9 @@
 
 namespace wten {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class PTData : boost::noncopyable {
 public:
 	enum DIRECTION {
@@ -46,5 +49,6 @@ protected:
 	unsigned int x;
 	unsigned int y;
 };
+#pragma warning(pop)
 
 } // wten

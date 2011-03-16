@@ -1,3 +1,20 @@
+
+//外部ライブラリーの警告は無効化しておく
+#pragma warning(push)
+#pragma warning(disable: 4100) // 宣言された引数を使用していません
+#pragma warning(disable: 4201) // 非標準の拡張機能、無名の構造体/共用体を使用しています
+#pragma warning(disable: 4263) // 仮想関数をオーバーライドしていますが、引数の型が違います
+#pragma warning(disable: 4264) // 引数の型のみ違う同名関数が定義されたため、仮想関数にはアクセスできなくなります
+#pragma warning(disable: 4266) // 仮想関数のすべてのオーバーロードをオーバーライドしていません
+#pragma warning(disable: 4350) // constなしの参照渡しはリテラルを受け取ることができないため、別のコンストラクタが呼ばれます
+#pragma warning(disable: 4365) // signed/unsignedが違う型変換が行われました
+#pragma warning(disable: 4512) // 代入演算子を生成するために必要なコンストラクタがアクセスできません、代入演算子を作れませんでした
+#pragma warning(disable: 4619) // 無効化を試みた警告番号は存在しません
+#pragma warning(disable: 4625) // 基本クラスのコピーコンストラクタがアクセス不能なのでコピーコンストラクタが作れませんでした
+#pragma warning(disable: 4626) // 基本クラスの代入演算子がアクセス不能なので代入演算子が作れませんでした
+#pragma warning(disable: 4668) // 定義されていないシンボルが#if/#elifで使用されました
+#pragma warning(disable: 4820) // 構造体のパッティングが発生しました
+
 //std::minとstd::maxと定義が重複するため
 #define NOMINMAX
 #include <windows.h>
@@ -47,6 +64,11 @@
 #include <map>
 #include <algorithm>
 #include <numeric>
+
+#pragma warning(pop)
+//外部ライブラリーの警告無効ここまで
+
+#pragma warning(disable: 4514) //使用されていない関数/メソッドが削除されました
 
 #include "org/click3/notification_center.h"
 

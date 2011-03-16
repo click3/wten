@@ -3,6 +3,9 @@ namespace wten {
 
 namespace windows {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class InputDlgWindow : public WindowBase {
 public:
 	InputDlgWindow(boost::shared_ptr<const std::string> message, boost::shared_ptr<const std::string> frame_filename);
@@ -15,6 +18,7 @@ private:
 
 	const boost::shared_ptr<uis::UIInputDlg> ui_input_dlg;
 };
+#pragma warning(pop)
 
 } // windows
 

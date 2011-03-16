@@ -5,6 +5,9 @@ class CharData;
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UICharStatus : public UIBox {
 public:
 	UICharStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index);
@@ -22,6 +25,7 @@ protected:
 
 	const std::vector<boost::shared_ptr<uis::UIString> > text_ui_list;
 };
+#pragma warning(pop)
 
 } // uis
 

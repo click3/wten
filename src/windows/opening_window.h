@@ -3,6 +3,9 @@ namespace wten {
 
 namespace windows {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class OpeningWindow : public WindowBase {
 public:
 	OpeningWindow();
@@ -15,6 +18,7 @@ private:
 	int back_buffer;
 	unsigned int frame_counter;
 };
+#pragma warning(pop)
 
 } // windows
 

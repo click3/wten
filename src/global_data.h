@@ -1,6 +1,9 @@
 
 namespace wten {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class GlobalData : boost::noncopyable {
 private:
 	GlobalData();
@@ -40,7 +43,7 @@ boost::shared_ptr<type> Get##name(void) const {					\
 	}										\
 	return boost::static_pointer_cast<type>(data[DATA_INDEX_##name]);	\
 }											\
-void Set##name(boost::shared_ptr<const type> value) {					\
+void Set##name(boost::shared_ptr<const type> value) {				\
 	data[DATA_INDEX_##name] = boost::shared_ptr<void>(new type(*value));	\
 }
 #define ADD_UINT_PROPERTY(name, default) ADD_PROPERTY(name, unsigned int, default)
@@ -63,5 +66,6 @@ void Set##name(boost::shared_ptr<const type> value) {					\
 protected:
 	std::vector<boost::shared_ptr<void> > data;
 };
+#pragma warning(pop)
 
 } // wten

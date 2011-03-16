@@ -1,6 +1,9 @@
 
 namespace wten {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class CharStatus : boost::noncopyable {
 public:
 	enum ALIGNMENT {
@@ -63,6 +66,7 @@ protected:
 
 	std::vector<boost::tuple<boost::shared_ptr<const Job>, boost::shared_ptr<const actions::SpellBase> > > spell_list;
 };
+#pragma warning(pop)
 
 } // wten
 

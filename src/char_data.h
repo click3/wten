@@ -1,6 +1,9 @@
 
 namespace wten {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class CharData : boost::noncopyable, public boost::enable_shared_from_this<CharData> {
 private:
 	boost::optional<boost::shared_ptr<Error> > InitializeStatus(void);
@@ -65,5 +68,6 @@ protected:
 	unsigned int x;
 	unsigned int y;
 };
+#pragma warning(pop)
 
 } // wten

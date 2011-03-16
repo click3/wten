@@ -3,6 +3,9 @@ namespace wten {
 
 class ItemInfo;
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class EnemyInfo : boost::noncopyable {
 public:
 	enum MONSTER_TYPE {
@@ -47,5 +50,6 @@ protected:
 	const unsigned int drop_base;
 	const boost::shared_ptr<const ItemInfo> drop_item;
 };
+#pragma warning(pop)
 
 } // wten

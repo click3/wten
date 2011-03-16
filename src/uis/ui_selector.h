@@ -3,6 +3,9 @@ namespace wten {
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UISelector : public UIBase {
 public:
 	UISelector(const std::vector<boost::shared_ptr<const std::string> >& texts = std::vector<boost::shared_ptr<const std::string> >(), unsigned int line_count = 1, boost::shared_ptr<const std::string> arrow_filename = boost::shared_ptr<const std::string>(new std::string("data/ui/arrow1.png")));
@@ -38,6 +41,7 @@ protected:
 	const unsigned int line_count;
 	const unsigned int line_size;
 };
+#pragma warning(pop)
 
 } // uis
 

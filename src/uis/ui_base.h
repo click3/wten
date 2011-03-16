@@ -7,6 +7,9 @@ namespace windows {
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UIBase : public UI {
 public:
 	UIBase();
@@ -56,6 +59,7 @@ protected:
 	unsigned int height;
 	MOVE_MODE move_mode;
 };
+#pragma warning(pop)
 
 } // uis
 

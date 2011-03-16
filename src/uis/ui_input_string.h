@@ -3,6 +3,9 @@ namespace wten {
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UIInputString : public UIBase {
 public:
 	UIInputString();
@@ -15,6 +18,7 @@ public:
 protected:
 	boost::shared_ptr<std::string> text;
 };
+#pragma warning(pop)
 
 } // uis
 

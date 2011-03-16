@@ -1,6 +1,9 @@
 
 namespace wten {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class PTList : boost::noncopyable {
 private:
 	PTList(const std::vector<boost::shared_ptr<PTData> >& list);
@@ -18,5 +21,6 @@ public:
 protected:
 	std::vector<boost::shared_ptr<PTData> > list;
 };
+#pragma warning(pop)
 
 } // wten

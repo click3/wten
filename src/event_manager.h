@@ -4,6 +4,9 @@ namespace wten {
 class Event;
 class Error;
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class EventManager : boost::noncopyable {
 public:
 	EventManager();
@@ -15,5 +18,6 @@ protected:
 	std::queue<boost::shared_ptr<Event> > event_queue;
 	std::vector<boost::shared_ptr<EventChecker> > checker_list;
 };
+#pragma warning(pop)
 
 } // wten

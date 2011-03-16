@@ -1,6 +1,9 @@
 
 namespace wten {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class PlayTime : boost::noncopyable {
 private:
 	PlayTime();
@@ -13,6 +16,7 @@ public:
 protected:
 	unsigned int start_time;
 };
+#pragma warning(pop)
 
 } // wten
 

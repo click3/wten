@@ -3,6 +3,9 @@ namespace wten {
 
 namespace events {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class OnSelectEvent : public EventBase {
 public:
 	OnSelectEvent(boost::shared_ptr<void> data);
@@ -11,6 +14,7 @@ public:
 private:
 	const boost::shared_ptr<void> data;
 };
+#pragma warning(pop)
 
 } // events
 

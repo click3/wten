@@ -1,6 +1,9 @@
 
 namespace wten { namespace scenes {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class SceneSelectorScene : public CampScene {
 public:
 	typedef boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<Scene> > SCENE_PAIR;
@@ -17,6 +20,7 @@ private:
 	const boost::shared_ptr<windows::ScriptWindow> script_window;
 	boost::shared_ptr<Scene> next_scene;
 };
+#pragma warning(pop)
 
 } // scenes
 

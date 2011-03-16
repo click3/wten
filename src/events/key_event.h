@@ -5,6 +5,9 @@ namespace events {
 
 #define KEY_MAX (12)
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class KeyEvent : public EventBase {
 public:
 	enum ACTION {
@@ -34,6 +37,7 @@ private:
 	const ACTION action;
 	const KEY_TYPE key_type;
 };
+#pragma warning(pop)
 
 } // events
 

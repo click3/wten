@@ -1,6 +1,9 @@
 
 namespace wten { namespace scenes {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class TitleScene : public SceneBase {
 public:
 	TitleScene();
@@ -16,6 +19,7 @@ private:
 	boost::shared_ptr<Scene> next_scene;
 	bool exit;
 };
+#pragma warning(pop)
 
 } // scenes
 

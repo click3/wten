@@ -5,6 +5,9 @@ class WindowManager;
 
 namespace scenes {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class SceneBase : public Scene, public EventNotifyInterface, public boost::enable_shared_from_this<SceneBase> {
 public:
 	SceneBase(boost::shared_ptr<const std::string> default_frame_filename = boost::shared_ptr<const std::string>(new std::string("data/ui/box1.png")));
@@ -42,6 +45,7 @@ protected:
 	const boost::shared_ptr<WindowManager> window_manager;
 	const boost::shared_ptr<const std::string> default_frame_filename;
 };
+#pragma warning(pop)
 
 } // scenes
 

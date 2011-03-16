@@ -3,6 +3,9 @@ namespace wten {
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UIImage : public UIBase {
 public:
 	UIImage(boost::shared_ptr<const std::string> filename);
@@ -14,6 +17,7 @@ public:
 protected:
 	const boost::shared_ptr<const Graph> image;
 };
+#pragma warning(pop)
 
 } // uis
 

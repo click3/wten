@@ -3,6 +3,9 @@ namespace wten {
 
 namespace uis {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class UIBox : public UIBase {
 public:
 	UIBox(boost::shared_ptr<const Graph> src);
@@ -35,6 +38,7 @@ protected:
 
 	boost::shared_ptr<UIBase> inner_ui;
 };
+#pragma warning(pop)
 
 } // uis
 

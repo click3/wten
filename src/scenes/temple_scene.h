@@ -1,6 +1,9 @@
 
 namespace wten { namespace scenes {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class TempleScene : public CampScene {
 public:
 
@@ -21,6 +24,7 @@ private:
 	const boost::shared_ptr<windows::ScriptWindow> script_window;
 	boost::shared_ptr<Scene> next_scene;
 };
+#pragma warning(pop)
 
 } // scenes
 

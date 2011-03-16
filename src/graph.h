@@ -3,6 +3,9 @@ namespace wten {
 
 typedef boost::shared_ptr<void> DxLibGraphHandle;
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class Graph : boost::noncopyable {
 private:
 	Graph(DxLibGraphHandle handle);
@@ -18,6 +21,7 @@ private:
 	const unsigned int width;
 	const unsigned int height;
 };
+#pragma warning(pop)
 
 } // wten
 

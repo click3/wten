@@ -3,6 +3,9 @@ namespace wten {
 
 namespace windows {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class WindowBase : public Window, public boost::enable_shared_from_this<WindowBase> {
 public:
 	WindowBase(boost::shared_ptr<const std::string> default_frame_filename = boost::shared_ptr<const std::string>());
@@ -35,6 +38,7 @@ protected:
 	unsigned int height;
 	boost::shared_ptr<const std::string> default_frame_filename;
 };
+#pragma warning(pop)
 
 } // windows
 

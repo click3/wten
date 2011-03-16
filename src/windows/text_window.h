@@ -3,6 +3,9 @@ namespace wten {
 
 namespace windows {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class TextWindow : public WindowBase {
 public:
 	TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<const std::string> frame_filename);
@@ -21,6 +24,7 @@ private:
 	const boost::shared_ptr<uis::UIString> ui_string;
 	const boost::shared_ptr<uis::UIBox> frame;
 };
+#pragma warning(pop)
 
 } // windows
 

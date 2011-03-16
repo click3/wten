@@ -5,6 +5,9 @@ namespace actions {
 	class SpellBase;
 } // actions
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class Job : boost::noncopyable {
 public:
 	Job(unsigned int id, boost::shared_ptr<const std::string> name,
@@ -44,5 +47,6 @@ protected:
 	std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > > spells;
 	std::vector<unsigned int> exp_list;
 };
+#pragma warning(pop)
 
 } // wten

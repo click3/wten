@@ -6,6 +6,9 @@ class Scene;
 class Error;
 class PTData;
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class WTen : boost::noncopyable {
 public:
 	WTen(boost::shared_ptr<Scene> start_scene);
@@ -20,5 +23,6 @@ private:
 	const boost::shared_ptr<DxLibWrapper> lib;
 	boost::shared_ptr<Scene> scene;
 };
+#pragma warning(pop)
 
 } // wten

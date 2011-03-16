@@ -10,6 +10,9 @@ public:
 
 } // errors
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class DxLibWrapper : boost::noncopyable {
 public:
 	DxLibWrapper(bool window_mode = true, boost::shared_ptr<const std::string> title = boost::shared_ptr<std::string>(new std::string("Title")));
@@ -37,5 +40,6 @@ public:
 	static utility::opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(unsigned int x, unsigned int y, unsigned int max);
 	static boost::optional<boost::shared_ptr<Error> > DrawBox(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, utility::Color color);
 };
+#pragma warning(pop)
 
 } // wten

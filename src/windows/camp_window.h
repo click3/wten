@@ -3,6 +3,9 @@ namespace wten {
 
 namespace windows {
 
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 class CampWindow : public WindowBase {
 public:
 	CampWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename);
@@ -17,6 +20,7 @@ protected:
 	const boost::shared_ptr<uis::UIString> play_time_text;
 	boost::shared_ptr<windows::SelectWindow> select_window;
 };
+#pragma warning(pop)
 
 } // windows
 
