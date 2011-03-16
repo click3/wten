@@ -28,7 +28,14 @@ unsigned int Dice(unsigned int base, unsigned int count, unsigned int bonus) {
 }
 
 boost::shared_ptr<FILE> MyFOpen(const std::string &path, const char *type) {
-	return boost::shared_ptr<FILE>(::fopen(path.c_str(), type), &MyFClose);
+	boost::shared_ptr<FILE> result;
+	FILE *fp;
+	const errno_t error = ::fopen_s(&fp, path.c_str(), type);
+	if(error == 0) {
+		BOOST_ASSERT(fp != NULL);
+		result.reset(fp, &MyFClose);
+	}
+	return result;
 }
 
 } // utility
