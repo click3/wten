@@ -4,10 +4,12 @@
 
 #include "DxLib.h"
 
-//なぜかlinkエラーが出るので
-#define BOOST_NO_STD_LOCALE
-#define BOOST_LEXICAL_CAST_ASSUME_C_LOCALE
+//phoenixで扱える最大引数
+#define BOOST_RESULT_OF_NUM_ARGS 14
+#define FUSION_MAX_VECTOR_SIZE 14
+#define PHOENIX_LIMIT 14
 
+#include "boost/config/warning_disable.hpp"
 #include "boost/utility.hpp"
 #include "boost/assert.hpp"
 #include "boost/scope_exit.hpp"
@@ -29,6 +31,12 @@
 #include "boost/bind.hpp"
 #include "boost/format.hpp"
 #include "boost/lexical_cast.hpp"
+//文字コードエラーするため
+#pragma warning(push)
+#pragma warning(disable: 4819)
+#include "boost/spirit/include/qi.hpp"
+#pragma warning(pop)
+#include "boost/spirit/include/phoenix.hpp"
 
 #include <locale.h>
 #include <stdio.h>
@@ -50,13 +58,14 @@
 #include "graph.h"
 #include "action.h"
 #include "job.h"
-#include "item_info.h"
-#include "item.h"
 #include "char_condition.h"
 #include "pt_condition.h"
 #include "enemy_condition.h"
 #include "enemy_info.h"
 #include "enemy_status.h"
+#include "item_info.h"
+#include "item.h"
+#include "item_info_list.h"
 #include "event.h"
 #include "events/event_base.h"
 #include "events/key_event.h"
