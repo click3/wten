@@ -40,18 +40,24 @@ typedef boost::tuple<unsigned int, unsigned int> PAIR_UINT;
 
 class Color {
 public:
-	Color(unsigned int r, unsigned int g, unsigned int b) :
+	Color(int r, int g, int b) :
 		red(r), green(g), blue(b)
 	{
+		BOOST_ASSERT(red >= 0);
+		BOOST_ASSERT(red <= 255);
+		BOOST_ASSERT(green >= 0);
+		BOOST_ASSERT(green <= 255);
+		BOOST_ASSERT(blue >= 0);
+		BOOST_ASSERT(blue <= 255);
 	}
 
-	int GetColorCode() const {
+	DWORD GetColorCode() const {
 		return ::GetColor(red, green, blue);
 	}
 
-	unsigned int red;
-	unsigned int green;
-	unsigned int blue;
+	int red;
+	int green;
+	int blue;
 };
 
 unsigned int Dice(unsigned int base, unsigned int count, unsigned int bonus = 0);
