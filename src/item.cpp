@@ -80,7 +80,7 @@ unsigned int Item::GetHitCount() const {
 
 int Item::GetAC() const {
 	BOOST_ASSERT(info);
-	unsigned int result = info->GetAC();
+	int result = info->GetAC();
 	if(IsUncertain()) {
 		result += 1;
 	}
