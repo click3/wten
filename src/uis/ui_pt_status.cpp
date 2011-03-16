@@ -13,18 +13,18 @@ boost::shared_ptr<std::string> GetACString(boost::shared_ptr<const CharData> cha
 	int ac = character->GetAC();
 	char hp_str[256];
 	if(ac > -10) {
-		sprintf(hp_str, "%d", ac);
+		SPRINTF(hp_str, "%d", ac);
 	} else if(ac > -20) {
-		sprintf(hp_str, "LO");
+		SPRINTF(hp_str, "LO");
 	} else {
-		sprintf(hp_str, "VL");
+		SPRINTF(hp_str, "VL");
 	}
 	return boost::shared_ptr<std::string>(new std::string(hp_str));
 }
 
 boost::shared_ptr<std::string> GetHPString(boost::shared_ptr<const CharData> character) {
 	char hp_str[256];
-	sprintf(hp_str, "%d/%d", character->GetHP(), character->GetStatus()->GetHP());
+	SPRINTF(hp_str, "%d/%d", character->GetHP(), character->GetStatus()->GetHP());
 	return boost::shared_ptr<std::string>(new std::string(hp_str));
 }
 

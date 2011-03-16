@@ -265,12 +265,12 @@ boost::optional<boost::shared_ptr<Error> > UICharStatus::ChangeChar(CHANGE_INDEX
 
 boost::optional<boost::shared_ptr<Error> > UICharStatus::ReloadStatus(void) {
 	char hp_text[256];
-	sprintf(hp_text, "%d/%d", char_data->GetHP(), char_data->GetStatus()->GetHP());
+	SPRINTF(hp_text, "%d/%d", char_data->GetHP(), char_data->GetStatus()->GetHP());
 	char mage_mp_text[256];
-	sprintf(mage_mp_text, "%d/%d/%d/%d/%d/%d/%d", char_data->GetMageMP()[0], char_data->GetMageMP()[1], char_data->GetMageMP()[2],
+	SPRINTF(mage_mp_text, "%d/%d/%d/%d/%d/%d/%d", char_data->GetMageMP()[0], char_data->GetMageMP()[1], char_data->GetMageMP()[2],
 		char_data->GetMageMP()[3], char_data->GetMageMP()[4], char_data->GetMageMP()[5], char_data->GetMageMP()[6]);
 	char priest_mp_text[256];
-	sprintf(priest_mp_text, "%d/%d/%d/%d/%d/%d/%d", char_data->GetPriestMP()[0], char_data->GetPriestMP()[1], char_data->GetPriestMP()[2],
+	SPRINTF(priest_mp_text, "%d/%d/%d/%d/%d/%d/%d", char_data->GetPriestMP()[0], char_data->GetPriestMP()[1], char_data->GetPriestMP()[2],
 		char_data->GetPriestMP()[3], char_data->GetPriestMP()[4], char_data->GetPriestMP()[5], char_data->GetPriestMP()[6]);
 
 #define SET_TEXT_PTR(label, ptr) text_ui_list[label]->SetText(ptr)

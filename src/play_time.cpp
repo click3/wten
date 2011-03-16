@@ -44,7 +44,7 @@ boost::shared_ptr<std::string> PlayTime::GetCurrentPlayTimeString(void) const {
 	const unsigned int min = (current_time / 60) % 60;
 	const unsigned int sec = current_time % 60;
 	char text_char[256];
-	sprintf(text_char, "%d:%02d:%02d", hour, min, sec);
+	SPRINTF(text_char, "%d:%02d:%02d", hour, min, sec);
 	return boost::shared_ptr<std::string>(new std::string(text_char));
 }
 

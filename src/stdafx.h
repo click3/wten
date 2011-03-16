@@ -70,6 +70,7 @@
 #pragma warning(pop)
 //外部ライブラリーの警告無効ここまで
 
+#pragma warning(disable: 4127) // 条件式が定数です
 #pragma warning(disable: 4350) // constなしの参照渡しはリテラルを受け取ることができないため、別のコンストラクタが呼ばれます
 #pragma warning(disable: 4503) // 装飾名が4096文字を超えたため切り捨てられます
 #pragma warning(disable: 4514) // 使用されていない関数/メソッドが削除されました

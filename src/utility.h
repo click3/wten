@@ -12,6 +12,20 @@ struct opt_error {
 boost::shared_ptr<Error> CreateError(ERROR_CODE code, const std::string filename, unsigned int fileline);
 
 
+#define SPRINTF_IMPL_IMPL(proc, buffer, fmt, ...)	::proc(buffer, sizeof(buffer) / sizeof(*buffer), fmt, __VA_ARGS__)
+#define STRLEN_IMPL(proc, buffer)				::proc(buffer, sizeof(buffer) / sizeof(*buffer))
+#define SPRINTF_IMPL(proc, len_proc, buffer, fmt, ...)						\
+do {													\
+	const int length = SPRINTF_IMPL_IMPL(proc, buffer, fmt, __VA_ARGS__);			\
+	BOOST_ASSERT(length != -1);									\
+	BOOST_ASSERT(static_cast<unsigned int>(length) == STRLEN_IMPL(len_proc, buffer));	\
+} while(false)
+#define SPRINTF(buffer, fmt, ...)		SPRINTF_IMPL(sprintf_s, strnlen, buffer, fmt, __VA_ARGS__)
+#define WSPRINTF(buffer, fmt, ...)		SPRINTF_IMPL(swprintf_s, wcsnlen, buffer, fmt, __VA_ARGS__)
+#define STRLEN(buffer)			STRLEN_IMPL(strnlen, buffer)
+#define WSTRLEN(buffer)			STRLEN_IMPL(wcsnlen, buffer)
+
+
 #define OPT_ERROR(in)								\
 do {											\
 	boost::optional<boost::shared_ptr<Error> > error = in;			\

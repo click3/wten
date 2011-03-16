@@ -17,7 +17,7 @@ boost::shared_ptr<uis::UIString> CreateMoneyText(boost::shared_ptr<PTData> pt) {
 	std::vector<boost::shared_ptr<CharData> > characters = pt->GetCharacters();
 	const unsigned int money_total = std::accumulate(characters.begin(), characters.end(), 0, PTMoneyTotal());
 	char text_char[256];
-	sprintf(text_char, "所持金合計: %15dTG", money_total);
+	SPRINTF(text_char, "所持金合計: %15dTG", money_total);
 	boost::shared_ptr<std::string> text(new std::string(text_char));
 	boost::shared_ptr<uis::UIString> result(new uis::UIString(text));
 	return result;
@@ -25,7 +25,7 @@ boost::shared_ptr<uis::UIString> CreateMoneyText(boost::shared_ptr<PTData> pt) {
 
 boost::shared_ptr<uis::UIString> CreatePlayTimeText(void) {
 	char text_char[256];
-	sprintf(text_char, "プレイ時間: %s", PlayTime::GetCurrentInstance()->GetCurrentPlayTimeString()->c_str());
+	SPRINTF(text_char, "プレイ時間: %s", PlayTime::GetCurrentInstance()->GetCurrentPlayTimeString()->c_str());
 	boost::shared_ptr<std::string> text(new std::string(text_char));
 	return boost::shared_ptr<uis::UIString>(new uis::UIString(text));
 }
