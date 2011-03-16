@@ -1,6 +1,7 @@
 
 namespace wten {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -39,12 +40,14 @@ public:
 	void TurnEnd();
 private:
 	CONDITION condition;
+	int ac_bonus;
 	bool silence;
 	bool poison;
-	int ac_bonus;
 	bool parry;
+	unsigned char padding; //unused
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // wten
 

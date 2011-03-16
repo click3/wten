@@ -3,6 +3,7 @@ namespace wten {
 
 namespace windows {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -21,10 +22,12 @@ private:
 	boost::optional<boost::shared_ptr<Error> > OnOK(void);
 
 	bool ok_close;
+	unsigned char padding[3]; //unused
 	const boost::shared_ptr<uis::UIString> ui_string;
 	const boost::shared_ptr<uis::UIBox> frame;
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // windows
 

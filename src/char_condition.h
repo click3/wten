@@ -1,6 +1,7 @@
 
 namespace wten {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -65,12 +66,14 @@ public:
 	void DungeonOut();
 private:
 	CONDITION condition;
-	bool poison;
-	bool silence;
 	int battle_ac_bonus;
 	int ac_bonus;
+	bool poison;
+	bool silence;
 	bool parry;
+	unsigned char padding; //unused
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // wten

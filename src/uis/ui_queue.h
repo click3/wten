@@ -3,6 +3,7 @@ namespace wten {
 
 namespace uis {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -37,10 +38,12 @@ protected:
 	boost::optional<boost::shared_ptr<Error> > ReloadInnerUI(void);
 
 	const bool col_split;
+	unsigned char padding[3]; //unused
 	const std::vector<boost::tuple<POSITION, boost::shared_ptr<UIBase> > > ui_list;
 	const INNER_POSITION inner_position;
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // uis
 

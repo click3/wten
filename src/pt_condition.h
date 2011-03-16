@@ -1,6 +1,7 @@
 
 namespace wten {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -26,11 +27,13 @@ public:
 	void FloorChange();
 	void DungeonOut();
 private:
-	bool light_full;
 	unsigned int light;
+	bool light_full;
 	bool identifies;
 	bool spell_disable;
+	unsigned char padding; //unused
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // wten

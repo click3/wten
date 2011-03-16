@@ -1,6 +1,7 @@
 
 namespace wten {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -64,10 +65,12 @@ protected:
 	std::vector<unsigned int> priest_mp;
 
 	bool dungeon;
+	unsigned char padding[3]; //unused
 	unsigned int floor;
 	unsigned int x;
 	unsigned int y;
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // wten

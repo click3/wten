@@ -1,6 +1,7 @@
 
 namespace wten { namespace scenes {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -18,8 +19,10 @@ private:
 	const boost::shared_ptr<windows::ScriptWindow> script_window;
 	boost::shared_ptr<Scene> next_scene;
 	bool exit;
+	unsigned char padding[3]; //unused
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // scenes
 

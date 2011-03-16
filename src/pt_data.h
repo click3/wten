@@ -1,6 +1,7 @@
 
 namespace wten {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -44,11 +45,13 @@ protected:
 	std::vector<boost::shared_ptr<CharData> > characters;
 
 	bool dungeon;
+	unsigned char padding[3]; //unused
 	unsigned int floor;
 	DIRECTION dir;
 	unsigned int x;
 	unsigned int y;
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // wten
