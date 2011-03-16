@@ -1,7 +1,10 @@
 
 namespace wten {
 
-class EnemyCondition {
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
+class EnemyCondition : boost::noncopyable {
 public:
 	EnemyCondition();
 	~EnemyCondition();
@@ -41,6 +44,7 @@ private:
 	int ac_bonus;
 	bool parry;
 };
+#pragma warning(pop)
 
 } // wten
 
