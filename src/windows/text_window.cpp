@@ -78,6 +78,8 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type TextWindow::NotifyE
 				case events::KeyEvent::KEY_A:
 					OPT_ERROR(OnOK());
 					return boost::none;
+				default:
+					break;
 			}
 		}
 	}

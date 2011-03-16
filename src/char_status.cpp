@@ -48,7 +48,7 @@ public:
 
 int CalcUpRank(unsigned int bed_level, unsigned int lv) {
 	BOOST_ASSERT(bed_level < 6);
-	int result = bed_level;
+	int result = static_cast<int>(bed_level);
 	if(lv > 40) {
 		result -= 4;
 	} else {
@@ -62,14 +62,13 @@ boost::optional<bool> RankUpChallenge(unsigned int status, int up_rank) {
 	if(up_rank < 0) {
 		result = false;
 	} else {
-		int rand = DxLibWrapper::GetRand(up_rank+1);
-		rand--;
-		if(rand < 0) {
+		const unsigned int rand = DxLibWrapper::GetRand(static_cast<unsigned int>(up_rank+1));
+		if(rand == 0) {
 			result = false;
-		} else if(rand > 0) {
-			result = true;
-		} else {
+		} else if(rand == 1) {
 			result = boost::none;
+		} else {
+			result = true;
 		}
 	}
 

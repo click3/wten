@@ -134,6 +134,8 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type SelectWindow::Notif
 				case events::KeyEvent::KEY_A:
 					OPT_ERROR(OnSelect());
 					return boost::none;
+				default:
+					break;
 			}
 		}
 	}

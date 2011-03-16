@@ -219,6 +219,8 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::OnKeyEvent(boost::sha
 					OPT_ERROR(StateBack());
 				}
 				break;
+			default:
+				break;
 		}
 	}
 	return boost::none;

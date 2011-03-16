@@ -125,8 +125,10 @@ boost::optional<boost::shared_ptr<Error> > PTData::Move(DIRECTION dir, unsigned 
 
 boost::optional<boost::shared_ptr<Error> > PTData::Move(DIRECTION dir) {
 	BOOST_ASSERT(dungeon);
-	int x = this->x;
-	int y = this->y;
+	BOOST_ASSERT(this->x < 20);
+	BOOST_ASSERT(this->y < 20);
+	int x = static_cast<int>(this->x);
+	int y = static_cast<int>(this->y);
 	switch(dir) {
 		case DIRECTION_NORTH:
 			y++;
@@ -155,10 +157,10 @@ boost::optional<boost::shared_ptr<Error> > PTData::Move(DIRECTION dir) {
 	}
 	// TODO à⁄ìÆâ¬î€îªíË
 	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
-		OPT_ERROR(character->Move(x, y));
+		OPT_ERROR(character->Move(static_cast<unsigned int>(x), static_cast<unsigned int>(y)));
 	}
-	this->x = x;
-	this->y = y;
+	this->x = static_cast<unsigned int>(x);
+	this->y = static_cast<unsigned int>(y);
 	// TODO êFÅX
 	return boost::none;
 }
@@ -182,6 +184,9 @@ boost::optional<boost::shared_ptr<Error> > PTData::MoveToBack(void) {
 		case DIRECTION_WEST:
 			dir = DIRECTION_EAST;
 			break;
+		default:
+			BOOST_ASSERT(false);
+			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	return Move(dir);
 }
@@ -201,6 +206,9 @@ boost::optional<boost::shared_ptr<Error> > PTData::MoveToLeft(void) {
 		case DIRECTION_WEST:
 			dir = DIRECTION_SOUTH;
 			break;
+		default:
+			BOOST_ASSERT(false);
+			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	return Move(dir);
 }
@@ -220,6 +228,9 @@ boost::optional<boost::shared_ptr<Error> > PTData::MoveToRight(void) {
 		case DIRECTION_WEST:
 			dir = DIRECTION_NORTH;
 			break;
+		default:
+			BOOST_ASSERT(false);
+			return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	return Move(dir);
 }

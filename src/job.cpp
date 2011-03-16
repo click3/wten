@@ -8,6 +8,8 @@ namespace {
 
 typedef boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > SPELL_PAIR;
 
+#pragma warning(push)
+#pragma warning(disable: 4512)
 struct SpellFiltered {
 public:
 	SpellFiltered(unsigned int threshold) : threshold(threshold) { }
@@ -17,6 +19,7 @@ public:
 private:
 	const unsigned int threshold;
 };
+#pragma warning(pop)
 
 struct SpellTransformed {
 public:

@@ -23,7 +23,9 @@ boost::tuple<unsigned int, unsigned int> GetGraphSize(DxLibGraphHandle handle) {
 	int x,y;
 	const int result = ::GetGraphSize(GetDxLibGraph(handle), &x, &y);
 	BOOST_ASSERT(result != -1);
-	return boost::make_tuple<unsigned int, unsigned int>(x, y);
+	BOOST_ASSERT(x >= 0);
+	BOOST_ASSERT(y >= 0);
+	return boost::make_tuple(static_cast<unsigned int>(x), static_cast<unsigned int>(y));
 }
 
 unsigned int GetGraphWidth(DxLibGraphHandle handle) {
@@ -72,7 +74,9 @@ unsigned int Graph::GetHeight() const {
 
 boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned int y) const {
 	BOOST_ASSERT(inner_ptr);
-	const int result = ::DrawGraph(x, y, GetDxLibGraph(inner_ptr), TRUE);
+	BOOST_ASSERT(x <= INT_MAX);
+	BOOST_ASSERT(y <= INT_MAX);
+	const int result = ::DrawGraph(static_cast<int>(x), static_cast<int>(y), GetDxLibGraph(inner_ptr), TRUE);
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
@@ -81,7 +85,9 @@ boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned 
 
 boost::optional<boost::shared_ptr<Error> > Graph::DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const {
 	BOOST_ASSERT(inner_ptr);
-	const int result = ::DrawExtendGraph(x, y, x + w, y + h, GetDxLibGraph(inner_ptr), TRUE);
+	BOOST_ASSERT(x + w <= INT_MAX);
+	BOOST_ASSERT(y + h <= INT_MAX);
+	const int result = ::DrawExtendGraph(static_cast<int>(x), static_cast<int>(y), static_cast<int>(x + w), static_cast<int>(y + h), GetDxLibGraph(inner_ptr), TRUE);
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
@@ -90,7 +96,11 @@ boost::optional<boost::shared_ptr<Error> > Graph::DrawEx(unsigned int x, unsigne
 
 opt_error<boost::shared_ptr<Graph> >::type Graph::Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const {
 	BOOST_ASSERT(inner_ptr);
-	const int handle = ::DerivationGraph(x, y, w, h, GetDxLibGraph(inner_ptr));
+	BOOST_ASSERT(x <= INT_MAX);
+	BOOST_ASSERT(y <= INT_MAX);
+	BOOST_ASSERT(w <= INT_MAX);
+	BOOST_ASSERT(h <= INT_MAX);
+	const int handle = ::DerivationGraph(static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h), GetDxLibGraph(inner_ptr));
 	if(handle == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}

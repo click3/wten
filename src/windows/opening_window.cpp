@@ -21,6 +21,8 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type OpeningWin
 				case events::KeyEvent::KEY_A:
 					OPT_ERROR(OnOK());
 					return boost::none;
+				default:
+					break;
 			}
 		}
 	}
@@ -57,11 +59,11 @@ boost::optional<boost::shared_ptr<Error> > OpeningWindow::Draw(void) {
 		::DrawString(175,420,"我が夢を叶えんとするため",0xFFFFFFFF);
 	}
 	if(frame_counter >= 1750 && frame_counter <= 2005) {
-		::SetDrawBlendMode(DX_BLENDMODE_ALPHA, frame_counter - 1750);
+		::SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(frame_counter - 1750));
 		::DrawString(184,232,"波乱に満ちた冒険が幕を開ける……",0xFFFFFFFF);
 	}
 	if(frame_counter >= 2005) {
-		::SetDrawBlendMode(DX_BLENDMODE_ALPHA, 2260 - frame_counter);
+		::SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(2260 - frame_counter));
 		::DrawString(184,232,"波乱に満ちた冒険が幕を開ける……",0xFFFFFFFF);
 	}
 	if(frame_counter < 1750) {

@@ -12,6 +12,11 @@ boost::optional<boost::shared_ptr<Error> > SendKeyEvent(KeyEvent::ACTION action,
 	return KeyEventChecker::SendEvent(event);
 }
 
+struct KeyMap {
+	KeyEvent::KEY_TYPE WTenKey;
+	int DxLibKey;
+};
+
 } // anonymous
 
 KeyEventChecker::KeyEventChecker() {
@@ -24,10 +29,7 @@ boost::optional<boost::shared_ptr<Error> > KeyEventChecker::DoCheck(void) {
 	unsigned int key_state;
 	OPT_UINT(key_state, DxLibWrapper::GetJoypadInputState());
 
-	const struct KeyMap {
-		KeyEvent::KEY_TYPE WTenKey;
-		int DxLibKey;
-	} key_map[KEY_MAX] = {
+	const KeyMap key_map[KEY_MAX] = {
 		{KeyEvent::KEY_A,	PAD_INPUT_B},	{KeyEvent::KEY_B,	PAD_INPUT_C},		{KeyEvent::KEY_X,		PAD_INPUT_A},		{KeyEvent::KEY_Y,		PAD_INPUT_X},
 		{KeyEvent::KEY_L,	PAD_INPUT_L},	{KeyEvent::KEY_R,	PAD_INPUT_R},		{KeyEvent::KEY_START,	PAD_INPUT_START},	{KeyEvent::KEY_SELECT,	PAD_INPUT_M},
 		{KeyEvent::KEY_UP,	PAD_INPUT_UP},{KeyEvent::KEY_DOWN,	PAD_INPUT_DOWN},	{KeyEvent::KEY_LEFT,		PAD_INPUT_LEFT},	{KeyEvent::KEY_RIGHT,	PAD_INPUT_RIGHT}

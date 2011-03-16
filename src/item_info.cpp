@@ -7,6 +7,8 @@ using namespace boost::assign;
 
 namespace {
 
+#pragma warning(push)
+#pragma warning(disable: 4512)
 template<class T>
 struct FindResist {
 	FindResist(const T key) : key(key) { }
@@ -15,6 +17,7 @@ struct FindResist {
 	}
 	const T key;
 };
+#pragma warning(pop)
 
 } // anonymous
 

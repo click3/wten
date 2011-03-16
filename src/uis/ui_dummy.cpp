@@ -2,7 +2,7 @@
 
 namespace wten { namespace uis {
 
-boost::optional<boost::shared_ptr<Error> > UIDummy::Draw(unsigned int abs_x, unsigned int abs_y) {
+boost::optional<boost::shared_ptr<Error> > UIDummy::Draw(unsigned int, unsigned int) {
 	return boost::none;
 }
 

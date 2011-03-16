@@ -28,6 +28,8 @@ struct MaxFindByUIStringWidth {
 	}
 };
 
+#pragma warning(push)
+#pragma warning(disable: 4512)
 struct SumByUIStringHeight {
 	SumByUIStringHeight(unsigned int min) : min(min) { }
 	const unsigned int min;
@@ -35,6 +37,7 @@ struct SumByUIStringHeight {
 		return value + std::max(min, GetUIHeight(obj));
 	}
 };
+#pragma warning(pop)
 
 std::vector<boost::shared_ptr<UIString> > CreateSelectList(const std::vector<boost::shared_ptr<const std::string> >& texts) {
 	std::vector<boost::shared_ptr<UIString> > result;
@@ -222,7 +225,7 @@ boost::optional<boost::shared_ptr<Error> > UISelector::Draw(void) {
 	return UIBase::Draw();
 }
 
-boost::optional<boost::shared_ptr<Error> > UISelector::Draw(unsigned int abs_x, unsigned int abs_y) {
+boost::optional<boost::shared_ptr<Error> > UISelector::Draw(unsigned int, unsigned int) {
 	BOOST_ASSERT(arrow);
 	OPT_ERROR(arrow->Draw());
 
@@ -257,11 +260,13 @@ opt_error<unsigned int>::type UISelector::CalcHeight() const {
 utility::opt_error<unsigned int>::type UISelector::CalcLineWidth(unsigned int index) const {
 	unsigned int result = GetUIWidth(arrow);
 	std::vector<boost::shared_ptr<UIString> >::const_iterator start, end, it;
-	start = select_list.begin() + line_size * index;
+	start = select_list.begin();
+	std::advance(start, line_size * index);
 	if(line_size * (index + 1) >= select_list.size()) {
 		end = select_list.end();
 	} else {
-		end = start + line_size;
+		end = start;
+		std::advance(end, line_size);
 	}
 	it = std::max_element(start, end, MaxFindByUIStringWidth());
 	result += GetUIWidth(*it);
@@ -271,11 +276,13 @@ utility::opt_error<unsigned int>::type UISelector::CalcLineWidth(unsigned int in
 
 utility::opt_error<unsigned int>::type UISelector::CalcLineHeight(unsigned int index) const {
 	std::vector<boost::shared_ptr<UIString> >::const_iterator start, end;
-	start = select_list.begin() + line_size * index;
+	start = select_list.begin();
+	std::advance(start, line_size * index);
 	if(line_size * (index + 1) >= select_list.size()) {
 		end = select_list.end();
 	} else {
-		end = start + line_size;
+		end = start;
+		std::advance(end, line_size);
 	}
 	return std::accumulate(start, end, 0, SumByUIStringHeight(GetUIHeight(arrow)));
 }

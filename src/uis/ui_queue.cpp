@@ -66,12 +66,12 @@ namespace {
 		}
 	};
 	struct UISumHeight {
-		int operator() (const int value, const UI_PAIR& obj) const {
+		unsigned int operator() (const unsigned int value, const UI_PAIR& obj) const {
 			return value + GetUIHeight(obj.get<1>());
 		}
 	};
 	struct UISumWidth {
-		int operator() (const int value, const UI_PAIR& obj) const {
+		unsigned int operator() (const unsigned int value, const UI_PAIR& obj) const {
 			return value + GetUIWidth(obj.get<1>());
 		}
 	};
@@ -184,13 +184,13 @@ boost::optional<boost::shared_ptr<Error> > UIQueue::Draw(void) {
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > UIQueue::Draw(unsigned int abs_x, unsigned int abs_y) {
+boost::optional<boost::shared_ptr<Error> > UIQueue::Draw(unsigned int, unsigned int) {
 	return boost::none;
 }
 
 opt_error<unsigned int>::type UIQueue::CalcWidth() const {
 	if(col_split) { // â°ï¿Ç—
-		return std::accumulate(ui_list.begin(), ui_list.end(), 0, UISumWidth());
+		return std::accumulate(ui_list.begin(), ui_list.end(), static_cast<unsigned int>(0), UISumWidth());
 	} else { // ècï¿Ç—
 		std::vector<UI_PAIR>::const_iterator it = std::max_element(ui_list.begin(), ui_list.end(), UIMaxWidth());
 		BOOST_ASSERT(it != ui_list.end());
@@ -204,7 +204,7 @@ opt_error<unsigned int>::type UIQueue::CalcHeight() const {
 		BOOST_ASSERT(it != ui_list.end());
 		return GetUIHeight(it->get<1>());
 	} else { // ècï¿Ç—
-		return std::accumulate(ui_list.begin(), ui_list.end(), 0, UISumHeight());
+		return std::accumulate(ui_list.begin(), ui_list.end(), static_cast<unsigned int>(0), UISumHeight());
 	}
 }
 

@@ -15,7 +15,7 @@ struct PTMoneyTotal {
 
 boost::shared_ptr<uis::UIString> CreateMoneyText(boost::shared_ptr<PTData> pt) {
 	std::vector<boost::shared_ptr<CharData> > characters = pt->GetCharacters();
-	const unsigned int money_total = std::accumulate(characters.begin(), characters.end(), 0, PTMoneyTotal());
+	const unsigned int money_total = std::accumulate(characters.begin(), characters.end(), static_cast<unsigned int>(0), PTMoneyTotal());
 	char text_char[256];
 	SPRINTF(text_char, "èäéùã‡çáåv: %15dTG", money_total);
 	boost::shared_ptr<std::string> text(new std::string(text_char));
@@ -126,6 +126,8 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampWindow
 					case events::KeyEvent::KEY_B:
 						SendPopWindowEvent(select_window);
 						OPT_ERROR(RemoveThisWindow());
+						break;
+					default:
 						break;
 				}
 			}

@@ -42,6 +42,8 @@ boost::optional<boost::shared_ptr<Error> > CampScene::OnKeyEvent(boost::shared_p
 			case events::KeyEvent::KEY_Y:
 				OPT_ERROR(AddCampWindow());
 				return boost::none;
+			default:
+				break;
 		}
 	}
 	return boost::none;

@@ -29,11 +29,11 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type ScriptWindow::GetSize
 	return boost::make_tuple<unsigned int, unsigned int>(0, 0);
 }
 
-boost::optional<boost::shared_ptr<Error> > ScriptWindow::Move(unsigned int x, unsigned int y) {
+boost::optional<boost::shared_ptr<Error> > ScriptWindow::Move(unsigned int, unsigned int) {
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > ScriptWindow::Resize(unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > ScriptWindow::Resize(unsigned int, unsigned int) {
 	return boost::none;
 }
 

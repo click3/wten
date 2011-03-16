@@ -53,6 +53,8 @@ boost::optional<boost::shared_ptr<Error> > WindowManager::ManageEventProcedure(b
 	switch(event->GetEventType()) {
 		case EVENT_TYPE_POP_WINDOW:
 			return PopWindowEvent(event);
+		default:
+			break;
 	}
 	return boost::none;
 }

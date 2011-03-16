@@ -32,6 +32,8 @@ boost::shared_ptr<std::string> CharCondition::ToString(void) const {
 			break;
 		default:
 			BOOST_ASSERT(false);
+			result = "Unknown";
+			break;
 	}
 	return boost::shared_ptr<std::string>(new std::string(result));
 }

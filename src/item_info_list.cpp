@@ -47,6 +47,10 @@ boost::shared_ptr<const ItemInfo> CreateItemInfo(boost::shared_ptr<const std::st
 	);
 }
 
+#pragma pack(push, 4)
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
 template <typename Iterator>
 struct ItemInfoListCSVParser : boost::spirit::qi::grammar<Iterator, std::vector<boost::shared_ptr<const ItemInfo> >()> {
 	ItemInfoListCSVParser() :
@@ -84,17 +88,28 @@ struct ItemInfoListCSVParser : boost::spirit::qi::grammar<Iterator, std::vector<
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const ItemInfo>()> line;
 	boost::spirit::qi::rule<Iterator, std::vector<boost::shared_ptr<const ItemInfo> >() > root;
 };
+#pragma warning(pop)
+#pragma pack(pop)
 
 std::vector<char> FileRead(const std::string &path) {
+	std::vector<char> result;
 	BOOST_ASSERT(!path.empty());
 	boost::shared_ptr<FILE> fp = MyFOpen(path, "rb");
+	if(!fp) {
+		BOOST_ASSERT(false);
+		return result;
+	}
 	::fseek(fp.get(), 0, SEEK_END);
-	const unsigned int size = ::ftell(fp.get());
+	const long size = ::ftell(fp.get());
+	if(size == -1) {
+		BOOST_ASSERT(false);
+		return result;
+	}
 	::fseek(fp.get(), 0, SEEK_SET);
-	std::vector<char> data(size);
-	const unsigned int read_size = ::fread(&data.front(), 1, data.size(), fp.get());
-	BOOST_ASSERT(read_size == data.size());
-	return data;
+	result.resize(static_cast<unsigned int>(size));
+	const unsigned int read_size = ::fread(&result.front(), 1, result.size(), fp.get());
+	BOOST_ASSERT(read_size == result.size());
+	return result;
 }
 
 std::vector<boost::shared_ptr<const ItemInfo> > ReadItemInfo(const std::string &path) {

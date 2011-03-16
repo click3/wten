@@ -60,10 +60,14 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampStatus
 						SendPopWindowEvent(text_window);
 						OPT_ERROR(RemoveThisWindow());
 						break;
+					default:
+						break;
 				}
 			}
 			return boost::none;
 		}
+		default:
+			break;
 	}
 	return CampBaseWindow::NotifyEvent(event);
 }

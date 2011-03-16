@@ -55,6 +55,8 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampBaseWi
 					case events::KeyEvent::KEY_B:
 						OPT_ERROR(RemoveThisWindow());
 						break;
+					default:
+						break;
 				}
 			}
 			return boost::none;
