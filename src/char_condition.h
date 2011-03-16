@@ -1,7 +1,10 @@
 
 namespace wten {
 
-class CharCondition {
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
+class CharCondition : boost::noncopyable {
 public:
 	enum CONDITION {
 		CONDITION_OK,
@@ -68,5 +71,6 @@ private:
 	int ac_bonus;
 	bool parry;
 };
+#pragma warning(pop)
 
 } // wten
