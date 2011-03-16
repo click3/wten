@@ -3,7 +3,10 @@ namespace wten {
 
 class Job;
 
-class ItemInfo {
+#pragma warning(push)
+#pragma warning(disable: 4625)
+#pragma warning(disable: 4626)
+class ItemInfo : boost::noncopyable {
 public:
 	enum ITEM_TYPE {
 		ITEM_TYPE_WEAPON,
@@ -58,6 +61,6 @@ protected:
 	const std::vector<boost::tuple<EnemyInfo::MONSTER_TYPE, unsigned int> > monster_resist;
 	const std::vector<boost::tuple<CharCondition::CONDITION, unsigned int> > condition_resist;
 };
-
+#pragma warning(pop)
 
 } // wten
