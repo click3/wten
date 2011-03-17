@@ -148,6 +148,7 @@
 #include "events/next_step_event.h"
 #include "events/next_window_event.h"
 #include "actions/spell_base.h"
+#include "actions/dummy_spell.h"
 #include "char_status.h"
 #include "char_data.h"
 #include "pt_data.h"
