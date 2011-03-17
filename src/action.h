@@ -28,6 +28,12 @@ public:
 	enum ACTION_TYPE {
 		ACTION_TYPE_NORMAL,
 		ACTION_TYPE_FIRE,
+		ACTION_TYPE_ICE,
+		ACTION_TYPE_POISON,
+		ACTION_TYPE_DRAIN,
+		ACTION_TYPE_STONE,
+		ACTION_TYPE_SPELL,
+		ACTION_TYPE_SPECIAL,
 	};
 	Action(unsigned int id, TARGET_TYPE target_type, ACTION_TYPE action_type);
 	virtual ~Action();
