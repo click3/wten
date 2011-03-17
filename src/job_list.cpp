@@ -46,12 +46,12 @@ struct JobListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const Jo
 #pragma warning(pop)
 #pragma pack(pop)
 
-std::vector<boost::shared_ptr<const Job> > ReadJob(const std::string &path) {
-	typedef std::vector<char>::const_iterator Iterator;
+std::vector<boost::shared_ptr<const Job> > ReadJob(const std::wstring &path) {
+	typedef std::vector<wchar_t>::const_iterator Iterator;
 	typedef JobListCSVParser<Iterator> Parser;
 
-	std::vector<char> data;
-	boost::optional<boost::shared_ptr<Error> > error = FileRead(path, &data);
+	std::vector<wchar_t> data;
+	boost::optional<boost::shared_ptr<Error> > error = UTF8FileRead(path, &data);
 	BOOST_ASSERT(!error);
 	Iterator first = data.begin();
 	const Iterator last = data.end();
@@ -81,7 +81,7 @@ JobList::~JobList() {
 boost::shared_ptr<JobList> JobList::GetCurrentInstance(void) {
 	if(!instance) {
 		// TODO ‚¨‚¢‚¾‚µ
-		const char *path = "data/job/job_list.csv";
+		const wchar_t *path = L"data/job/job_list.csv";
 		std::vector<boost::shared_ptr<const Job> > list = ReadJob(path);
 		instance.reset(new JobList(list));
 		BOOST_ASSERT(instance);

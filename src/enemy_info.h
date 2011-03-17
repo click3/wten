@@ -12,15 +12,15 @@ public:
 		MONSTER_TYPE_ANIMAL,
 		MONSTER_TYPE_UNDEAD,
 	};
-	EnemyInfo(boost::shared_ptr<const std::string> uncertainty_name, boost::shared_ptr<const std::string> name,
+	EnemyInfo(boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
 		MONSTER_TYPE type, unsigned int lv, unsigned int hp_base, unsigned int hp_bonus, int ac,
 		unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
 		unsigned int resist, const std::vector<Action::ACTION_TYPE>& resist_actions,
 		unsigned int exp, unsigned int tg_base, unsigned int drop_base,
 		boost::shared_ptr<const ItemInfo> drop_item);
 	~EnemyInfo();
-	boost::shared_ptr<const std::string> GetUncertaintyName() const;
-	boost::shared_ptr<const std::string> GetName() const;
+	boost::shared_ptr<const std::wstring> GetUncertaintyName() const;
+	boost::shared_ptr<const std::wstring> GetName() const;
 	MONSTER_TYPE GetType() const;
 	unsigned int GetLv() const;
 	unsigned int CalcMaxHP() const;
@@ -33,8 +33,8 @@ public:
 	unsigned int CalcTg(unsigned int thief_skill) const;
 	boost::optional<boost::shared_ptr<const ItemInfo> > CalcDrop(unsigned int thief_skill) const;
 protected:
-	const boost::shared_ptr<const std::string> uncertainty_name;
-	const boost::shared_ptr<const std::string> name;
+	const boost::shared_ptr<const std::wstring> uncertainty_name;
+	const boost::shared_ptr<const std::wstring> name;
 	const MONSTER_TYPE type;
 	const unsigned int lv;
 	const unsigned int hp_base;

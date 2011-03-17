@@ -9,16 +9,16 @@ namespace {
 
 boost::shared_ptr<ItemInfoList> instance;
 
-struct item_types_ : boost::spirit::qi::symbols<char, ItemInfo::ITEM_TYPE> {
+struct item_types_ : boost::spirit::qi::symbols<wchar_t, ItemInfo::ITEM_TYPE> {
 	item_types_() {
 		add
-			("WEAPON",	ItemInfo::ITEM_TYPE_WEAPON)
-			("SHIELD",	ItemInfo::ITEM_TYPE_SHIELD)
-			("ARMOR",	ItemInfo::ITEM_TYPE_ARMOR)
-			("HELMET",	ItemInfo::ITEM_TYPE_HELMET)
-			("GAUNTLET",	ItemInfo::ITEM_TYPE_GAUNTLET)
-			("ADORNMENT",	ItemInfo::ITEM_TYPE_ADORNMENT)
-			("TOOL",	ItemInfo::ITEM_TYPE_TOOL)
+			(L"WEAPON",		ItemInfo::ITEM_TYPE_WEAPON)
+			(L"SHIELD",		ItemInfo::ITEM_TYPE_SHIELD)
+			(L"ARMOR",		ItemInfo::ITEM_TYPE_ARMOR)
+			(L"HELMET",		ItemInfo::ITEM_TYPE_HELMET)
+			(L"GAUNTLET",		ItemInfo::ITEM_TYPE_GAUNTLET)
+			(L"ADORNMENT",	ItemInfo::ITEM_TYPE_ADORNMENT)
+			(L"TOOL",		ItemInfo::ITEM_TYPE_TOOL)
 		;
 	}
 } item_types_impl;
@@ -72,7 +72,7 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 #pragma warning(pop)
 #pragma pack(pop)
 
-std::vector<boost::shared_ptr<const ItemInfo> > ReadItemInfo(const std::string &path) {
+std::vector<boost::shared_ptr<const ItemInfo> > ReadItemInfo(const std::wstring &path) {
 	typedef std::vector<wchar_t>::const_iterator Iterator;
 	typedef ItemInfoListCSVParser<Iterator> Parser;
 	std::vector<boost::shared_ptr<const ItemInfo> > result;
@@ -111,7 +111,7 @@ ItemInfoList::~ItemInfoList() {
 boost::shared_ptr<ItemInfoList> ItemInfoList::GetCurrentInstance(void) {
 	if(!instance) {
 		// TODO ‚¨‚¢‚¾‚µ
-		const char *path = "data/item/item_info_list.csv";
+		const wchar_t *path = L"data/item/item_info_list.csv";
 		std::vector<boost::shared_ptr<const ItemInfo> > list = ReadItemInfo(path);
 		instance.reset(new ItemInfoList(list));
 		BOOST_ASSERT(instance);

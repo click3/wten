@@ -8,7 +8,7 @@ class EnemyStatus : boost::noncopyable {
 public:
 	EnemyStatus(boost::shared_ptr<const EnemyInfo> info);
 	~EnemyStatus();
-	boost::shared_ptr<const std::string> GetName() const;
+	boost::shared_ptr<const std::wstring> GetName() const;
 	unsigned int GetLv() const;
 	unsigned int GetMaxHP() const;
 	int GetAC() const;
@@ -21,7 +21,7 @@ public:
 	boost::optional<boost::shared_ptr<const ItemInfo> > CalcDrop(unsigned int thief_skill) const;
 private:
 	const boost::shared_ptr<const EnemyInfo> info;
-	boost::shared_ptr<const std::string> name;
+	boost::shared_ptr<const std::wstring> name;
 	const unsigned int hp;
 };
 #pragma warning(pop)

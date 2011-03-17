@@ -4,7 +4,7 @@ namespace wten {
 
 using namespace utility;
 
-EnemyInfo::EnemyInfo(boost::shared_ptr<const std::string> uncertainty_name, boost::shared_ptr<const std::string> name,
+EnemyInfo::EnemyInfo(boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
 	MONSTER_TYPE type, unsigned int lv, unsigned int hp_base, unsigned int hp_bonus, int ac,
 	unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
 	unsigned int resist, const std::vector<Action::ACTION_TYPE>& resist_actions,
@@ -32,11 +32,11 @@ EnemyInfo::EnemyInfo(boost::shared_ptr<const std::string> uncertainty_name, boos
 EnemyInfo::~EnemyInfo() {
 }
 
-boost::shared_ptr<const std::string> EnemyInfo::GetUncertaintyName() const {
+boost::shared_ptr<const std::wstring> EnemyInfo::GetUncertaintyName() const {
 	return uncertainty_name;
 }
 
-boost::shared_ptr<const std::string> EnemyInfo::GetName() const {
+boost::shared_ptr<const std::wstring> EnemyInfo::GetName() const {
 	return name;
 }
 

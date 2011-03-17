@@ -14,7 +14,7 @@ EnemyStatus::EnemyStatus(boost::shared_ptr<const EnemyInfo> info) :
 EnemyStatus::~EnemyStatus() {
 }
 
-boost::shared_ptr<const std::string> EnemyStatus::GetName() const {
+boost::shared_ptr<const std::wstring> EnemyStatus::GetName() const {
 	BOOST_ASSERT(name);
 	BOOST_ASSERT(!name->empty());
 	return name;

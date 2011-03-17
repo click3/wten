@@ -9,45 +9,45 @@ namespace {
 
 boost::shared_ptr<SpellList> instance;
 
-struct target_types_ : boost::spirit::qi::symbols<char, Action::TARGET_TYPE> {
+struct target_types_ : boost::spirit::qi::symbols<wchar_t, Action::TARGET_TYPE> {
 	target_types_() {
 		add
-			("THIS",		Action::TARGET_TYPE_THIS)
-			("FRIEND_UNIT",	Action::TARGET_TYPE_FRIEND_UNIT)
-			("FRIEND_FRONT",	Action::TARGET_TYPE_FRIEND_FRONT)
-			("FRIEND_BACK",	Action::TARGET_TYPE_FRIEND_BACK)
-			("FRIEND_ALL",	Action::TARGET_TYPE_FRIEND_ALL)
-			("FRIEND_NO_SELECT",	Action::TARGET_TYPE_FRIEND_NO_SELECT)
-			("ENEMY_UNIT",	Action::TARGET_TYPE_ENEMY_UNIT)
-			("ENEMY_AREA",	Action::TARGET_TYPE_ENEMY_AREA)
-			("ENEMY_FRONT",	Action::TARGET_TYPE_ENEMY_FRONT)
-			("ENEMY_BACK",	Action::TARGET_TYPE_ENEMY_BACK)
-			("ENEMY_ALL",		Action::TARGET_TYPE_ENEMY_ALL)
-			("ENEMY_NO_SELECT",	Action::TARGET_TYPE_ENEMY_NO_SELECT)
+			(L"THIS",			Action::TARGET_TYPE_THIS)
+			(L"FRIEND_UNIT",		Action::TARGET_TYPE_FRIEND_UNIT)
+			(L"FRIEND_FRONT",		Action::TARGET_TYPE_FRIEND_FRONT)
+			(L"FRIEND_BACK",		Action::TARGET_TYPE_FRIEND_BACK)
+			(L"FRIEND_ALL",		Action::TARGET_TYPE_FRIEND_ALL)
+			(L"FRIEND_NO_SELECT",	Action::TARGET_TYPE_FRIEND_NO_SELECT)
+			(L"ENEMY_UNIT",		Action::TARGET_TYPE_ENEMY_UNIT)
+			(L"ENEMY_AREA",		Action::TARGET_TYPE_ENEMY_AREA)
+			(L"ENEMY_FRONT",		Action::TARGET_TYPE_ENEMY_FRONT)
+			(L"ENEMY_BACK",		Action::TARGET_TYPE_ENEMY_BACK)
+			(L"ENEMY_ALL",		Action::TARGET_TYPE_ENEMY_ALL)
+			(L"ENEMY_NO_SELECT",		Action::TARGET_TYPE_ENEMY_NO_SELECT)
 		;
 	}
 } target_types_impl;
 
-struct action_types_ : boost::spirit::qi::symbols<char, Action::ACTION_TYPE> {
+struct action_types_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_TYPE> {
 	action_types_() {
 		add
-			("NORMAL",	Action::ACTION_TYPE_NORMAL)
-			("FIRE",	Action::ACTION_TYPE_FIRE)
-			("ICE",	Action::ACTION_TYPE_ICE)
-			("POISON",	Action::ACTION_TYPE_POISON)
-			("DRAIN",	Action::ACTION_TYPE_DRAIN)
-			("STONE",	Action::ACTION_TYPE_STONE)
-			("SPELL",	Action::ACTION_TYPE_SPELL)
-			("SPECIAL",	Action::ACTION_TYPE_SPECIAL)
+			(L"NORMAL",	Action::ACTION_TYPE_NORMAL)
+			(L"FIRE",	Action::ACTION_TYPE_FIRE)
+			(L"ICE",	Action::ACTION_TYPE_ICE)
+			(L"POISON",	Action::ACTION_TYPE_POISON)
+			(L"DRAIN",	Action::ACTION_TYPE_DRAIN)
+			(L"STONE",	Action::ACTION_TYPE_STONE)
+			(L"SPELL",	Action::ACTION_TYPE_SPELL)
+			(L"SPECIAL",	Action::ACTION_TYPE_SPECIAL)
 		;
 	}
 } action_types_impl;
 
-struct spell_jobs_ : boost::spirit::qi::symbols<char, actions::SpellBase::SPELL_JOB> {
+struct spell_jobs_ : boost::spirit::qi::symbols<wchar_t, actions::SpellBase::SPELL_JOB> {
 	spell_jobs_() {
 		add
-			("MAGE",	actions::SpellBase::SPELL_JOB_MAGE)
-			("PRIEST",	actions::SpellBase::SPELL_JOB_PRIEST)
+			(L"MAGE",	actions::SpellBase::SPELL_JOB_MAGE)
+			(L"PRIEST",	actions::SpellBase::SPELL_JOB_PRIEST)
 		;
 	}
 } spell_jobs_impl;
@@ -92,12 +92,12 @@ struct SpellListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const 
 #pragma warning(pop)
 #pragma pack(pop)
 
-std::vector<boost::shared_ptr<const actions::SpellBase> > ReadSpell(const std::string &path) {
-	typedef std::vector<char>::const_iterator Iterator;
+std::vector<boost::shared_ptr<const actions::SpellBase> > ReadSpell(const std::wstring &path) {
+	typedef std::vector<wchar_t>::const_iterator Iterator;
 	typedef SpellListCSVParser<Iterator> Parser;
 
-	std::vector<char> data;
-	boost::optional<boost::shared_ptr<Error> > error = FileRead(path, &data);
+	std::vector<wchar_t> data;
+	boost::optional<boost::shared_ptr<Error> > error = UTF8FileRead(path, &data);
 	BOOST_ASSERT(!error);
 	Iterator first = data.begin();
 	const Iterator last = data.end();
@@ -127,7 +127,7 @@ SpellList::~SpellList() {
 boost::shared_ptr<SpellList> SpellList::GetCurrentInstance(void) {
 	if(!instance) {
 		// TODO ‚¨‚¢‚¾‚µ
-		const char *path = "data/action/spell_list.csv";
+		const wchar_t *path = L"data/action/spell_list.csv";
 		std::vector<boost::shared_ptr<const actions::SpellBase> > list = ReadSpell(path);
 		instance.reset(new SpellList(list));
 		BOOST_ASSERT(instance);

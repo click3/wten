@@ -27,7 +27,7 @@ boost::optional<boost::shared_ptr<Error> > CharToWChar(const char *buffer, unsig
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > FileReadW(const std::string &path, unsigned int code_page, std::vector<wchar_t> *result) {
+boost::optional<boost::shared_ptr<Error> > FileReadW(const std::wstring &path, unsigned int code_page, std::vector<wchar_t> *result) {
 	if(result == NULL) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
@@ -53,10 +53,10 @@ unsigned int Dice(unsigned int base, unsigned int count, unsigned int bonus) {
 	return result;
 }
 
-boost::shared_ptr<FILE> MyFOpen(const std::string &path, const char *type) {
+boost::shared_ptr<FILE> MyFOpen(const std::wstring &path, const wchar_t *type) {
 	boost::shared_ptr<FILE> result;
 	FILE *fp;
-	const errno_t error = ::fopen_s(&fp, path.c_str(), type);
+	const errno_t error = ::_wfopen_s(&fp, path.c_str(), type);
 	if(error == 0) {
 		BOOST_ASSERT(fp != NULL);
 		result.reset(fp, &MyFClose);
@@ -64,11 +64,11 @@ boost::shared_ptr<FILE> MyFOpen(const std::string &path, const char *type) {
 	return result;
 }
 
-boost::optional<boost::shared_ptr<Error> > FileRead(const std::string &path, std::vector<char> *data) {
+boost::optional<boost::shared_ptr<Error> > FileRead(const std::wstring &path, std::vector<char> *data) {
 	if(path.empty() || data == NULL) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
-	boost::shared_ptr<FILE> fp = MyFOpen(path, "rb");
+	boost::shared_ptr<FILE> fp = MyFOpen(path, L"rb");
 	if(!fp) {
 		return CREATE_ERROR(ERROR_CODE_FILE_NOT_FOUND);
 	}
@@ -86,11 +86,11 @@ boost::optional<boost::shared_ptr<Error> > FileRead(const std::string &path, std
 	return boost::none;
 }
 
-boost::optional<boost::shared_ptr<Error> > SJISFileRead(const std::string &path, std::vector<wchar_t> *result) {
+boost::optional<boost::shared_ptr<Error> > SJISFileRead(const std::wstring &path, std::vector<wchar_t> *result) {
 	return FileReadW(path, CP_ACP, result);
 }
 
-boost::optional<boost::shared_ptr<Error> > UTF8FileRead(const std::string &path, std::vector<wchar_t> *result) {
+boost::optional<boost::shared_ptr<Error> > UTF8FileRead(const std::wstring &path, std::vector<wchar_t> *result) {
 	return FileReadW(path, CP_UTF8, result);
 }
 
