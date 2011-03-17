@@ -9,10 +9,6 @@ namespace {
 
 boost::shared_ptr<ItemInfoList> instance;
 
-boost::shared_ptr<const std::string> Str2Ptr(const std::vector<char> &str) {
-	return boost::shared_ptr<const std::string>(new std::string(&str.front(), str.size()));
-}
-
 struct item_types_ : boost::spirit::qi::symbols<char, ItemInfo::ITEM_TYPE> {
 	item_types_() {
 		add
@@ -62,8 +58,8 @@ struct ItemInfoListCSVParser : boost::spirit::qi::grammar<Iterator, std::vector<
 		using qi::uint_;
 		using qi::int_;
 
-		quoted_string = lexeme['"' >> +(char_ - '"') >> '"'][qi::_val = boost::phoenix::bind(&Str2Ptr, qi::_1)];
-		unquoted_string = (+(char_ - ',' - '"'))[qi::_val = boost::phoenix::bind(&Str2Ptr, qi::_1)];
+		quoted_string = lexeme['"' >> +(char_ - '"') >> '"'][qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
+		unquoted_string = (+(char_ - ',' - '"'))[qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
 		string = quoted_string | unquoted_string;
 		quoted_item_types = '"' >> item_types_impl >> '"';
 		item_types = quoted_item_types | item_types_impl;
@@ -91,32 +87,13 @@ struct ItemInfoListCSVParser : boost::spirit::qi::grammar<Iterator, std::vector<
 #pragma warning(pop)
 #pragma pack(pop)
 
-std::vector<char> FileRead(const std::string &path) {
-	std::vector<char> result;
-	BOOST_ASSERT(!path.empty());
-	boost::shared_ptr<FILE> fp = MyFOpen(path, "rb");
-	if(!fp) {
-		BOOST_ASSERT(false);
-		return result;
-	}
-	::fseek(fp.get(), 0, SEEK_END);
-	const long size = ::ftell(fp.get());
-	if(size == -1) {
-		BOOST_ASSERT(false);
-		return result;
-	}
-	::fseek(fp.get(), 0, SEEK_SET);
-	result.resize(static_cast<unsigned int>(size));
-	const unsigned int read_size = ::fread(&result.front(), 1, result.size(), fp.get());
-	BOOST_ASSERT(read_size == result.size());
-	return result;
-}
-
 std::vector<boost::shared_ptr<const ItemInfo> > ReadItemInfo(const std::string &path) {
 	typedef std::vector<char>::const_iterator Iterator;
 	typedef ItemInfoListCSVParser<Iterator> Parser;
 
-	const std::vector<char> data = FileRead(path);
+	std::vector<char> data;
+	boost::optional<boost::shared_ptr<Error> > error = FileRead(path, &data);
+	BOOST_ASSERT(!error);
 	Iterator first = data.begin();
 	const Iterator last = data.end();
 

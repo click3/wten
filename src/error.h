@@ -7,8 +7,11 @@ enum ERROR_CODE {
 	ERROR_CODE_INTERNAL_ERROR,
 	ERROR_CODE_DXLIB_INTERNAL_ERROR,
 
+	//File関係
+	ERROR_CODE_FILE_NOT_FOUND,			/**< ファイルが見つからなかった。 */
+
 	//Window関係
-	ERROR_CODE_OUTSIDE_RANGE,	/**< 座標指定などで範囲外を指定した。 */
+	ERROR_CODE_OUTSIDE_RANGE,			/**< 座標指定などで範囲外を指定した。 */
 
 	//UISelector関係
 	ERROR_CODE_SELECTOR_TEXT_NOT_FOUND,	/**< 指定した文字列は見つからなかった。 */

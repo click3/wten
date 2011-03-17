@@ -38,6 +38,40 @@ boost::shared_ptr<FILE> MyFOpen(const std::string &path, const char *type) {
 	return result;
 }
 
+boost::optional<boost::shared_ptr<Error> > FileRead(const std::string &path, std::vector<char> *data) {
+	if(path.empty() || data == NULL) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	boost::shared_ptr<FILE> fp = MyFOpen(path, "rb");
+	if(!fp) {
+		return CREATE_ERROR(ERROR_CODE_FILE_NOT_FOUND);
+	}
+	::fseek(fp.get(), 0, SEEK_END);
+	const long size = ::ftell(fp.get());
+	if(size < 0) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	::fseek(fp.get(), 0, SEEK_SET);
+	data->resize(static_cast<unsigned int>(size));
+	const unsigned int read_size = ::fread(&data->front(), 1, data->size(), fp.get());
+	if(read_size != data->size()) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
+boost::shared_ptr<const std::string> StrV2Ptr(const std::vector<char> &str) {
+	return boost::shared_ptr<const std::string>(new std::string(&str.front(), str.size()));
+}
+
+boost::shared_ptr<const std::string> Str2Ptr(const std::string &str) {
+	return boost::shared_ptr<const std::string>(new std::string(str));
+}
+
+boost::shared_ptr<const std::string> Char2Ptr(const char* str) {
+	return boost::shared_ptr<const std::string>(new std::string(str));
+}
+
 } // utility
 
 } // wten
