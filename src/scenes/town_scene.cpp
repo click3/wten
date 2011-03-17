@@ -4,17 +4,17 @@ namespace wten { namespace scenes {
 
 namespace {
 
-std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<Scene> > > CreateSceneList(void) {
+std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<Scene> > > CreateSceneList(void) {
 	// TODO 適切なシーンの生成
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<Scene> > > result;
-	const char *text_list[] = {
-		"宿屋「ローゼンメイデン」",
-		"ベストバル商店街",
-		"トート寺院",
-		"酒場「超兄貴」",
-		"冒険者ギルド",
-		"ジークフロント騎士団兵舎",
-		"天龍の塔　付近"
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<Scene> > > result;
+	const wchar_t *text_list[] = {
+		L"宿屋「ローゼンメイデン」",
+		L"ベストバル商店街",
+		L"トート寺院",
+		L"酒場「超兄貴」",
+		L"冒険者ギルド",
+		L"ジークフロント騎士団兵舎",
+		L"天龍の塔　付近"
 	};
 	boost::shared_ptr<Scene> scene_list[] = {
 		boost::shared_ptr<Scene>(new scenes::HotelScene()),
@@ -26,16 +26,16 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		boost::shared_ptr<Scene>(new scenes::TowerGateScene())
 	};
 	for(unsigned int i = 0; i < 7; i++) {
-		boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+		boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 		boost::shared_ptr<Scene> scene(scene_list[i]);
 		result.push_back(make_tuple(text, scene));
 	}
 	return result;
 }
 
-boost::shared_ptr<const std::string> GetTownName(void) {
+boost::shared_ptr<const std::wstring> GetTownName(void) {
 	// TODO
-	return boost::shared_ptr<const std::string>(new std::string("城郭都市「ジークフロント」"));
+	return boost::shared_ptr<const std::wstring>(new std::wstring(L"城郭都市「ジークフロント」"));
 }
 
 } // anonymous

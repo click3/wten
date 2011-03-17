@@ -14,9 +14,9 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y);
 	utility::opt_error<unsigned int>::type CalcWidth() const;
 	utility::opt_error<unsigned int>::type CalcHeight() const;
-	boost::shared_ptr<std::string> GetText(void) const;
+	boost::shared_ptr<std::wstring> GetText(void) const;
 protected:
-	boost::shared_ptr<std::string> text;
+	boost::shared_ptr<std::wstring> text;
 };
 #pragma warning(pop)
 

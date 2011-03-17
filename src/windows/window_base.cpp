@@ -6,7 +6,7 @@ namespace windows {
 
 using namespace utility;
 
-WindowBase::WindowBase(boost::shared_ptr<const std::string> default_frame_filename) :
+WindowBase::WindowBase(boost::shared_ptr<const std::wstring> default_frame_filename) :
 	x(0),	y(0),	width(640),	height(480), default_frame_filename(default_frame_filename)
 {
 }
@@ -117,12 +117,12 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::AddBoxUI(uis::UIBase::MOV
 	return AddUI(ui, move_mode, x, y, width, height);
 }
 
-boost::optional<boost::shared_ptr<Error> > WindowBase::AddImageUI(boost::shared_ptr<const std::string> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y) {
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddImageUI(boost::shared_ptr<const std::wstring> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y) {
 	boost::shared_ptr<uis::UIBase> ui(new uis::UIImage(image_filename));
 	return AddUI(ui, move_mode, x, y, 0, 0);
 }
 
-boost::optional<boost::shared_ptr<Error> > WindowBase::AddTextUI(boost::shared_ptr<const std::string> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > WindowBase::AddTextUI(boost::shared_ptr<const std::wstring> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	boost::shared_ptr<uis::UIBase> ui(new uis::UIStringBox(default_frame_filename, text));
 	return AddUI(ui, move_mode, x, y, width, height);
 }

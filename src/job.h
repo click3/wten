@@ -10,7 +10,7 @@ namespace actions {
 #pragma warning(disable: 4626)
 class Job : boost::noncopyable {
 public:
-	Job(unsigned int id, boost::shared_ptr<const std::string> name,
+	Job(unsigned int id, boost::shared_ptr<const std::wstring> name,
 		unsigned int hp_base, unsigned int hp_count_bonus,
 		unsigned int str, unsigned int iq, unsigned int pie,
 		unsigned int vit, unsigned int agi, unsigned int luk, unsigned int thief_skill,
@@ -18,7 +18,7 @@ public:
 		const std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >& spells);
 	~Job();
 	unsigned int GetId(void) const;
-	boost::shared_ptr<const std::string> GetName(void) const;
+	boost::shared_ptr<const std::wstring> GetName(void) const;
 	unsigned int CalcMaxHP(unsigned int lv, unsigned int current_hp) const;
 	unsigned int GetStr(void) const;
 	unsigned int GetIQ(void) const;
@@ -32,7 +32,7 @@ public:
 	unsigned int CalcExp(unsigned int level) const;
 protected:
 	const unsigned int id;
-	const boost::shared_ptr<const std::string> name;
+	const boost::shared_ptr<const std::wstring> name;
 	const unsigned int hp_base;
 	const unsigned int hp_count_bonus;
 	const unsigned int str;

@@ -9,9 +9,9 @@ namespace windows {
 #pragma warning(disable: 4626)
 class TextWindow : public WindowBase {
 public:
-	TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<const std::string> frame_filename);
-	TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<Graph> frame);
-	TextWindow(boost::shared_ptr<const std::string> text);
+	TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<const std::wstring> frame_filename);
+	TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<Graph> frame);
+	TextWindow(boost::shared_ptr<const std::wstring> text);
 	~TextWindow();
 	bool IsOkClose(void) const;
 	void SetOkClose(bool flag);

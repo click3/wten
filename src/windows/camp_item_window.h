@@ -8,7 +8,7 @@ namespace windows {
 #pragma warning(disable: 4626)
 class CampItemWindow : public CampBaseWindow {
 public:
-	CampItemWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename);
+	CampItemWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename);
 	~CampItemWindow();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type NotifyEvent(boost::shared_ptr<Event> event);
@@ -62,7 +62,7 @@ protected:
 	boost::shared_ptr<SelectWindow> item_target_select_window;
 	boost::shared_ptr<CharData> target_char;
 
-	boost::shared_ptr<const std::string> error_message;
+	boost::shared_ptr<const std::wstring> error_message;
 };
 #pragma warning(pop)
 

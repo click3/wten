@@ -49,8 +49,9 @@ void Set##name(boost::shared_ptr<const type> value) {				\
 #define ADD_UINT_PROPERTY(name, default) ADD_PROPERTY(name, unsigned int, default)
 #define ADD_BOOL_PROPERTY(name, default) ADD_PROPERTY(name, bool, default)
 #define ADD_STRING_PROPERTY(name, default) ADD_PROPERTY_PTR(name, std::string, default)
+#define ADD_WSTRING_PROPERTY(name, default) ADD_PROPERTY_PTR(name, std::wstring, default)
 
-	ADD_STRING_PROPERTY(GuildName, "")
+	ADD_WSTRING_PROPERTY(GuildName, L"")
 	ADD_UINT_PROPERTY(CurrentCastleStep, 0)
 	ADD_BOOL_PROPERTY(GuildCreate, false)
 	ADD_UINT_PROPERTY(CurrentTowerStep, 0)

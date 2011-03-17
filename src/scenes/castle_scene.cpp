@@ -21,9 +21,9 @@ enum STEP {
 	RETURN_STEP,
 };
 
-boost::shared_ptr<const std::string> GetCastleName(void) {
+boost::shared_ptr<const std::wstring> GetCastleName(void) {
 	// TODO
-	return boost::shared_ptr<const std::string>(new std::string("ジークフロント騎士団兵舎"));
+	return boost::shared_ptr<const std::wstring>(new std::wstring(L"ジークフロント騎士団兵舎"));
 }
 
 unsigned int GetCurrentStep(void) {
@@ -35,7 +35,7 @@ void SendNextStepEvent(void) {
 	EventNotify::Send(event);
 }
 
-void SetGuildName(boost::shared_ptr<const std::string> guild_name) {
+void SetGuildName(boost::shared_ptr<const std::wstring> guild_name) {
 	GlobalData::GetCurrentInstance()->SetGuildName(guild_name);
 }
 
@@ -88,32 +88,32 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 	switch(current_step) {
 		case GUILD_CREATE_DESCRIPTION_STEP: {
 			next_step = GUILD_NAME_INPUT_STEP;
-			const char *text_char = 
-				"君達が城内へと足を踏み入れると、\n"
-				"貴族然とした人物に声をかけられた。\n"
-				"どうやら冒険者の対応を仕事としている者のようだ。\n"
-				"\n"
-				"彼の説明によると、\n"
-				"塔に入るには軍属である”ギルド”に加わる必要があるらしい。\n"
-				"だが難しくはなく、個人であってもギルド結成は可能なようだ。\n"
-				"もちろんそれは君達にも当てはまる。\n"
-				"\n"
-				"君達はしばらく考えた後、新しくギルドを結成する事にした。\n"
-				"そのギルドの名は……";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = 
+				L"君達が城内へと足を踏み入れると、\n"
+				L"貴族然とした人物に声をかけられた。\n"
+				L"どうやら冒険者の対応を仕事としている者のようだ。\n"
+				L"\n"
+				L"彼の説明によると、\n"
+				L"塔に入るには軍属である”ギルド”に加わる必要があるらしい。\n"
+				L"だが難しくはなく、個人であってもギルド結成は可能なようだ。\n"
+				L"もちろんそれは君達にも当てはまる。\n"
+				L"\n"
+				L"君達はしばらく考えた後、新しくギルドを結成する事にした。\n"
+				L"そのギルドの名は……";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
 		case GUILD_NAME_INPUT_STEP: {
 			next_step = GUILD_CREATE_CHECK_STEP;
-			const char *message_char = "ギルド名を入力してください";
-			boost::shared_ptr<const std::string> message(new std::string(message_char));
+			const wchar_t *message_char = L"ギルド名を入力してください";
+			boost::shared_ptr<const std::wstring> message(new std::wstring(message_char));
 			OPT_ERROR(AddInputDlgWindow(message));
 			break;
 		}
 		case GUILD_CREATE_CHECK_STEP: {
 			if(temp_data) {
-				boost::shared_ptr<const std::string> text = boost::static_pointer_cast<const std::string>(temp_data);
+				boost::shared_ptr<const std::wstring> text = boost::static_pointer_cast<const std::wstring>(temp_data);
 				if(!text->empty()) {
 					SetGuildName(text);
 					SetCurrentCastleStep(NORMAL_STEP);
@@ -130,28 +130,28 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 		}
 		case GUILD_CREATE_FAILURE_STEP: {
 			next_step = GUILD_NAME_INPUT_STEP;
-			const char *text_char = 
-				"彼に書き終えた書類を渡すと、さっと目を通した後\n"
-				"ギルド名の空欄を指摘された。\n"
-				"\n"
-				"どうやらギルド名は必須のようだ\n"
-				"\n"
-				"君達は再度書類に向かい、ギルド名を考えなおす事にする。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = 
+				L"彼に書き終えた書類を渡すと、さっと目を通した後\n"
+				L"ギルド名の空欄を指摘された。\n"
+				L"\n"
+				L"どうやらギルド名は必須のようだ\n"
+				L"\n"
+				L"君達は再度書類に向かい、ギルド名を考えなおす事にする。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
 		case GUILD_CREATE_SUCCESS_STEP: {
 			next_step = GUILD_CREATE_END_STEP;
-			const char *text_char = 
-				"彼に書き終えた書類を渡すと、さっと目を通した後\n"
-				"複雑な意匠が施されたメダルのような物を渡された。\n"
-				"\n"
-				"どうやら無事ギルドの結成を終えられたようだ。\n"
-				"これで塔に入る事も可能だろう。\n"
-				"\n"
-				"君達は彼に礼を言うとその場を後にした。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = 
+				L"彼に書き終えた書類を渡すと、さっと目を通した後\n"
+				L"複雑な意匠が施されたメダルのような物を渡された。\n"
+				L"\n"
+				L"どうやら無事ギルドの結成を終えられたようだ。\n"
+				L"これで塔に入る事も可能だろう。\n"
+				L"\n"
+				L"君達は彼に礼を言うとその場を後にした。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
@@ -160,15 +160,15 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			break;
 		}
 		case NORMAL_STEP: {
-			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
-			const char *text_list[] = {
-				"ミッションを受ける",
-				"ミッションを報告する",
-				"転職する",
-				"寄付する",
-				"モンスター図鑑を見る",
-				"アイテム図鑑を見る",
-				"外に出る"
+			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
+			const wchar_t *text_list[] = {
+				L"ミッションを受ける",
+				L"ミッションを報告する",
+				L"転職する",
+				L"寄付する",
+				L"モンスター図鑑を見る",
+				L"アイテム図鑑を見る",
+				L"外に出る"
 			};
 			boost::shared_ptr<void> step_list[] = {
 				boost::shared_ptr<void>(new STEP(NEW_MISSON_STEP)),
@@ -180,7 +180,7 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 				boost::shared_ptr<void>(new STEP(RETURN_STEP))
 			};
 			for(unsigned int i = 0; i < 7; i++) {
-				boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
@@ -201,8 +201,8 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			// TODO
 		{
 			next_step = NORMAL_STEP;
-			const char *text_char = "現在未実装です。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = L"現在未実装です。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}

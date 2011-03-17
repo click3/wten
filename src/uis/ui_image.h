@@ -8,7 +8,7 @@ namespace uis {
 #pragma warning(disable: 4626)
 class UIImage : public UIBase {
 public:
-	UIImage(boost::shared_ptr<const std::string> filename);
+	UIImage(boost::shared_ptr<const std::wstring> filename);
 	~UIImage();
 	boost::optional<boost::shared_ptr<Error> > Draw(void);
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y);

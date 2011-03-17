@@ -9,7 +9,7 @@ namespace uis {
 class UIBox : public UIBase {
 public:
 	UIBox(boost::shared_ptr<const Graph> src);
-	UIBox(boost::shared_ptr<const std::string> filename);
+	UIBox(boost::shared_ptr<const std::wstring> filename);
 	~UIBox();
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > ClearOwnerWindow(void);

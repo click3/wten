@@ -27,8 +27,8 @@ public:
 	~Item();
 	bool IsUncertain() const;
 	bool IsEquip() const;
-	boost::shared_ptr<const std::string> GetName() const;
-	boost::optional<boost::shared_ptr<const std::string> > GetDescription() const;
+	boost::shared_ptr<const std::wstring> GetName() const;
+	boost::optional<boost::shared_ptr<const std::wstring> > GetDescription() const;
 	unsigned int GetSalePrice() const;
 	unsigned int GetPrice() const;
 	ItemInfo::ITEM_TYPE GetItemType() const;

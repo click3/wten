@@ -7,14 +7,14 @@ using namespace boost::assign;
 
 namespace {
 
-boost::shared_ptr<uis::UICharStatus> CreateCharStatusUI(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) {
+boost::shared_ptr<uis::UICharStatus> CreateCharStatusUI(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) {
 	boost::shared_ptr<uis::UICharStatus> result(new uis::UICharStatus(default_frame_filename, pt, 0));
 	return result;
 }
 
 } // anonymous
 
-CampStatusWindow::CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) :
+CampStatusWindow::CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) :
 	CampBaseWindow(pt, default_frame_filename), char_status_ui(CreateCharStatusUI(pt, default_frame_filename))
 {
 }
@@ -26,10 +26,10 @@ boost::optional<boost::shared_ptr<Error> > CampStatusWindow::WindowInitialize(vo
 	OPT_ERROR(CampBaseWindow::WindowInitialize());
 	OPT_ERROR(AddUI(char_status_ui, uis::UIBase::MOVE_MODE_CENTER_FREE, 50, 100, 540, 150));
 
-	const char char_text[] =
-		"A:Žô•¶ˆê——\n"
-		"B:–ß‚é";
-	boost::shared_ptr<std::string> text(new std::string(char_text));
+	const wchar_t char_text[] =
+		L"A:Žô•¶ˆê——\n"
+		L"B:–ß‚é";
+	boost::shared_ptr<std::wstring> text(new std::wstring(char_text));
 	text_window.reset(new TextWindow(text, default_frame_filename));
 	OPT_ERROR(text_window->Move(380, 280));
 	OPT_ERROR(text_window->Resize(180, 50));

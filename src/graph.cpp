@@ -36,7 +36,7 @@ unsigned int GetGraphHeight(DxLibGraphHandle handle) {
 	return GetGraphSize(handle).get<1>();
 }
 
-DxLibGraphHandle GetGraphHandle(boost::shared_ptr<const std::string> filename) {
+DxLibGraphHandle GetGraphHandle(boost::shared_ptr<const std::wstring> filename) {
 	BOOST_ASSERT(filename);
 	BOOST_ASSERT(!filename->empty());
 	const int handle = ::LoadGraph(filename->c_str());
@@ -56,7 +56,7 @@ Graph::Graph(DxLibGraphHandle handle) :
 	BOOST_ASSERT(height > 0);
 }
 
-Graph::Graph(boost::shared_ptr<const std::string> filename) :
+Graph::Graph(boost::shared_ptr<const std::wstring> filename) :
 	inner_ptr(GetGraphHandle(filename)), width(GetGraphWidth(inner_ptr)), height(GetGraphHeight(inner_ptr))
 {
 	BOOST_ASSERT(inner_ptr);

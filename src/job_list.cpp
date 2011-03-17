@@ -9,14 +9,14 @@ namespace {
 
 boost::shared_ptr<JobList> instance;
 
-boost::shared_ptr<const Job> CreateJob(unsigned int id, boost::shared_ptr<const std::string> name,
+boost::shared_ptr<const Job> CreateJob(unsigned int id, boost::shared_ptr<const std::wstring> name,
 		unsigned int hp_base, unsigned int hp_count_bonus,
 		unsigned int str, unsigned int iq, unsigned int pie,
 		unsigned int vit, unsigned int agi, unsigned int luk, unsigned int thief_skill,
 		unsigned int exp_base,
 		const std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >& spells)
 {
-	return boost::shared_ptr<const Job>(new Job(id,  name, hp_base, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, exp_base, spells));
+	return boost::shared_ptr<const Job>(new Job(id, name, hp_base, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, exp_base, spells));
 }
 
 #pragma pack(push, 4)

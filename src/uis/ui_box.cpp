@@ -116,7 +116,7 @@ UIBox::UIBox(boost::shared_ptr<const Graph> src) :
 	BOOST_ASSERT(src->GetHeight() == src->GetHeight());
 }
 
-UIBox::UIBox(boost::shared_ptr<const std::string> filename) :
+UIBox::UIBox(boost::shared_ptr<const std::wstring> filename) :
 	src(new Graph(filename)),
 	left_up(GetLeftUp(src)), left_down(GetLeftDown(src)), right_up(GetRightUp(src)), right_down(GetRightDown(src)),
 	left_line(GetLeftLine(src)), right_line(GetRightLine(src)), top_line(GetTopLine(src)), bottom_line(GetBottomLine(src)),

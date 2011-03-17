@@ -8,9 +8,9 @@ namespace uis {
 #pragma warning(disable: 4626)
 class UISelector : public UIBase {
 public:
-	UISelector(const std::vector<boost::shared_ptr<const std::string> >& texts = std::vector<boost::shared_ptr<const std::string> >(), unsigned int line_count = 1, boost::shared_ptr<const std::string> arrow_filename = boost::shared_ptr<const std::string>(new std::string("data/ui/arrow1.png")));
+	UISelector(const std::vector<boost::shared_ptr<const std::wstring> >& texts = std::vector<boost::shared_ptr<const std::wstring> >(), unsigned int line_count = 1, boost::shared_ptr<const std::wstring> arrow_filename = boost::shared_ptr<const std::wstring>(new std::wstring(L"data/ui/arrow1.png")));
 	~UISelector();
-	boost::optional<boost::shared_ptr<Error> > Select(boost::shared_ptr<const std::string> text);
+	boost::optional<boost::shared_ptr<Error> > Select(boost::shared_ptr<const std::wstring> text);
 	boost::optional<boost::shared_ptr<Error> > Select(unsigned int index);
 	enum MOVE_FOCUS {
 		MOVE_FOCUS_UP,
@@ -20,7 +20,7 @@ public:
 	};
 	boost::optional<boost::shared_ptr<Error> > Select(MOVE_FOCUS move_mode);
 	utility::opt_error<unsigned int>::type GetIndex() const;
-	utility::opt_error<boost::shared_ptr<const std::string> >::type GetText() const;
+	utility::opt_error<boost::shared_ptr<const std::wstring> >::type GetText() const;
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > ClearOwnerWindow(void);
 	boost::optional<boost::shared_ptr<Error> > Move(void);

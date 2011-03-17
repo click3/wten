@@ -16,13 +16,13 @@ boost::optional<boost::shared_ptr<Error> > UIInputString::Draw(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIInputString::Draw(unsigned int abs_x, unsigned int abs_y) {
-	OPT_STRING_PTR(text, DxLibWrapper::KeyInputString(abs_x, abs_y, 30));
+	OPT_WSTRING_PTR(text, DxLibWrapper::KeyInputString(abs_x, abs_y, 30));
 	return boost::none;
 }
 
 utility::opt_error<unsigned int>::type UIInputString::CalcWidth() const {
 	unsigned int font_width;
-	boost::shared_ptr<std::string> str(new std::string("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+	boost::shared_ptr<std::wstring> str(new std::wstring(L"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 	OPT_UINT(font_width, DxLibWrapper::GetFontWidth(str));
 	return font_width;
 }
@@ -33,7 +33,7 @@ utility::opt_error<unsigned int>::type UIInputString::CalcHeight() const {
 	return font_height;
 }
 
-boost::shared_ptr<std::string> UIInputString::GetText(void) const {
+boost::shared_ptr<std::wstring> UIInputString::GetText(void) const {
 	return text;
 }
 

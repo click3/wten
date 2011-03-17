@@ -10,10 +10,10 @@ CharCondition::CharCondition() :
 CharCondition::~CharCondition() {
 }
 
-boost::shared_ptr<std::string> CharCondition::ToString(void) const {
-	char *result;
+boost::shared_ptr<std::wstring> CharCondition::ToString(void) const {
+	wchar_t *result;
 	switch(condition) {
-#define ADD_CONDITION(name) case CONDITION_##name: result = #name; break
+#define ADD_CONDITION(name) case CONDITION_##name: result = L#name; break
 		ADD_CONDITION(SLEEP);
 		ADD_CONDITION(FEAR);
 		ADD_CONDITION(PARALYZED);
@@ -23,19 +23,19 @@ boost::shared_ptr<std::string> CharCondition::ToString(void) const {
 		ADD_CONDITION(LOST);
 		case CONDITION_OK:
 			if(poison) {
-				result = "POISON";
+				result = L"POISON";
 			} else if(silence) {
-				result = "SILENCE";
+				result = L"SILENCE";
 			} else {
-				result = "OK";
+				result = L"OK";
 			}
 			break;
 		default:
 			BOOST_ASSERT(false);
-			result = "Unknown";
+			result = L"Unknown";
 			break;
 	}
-	return boost::shared_ptr<std::string>(new std::string(result));
+	return boost::shared_ptr<std::wstring>(new std::wstring(result));
 }
 
 CharCondition::CONDITION CharCondition::GetCondition() const {

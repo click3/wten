@@ -11,21 +11,29 @@ void MyFClose(FILE *fp) {
 	::fclose(fp);
 }
 
+boost::optional<boost::shared_ptr<Error> > CharToWChar(const char *buffer, unsigned int buffer_size, unsigned int code_page, std::vector<wchar_t> *result) {
+	if(buffer == NULL || result == NULL) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	const int size = ::MultiByteToWideChar(code_page, MB_ERR_INVALID_CHARS, buffer, static_cast<int>(buffer_size), NULL, 0);
+	if(size <= 0) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	result->resize(static_cast<unsigned int>(size));
+	const int convert_size = ::MultiByteToWideChar(code_page, MB_ERR_INVALID_CHARS, buffer, static_cast<int>(buffer_size), &result->front(), static_cast<int>(result->size()));
+	if(convert_size <= 0 || static_cast<unsigned int>(convert_size) != result->size()) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > FileReadW(const std::string &path, unsigned int code_page, std::vector<wchar_t> *result) {
 	if(result == NULL) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
 	std::vector<char> multi;
 	OPT_ERROR(FileRead(path, &multi));
-	const int size = ::MultiByteToWideChar(code_page, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, &multi.front(), static_cast<int>(multi.size()), NULL, 0);
-	if(size <= 0) {
-		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-	}
-	result->resize(static_cast<unsigned int>(size));
-	const int convert_size = ::MultiByteToWideChar(code_page, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, &multi.front(), static_cast<int>(multi.size()), &result->front(), static_cast<int>(result->size()));
-	if(convert_size <= 0 || static_cast<unsigned int>(convert_size) != result->size()) {
-		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
-	}
+	OPT_ERROR(CharToWChar(&multi.front(), multi.size(), code_page, result));
 	return boost::none;
 }
 
@@ -97,6 +105,35 @@ boost::shared_ptr<const std::string> Str2Ptr(const std::string &str) {
 boost::shared_ptr<const std::string> Char2Ptr(const char* str) {
 	return boost::shared_ptr<const std::string>(new std::string(str));
 }
+
+boost::shared_ptr<const std::wstring> WStrV2Ptr(const std::vector<wchar_t> &str) {
+	return boost::shared_ptr<const std::wstring>(new std::wstring(&str.front(), str.size()));
+}
+
+boost::shared_ptr<const std::wstring> WStr2Ptr(const std::wstring &str) {
+	return boost::shared_ptr<const std::wstring>(new std::wstring(str));
+}
+
+boost::shared_ptr<const std::wstring> WChar2Ptr(const wchar_t* str) {
+	return boost::shared_ptr<const std::wstring>(new std::wstring(str));
+}
+
+#define MULTI_TO_WIDE_PROCS(name, code_page)													\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const char *str, std::vector<wchar_t> *result) {				\
+	return CharToWChar(str, strlen(str), code_page, result);										\
+}																			\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const std::vector<char> &str, std::vector<wchar_t> *result) {			\
+	return CharToWChar(&str.front(), str.size(), code_page, result);									\
+}																			\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const std::string &str, std::vector<wchar_t> *result) {			\
+	return CharToWChar(str.c_str(), str.size(), code_page, result);									\
+}																			\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const boost::shared_ptr<std::string> str, std::vector<wchar_t> *result) {	\
+	return CharToWChar(str->c_str(), str->size(), code_page, result);									\
+}
+
+MULTI_TO_WIDE_PROCS(SJIS, CP_ACP)
+MULTI_TO_WIDE_PROCS(UTF8, CP_UTF8)
 
 } // utility
 

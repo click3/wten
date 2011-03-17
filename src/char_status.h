@@ -11,12 +11,12 @@ public:
 		ALIGNMENT_NEUTRAL,
 		ALIGNMENT_EVIL,
 	};
-	CharStatus(boost::shared_ptr<const std::string> name, boost::shared_ptr<const Job> job, ALIGNMENT alignment, unsigned int lv, unsigned int hp,
+	CharStatus(boost::shared_ptr<const std::wstring> name, boost::shared_ptr<const Job> job, ALIGNMENT alignment, unsigned int lv, unsigned int hp,
 		unsigned int str, unsigned int iq, unsigned int pie, unsigned int vit, unsigned int agi, unsigned int luk,
 		unsigned int tg, unsigned int exp, const std::vector<boost::shared_ptr<Item> >& item_list,
 		const std::vector<boost::tuple<boost::shared_ptr<const Job>, boost::shared_ptr<const actions::SpellBase> > >& spell_list);
 	~CharStatus(void);
-	boost::shared_ptr<const std::string> GetName(void) const;
+	boost::shared_ptr<const std::wstring> GetName(void) const;
 	boost::shared_ptr<const Job> GetJob(void) const;
 	ALIGNMENT GetAlignment(void) const;
 	unsigned int GetLv(void) const;
@@ -34,7 +34,7 @@ public:
 	std::vector<boost::shared_ptr<Item> > GetItemList(void) const;
 	std::vector<boost::shared_ptr<const actions::SpellBase> > GetSpells(void) const;
 
-	boost::optional<boost::shared_ptr<Error> > ChangeName(boost::shared_ptr<const std::string> new_name);
+	boost::optional<boost::shared_ptr<Error> > ChangeName(boost::shared_ptr<const std::wstring> new_name);
 	void AddExp(unsigned int value);
 	void AddTG(unsigned int value);
 	boost::optional<boost::shared_ptr<Error> > AddItem(boost::shared_ptr<Item> item);
@@ -44,7 +44,7 @@ public:
 protected:
 	utility::opt_error<std::vector<boost::optional<bool> > >::type LevelUP(unsigned int bed_lv);
 
-	boost::shared_ptr<const std::string> name;
+	boost::shared_ptr<const std::wstring> name;
 	boost::shared_ptr<const Job> job;
 	ALIGNMENT alignment;
 	unsigned int lv;

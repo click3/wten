@@ -19,7 +19,7 @@ public:
 	};
 	CharCondition();
 	~CharCondition();
-	boost::shared_ptr<std::string> ToString(void) const;
+	boost::shared_ptr<std::wstring> ToString(void) const;
 	CONDITION GetCondition() const;
 	bool IsOk() const;
 	bool IsSleep() const;

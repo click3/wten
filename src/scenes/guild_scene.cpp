@@ -17,9 +17,9 @@ enum STEP {
 	RETURN_STEP,
 };
 
-boost::shared_ptr<std::string> GetTitle(void) {
+boost::shared_ptr<std::wstring> GetTitle(void) {
 	// TODO
-	return boost::shared_ptr<std::string>(new std::string("–`Œ¯ÒƒMƒ‹ƒh"));
+	return boost::shared_ptr<std::wstring>(new std::wstring(L"–`Œ¯ÒƒMƒ‹ƒh"));
 }
 
 unsigned int GetCurrentStep(void) {
@@ -72,14 +72,14 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::SceneInitialize(void) {
 boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 	switch(current_step) {
 		case NORMAL_STEP: {
-			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
-			const char *text_list[] = {
-				"V‚½‚É–`Œ¯Ò‚ğ“o˜^‚·‚é",
-				"–`Œ¯Ò‚ğŠÇ—‚·‚é",
-				"PT‚ğ•Ò¬‚·‚é",
-				"h”‘‚·‚é",
-				"Šñ•t‚·‚é",
-				"ŠO‚Éo‚é"
+			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
+			const wchar_t *text_list[] = {
+				L"V‚½‚É–`Œ¯Ò‚ğ“o˜^‚·‚é",
+				L"–`Œ¯Ò‚ğŠÇ—‚·‚é",
+				L"PT‚ğ•Ò¬‚·‚é",
+				L"h”‘‚·‚é",
+				L"Šñ•t‚·‚é",
+				L"ŠO‚Éo‚é"
 			};
 			boost::shared_ptr<void> step_list[] = {
 				boost::shared_ptr<void>(new STEP(NEW_CHARACTER_STEP)),
@@ -90,7 +90,7 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 				boost::shared_ptr<void>(new STEP(RETURN_STEP))
 			};
 			for(unsigned int i = 0; i < 6; i++) {
-				boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
@@ -109,8 +109,8 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 			// TODO
 		{
 			next_step = NORMAL_STEP;
-			const char *text_char = "Œ»İ–¢À‘•‚Å‚·B";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = L"Œ»İ–¢À‘•‚Å‚·B";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}

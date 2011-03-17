@@ -9,10 +9,10 @@ using namespace boost::assign;
 
 namespace {
 
-std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > CreateSelectList(const std::vector<SceneSelectorScene::SCENE_PAIR>& scene_list) {
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > result;
+std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > CreateSelectList(const std::vector<SceneSelectorScene::SCENE_PAIR>& scene_list) {
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > result;
 	BOOST_FOREACH(SceneSelectorScene::SCENE_PAIR scene_pair, scene_list) {
-		boost::shared_ptr<const std::string> text;
+		boost::shared_ptr<const std::wstring> text;
 		boost::shared_ptr<void> scene;
 		boost::tie(text, scene) = scene_pair;
 		result += boost::make_tuple(text, scene);
@@ -22,14 +22,14 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 
 } // anonymous
 
-SceneSelectorScene::SceneSelectorScene(boost::shared_ptr<const std::string> title, const std::vector<SCENE_PAIR>& scene_list) :
+SceneSelectorScene::SceneSelectorScene(boost::shared_ptr<const std::wstring> title, const std::vector<SCENE_PAIR>& scene_list) :
 	title(title), scene_list(scene_list), script_window(new windows::ScriptWindow())
 {
 	BOOST_ASSERT(title);
 	BOOST_ASSERT(scene_list.size() > 0);
 	BOOST_ASSERT(script_window);
 	BOOST_FOREACH(SCENE_PAIR scene_pair, scene_list) {
-		boost::shared_ptr<const std::string> text;
+		boost::shared_ptr<const std::wstring> text;
 		boost::shared_ptr<Scene> scene;
 		boost::tie(text, scene) = scene_pair;
 		BOOST_ASSERT(text);

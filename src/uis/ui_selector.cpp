@@ -39,9 +39,9 @@ struct SumByUIStringHeight {
 };
 #pragma warning(pop)
 
-std::vector<boost::shared_ptr<UIString> > CreateSelectList(const std::vector<boost::shared_ptr<const std::string> >& texts) {
+std::vector<boost::shared_ptr<UIString> > CreateSelectList(const std::vector<boost::shared_ptr<const std::wstring> >& texts) {
 	std::vector<boost::shared_ptr<UIString> > result;
-	BOOST_FOREACH(boost::shared_ptr<const std::string> text, texts) {
+	BOOST_FOREACH(boost::shared_ptr<const std::wstring> text, texts) {
 		BOOST_ASSERT(text);
 		BOOST_ASSERT(!text->empty());
 		boost::shared_ptr<UIString> row(new UIString(text));
@@ -54,7 +54,7 @@ std::vector<boost::shared_ptr<UIString> > CreateSelectList(const std::vector<boo
 
 } // anonymous
 
-UISelector::UISelector(const std::vector<boost::shared_ptr<const std::string> >& texts, unsigned int line_count, boost::shared_ptr<const std::string> arrow_filename) :
+UISelector::UISelector(const std::vector<boost::shared_ptr<const std::wstring> >& texts, unsigned int line_count, boost::shared_ptr<const std::wstring> arrow_filename) :
 	UIBase(), select_list(CreateSelectList(texts)), arrow(new UIImage(arrow_filename)), index(0), line_count(line_count), line_size(static_cast<unsigned int>(ceil(select_list.size() / (double)line_count)))
 {
 	BOOST_ASSERT(select_list.size() == texts.size());
@@ -69,7 +69,7 @@ UISelector::UISelector(const std::vector<boost::shared_ptr<const std::string> >&
 UISelector::~UISelector() {
 }
 
-boost::optional<boost::shared_ptr<Error> > UISelector::Select(boost::shared_ptr<const std::string> text) {
+boost::optional<boost::shared_ptr<Error> > UISelector::Select(boost::shared_ptr<const std::wstring> text) {
 	unsigned int index = 0;
 	BOOST_FOREACH(boost::shared_ptr<UIString> select, select_list) {
 		if(*select->GetText() == *text) {
@@ -134,7 +134,7 @@ utility::opt_error<unsigned int>::type UISelector::GetIndex() const {
 	return index;
 }
 
-utility::opt_error<boost::shared_ptr<const std::string> >::type UISelector::GetText() const {
+utility::opt_error<boost::shared_ptr<const std::wstring> >::type UISelector::GetText() const {
 	if(select_list.empty()) {
 		return CREATE_ERROR(ERROR_CODE_SELECTOR_EMPTY);
 	}

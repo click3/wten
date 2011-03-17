@@ -17,8 +17,8 @@ public:
 		ITEM_TYPE_ADORNMENT,
 		ITEM_TYPE_TOOL
 	};
-	ItemInfo(unsigned int id, boost::shared_ptr<const std::string> uncertainty_name, boost::shared_ptr<const std::string> name,
-		boost::shared_ptr<const std::string> description, unsigned int sale_price, unsigned int price,
+	ItemInfo(unsigned int id, boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
+		boost::shared_ptr<const std::wstring> description, unsigned int sale_price, unsigned int price,
 		ITEM_TYPE item_type, unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
 		unsigned int hit, unsigned int hit_count, int ac, unsigned int broken_probability,
 		const std::vector<boost::shared_ptr<const Job> >& equip_possible, const std::vector<boost::tuple<Action::ACTION_TYPE, unsigned int> >& element_resist,
@@ -26,9 +26,9 @@ public:
 	~ItemInfo();
 
 	unsigned int GetID(void) const;
-	boost::shared_ptr<const std::string> GetUncertaintyName(void) const;
-	boost::shared_ptr<const std::string> GetName(void) const;
-	boost::shared_ptr<const std::string> GetDescription(void) const;
+	boost::shared_ptr<const std::wstring> GetUncertaintyName(void) const;
+	boost::shared_ptr<const std::wstring> GetName(void) const;
+	boost::shared_ptr<const std::wstring> GetDescription(void) const;
 	unsigned int GetSalePrice(void) const;
 	unsigned int GetPrice(void) const;
 	ITEM_TYPE GetItemType(void) const;
@@ -43,9 +43,9 @@ public:
 	unsigned int GetConditionResist(CharCondition::CONDITION condition) const;
 protected:
 	const unsigned int id;
-	const boost::shared_ptr<const std::string> uncertainty_name;
-	const boost::shared_ptr<const std::string> name;
-	const boost::shared_ptr<const std::string> description;
+	const boost::shared_ptr<const std::wstring> uncertainty_name;
+	const boost::shared_ptr<const std::wstring> name;
+	const boost::shared_ptr<const std::wstring> description;
 	const unsigned int sale_price;
 	const unsigned int price;
 	const ITEM_TYPE item_type;

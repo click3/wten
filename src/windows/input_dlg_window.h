@@ -8,7 +8,7 @@ namespace windows {
 #pragma warning(disable: 4626)
 class InputDlgWindow : public WindowBase {
 public:
-	InputDlgWindow(boost::shared_ptr<const std::string> message, boost::shared_ptr<const std::string> frame_filename);
+	InputDlgWindow(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const std::wstring> frame_filename);
 	~InputDlgWindow();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);

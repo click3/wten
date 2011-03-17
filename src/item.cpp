@@ -28,7 +28,7 @@ bool Item::IsEquip() const {
 	return true;
 }
 
-boost::shared_ptr<const std::string> Item::GetName() const {
+boost::shared_ptr<const std::wstring> Item::GetName() const {
 	BOOST_ASSERT(info);
 	if(IsUncertain()) {
 		return info->GetUncertaintyName();
@@ -36,7 +36,7 @@ boost::shared_ptr<const std::string> Item::GetName() const {
 	return info->GetName();
 }
 
-boost::optional<boost::shared_ptr<const std::string> > Item::GetDescription() const {
+boost::optional<boost::shared_ptr<const std::wstring> > Item::GetDescription() const {
 	BOOST_ASSERT(info);
 	if(IsUncertain()) {
 		return boost::none;

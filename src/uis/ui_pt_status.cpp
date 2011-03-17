@@ -9,30 +9,30 @@ namespace {
 
 typedef boost::tuple<UIQueue::POSITION, boost::shared_ptr<UIBase> >  QUEUE_UI_PAIR;
 
-boost::shared_ptr<std::string> GetACString(boost::shared_ptr<const CharData> character) {
+boost::shared_ptr<std::wstring> GetACString(boost::shared_ptr<const CharData> character) {
 	int ac = character->GetAC();
-	char hp_str[256];
+	wchar_t hp_str[256];
 	if(ac > -10) {
-		SPRINTF(hp_str, "%d", ac);
+		WSPRINTF(hp_str, L"%d", ac);
 	} else if(ac > -20) {
-		SPRINTF(hp_str, "LO");
+		WSPRINTF(hp_str, L"LO");
 	} else {
-		SPRINTF(hp_str, "VL");
+		WSPRINTF(hp_str, L"VL");
 	}
-	return boost::shared_ptr<std::string>(new std::string(hp_str));
+	return boost::shared_ptr<std::wstring>(new std::wstring(hp_str));
 }
 
-boost::shared_ptr<std::string> GetHPString(boost::shared_ptr<const CharData> character) {
-	char hp_str[256];
-	SPRINTF(hp_str, "%d/%d", character->GetHP(), character->GetStatus()->GetHP());
-	return boost::shared_ptr<std::string>(new std::string(hp_str));
+boost::shared_ptr<std::wstring> GetHPString(boost::shared_ptr<const CharData> character) {
+	wchar_t hp_str[256];
+	WSPRINTF(hp_str, L"%d/%d", character->GetHP(), character->GetStatus()->GetHP());
+	return boost::shared_ptr<std::wstring>(new std::wstring(hp_str));
 }
 
-boost::shared_ptr<std::string> GetStatusString(boost::shared_ptr<const CharData> character) {
+boost::shared_ptr<std::wstring> GetStatusString(boost::shared_ptr<const CharData> character) {
 	return character->GetCondition()->ToString();
 }
 
-boost::optional<boost::shared_ptr<Error> > ReloadTextList(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::string> > > *text_list) {
+boost::optional<boost::shared_ptr<Error> > ReloadTextList(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::wstring> > > *text_list) {
 	if(!pt_data) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
@@ -47,9 +47,9 @@ boost::optional<boost::shared_ptr<Error> > ReloadTextList(boost::shared_ptr<cons
 		if((*text_list)[i].size() != 3) {
 			return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 		}
-		boost::shared_ptr<std::string> ac = GetACString(character);
-		boost::shared_ptr<std::string> hp = GetHPString(character);
-		boost::shared_ptr<std::string> max_hp = GetStatusString(character);
+		boost::shared_ptr<std::wstring> ac = GetACString(character);
+		boost::shared_ptr<std::wstring> hp = GetHPString(character);
+		boost::shared_ptr<std::wstring> max_hp = GetStatusString(character);
 
 		(*text_list)[i][0]->swap(*ac);
 		(*text_list)[i][1]->swap(*hp);
@@ -59,13 +59,13 @@ boost::optional<boost::shared_ptr<Error> > ReloadTextList(boost::shared_ptr<cons
 	return boost::none;
 }
 
-std::vector<const std::vector<boost::shared_ptr<std::string> > > CreateTextList(boost::shared_ptr<const PTData> pt_data) {
-	std::vector<const std::vector<boost::shared_ptr<std::string> > > result;
+std::vector<const std::vector<boost::shared_ptr<std::wstring> > > CreateTextList(boost::shared_ptr<const PTData> pt_data) {
+	std::vector<const std::vector<boost::shared_ptr<std::wstring> > > result;
 	for(unsigned int i = 0; i < 6; i++) {
-		std::vector<boost::shared_ptr<std::string> > row;
-		row.push_back(boost::shared_ptr<std::string>(new std::string("")));
-		row.push_back(boost::shared_ptr<std::string>(new std::string("")));
-		row.push_back(boost::shared_ptr<std::string>(new std::string("")));
+		std::vector<boost::shared_ptr<std::wstring> > row;
+		row.push_back(boost::shared_ptr<std::wstring>(new std::wstring(L"")));
+		row.push_back(boost::shared_ptr<std::wstring>(new std::wstring(L"")));
+		row.push_back(boost::shared_ptr<std::wstring>(new std::wstring(L"")));
 		result += row;
 	}
 	boost::optional<boost::shared_ptr<Error> > error = ReloadTextList(pt_data, &result);
@@ -77,17 +77,17 @@ std::vector<const std::vector<boost::shared_ptr<std::string> > > CreateTextList(
 }
 
 void SetColumnTitle(std::vector<std::vector<QUEUE_UI_PAIR> > *ui_list) {
-	typedef boost::tuple<const char *, unsigned int> TITLE_TUPLE;
-	std::vector<boost::tuple<const char *, unsigned int> > title_list;
-	title_list +=	boost::make_tuple("ñºëO", 215);
- 	title_list +=	boost::make_tuple("êEã∆", 125);
- 	title_list +=	boost::make_tuple("AC", 40);
- 	title_list +=	boost::make_tuple("HP", 110);
- 	title_list +=	boost::make_tuple("STATUS", 120);
+	typedef boost::tuple<const wchar_t *, unsigned int> TITLE_TUPLE;
+	std::vector<boost::tuple<const wchar_t *, unsigned int> > title_list;
+	title_list +=	boost::make_tuple(L"ñºëO", 215);
+ 	title_list +=	boost::make_tuple(L"êEã∆", 125);
+ 	title_list +=	boost::make_tuple(L"AC", 40);
+ 	title_list +=	boost::make_tuple(L"HP", 110);
+ 	title_list +=	boost::make_tuple(L"STATUS", 120);
 
 	unsigned int index = 0;
 	BOOST_FOREACH(TITLE_TUPLE title, title_list) {
-		boost::shared_ptr<std::string> text(new std::string(title.get<0>()));
+		boost::shared_ptr<std::wstring> text(new std::wstring(title.get<0>()));
 		boost::shared_ptr<UIBase> ui(new UIString(text));
 		ui->Resize(title.get<1>(), 0);
 		ui_list->at(index) += make_tuple(UIQueue::ROW_POSITION_TOP, ui);
@@ -95,7 +95,7 @@ void SetColumnTitle(std::vector<std::vector<QUEUE_UI_PAIR> > *ui_list) {
 	}
 }
 
-std::vector<std::vector<QUEUE_UI_PAIR> > CreateUIList(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::string> > >&text_list) {
+std::vector<std::vector<QUEUE_UI_PAIR> > CreateUIList(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::wstring> > >&text_list) {
 	BOOST_ASSERT(pt_data);
 	BOOST_ASSERT(pt_data->GetCharacters().size() == text_list.size());
 	std::vector<std::vector<QUEUE_UI_PAIR> > ui_list(5);
@@ -132,7 +132,7 @@ std::vector<QUEUE_UI_PAIR> CreateUIRowList(const std::vector<std::vector<QUEUE_U
 	}
 	return result;
 }
-boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::string> > >&text_list) {
+boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::wstring> > >&text_list) {
 	std::vector<std::vector<QUEUE_UI_PAIR> > ui_list = CreateUIList(pt_data, text_list);
 	std::vector<UIQueue::INNER_POSITION> position_list;
 	position_list += UIQueue::INNER_POSITION_LEFT, UIQueue::INNER_POSITION_CENTER, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_CENTER;
@@ -142,7 +142,7 @@ boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data
 
 } // anonymous
 
-UIPTStatus::UIPTStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<const PTData> pt_data) :
+UIPTStatus::UIPTStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data) :
 	UIBox(frame_filename), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
 {
 	BOOST_ASSERT(pt_data);

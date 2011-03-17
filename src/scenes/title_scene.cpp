@@ -29,14 +29,14 @@ boost::optional<boost::shared_ptr<Error> > TitleScene::SceneInitialize(void) {
 	next_scene.reset();
 	OPT_ERROR(AddWindow(script_window, 0, 0, 0, 0));
 
-	boost::shared_ptr<const std::string> image_filename(new std::string("data/scene/title.png"));
+	boost::shared_ptr<const std::wstring> image_filename(new std::wstring(L"data/scene/title.png"));
 	OPT_ERROR(AddImageUI(image_filename, uis::UIBase::MOVE_MODE_CENTER_FREE, 0, 50));
 
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
-	const char *text_list[] = {
-		"NewGame",
-		"LoadGame",
-		"Exit"
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
+	const wchar_t *text_list[] = {
+		L"NewGame",
+		L"LoadGame",
+		L"Exit"
 	};
 	boost::shared_ptr<void> next_list[] = {
 		boost::shared_ptr<void>(new NEXT(NEXT_NEW_GAME)),
@@ -44,7 +44,7 @@ boost::optional<boost::shared_ptr<Error> > TitleScene::SceneInitialize(void) {
 		boost::shared_ptr<void>(new NEXT(NEXT_EXIT))
 	};
 	for(unsigned int i = 0; i < 3; i++) {
-		boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+		boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 		boost::shared_ptr<void> next(next_list[i]);
 		ui_list.push_back(make_tuple(text, next));
 	}

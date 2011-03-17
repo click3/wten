@@ -5,7 +5,7 @@ namespace wten { namespace windows {
 using namespace utility;
 using namespace boost::assign;
 
-TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<const std::string> frame_filename) :
+TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<const std::wstring> frame_filename) :
 	WindowBase(frame_filename), ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame_filename)), ok_close(true)
 {
 	BOOST_ASSERT(ui_string);
@@ -19,7 +19,7 @@ TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_
 	}
 }
 
-TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_ptr<Graph> frame) :
+TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<Graph> frame) :
 	ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame)), ok_close(true)
 {
 	BOOST_ASSERT(ui_string);
@@ -31,7 +31,7 @@ TextWindow::TextWindow(boost::shared_ptr<const std::string> text, boost::shared_
 	}
 }
 
-TextWindow::TextWindow(boost::shared_ptr<const std::string> text) :
+TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text) :
 	ui_string(new uis::UIString(text)), ok_close(true)
 {
 	BOOST_ASSERT(ui_string);

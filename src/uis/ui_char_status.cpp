@@ -31,7 +31,7 @@ enum STATUS_TEXT {
 std::vector<boost::shared_ptr<uis::UIString> > CreateTextUIList(void) {
 	std::vector<boost::shared_ptr<uis::UIString> > result;
 	for(unsigned int i = 0; i < STATUS_TEXT_MAX; i++) {
-		result += boost::shared_ptr<uis::UIString>(new uis::UIString(boost::shared_ptr<std::string>(new std::string(""))));
+		result += boost::shared_ptr<uis::UIString>(new uis::UIString(boost::shared_ptr<std::wstring>(new std::wstring(L""))));
 	}
 	return result;
 }
@@ -44,10 +44,10 @@ boost::shared_ptr<UIBase> CreateUIIdentification(
 	dummy_name->Resize(180,0);
 	boost::shared_ptr<UIBase> dummy_lv(new UIDummy());
 	dummy_lv->Resize(30,0);
-	boost::shared_ptr<UIBase> name_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Name:"))));
-	boost::shared_ptr<UIBase> lv_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Lv:"))));
-	boost::shared_ptr<UIBase> alignment_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("   "))));
-	boost::shared_ptr<UIBase> job_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("-"))));
+	boost::shared_ptr<UIBase> name_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Name:"))));
+	boost::shared_ptr<UIBase> lv_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Lv:"))));
+	boost::shared_ptr<UIBase> alignment_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"   "))));
+	boost::shared_ptr<UIBase> job_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"-"))));
 
 	std::vector<boost::tuple<UIQueue::POSITION, boost::shared_ptr<UIBase> > > name_ui_list;
 	name_ui_list += boost::make_tuple(UIQueue::ROW_POSITION_TOP, dummy_name);
@@ -83,11 +83,11 @@ boost::shared_ptr<UIBase> CreateUIOther(
 	dummy_label_right->Resize(150, 0);
 	boost::shared_ptr<UIBase> dummy_center(new UIDummy());
 	dummy_center->Resize(50, 0);
-	boost::shared_ptr<UIBase> exp_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Exp:"))));
-	boost::shared_ptr<UIBase> tg_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("TowerGold:"))));
-	boost::shared_ptr<UIBase> hp_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("HP:"))));
-	boost::shared_ptr<UIBase> ac_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("AC:"))));
-	boost::shared_ptr<UIBase> condition_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Status:"))));
+	boost::shared_ptr<UIBase> exp_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Exp:"))));
+	boost::shared_ptr<UIBase> tg_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"TowerGold:"))));
+	boost::shared_ptr<UIBase> hp_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"HP:"))));
+	boost::shared_ptr<UIBase> ac_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"AC:"))));
+	boost::shared_ptr<UIBase> condition_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Status:"))));
 
 	std::vector<boost::tuple<UIQueue::POSITION, boost::shared_ptr<UIBase> > > left_label_list;
 	left_label_list += boost::make_tuple(UIQueue::ROW_POSITION_TOP, dummy_label_left);
@@ -129,14 +129,14 @@ boost::shared_ptr<UIBase> CreateUIStatus(
 	boost::shared_ptr<uis::UIString> vit_ui, boost::shared_ptr<uis::UIString> agi_ui, boost::shared_ptr<uis::UIString> luk_ui,
 	boost::shared_ptr<uis::UIString> mage_mp_ui, boost::shared_ptr<uis::UIString> priest_mp_ui)
 {
-	boost::shared_ptr<UIBase> str_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Str:"))));
-	boost::shared_ptr<UIBase> iq_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("IQ:"))));
-	boost::shared_ptr<UIBase> pie_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Pie:"))));
-	boost::shared_ptr<UIBase> vit_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Vit:"))));
-	boost::shared_ptr<UIBase> agi_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Agi:"))));
-	boost::shared_ptr<UIBase> luk_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Luk:"))));
-	boost::shared_ptr<UIBase> mage_mp_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Mage:"))));
-	boost::shared_ptr<UIBase> priest_mp_label_ui(new UIString(boost::shared_ptr<std::string>(new std::string("Priest:"))));
+	boost::shared_ptr<UIBase> str_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Str:"))));
+	boost::shared_ptr<UIBase> iq_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"IQ:"))));
+	boost::shared_ptr<UIBase> pie_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Pie:"))));
+	boost::shared_ptr<UIBase> vit_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Vit:"))));
+	boost::shared_ptr<UIBase> agi_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Agi:"))));
+	boost::shared_ptr<UIBase> luk_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Luk:"))));
+	boost::shared_ptr<UIBase> mage_mp_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Mage:"))));
+	boost::shared_ptr<UIBase> priest_mp_label_ui(new UIString(boost::shared_ptr<std::wstring>(new std::wstring(L"Priest:"))));
 
 	boost::shared_ptr<UIBase> dummy_label(new UIDummy());
 	dummy_label->Resize(0, 20);
@@ -202,23 +202,23 @@ boost::shared_ptr<UIBase> CreateInnerUI(const std::vector<boost::shared_ptr<uis:
 	return result;
 }
 
-const char* AlignmentToString(CharStatus::ALIGNMENT alignment) {
+const wchar_t* AlignmentToString(CharStatus::ALIGNMENT alignment) {
 	switch(alignment) {
 		case CharStatus::ALIGNMENT_GOOD:
-			return "G";
+			return L"G";
 		case CharStatus::ALIGNMENT_NEUTRAL:
-			return "N";
+			return L"N";
 		case CharStatus::ALIGNMENT_EVIL:
-			return "E";
+			return L"E";
 		default:
 			BOOST_ASSERT(false);
 	}
-	return "ERROR";
+	return L"ERROR";
 }
 
 } // anonymous
 
-UICharStatus::UICharStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index) :
+UICharStatus::UICharStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index) :
 	UIBox(frame_filename), pt_data(pt_data), text_ui_list(CreateTextUIList())
 {
 	BOOST_ASSERT(pt_data);
@@ -264,33 +264,33 @@ boost::optional<boost::shared_ptr<Error> > UICharStatus::ChangeChar(CHANGE_INDEX
 }
 
 boost::optional<boost::shared_ptr<Error> > UICharStatus::ReloadStatus(void) {
-	char hp_text[256];
-	SPRINTF(hp_text, "%d/%d", char_data->GetHP(), char_data->GetStatus()->GetHP());
-	char mage_mp_text[256];
-	SPRINTF(mage_mp_text, "%d/%d/%d/%d/%d/%d/%d", char_data->GetMageMP()[0], char_data->GetMageMP()[1], char_data->GetMageMP()[2],
+	wchar_t hp_text[256];
+	WSPRINTF(hp_text, L"%d/%d", char_data->GetHP(), char_data->GetStatus()->GetHP());
+	wchar_t mage_mp_text[256];
+	WSPRINTF(mage_mp_text, L"%d/%d/%d/%d/%d/%d/%d", char_data->GetMageMP()[0], char_data->GetMageMP()[1], char_data->GetMageMP()[2],
 		char_data->GetMageMP()[3], char_data->GetMageMP()[4], char_data->GetMageMP()[5], char_data->GetMageMP()[6]);
-	char priest_mp_text[256];
-	SPRINTF(priest_mp_text, "%d/%d/%d/%d/%d/%d/%d", char_data->GetPriestMP()[0], char_data->GetPriestMP()[1], char_data->GetPriestMP()[2],
+	wchar_t priest_mp_text[256];
+	WSPRINTF(priest_mp_text, L"%d/%d/%d/%d/%d/%d/%d", char_data->GetPriestMP()[0], char_data->GetPriestMP()[1], char_data->GetPriestMP()[2],
 		char_data->GetPriestMP()[3], char_data->GetPriestMP()[4], char_data->GetPriestMP()[5], char_data->GetPriestMP()[6]);
 
 #define SET_TEXT_PTR(label, ptr) text_ui_list[label]->SetText(ptr)
-#define SET_TEXT(label, text) SET_TEXT_PTR(label, boost::shared_ptr<std::string>(new std::string(text)))
+#define SET_TEXT(label, text) SET_TEXT_PTR(label, boost::shared_ptr<std::wstring>(new std::wstring(text)))
 
 	SET_TEXT_PTR(	STATUS_TEXT_NAME,		char_data->GetStatus()->GetName()						);
-	SET_TEXT(	STATUS_TEXT_LV,		boost::lexical_cast<std::string>(char_data->GetStatus()->GetLv())	);
+	SET_TEXT(	STATUS_TEXT_LV,		boost::lexical_cast<std::wstring>(char_data->GetStatus()->GetLv())	);
 	SET_TEXT(	STATUS_TEXT_ALIGNMENT,	AlignmentToString(char_data->GetStatus()->GetAlignment())		);
 	SET_TEXT_PTR(	STATUS_TEXT_JOB,		char_data->GetStatus()->GetJob()->GetName()				);
-	SET_TEXT(	STATUS_TEXT_EXP,		boost::lexical_cast<std::string>(char_data->GetStatus()->GetExp())	);
-	SET_TEXT(	STATUS_TEXT_TG,		boost::lexical_cast<std::string>(char_data->GetStatus()->GetTG())	);
-	SET_TEXT(	STATUS_TEXT_AC,		boost::lexical_cast<std::string>(char_data->GetAC())			);
+	SET_TEXT(	STATUS_TEXT_EXP,		boost::lexical_cast<std::wstring>(char_data->GetStatus()->GetExp())	);
+	SET_TEXT(	STATUS_TEXT_TG,		boost::lexical_cast<std::wstring>(char_data->GetStatus()->GetTG())	);
+	SET_TEXT(	STATUS_TEXT_AC,		boost::lexical_cast<std::wstring>(char_data->GetAC())			);
 	SET_TEXT(	STATUS_TEXT_HP,		hp_text									);
 	SET_TEXT_PTR(	STATUS_TEXT_CONDITION,	char_data->GetCondition()->ToString()					);
-	SET_TEXT(	STATUS_TEXT_STR,		boost::lexical_cast<std::string>(char_data->GetStr())			);
-	SET_TEXT(	STATUS_TEXT_IQ,		boost::lexical_cast<std::string>(char_data->GetIQ())			);
-	SET_TEXT(	STATUS_TEXT_PIE,		boost::lexical_cast<std::string>(char_data->GetPie())			);
-	SET_TEXT(	STATUS_TEXT_VIT,		boost::lexical_cast<std::string>(char_data->GetVit())			);
-	SET_TEXT(	STATUS_TEXT_AGI,		boost::lexical_cast<std::string>(char_data->GetAgi())			);
-	SET_TEXT(	STATUS_TEXT_LUK,		boost::lexical_cast<std::string>(char_data->GetLuk())			);
+	SET_TEXT(	STATUS_TEXT_STR,		boost::lexical_cast<std::wstring>(char_data->GetStr())			);
+	SET_TEXT(	STATUS_TEXT_IQ,		boost::lexical_cast<std::wstring>(char_data->GetIQ())			);
+	SET_TEXT(	STATUS_TEXT_PIE,		boost::lexical_cast<std::wstring>(char_data->GetPie())			);
+	SET_TEXT(	STATUS_TEXT_VIT,		boost::lexical_cast<std::wstring>(char_data->GetVit())			);
+	SET_TEXT(	STATUS_TEXT_AGI,		boost::lexical_cast<std::wstring>(char_data->GetAgi())			);
+	SET_TEXT(	STATUS_TEXT_LUK,		boost::lexical_cast<std::wstring>(char_data->GetLuk())			);
 	SET_TEXT(	STATUS_TEXT_MAGE_MP,		mage_mp_text									);
 	SET_TEXT(	STATUS_TEXT_PRIEST_MP,	priest_mp_text								);
 

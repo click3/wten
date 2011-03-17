@@ -7,11 +7,11 @@ using namespace boost::assign;
 
 namespace {
 
-boost::shared_ptr<SelectWindow> CreateCharSelectWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateCharSelectWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) {
 	BOOST_ASSERT(pt->GetCharacters().size() > 0);
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > text_list;
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(boost::shared_ptr<CharData> char_data, pt->GetCharacters()) {
-		boost::shared_ptr<const std::string> text = char_data->GetStatus()->GetName();
+		boost::shared_ptr<const std::wstring> text = char_data->GetStatus()->GetName();
 		boost::shared_ptr<void> user_data = char_data;
 		text_list += boost::make_tuple(text, user_data);
 	}
@@ -22,15 +22,15 @@ boost::shared_ptr<SelectWindow> CreateCharSelectWindow(boost::shared_ptr<PTData>
 	return result;
 }
 
-boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const std::string> default_frame_filename) {
+boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const std::wstring> default_frame_filename) {
 	BOOST_ASSERT(selected_char->GetStatus()->GetItemList().size() > 0);
-	boost::shared_ptr<const std::string> text;
+	boost::shared_ptr<const std::wstring> text;
 	{
-		boost::optional<boost::shared_ptr<const std::string> > text_opt = selected_char->GetStatus()->GetItemList()[0]->GetDescription();
+		boost::optional<boost::shared_ptr<const std::wstring> > text_opt = selected_char->GetStatus()->GetItemList()[0]->GetDescription();
 		if(text_opt) {
-			text = boost::get<boost::shared_ptr<const std::string> >(text);
+			text = boost::get<boost::shared_ptr<const std::wstring> >(text);
 		} else {
-			text = boost::shared_ptr<const std::string>(new std::string(""));
+			text = boost::shared_ptr<const std::wstring>(new std::wstring(L""));
 		}
 	}
 
@@ -40,11 +40,11 @@ boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<Ch
 	return result;
 }
 
-boost::shared_ptr<SelectWindow> CreateItemSelectWindow(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const std::string> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateItemSelectWindow(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const std::wstring> default_frame_filename) {
 	BOOST_ASSERT(selected_char->GetStatus()->GetItemList().size() > 0);
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > text_list;
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(boost::shared_ptr<Item> item, selected_char->GetStatus()->GetItemList()) {
-		boost::shared_ptr<const std::string> text = item->GetName();
+		boost::shared_ptr<const std::wstring> text = item->GetName();
 		boost::shared_ptr<void> user_data = item;
 		text_list += boost::make_tuple(text, user_data);
 	}
@@ -116,29 +116,29 @@ std::vector<CampItemWindow::COMMAND> CreateCommandList(boost::shared_ptr<Item> s
 	return command_list;
 }
 
-const char *COMMANDToString(CampItemWindow::COMMAND command) {
+const wchar_t *COMMANDToString(CampItemWindow::COMMAND command) {
 	switch(command) {
 		case CampItemWindow::COMMAND_MOVE:
-			return "渡す";
+			return L"渡す";
 		case CampItemWindow::COMMAND_USE:
-			return "使う";
+			return L"使う";
 		case CampItemWindow::COMMAND_EQUIP:
-			return "装備する";
+			return L"装備する";
 		case CampItemWindow::COMMAND_EQUIP_RELEASE:
-			return "装備を外す";
+			return L"装備を外す";
 		case CampItemWindow::COMMAND_DELETE:
-			return "捨てる";
+			return L"捨てる";
 		default:
 			BOOST_ASSERT(false);
 	}
-	return "Unknown";
+	return L"Unknown";
 }
 
-boost::shared_ptr<SelectWindow> CreateCommandSelectWindow(boost::shared_ptr<Item> selected_item, boost::shared_ptr<const std::string> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateCommandSelectWindow(boost::shared_ptr<Item> selected_item, boost::shared_ptr<const std::wstring> default_frame_filename) {
 	std::vector<CampItemWindow::COMMAND> command_list = CreateCommandList(selected_item);
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > text_list;
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(CampItemWindow::COMMAND command, command_list) {
-		boost::shared_ptr<const std::string> text = boost::shared_ptr<const std::string>(new std::string(COMMANDToString(command)));
+		boost::shared_ptr<const std::wstring> text = boost::shared_ptr<const std::wstring>(new std::wstring(COMMANDToString(command)));
 		boost::shared_ptr<void> user_data = boost::shared_ptr<CampItemWindow::COMMAND>(new CampItemWindow::COMMAND(command));
 		text_list += boost::make_tuple(text, user_data);
 	}
@@ -149,11 +149,11 @@ boost::shared_ptr<SelectWindow> CreateCommandSelectWindow(boost::shared_ptr<Item
 	return result;
 }
 
-boost::shared_ptr<SelectWindow> CreateTargetSelectWindow(boost::shared_ptr<PTData>pt, boost::shared_ptr<Item> selected_item, boost::shared_ptr<CampItemWindow::COMMAND>selected_command, boost::shared_ptr<const std::string> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateTargetSelectWindow(boost::shared_ptr<PTData>pt, boost::shared_ptr<Item> selected_item, boost::shared_ptr<CampItemWindow::COMMAND>selected_command, boost::shared_ptr<const std::wstring> default_frame_filename) {
 	BOOST_ASSERT(pt->GetCharacters().size() > 0);
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > text_list;
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(boost::shared_ptr<CharData> char_data, pt->GetCharacters()) {
-		boost::shared_ptr<const std::string> text = char_data->GetStatus()->GetName();
+		boost::shared_ptr<const std::wstring> text = char_data->GetStatus()->GetName();
 		boost::shared_ptr<void> user_data = char_data;
 		text_list += boost::make_tuple(text, user_data);
 	}
@@ -166,7 +166,7 @@ boost::shared_ptr<SelectWindow> CreateTargetSelectWindow(boost::shared_ptr<PTDat
 
 } // anonymous
 
-CampItemWindow::CampItemWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) :
+CampItemWindow::CampItemWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) :
 	CampBaseWindow(pt, default_frame_filename), state(STATE_INITIALIZE)
 {
 	BOOST_ASSERT(pt);
@@ -323,8 +323,8 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToCharSelect(voi
 
 		SendNextWindowEvent(char_select_window);
 	} else {
-		const char *text = "PTに所属しているキャラクターが居ません";
-		error_message.reset(new std::string(text));
+		const wchar_t *text = L"PTに所属しているキャラクターが居ません";
+		error_message.reset(new std::wstring(text));
 		OPT_ERROR(SendNextTextWindowEvent(error_message));
 	}
 
@@ -346,8 +346,8 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToItemSelect(boo
 		OPT_ERROR(AddUI(item_description_ui));
 		SendNextWindowEvent(item_select_window);
 	} else {
-		const char *text = "そのキャラクターはアイテムを所持していません";
-		error_message.reset(new std::string(text));
+		const wchar_t *text = L"そのキャラクターはアイテムを所持していません";
+		error_message.reset(new std::wstring(text));
 		OPT_ERROR(SendNextTextWindowEvent(error_message));
 	}
 

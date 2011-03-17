@@ -15,9 +15,9 @@ enum STEP {
 	RETURN_STEP,
 };
 
-boost::shared_ptr<const std::string> GetTowerGateName(void) {
+boost::shared_ptr<const std::wstring> GetTowerGateName(void) {
 	// TODO
-	return boost::shared_ptr<const std::string>(new std::string("天龍の塔　付近"));
+	return boost::shared_ptr<const std::wstring>(new std::wstring(L"天龍の塔　付近"));
 }
 
 unsigned int GetCurrentStep(void) {
@@ -74,11 +74,11 @@ boost::optional<boost::shared_ptr<Error> > TowerGateScene::SceneInitialize(void)
 boost::optional<boost::shared_ptr<Error> > TowerGateScene::StepInitialize(void) {
 	switch(current_step) {
 		case FIRST_STEP: {
-			const char *text_char = 
-				"君達が天龍の塔を目指し歩を進めていると、\n"
-				"守衛を名乗る人物により制止を受けた。\n"
-				"どうやら冒険者の入場はここで管理しているようだ。\n";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = 
+				L"君達が天龍の塔を目指し歩を進めていると、\n"
+				L"守衛を名乗る人物により制止を受けた。\n"
+				L"どうやら冒険者の入場はここで管理しているようだ。\n";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			if(IsGuildCreate()) {
 				next_step = GUILD_OK_STEP;
@@ -90,34 +90,34 @@ boost::optional<boost::shared_ptr<Error> > TowerGateScene::StepInitialize(void) 
 		case GUILD_OK_STEP: {
 			SetTowerStep(NORMAL_PT_CHECK_STEP);
 			next_step = NORMAL_PT_CHECK_STEP;
-			const char *text_char = 
-				"ギルド登録証を見せ手欲しいといわれたので\n"
-				"君達はギルド結成時に得たメダルのような物を\n"
-				"守衛に手渡した。\n"
-				"\n"
-				"守衛は銀色の宝石を手にメダルを調べるそぶりを見せ\n"
-				"暫くの後、メダルと共に通行証を差し出した。\n"
-				"\n"
-				"無事塔へ入場が許可されたようだ。\n"
-				"\n"
-				"君達は意気揚々と塔の入り口へと向かった。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = 
+				L"ギルド登録証を見せ手欲しいといわれたので\n"
+				L"君達はギルド結成時に得たメダルのような物を\n"
+				L"守衛に手渡した。\n"
+				L"\n"
+				L"守衛は銀色の宝石を手にメダルを調べるそぶりを見せ\n"
+				L"暫くの後、メダルと共に通行証を差し出した。\n"
+				L"\n"
+				L"無事塔へ入場が許可されたようだ。\n"
+				L"\n"
+				L"君達は意気揚々と塔の入り口へと向かった。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
 		case NONE_GUILE_STEP: {
 			next_step = RETURN_STEP;
-			const char *text_char = 
-				"ギルド登録証を見せるよう言われるが、\n"
-				"君達はそのようなものを所持していない。\n"
-				"\n"
-				"なんでも”騎士団の兵舎”で登録された冒険者以外\n"
-				"天龍の塔への入場は禁止されており\n"
-				"ギルド登録証はその証なのだという。\n"
-				"\n"
-				"ここはひとまず引き返し、\n"
-				"ギルド登録証を手に入れるべきだろう。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = 
+				L"ギルド登録証を見せるよう言われるが、\n"
+				L"君達はそのようなものを所持していない。\n"
+				L"\n"
+				L"なんでも”騎士団の兵舎”で登録された冒険者以外\n"
+				L"天龍の塔への入場は禁止されており\n"
+				L"ギルド登録証はその証なのだという。\n"
+				L"\n"
+				L"ここはひとまず引き返し、\n"
+				L"ギルド登録証を手に入れるべきだろう。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
@@ -132,27 +132,27 @@ boost::optional<boost::shared_ptr<Error> > TowerGateScene::StepInitialize(void) 
 		}
 		case NONE_PT_STEP: {
 			next_step = RETURN_STEP;
-			const char *text_char = 
-				"君達はモンスターから身を守る手段を持っていない。\n"
-				"今ダンジョンに入るのは危険だ。\n"
-				"\n"
-				"ひとまず町に引き返しPTを整えるべきだろう。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = 
+				L"君達はモンスターから身を守る手段を持っていない。\n"
+				L"今ダンジョンに入るのは危険だ。\n"
+				L"\n"
+				L"ひとまず町に引き返しPTを整えるべきだろう。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
 		case NORMAL_STEP: {
-			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
-			const char *text_list[] = {
-				"天龍の塔に入る",
-				"町に戻る"
+			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
+			const wchar_t *text_list[] = {
+				L"天龍の塔に入る",
+				L"町に戻る"
 			};
 			boost::shared_ptr<void> step_list[] = {
 				boost::shared_ptr<void>(new STEP(TOWER_STEP)),
 				boost::shared_ptr<void>(new STEP(RETURN_STEP))
 			};
 			for(unsigned int i = 0; i < 2; i++) {
-				boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
@@ -161,8 +161,8 @@ boost::optional<boost::shared_ptr<Error> > TowerGateScene::StepInitialize(void) 
 		}
 		case TOWER_STEP: {
 			next_step = NORMAL_STEP;
-			const char *text_char = "現在未実装です。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = L"現在未実装です。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}

@@ -24,8 +24,8 @@ struct item_types_ : boost::spirit::qi::symbols<char, ItemInfo::ITEM_TYPE> {
 } item_types_impl;
 
 
-boost::shared_ptr<const ItemInfo> CreateItemInfo(boost::shared_ptr<const std::string> uncertainty_name, boost::shared_ptr<const std::string> name,
-		boost::shared_ptr<const std::string> description, unsigned int sale_price, unsigned int price,
+boost::shared_ptr<const ItemInfo> CreateItemInfo(boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
+		boost::shared_ptr<const std::wstring> description, unsigned int sale_price, unsigned int price,
 		ItemInfo::ITEM_TYPE item_type, unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
 		unsigned int hit, unsigned int hit_count, int ac, unsigned int broken_probability)
 {
@@ -73,17 +73,21 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 #pragma pack(pop)
 
 std::vector<boost::shared_ptr<const ItemInfo> > ReadItemInfo(const std::string &path) {
-	typedef std::vector<char>::const_iterator Iterator;
+	typedef std::vector<wchar_t>::const_iterator Iterator;
 	typedef ItemInfoListCSVParser<Iterator> Parser;
+	std::vector<boost::shared_ptr<const ItemInfo> > result;
 
-	std::vector<char> data;
-	boost::optional<boost::shared_ptr<Error> > error = FileRead(path, &data);
-	BOOST_ASSERT(!error);
+	std::vector<wchar_t> data;
+	boost::optional<boost::shared_ptr<Error> > error = UTF8FileRead(path, &data);
+	if(error) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+		return result;
+	}
 	Iterator first = data.begin();
 	const Iterator last = data.end();
 
 	Parser rule;
-	std::vector<boost::shared_ptr<const ItemInfo> > result;
 	const bool parse_result = boost::spirit::qi::parse(first, last, rule, result);
 	BOOST_ASSERT(parse_result);
 	BOOST_ASSERT(first == last);

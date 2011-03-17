@@ -10,7 +10,7 @@ class Graph : boost::noncopyable {
 private:
 	Graph(DxLibGraphHandle handle);
 public:
-	Graph(boost::shared_ptr<const std::string> filename);
+	Graph(boost::shared_ptr<const std::wstring> filename);
 	unsigned int GetWidth() const;
 	unsigned int GetHeight() const;
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y) const;

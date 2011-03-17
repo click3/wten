@@ -15,9 +15,9 @@ enum STEP {
 	RETURN_STEP,
 };
 
-boost::shared_ptr<std::string> GetTitle(void) {
+boost::shared_ptr<std::wstring> GetTitle(void) {
 	// TODO
-	return boost::shared_ptr<std::string>(new std::string("トート寺院"));
+	return boost::shared_ptr<std::wstring>(new std::wstring(L"トート寺院"));
 }
 
 unsigned int GetCurrentStep(void) {
@@ -70,11 +70,11 @@ boost::optional<boost::shared_ptr<Error> > TempleScene::SceneInitialize(void) {
 boost::optional<boost::shared_ptr<Error> > TempleScene::StepInitialize(void) {
 	switch(current_step) {
 		case NORMAL_STEP: {
-			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
-			const char *text_list[] = {
-				"治療する",
-				"寄付する",
-				"外に出る"
+			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
+			const wchar_t *text_list[] = {
+				L"治療する",
+				L"寄付する",
+				L"外に出る"
 			};
 			boost::shared_ptr<void> step_list[] = {
 				boost::shared_ptr<void>(new STEP(MEDICAL_SELECT_STEP)),
@@ -82,7 +82,7 @@ boost::optional<boost::shared_ptr<Error> > TempleScene::StepInitialize(void) {
 				boost::shared_ptr<void>(new STEP(RETURN_STEP))
 			};
 			for(unsigned int i = 0; i < 3; i++) {
-				boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
@@ -90,10 +90,10 @@ boost::optional<boost::shared_ptr<Error> > TempleScene::StepInitialize(void) {
 			break;
 		}
 		case MEDICAL_SELECT_STEP: {
-			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
+			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
 			BOOST_FOREACH(boost::shared_ptr<CharData> char_data, pt->GetCharacters()) {
 				if(!char_data->GetCondition()->IsOk()) {
-					boost::shared_ptr<const std::string> text(char_data->GetStatus()->GetName());
+					boost::shared_ptr<const std::wstring> text(char_data->GetStatus()->GetName());
 					boost::shared_ptr<void> data(char_data);
 					ui_list.push_back(make_tuple(text, data));
 				}
@@ -103,8 +103,8 @@ boost::optional<boost::shared_ptr<Error> > TempleScene::StepInitialize(void) {
 				OPT_ERROR(AddSelectorWindow(ui_list, 1, 50, 100, 540, 180));
 			} else {
 				next_step = NORMAL_STEP;
-				const char *text_char = "治療が必要なキャラクターは居ません。";
-				boost::shared_ptr<const std::string> text(new std::string(text_char));
+				const wchar_t *text_char = L"治療が必要なキャラクターは居ません。";
+				boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 				OPT_ERROR(AddTextWindow(text));
 			}
 			break;
@@ -115,8 +115,8 @@ boost::optional<boost::shared_ptr<Error> > TempleScene::StepInitialize(void) {
 			// TODO
 		{
 			next_step = NORMAL_STEP;
-			const char *text_char = "現在未実装です。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = L"現在未実装です。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}

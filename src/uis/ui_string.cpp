@@ -8,21 +8,45 @@ using namespace boost::assign;
 namespace {
 
 struct StringToSharedPtr {
-	typedef boost::shared_ptr<const std::string> result_type;
-	result_type operator ()(const std::string& obj) const {
-		return result_type(new std::string(obj));
+	typedef boost::shared_ptr<const std::wstring> result_type;
+	result_type operator ()(const std::wstring& obj) const {
+		return result_type(new std::wstring(obj));
 	}
 };
 
-std::vector<boost::shared_ptr<const std::string> > CreateTextList(boost::shared_ptr<const std::string> text) {
-	std::vector<std::string> text_list;
-	boost::algorithm::split(text_list, *text, boost::is_any_of("\n"));
-	std::vector<boost::shared_ptr<const std::string> > result;
+std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(const wchar_t *text) {
+	BOOST_ASSERT(text != NULL);
+	std::vector<std::wstring> text_list;
+	boost::algorithm::split(text_list, text, boost::is_any_of(L"\n"));
+	std::vector<boost::shared_ptr<const std::wstring> > result;
 	boost::copy(text_list | boost::adaptors::transformed(StringToSharedPtr()), std::back_inserter(result));
 	return result;
 }
+std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(const char *text) {
+	BOOST_ASSERT(text != NULL);
+	std::vector<wchar_t> buffer;
+	boost::optional<boost::shared_ptr<Error> > error = UTF8ToWChar(text, &buffer);
+	if(error) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+	return CreateTextList(&buffer.front());
+}
+std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(boost::shared_ptr<const std::string> text) {
+	return CreateTextList(text->c_str());
+}
+std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(boost::shared_ptr<const std::wstring> text) {
+	return CreateTextList(text->c_str());
+}
+std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(const std::string &text) {
+	return CreateTextList(text.c_str());
+}
+std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(const std::wstring &text) {
+	return CreateTextList(text.c_str());
+}
 
-unsigned int CalcTextWidth(boost::shared_ptr<const std::string> text) {
+
+unsigned int CalcTextWidth(boost::shared_ptr<const std::wstring> text) {
 	opt_error<unsigned int>::type width_opt = DxLibWrapper::GetFontWidth(text);
 	if(width_opt.which() == 0) {
 		boost::get<boost::shared_ptr<Error> >(width_opt)->Abort();
@@ -32,23 +56,25 @@ unsigned int CalcTextWidth(boost::shared_ptr<const std::string> text) {
 }
 
 struct MaxStringWidth {
-	bool operator ()(boost::shared_ptr<const std::string> left, boost::shared_ptr<const std::string> right) const {
+	bool operator ()(boost::shared_ptr<const std::wstring> left, boost::shared_ptr<const std::wstring> right) const {
 		return CalcTextWidth(left) < CalcTextWidth(right);
 	}
 };
 
 struct StringJoin {
-	boost::shared_ptr<const std::string> operator ()(boost::shared_ptr<const std::string> left, boost::shared_ptr<const std::string> right) {
-		return boost::shared_ptr<const std::string>(new std::string(*left + "\n" + *right));
+	boost::shared_ptr<const std::wstring> operator ()(boost::shared_ptr<const std::wstring> left, boost::shared_ptr<const std::wstring> right) {
+		return boost::shared_ptr<const std::wstring>(new std::wstring(*left + L"\n" + *right));
 	}
 };
 
 } // anonymous
 
-UIString::UIString(boost::shared_ptr<const std::string> text) :
-	UIBase(), text_list(CreateTextList(text))
-{
-}
+UIString::UIString(boost::shared_ptr<const std::string> text) : text_list(CreateTextList(text)) { }
+UIString::UIString(boost::shared_ptr<const std::wstring> text) : text_list(CreateTextList(text)) { }
+UIString::UIString(const std::string &text) : text_list(CreateTextList(text)) { }
+UIString::UIString(const std::wstring &text) : text_list(CreateTextList(text)) { }
+UIString::UIString(const char *text) : text_list(CreateTextList(text)) { }
+UIString::UIString(const wchar_t *text) : text_list(CreateTextList(text)) { }
 
 UIString::~UIString() {
 }
@@ -60,9 +86,32 @@ boost::optional<boost::shared_ptr<Error> > UIString::SetText(boost::shared_ptr<c
 	this->text_list = CreateTextList(text);
 	return boost::none;
 }
+boost::optional<boost::shared_ptr<Error> > UIString::SetText(boost::shared_ptr<const std::wstring> text) {
+	if(!text) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	this->text_list = CreateTextList(text);
+	return boost::none;
+}
+boost::optional<boost::shared_ptr<Error> > UIString::SetText(const std::string &text) {
+	this->text_list = CreateTextList(text);
+	return boost::none;
+}
+boost::optional<boost::shared_ptr<Error> > UIString::SetText(const std::wstring &text) {
+	this->text_list = CreateTextList(text);
+	return boost::none;
+}
+boost::optional<boost::shared_ptr<Error> > UIString::SetText(const char *text) {
+	this->text_list = CreateTextList(text);
+	return boost::none;
+}
+boost::optional<boost::shared_ptr<Error> > UIString::SetText(const wchar_t *text) {
+	this->text_list = CreateTextList(text);
+	return boost::none;
+}
 
-boost::shared_ptr<const std::string> UIString::GetText() const {
-	return std::accumulate(text_list.begin(), text_list.end(), boost::shared_ptr<const std::string>(new std::string()), StringJoin());
+boost::shared_ptr<const std::wstring> UIString::GetText() const {
+	return std::accumulate(text_list.begin(), text_list.end(), boost::shared_ptr<const std::wstring>(new std::wstring()), StringJoin());
 }
 
 boost::optional<boost::shared_ptr<Error> > UIString::Draw(void) {
@@ -81,7 +130,7 @@ boost::optional<boost::shared_ptr<Error> > UIString::Draw(unsigned int abs_x, un
 
 	const unsigned int draw_x = abs_x + (width - text_width) / 2;
 	unsigned int draw_y = abs_y + (height - text_height) / 2;
-	BOOST_FOREACH(boost::shared_ptr<const std::string> text, text_list) {
+	BOOST_FOREACH(boost::shared_ptr<const std::wstring> text, text_list) {
 		OPT_ERROR(DxLibWrapper::DrawString(draw_x, draw_y, text, Color(0xFF,0xFF,0xFF)));
 		draw_y += font_height;
 	}

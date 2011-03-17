@@ -32,7 +32,7 @@ public:
 
 } // anonymous
 
-Job::Job(unsigned int id, boost::shared_ptr<const std::string> name,
+Job::Job(unsigned int id, boost::shared_ptr<const std::wstring> name,
 	unsigned int hp_base, unsigned int hp_count_bonus,
 	unsigned int str, unsigned int iq, unsigned int pie,
 	unsigned int vit, unsigned int agi, unsigned int luk,
@@ -78,7 +78,7 @@ unsigned int Job::GetId() const {
 	return id;
 }
 
-boost::shared_ptr<const std::string> Job::GetName() const {
+boost::shared_ptr<const std::wstring> Job::GetName() const {
 	return name;
 }
 

@@ -5,7 +5,7 @@ namespace wten { namespace windows {
 using namespace utility;
 using namespace boost::assign;
 
-CampBaseWindow::CampBaseWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) :
+CampBaseWindow::CampBaseWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) :
 	WindowBase(default_frame_filename), pt(pt)
 {
 }
@@ -79,7 +79,7 @@ void CampBaseWindow::SendPopWindowEvent(boost::shared_ptr<Window> window) {
 }
 
 
-boost::optional<boost::shared_ptr<Error> > CampBaseWindow::SendNextTextWindowEvent(boost::shared_ptr<const std::string> text, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > CampBaseWindow::SendNextTextWindowEvent(boost::shared_ptr<const std::wstring> text, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	boost::shared_ptr<TextWindow> window(new TextWindow(text, default_frame_filename));
 	OPT_ERROR(window->Move(x, y));
 	OPT_ERROR(window->Resize(width, height));

@@ -16,17 +16,17 @@ struct PTMoneyTotal {
 boost::shared_ptr<uis::UIString> CreateMoneyText(boost::shared_ptr<PTData> pt) {
 	std::vector<boost::shared_ptr<CharData> > characters = pt->GetCharacters();
 	const unsigned int money_total = std::accumulate(characters.begin(), characters.end(), static_cast<unsigned int>(0), PTMoneyTotal());
-	char text_char[256];
-	SPRINTF(text_char, "所持金合計: %15dTG", money_total);
-	boost::shared_ptr<std::string> text(new std::string(text_char));
+	wchar_t text_char[256];
+	WSPRINTF(text_char, L"所持金合計: %15dTG", money_total);
+	boost::shared_ptr<std::wstring> text(new std::wstring(text_char));
 	boost::shared_ptr<uis::UIString> result(new uis::UIString(text));
 	return result;
 }
 
 boost::shared_ptr<uis::UIString> CreatePlayTimeText(void) {
-	char text_char[256];
-	SPRINTF(text_char, "プレイ時間: %s", PlayTime::GetCurrentInstance()->GetCurrentPlayTimeString()->c_str());
-	boost::shared_ptr<std::string> text(new std::string(text_char));
+	wchar_t text_char[256];
+	WSPRINTF(text_char, L"プレイ時間: %s", PlayTime::GetCurrentInstance()->GetCurrentPlayTimeString()->c_str());
+	boost::shared_ptr<std::wstring> text(new std::wstring(text_char));
 	return boost::shared_ptr<uis::UIString>(new uis::UIString(text));
 }
 
@@ -40,13 +40,13 @@ void SendPopWindowEvent(boost::shared_ptr<Window> window) {
 	EventNotify::Send(event);
 }
 
-std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) {
-	const char *text_list[] = {
-		"アイテム",
-		"装備",
-		"ステータス",
-		"隊列変更",
-		"設定"
+std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) {
+	const wchar_t *text_list[] = {
+		L"アイテム",
+		L"装備",
+		L"ステータス",
+		L"隊列変更",
+		L"設定"
 	};
 	boost::shared_ptr<void> window_list[] = {
 		boost::shared_ptr<void>(new CampItemWindow(pt, default_frame_filename)),
@@ -55,9 +55,9 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
 		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename))
 	};
-	std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > result;
+	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > result;
 	for(unsigned int i = 0; i < 5; i++) {
-		boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+		boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 		boost::shared_ptr<void> user_data = window_list[i];
 		result += boost::make_tuple(text, user_data);
 	}
@@ -66,7 +66,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr
 
 } // anonymous
 
-CampWindow::CampWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::string> default_frame_filename) :
+CampWindow::CampWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) :
 	WindowBase(default_frame_filename), pt(pt), money_text(CreateMoneyText(pt)), play_time_text(CreatePlayTimeText())
 {
 	BOOST_ASSERT(pt);
@@ -84,7 +84,7 @@ CampWindow::~CampWindow() {
 
 boost::optional<boost::shared_ptr<Error> > CampWindow::WindowInitialize(void) {
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
-	boost::shared_ptr<std::string> title(new std::string("キャンプ"));
+	boost::shared_ptr<std::wstring> title(new std::wstring(L"キャンプ"));
 	OPT_ERROR(AddTextUI(title, uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
 

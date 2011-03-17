@@ -21,7 +21,7 @@ int SCREEN_MODEToFlag(DxLibWrapper::SCREEN_MODE screen_mode) {
 
 } // anonymous
 
-DxLibWrapper::DxLibWrapper(bool window_mode, boost::shared_ptr<const std::string> title){
+DxLibWrapper::DxLibWrapper(bool window_mode, boost::shared_ptr<const std::wstring> title){
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = ChangeWindowMode(window_mode)) {
 		error.get()->Abort();
@@ -48,7 +48,7 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ChangeWindowMode(bool w
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetWindowTitle(boost::shared_ptr<const std::string> title) {
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetWindowTitle(boost::shared_ptr<const std::wstring> title) {
 	BOOST_ASSERT(title);
 	BOOST_ASSERT(!title->empty());
 	const int result = ::SetMainWindowText(title->c_str());
@@ -114,7 +114,7 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
 }
 
 //static
-opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const std::string> text) {
+opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const std::wstring> text) {
 	BOOST_ASSERT(text);
 	if(text->empty()) {
 		return 0;
@@ -127,7 +127,7 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, boost::shared_ptr<const std::string> text, Color color) {
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, boost::shared_ptr<const std::wstring> text, Color color) {
 	BOOST_ASSERT(text);
 	if(text->empty()) {
 		return boost::none;
@@ -157,8 +157,8 @@ unsigned int DxLibWrapper::GetRand(unsigned int max) {
 }
 
 //static
-opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(unsigned int x, unsigned int y, unsigned int max) {
-	char buffer[1024];
+opt_error<boost::shared_ptr<std::wstring> >::type DxLibWrapper::KeyInputString(unsigned int x, unsigned int y, unsigned int max) {
+	wchar_t buffer[1024];
 	BOOST_ASSERT(x <= INT_MAX);
 	BOOST_ASSERT(y <= INT_MAX);
 	BOOST_ASSERT(max <= INT_MAX);
@@ -166,7 +166,7 @@ opt_error<boost::shared_ptr<std::string> >::type DxLibWrapper::KeyInputString(un
 	if(result != 1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
-	return boost::shared_ptr<std::string>(new std::string(buffer));
+	return boost::shared_ptr<std::wstring>(new std::wstring(buffer));
 }
 
 //static

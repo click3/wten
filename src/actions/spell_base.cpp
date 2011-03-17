@@ -2,7 +2,7 @@
 
 namespace wten { namespace actions {
 
-SpellBase::SpellBase(unsigned int id, TARGET_TYPE target_type, ACTION_TYPE action_type, SPELL_JOB use_job, unsigned int lv, boost::shared_ptr<const std::string> description) :
+SpellBase::SpellBase(unsigned int id, TARGET_TYPE target_type, ACTION_TYPE action_type, SPELL_JOB use_job, unsigned int lv, boost::shared_ptr<const std::wstring> description) :
 	Action(id, target_type, action_type), use_job(use_job), lv(lv), description(description)
 {
 	BOOST_ASSERT(lv > 0);
@@ -22,7 +22,7 @@ unsigned int SpellBase::GetLv() const {
 	return lv;
 }
 
-boost::shared_ptr<const std::string> SpellBase::GetDescription() const {
+boost::shared_ptr<const std::wstring> SpellBase::GetDescription() const {
 	return description;
 }
 

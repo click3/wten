@@ -5,7 +5,7 @@ namespace wten { namespace uis {
 using namespace utility;
 using namespace boost::assign;
 
-UIInputDlg::UIInputDlg(boost::shared_ptr<const std::string> message, boost::shared_ptr<const std::string> frame_filename) :
+UIInputDlg::UIInputDlg(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const std::wstring> frame_filename) :
 	UIBox(frame_filename), ui_input_string(new UIInputString())
 {
 	boost::optional<boost::shared_ptr<Error> > error;
@@ -31,7 +31,7 @@ UIInputDlg::UIInputDlg(boost::shared_ptr<const std::string> message, boost::shar
 UIInputDlg::~UIInputDlg() {
 }
 
-boost::shared_ptr<std::string> UIInputDlg::GetText(void) const {
+boost::shared_ptr<std::wstring> UIInputDlg::GetText(void) const {
 	return ui_input_string->GetText();
 }
 

@@ -91,7 +91,7 @@ std::vector<boost::optional<bool> > RankUpChallenge(std::vector<unsigned int> st
 
 } // anonymous
 
-CharStatus::CharStatus(boost::shared_ptr<const std::string> name, boost::shared_ptr<const Job> job, ALIGNMENT alignment, unsigned int lv, unsigned int hp,
+CharStatus::CharStatus(boost::shared_ptr<const std::wstring> name, boost::shared_ptr<const Job> job, ALIGNMENT alignment, unsigned int lv, unsigned int hp,
 	unsigned int str, unsigned int iq, unsigned int pie, unsigned int vit, unsigned int agi, unsigned int luk,
 	unsigned int tg, unsigned int exp, const std::vector<boost::shared_ptr<Item> >& item_list,
 	const std::vector<SPELL_PAIR>& spell_list)
@@ -120,7 +120,7 @@ CharStatus::CharStatus(boost::shared_ptr<const std::string> name, boost::shared_
 CharStatus::~CharStatus(void) {
 }
 
-boost::shared_ptr<const std::string> CharStatus::GetName(void) const {
+boost::shared_ptr<const std::wstring> CharStatus::GetName(void) const {
 	return name;
 }
 
@@ -199,7 +199,7 @@ std::vector<boost::shared_ptr<const actions::SpellBase> > CharStatus::GetSpells(
 	return result;
 }
 
-boost::optional<boost::shared_ptr<Error> > CharStatus::ChangeName(boost::shared_ptr<const std::string> new_name) {
+boost::optional<boost::shared_ptr<Error> > CharStatus::ChangeName(boost::shared_ptr<const std::wstring> new_name) {
 	if(!new_name) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}

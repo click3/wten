@@ -7,24 +7,24 @@ namespace windows {
 namespace {
 
 struct TupleValues {
-	boost::shared_ptr<void> operator ()(const boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> >& data) {
+	boost::shared_ptr<void> operator ()(const boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> >& data) {
 		return data.get<1>();
 	}
 };
 
 struct TupleTexts {
-	boost::shared_ptr<const std::string> operator ()(const boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> >& data) {
+	boost::shared_ptr<const std::wstring> operator ()(const boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> >& data) {
 		return data.get<0>();
 	}
 };
 
-std::vector<boost::shared_ptr<const std::string> > CreateSelectList(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input) {
-	std::vector<boost::shared_ptr<const std::string> > result;
+std::vector<boost::shared_ptr<const std::wstring> > CreateSelectList(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input) {
+	std::vector<boost::shared_ptr<const std::wstring> > result;
 	boost::transform(input, std::back_inserter(result), TupleTexts());
 	return result;
 }
 
-std::vector<boost::shared_ptr<void> > CreateDataList(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input) {
+std::vector<boost::shared_ptr<void> > CreateDataList(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input) {
 	std::vector<boost::shared_ptr<void> > result;
 	boost::transform(input, std::back_inserter(result), TupleValues());
 	return result;
@@ -34,7 +34,7 @@ std::vector<boost::shared_ptr<void> > CreateDataList(const std::vector<boost::tu
 
 using namespace utility;
 
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<const std::string> frame_filename) :
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<const std::wstring> frame_filename) :
 	WindowBase(frame_filename),
 	selector(new uis::UISelector(CreateSelectList(input), line_count)),
 	data_list(CreateDataList(input)),
@@ -48,7 +48,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	BOOST_ASSERT(frame);
 }
 
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<Graph> frame) :
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<Graph> frame) :
 	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true)
 {
 	BOOST_ASSERT(selector);
@@ -56,7 +56,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	BOOST_ASSERT(frame);
 }
 
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& input, unsigned int line_count) :
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count) :
 	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), select_close(true)
 {
 	BOOST_ASSERT(selector);

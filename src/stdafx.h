@@ -32,6 +32,8 @@
 #pragma warning(disable: 4711) // inline宣言されていない関数/メソッドをinline展開しました
 #endif
 
+//wchar_tを既定の文字列として使用する
+#define UNICODE
 //std::minとstd::maxと定義が重複するため
 #define NOMINMAX
 #include <windows.h>

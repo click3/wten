@@ -14,11 +14,11 @@ struct ListCSVParserBase : boost::spirit::qi::grammar<Iterator, std::vector<resu
 
 	void Initialize(const boost::spirit::qi::rule<Iterator, result_type()>& data_line) {
 		namespace qi = boost::spirit::qi;
-		using qi::char_;
+		using boost::spirit::standard_wide::char_;
 		using qi::lexeme;
 
-		quoted_string = lexeme['"' >> +(char_ - '"') >> '"'][qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
-		unquoted_string = (+(char_ - ',' - '"'))[qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
+		quoted_string = lexeme['"' >> +(char_ - '"') >> '"'][qi::_val = boost::phoenix::bind(&WStrV2Ptr, qi::_1)];
+		unquoted_string = (+(char_ - ',' - '"'))[qi::_val = boost::phoenix::bind(&WStrV2Ptr, qi::_1)];
 		string = quoted_string | unquoted_string;
 		comment_line = "//" >> *(char_ - '\n') >> -char_('\n');
 		empty_line = '\n';
@@ -27,9 +27,9 @@ struct ListCSVParserBase : boost::spirit::qi::grammar<Iterator, std::vector<resu
 		root = +(line) >> *(comment_line | empty_line);
 	}
 
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> quoted_string;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> unquoted_string;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> string;
+	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::wstring>()> quoted_string;
+	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::wstring>()> unquoted_string;
+	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::wstring>()> string;
 	boost::spirit::qi::rule<Iterator> comment_line;
 	boost::spirit::qi::rule<Iterator> empty_line;
 	boost::spirit::qi::rule<Iterator, result_type()> data_line;

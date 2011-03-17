@@ -7,7 +7,7 @@ namespace wten { namespace scenes {
 #pragma warning(disable: 4626)
 class CampScene : public SceneBase {
 public:
-	CampScene(boost::shared_ptr<const std::string> default_frame_filename = boost::shared_ptr<const std::string>(new std::string("data/ui/box1.png")));
+	CampScene(boost::shared_ptr<const std::wstring> default_frame_filename = boost::shared_ptr<const std::wstring>(new std::wstring(L"data/ui/box1.png")));
 	~CampScene();
 
 	boost::optional<boost::shared_ptr<Error> > SceneInitialize(void);

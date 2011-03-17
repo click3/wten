@@ -10,7 +10,7 @@ namespace uis {
 #pragma warning(disable: 4626)
 class UICharStatus : public UIBox {
 public:
-	UICharStatus(boost::shared_ptr<const std::string> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index);
+	UICharStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index);
 	~UICharStatus();
 	enum CHANGE_INDEX {
 		CHANGE_INDEX_NEXT,

@@ -10,7 +10,7 @@ namespace scenes {
 #pragma warning(disable: 4626)
 class SceneBase : public Scene, public EventNotifyInterface, public boost::enable_shared_from_this<SceneBase> {
 public:
-	SceneBase(boost::shared_ptr<const std::string> default_frame_filename = boost::shared_ptr<const std::string>(new std::string("data/ui/box1.png")));
+	SceneBase(boost::shared_ptr<const std::wstring> default_frame_filename = boost::shared_ptr<const std::wstring>(new std::wstring(L"data/ui/box1.png")));
 	~SceneBase();
 
 	boost::optional<boost::shared_ptr<Error> > DoStart(boost::shared_ptr<PTData> pt);
@@ -31,19 +31,19 @@ public:
 	boost::optional<boost::shared_ptr<Error> > AddUI(boost::shared_ptr<uis::UIBase> ui, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	boost::optional<boost::shared_ptr<Error> > AddWindow(boost::shared_ptr<windows::WindowBase> window, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	boost::optional<boost::shared_ptr<Error> > AddBoxUI(uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
-	boost::optional<boost::shared_ptr<Error> > AddImageUI(boost::shared_ptr<const std::string> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y);
-	boost::optional<boost::shared_ptr<Error> > AddTextUI(boost::shared_ptr<const std::string> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+	boost::optional<boost::shared_ptr<Error> > AddImageUI(boost::shared_ptr<const std::wstring> image_filename, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y);
+	boost::optional<boost::shared_ptr<Error> > AddTextUI(boost::shared_ptr<const std::wstring> text, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	boost::optional<boost::shared_ptr<Error> > AddPTStatusUI(boost::shared_ptr<const PTData> pt_data, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	boost::optional<boost::shared_ptr<Error> > AddCharStatusUI(boost::shared_ptr<const PTData> pt_data, unsigned int char_index, uis::UIBase::MOVE_MODE move_mode, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
-	boost::optional<boost::shared_ptr<Error> > AddSelectorWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > >& select_list, unsigned int line_count, unsigned int x = 50, unsigned int y = 85, unsigned int width = 540, unsigned int height = 180);
-	boost::optional<boost::shared_ptr<Error> > AddTextWindow(boost::shared_ptr<const std::string> text, unsigned int x = 50, unsigned int y = 50, unsigned int width = 540, unsigned int height = 380);
-	boost::optional<boost::shared_ptr<Error> > AddInputDlgWindow(boost::shared_ptr<const std::string> message, unsigned int x = 150, unsigned int y = 205, unsigned int width = 340, unsigned int height = 70);
+	boost::optional<boost::shared_ptr<Error> > AddSelectorWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& select_list, unsigned int line_count, unsigned int x = 50, unsigned int y = 85, unsigned int width = 540, unsigned int height = 180);
+	boost::optional<boost::shared_ptr<Error> > AddTextWindow(boost::shared_ptr<const std::wstring> text, unsigned int x = 50, unsigned int y = 50, unsigned int width = 540, unsigned int height = 380);
+	boost::optional<boost::shared_ptr<Error> > AddInputDlgWindow(boost::shared_ptr<const std::wstring> message, unsigned int x = 150, unsigned int y = 205, unsigned int width = 340, unsigned int height = 70);
 	boost::optional<boost::shared_ptr<Error> > Clear(void);
 protected:
 	boost::shared_ptr<PTData> pt;
 	const boost::shared_ptr<windows::WindowBase> base_window;
 	const boost::shared_ptr<WindowManager> window_manager;
-	const boost::shared_ptr<const std::string> default_frame_filename;
+	const boost::shared_ptr<const std::wstring> default_frame_filename;
 };
 #pragma warning(pop)
 

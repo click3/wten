@@ -54,7 +54,7 @@ struct spell_jobs_ : boost::spirit::qi::symbols<char, actions::SpellBase::SPELL_
 
 boost::shared_ptr<const actions::SpellBase> CreateSpell(
 	unsigned int id, Action::TARGET_TYPE target_type, Action::ACTION_TYPE action_type,
-	actions::SpellBase::SPELL_JOB use_job, unsigned int lv, boost::shared_ptr<const std::string> description)
+	actions::SpellBase::SPELL_JOB use_job, unsigned int lv, boost::shared_ptr<const std::wstring> description)
 {
 	return boost::shared_ptr<const actions::SpellBase>(new actions::DummySpell(id, target_type, action_type, use_job, lv, description));
 }

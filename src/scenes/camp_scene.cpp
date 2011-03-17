@@ -2,7 +2,7 @@
 
 namespace wten { namespace scenes {
 
-CampScene::CampScene(boost::shared_ptr<const std::string> default_frame_filename) :
+CampScene::CampScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
 	SceneBase(default_frame_filename), camp_script_window(new windows::ScriptWindow()), camp_enabled(true)
 {
 	BOOST_ASSERT(camp_script_window);

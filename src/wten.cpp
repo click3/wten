@@ -18,10 +18,10 @@ WTen::~WTen() {
 }
 
 //static
-boost::shared_ptr<std::string> WTen::CreateWindowTitle(void) {
-	char str[1024];
-	SPRINTF(str, "Wizardry `“V—³‚Ì“ƒ` %s", OPEN_VERSION);
-	return boost::shared_ptr<std::string>(new std::string(str));
+boost::shared_ptr<std::wstring> WTen::CreateWindowTitle(void) {
+	wchar_t str[1024];
+	WSPRINTF(str, L"Wizardry `“V—³‚Ì“ƒ` %s", OPEN_VERSION);
+	return boost::shared_ptr<std::wstring>(new std::wstring(str));
 }
 
 boost::optional<boost::shared_ptr<Error> > WTen::DoStart(boost::shared_ptr<PTData> pt) {

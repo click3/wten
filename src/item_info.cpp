@@ -21,8 +21,8 @@ struct FindResist {
 
 } // anonymous
 
-ItemInfo::ItemInfo(unsigned int id, boost::shared_ptr<const std::string> uncertainty_name, boost::shared_ptr<const std::string> name,
-	boost::shared_ptr<const std::string> description, unsigned int sale_price, unsigned int price,
+ItemInfo::ItemInfo(unsigned int id, boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
+	boost::shared_ptr<const std::wstring> description, unsigned int sale_price, unsigned int price,
 	ITEM_TYPE item_type, unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
 	unsigned int hit, unsigned int hit_count, int ac, unsigned int broken_probability,
 	const std::vector<boost::shared_ptr<const Job> >& equip_possible, const std::vector<boost::tuple<Action::ACTION_TYPE, unsigned int> >& element_resist,
@@ -54,15 +54,15 @@ unsigned int ItemInfo::GetID(void) const {
 	return id;
 }
 
-boost::shared_ptr<const std::string> ItemInfo::GetUncertaintyName() const {
+boost::shared_ptr<const std::wstring> ItemInfo::GetUncertaintyName() const {
 	return uncertainty_name;
 }
 
-boost::shared_ptr<const std::string> ItemInfo::GetName() const {
+boost::shared_ptr<const std::wstring> ItemInfo::GetName() const {
 	return name;
 }
 
-boost::shared_ptr<const std::string> ItemInfo::GetDescription() const {
+boost::shared_ptr<const std::wstring> ItemInfo::GetDescription() const {
 	return description;
 }
 

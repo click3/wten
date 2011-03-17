@@ -19,7 +19,7 @@ private:
 
 	unsigned int next_step;
 	unsigned int current_step;
-	const boost::shared_ptr<const std::string> title;
+	const boost::shared_ptr<const std::wstring> title;
 	const boost::shared_ptr<windows::ScriptWindow> script_window;
 	boost::shared_ptr<Scene> next_scene;
 };

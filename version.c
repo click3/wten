@@ -28,7 +28,7 @@ main(){
 	fp = fopen("src/version.h","w");
 	if(fp==NULL)return 1;
 	fprintf(fp,"#define VERSION %d\n",a+1);
-	fprintf(fp,"#define OPEN_VERSION \"%s\"\n",ver);
+	fprintf(fp,"#define OPEN_VERSION L\"%s\"\n",ver);
 	fclose(fp);
 	return 0;
 }

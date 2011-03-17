@@ -48,6 +48,8 @@ do {											\
 #define OPT_BOOL(out, in)			OPT_VALUE(out, in, bool)
 #define OPT_STRING(out, in)			OPT_VALUE(out, in, std::string)
 #define OPT_STRING_PTR(out, in)		OPT_VALUE(out, in, boost::shared_ptr<std::string>)
+#define OPT_WSTRING(out, in)		OPT_VALUE(out, in, std::wstring)
+#define OPT_WSTRING_PTR(out, in)		OPT_VALUE(out, in, boost::shared_ptr<std::wstring>)
 typedef boost::tuple<unsigned int, unsigned int> PAIR_UINT;
 #define OPT_PAIR_UINT(out1, out2, in)	OPT_VALUE(boost::tie(out1, out2), in, PAIR_UINT)
 
@@ -82,6 +84,20 @@ boost::optional<boost::shared_ptr<Error> > UTF8FileRead(const std::string &path,
 boost::shared_ptr<const std::string> StrV2Ptr(const std::vector<char> &str);
 boost::shared_ptr<const std::string> Str2Ptr(const std::string &str);
 boost::shared_ptr<const std::string> Char2Ptr(const char* str);
+boost::shared_ptr<const std::wstring> WStrV2Ptr(const std::vector<wchar_t> &str);
+boost::shared_ptr<const std::wstring> WStr2Ptr(const std::wstring &str);
+boost::shared_ptr<const std::wstring> WChar2Ptr(const wchar_t* str);
+
+#define MULTI_TO_WIDE_PROCS(name)															\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const char *str, std::vector<wchar_t> *result);					\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const std::vector<char> &str, std::vector<wchar_t> *result);			\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const std::string &str, std::vector<wchar_t> *result);				\
+boost::optional<boost::shared_ptr<Error> > name##ToWChar(const boost::shared_ptr<std::string> str, std::vector<wchar_t> *result);
+
+MULTI_TO_WIDE_PROCS(SJIS)
+MULTI_TO_WIDE_PROCS(UTF8)
+
+#undef MULTI_TO_WIDE_PROCS
 
 } // utility
 

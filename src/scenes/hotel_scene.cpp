@@ -25,9 +25,9 @@ enum STEP {
 	RETURN_STEP,
 };
 
-boost::shared_ptr<std::string> GetTitle(void) {
+boost::shared_ptr<std::wstring> GetTitle(void) {
 	// TODO
-	return boost::shared_ptr<std::string>(new std::string("宿屋「ローゼンメイデン」"));
+	return boost::shared_ptr<std::wstring>(new std::wstring(L"宿屋「ローゼンメイデン」"));
 }
 
 unsigned int GetCurrentStep(void) {
@@ -80,14 +80,14 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::SceneInitialize(void) {
 boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 	switch(current_step) {
 		case NORMAL_STEP: {
-			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
-			const char *text_list[] = {
-				"宿泊する",
-				"アイテムを預ける",
-				"アイテムを引き出す",
-				"お金を預ける",
-				"お金を引き出す",
-				"外に出る"
+			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
+			const wchar_t *text_list[] = {
+				L"宿泊する",
+				L"アイテムを預ける",
+				L"アイテムを引き出す",
+				L"お金を預ける",
+				L"お金を引き出す",
+				L"外に出る"
 			};
 			boost::shared_ptr<void> step_list[] = {
 				boost::shared_ptr<void>(new STEP(STAY_SELECT_STEP)),
@@ -98,7 +98,7 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 				boost::shared_ptr<void>(new STEP(RETURN_STEP))
 			};
 			for(unsigned int i = 0; i < 6; i++) {
-				boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
@@ -106,14 +106,14 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 			break;
 		}
 		case STAY_SELECT_STEP: {
-			std::vector<boost::tuple<boost::shared_ptr<const std::string>, boost::shared_ptr<void> > > ui_list;
-			const char *text_list[] = {
-				"馬小屋",
-				"簡易寝台",
-				"エコノミールーム",
-				"スイートルーム",
-				"ロイヤルスイート",
-				"やめる"
+			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
+			const wchar_t *text_list[] = {
+				L"馬小屋",
+				L"簡易寝台",
+				L"エコノミールーム",
+				L"スイートルーム",
+				L"ロイヤルスイート",
+				L"やめる"
 			};
 			boost::shared_ptr<void> step_list[] = {
 				boost::shared_ptr<void>(new STEP(STAY_MEWS_STEP)),
@@ -124,7 +124,7 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 				boost::shared_ptr<void>(new STEP(NORMAL_STEP))
 			};
 			for(unsigned int i = 0; i < 6; i++) {
-				boost::shared_ptr<const std::string> text(new std::string(text_list[i]));
+				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
@@ -146,8 +146,8 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 			// TODO
 		{
 			next_step = NORMAL_STEP;
-			const char *text_char = "現在未実装です。";
-			boost::shared_ptr<const std::string> text(new std::string(text_char));
+			const wchar_t *text_char = L"現在未実装です。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
 			OPT_ERROR(AddTextWindow(text));
 			break;
 		}
