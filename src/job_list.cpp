@@ -24,21 +24,13 @@ boost::shared_ptr<const Job> CreateJob(unsigned int id, boost::shared_ptr<const 
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
 template <typename Iterator>
-struct JobListCSVParser : boost::spirit::qi::grammar<Iterator, std::vector<boost::shared_ptr<const Job> >()> {
-	JobListCSVParser() :
-		JobListCSVParser::base_type(root)
-	{
+struct JobListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const Job> > {
+	JobListCSVParser() {
 		namespace qi = boost::spirit::qi;
 		using qi::char_;
-		using qi::lexeme;
 		using qi::uint_;
 		using qi::int_;
 
-		quoted_string = lexeme['"' >> +(char_ - '"') >> '"'][qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
-		unquoted_string = (+(char_ - ',' - '"'))[qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
-		string = quoted_string | unquoted_string;
-		comment_line = "//" >> *(char_ - '\n') >> -char_('\n');
-		empty_line = '\n';
 		data_line = (uint_ >> ',' >> string >> ','
 			>> uint_ >> ',' >> uint_ >> ','
 			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
@@ -46,17 +38,10 @@ struct JobListCSVParser : boost::spirit::qi::grammar<Iterator, std::vector<boost
 			>> uint_ >> -char_('\n'))
 			[qi::_val = boost::phoenix::bind(&CreateJob, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11,
 				qi::_12, std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >())];
-		line = *(comment_line | empty_line) >> data_line;
-		root = +(line) >> *(comment_line | empty_line);
+		Initialize(data_line);
 	}
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> quoted_string;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> unquoted_string;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> string;
-	boost::spirit::qi::rule<Iterator> comment_line;
-	boost::spirit::qi::rule<Iterator> empty_line;
+
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const Job>()> data_line;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const Job>()> line;
-	boost::spirit::qi::rule<Iterator, std::vector<boost::shared_ptr<const Job> >() > root;
 };
 #pragma warning(pop)
 #pragma pack(pop)

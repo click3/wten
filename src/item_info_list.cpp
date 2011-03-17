@@ -48,41 +48,26 @@ boost::shared_ptr<const ItemInfo> CreateItemInfo(boost::shared_ptr<const std::st
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
 template <typename Iterator>
-struct ItemInfoListCSVParser : boost::spirit::qi::grammar<Iterator, std::vector<boost::shared_ptr<const ItemInfo> >()> {
-	ItemInfoListCSVParser() :
-		ItemInfoListCSVParser::base_type(root)
-	{
+struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const ItemInfo> > {
+	ItemInfoListCSVParser() {
 		namespace qi = boost::spirit::qi;
 		using qi::char_;
-		using qi::lexeme;
 		using qi::uint_;
 		using qi::int_;
 
-		quoted_string = lexeme['"' >> +(char_ - '"') >> '"'][qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
-		unquoted_string = (+(char_ - ',' - '"'))[qi::_val = boost::phoenix::bind(&StrV2Ptr, qi::_1)];
-		string = quoted_string | unquoted_string;
 		quoted_item_types = '"' >> item_types_impl >> '"';
 		item_types = quoted_item_types | item_types_impl;
-		comment_line = "//" >> *(char_ - '\n') >> -char_('\n');
-		empty_line = '\n';
 		data_line = (string >> ',' >> string >> ','
 			>> string >> ',' >> uint_ >> ',' >> uint_ >> ','
 			>> item_types >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
 			>> uint_ >> ',' >> uint_ >> ',' >> int_ >> ',' >> uint_ >> -char_('\n'))
 			[qi::_val = boost::phoenix::bind(&CreateItemInfo, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13)];
-		line = *(comment_line | empty_line) >> data_line;
-		root = +(line) >> *(comment_line | empty_line);
+		Initialize(data_line);
 	}
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> quoted_string;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> unquoted_string;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const std::string>()> string;
+
 	boost::spirit::qi::rule<Iterator, ItemInfo::ITEM_TYPE()> quoted_item_types;
 	boost::spirit::qi::rule<Iterator, ItemInfo::ITEM_TYPE()> item_types;
-	boost::spirit::qi::rule<Iterator> comment_line;
-	boost::spirit::qi::rule<Iterator> empty_line;
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const ItemInfo>()> data_line;
-	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const ItemInfo>()> line;
-	boost::spirit::qi::rule<Iterator, std::vector<boost::shared_ptr<const ItemInfo> >() > root;
 };
 #pragma warning(pop)
 #pragma pack(pop)

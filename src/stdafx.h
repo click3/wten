@@ -109,6 +109,7 @@
 #include "global_data.h"
 #include "play_time.h"
 #include "error_normal.h"
+#include "list_csv_parser_base.h"
 #include "graph.h"
 #include "action.h"
 #include "job.h"
