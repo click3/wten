@@ -112,6 +112,7 @@
 #include "graph.h"
 #include "action.h"
 #include "job.h"
+#include "job_list.h"
 #include "char_condition.h"
 #include "pt_condition.h"
 #include "enemy_condition.h"
