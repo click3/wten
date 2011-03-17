@@ -77,6 +77,8 @@ public:
 unsigned int Dice(unsigned int base, unsigned int count, unsigned int bonus = 0);
 boost::shared_ptr<FILE> MyFOpen(const std::string &path, const char *type);
 boost::optional<boost::shared_ptr<Error> > FileRead(const std::string &path, std::vector<char> *data);
+boost::optional<boost::shared_ptr<Error> > SJISFileRead(const std::string &path, std::vector<wchar_t> *result);
+boost::optional<boost::shared_ptr<Error> > UTF8FileRead(const std::string &path, std::vector<wchar_t> *result);
 boost::shared_ptr<const std::string> StrV2Ptr(const std::vector<char> &str);
 boost::shared_ptr<const std::string> Str2Ptr(const std::string &str);
 boost::shared_ptr<const std::string> Char2Ptr(const char* str);

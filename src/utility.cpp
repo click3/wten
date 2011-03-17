@@ -11,6 +11,24 @@ void MyFClose(FILE *fp) {
 	::fclose(fp);
 }
 
+boost::optional<boost::shared_ptr<Error> > FileReadW(const std::string &path, unsigned int code_page, std::vector<wchar_t> *result) {
+	if(result == NULL) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	std::vector<char> multi;
+	OPT_ERROR(FileRead(path, &multi));
+	const int size = ::MultiByteToWideChar(code_page, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, &multi.front(), static_cast<int>(multi.size()), NULL, 0);
+	if(size <= 0) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	result->resize(static_cast<unsigned int>(size));
+	const int convert_size = ::MultiByteToWideChar(code_page, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, &multi.front(), static_cast<int>(multi.size()), &result->front(), static_cast<int>(result->size()));
+	if(convert_size <= 0 || static_cast<unsigned int>(convert_size) != result->size()) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
 } // anonymous
 
 boost::shared_ptr<Error> CreateError(ERROR_CODE code, const std::string filename, unsigned int fileline) {
@@ -58,6 +76,14 @@ boost::optional<boost::shared_ptr<Error> > FileRead(const std::string &path, std
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > SJISFileRead(const std::string &path, std::vector<wchar_t> *result) {
+	return FileReadW(path, CP_ACP, result);
+}
+
+boost::optional<boost::shared_ptr<Error> > UTF8FileRead(const std::string &path, std::vector<wchar_t> *result) {
+	return FileReadW(path, CP_UTF8, result);
 }
 
 boost::shared_ptr<const std::string> StrV2Ptr(const std::vector<char> &str) {
