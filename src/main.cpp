@@ -8,11 +8,9 @@ namespace {
 boost::shared_ptr<const Job> CreateDummyJob() {
 	static unsigned int id = 1;
 	boost::shared_ptr<const std::string> name(new std::string("DUMMY"));
-	unsigned int hp_base = 10, hp_count_bonus = 0, str = 10, iq = 10, pie = 10, vit = 10, agi = 10, luk = 10, thief_skill = 0;
+	unsigned int hp_base = 10, hp_count_bonus = 0, str = 10, iq = 10, pie = 10, vit = 10, agi = 10, luk = 10, thief_skill = 0, exp_base = 1000;
 	std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > > spells;
-	std::vector<unsigned int> exp_list;
-	exp_list += 0,10,100;
-	boost::shared_ptr<const Job> job(new Job(id, name, hp_base, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, spells, exp_list));
+	boost::shared_ptr<const Job> job(new Job(id, name, hp_base, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, exp_base, spells));
 	id++;
 	return job;
 }
@@ -52,6 +50,8 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 //int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow ){
 int main() {
 	::setlocale(LC_ALL, _T(""));
+
+	ItemInfoList::GetCurrentInstance();
 
 	boost::shared_ptr<WTen> game;/*
 	{

@@ -36,12 +36,12 @@ Job::Job(unsigned int id, boost::shared_ptr<const std::string> name,
 	unsigned int hp_base, unsigned int hp_count_bonus,
 	unsigned int str, unsigned int iq, unsigned int pie,
 	unsigned int vit, unsigned int agi, unsigned int luk,
-	unsigned int thief_skill, const std::vector<SPELL_PAIR>& spells,
-	const std::vector<unsigned int>& exp_list)
+	unsigned int thief_skill, unsigned int exp_base,
+	const std::vector<SPELL_PAIR>& spells)
 :
 	id(id), name(name), hp_base(hp_base), hp_count_bonus(hp_count_bonus),
 	str(str), iq(iq), pie(pie), vit(vit), agi(agi), luk(luk),
-	thief_skill(thief_skill), spells(spells), exp_list(exp_list)
+	thief_skill(thief_skill), exp_base(exp_base), spells(spells)
 {
 	BOOST_ASSERT(id > 0);
 	BOOST_ASSERT(name);
@@ -53,6 +53,7 @@ Job::Job(unsigned int id, boost::shared_ptr<const std::string> name,
 	BOOST_ASSERT(vit > 0);
 	BOOST_ASSERT(agi > 0);
 	BOOST_ASSERT(luk > 0);
+	BOOST_ASSERT(exp_base > 0);
 
 	unsigned int prev_lv = 0;
 	unsigned int prev_spell_lv = 0;
@@ -67,12 +68,6 @@ Job::Job(unsigned int id, boost::shared_ptr<const std::string> name,
 		BOOST_ASSERT(spell_info);
 		BOOST_ASSERT(prev_spell_lv <= spell_info->GetLv());
 		prev_spell_lv = spell_info->GetLv();
-	}
-
-	unsigned int prev_exp = 0;
-	BOOST_FOREACH(unsigned int exp, this->exp_list) {
-		BOOST_ASSERT(prev_exp <= exp);
-		prev_exp = exp;
 	}
 }
 
@@ -131,20 +126,31 @@ std::vector<boost::shared_ptr<const actions::SpellBase> > Job::GetSpell(unsigned
 
 unsigned int Job::CalcLv(unsigned int exp) const {
 	unsigned int lv = 0;
-	BOOST_FOREACH(unsigned int total, exp_list) {
-		if(total < exp) {
-			return lv;
-		}
+	unsigned int necessary = exp_base;
+	unsigned int up = static_cast<unsigned int>(necessary * 0.75);
+	while(exp >= necessary) {
 		lv++;
+		necessary += up;
+		if(lv < 30) {
+			up = static_cast<unsigned int>(necessary * 0.75);
+		}
 	}
-	BOOST_ASSERT(false);
 	return lv;
 }
 
 unsigned int Job::CalcExp(unsigned int level) const {
 	BOOST_ASSERT(level > 0);
-	BOOST_ASSERT(exp_list.size() >= level);
-	return exp_list[level - 1];
+	unsigned int i = 1;
+	unsigned int necessary = exp_base;
+	unsigned int up = static_cast<unsigned int>(necessary * 0.75);
+	while(i < level) {
+		i++;
+		necessary += up;
+		if(i < 30) {
+			up = static_cast<unsigned int>(necessary * 0.75);
+		}
+	}
+	return necessary;
 }
 
 } // wten

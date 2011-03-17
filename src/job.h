@@ -14,8 +14,8 @@ public:
 		unsigned int hp_base, unsigned int hp_count_bonus,
 		unsigned int str, unsigned int iq, unsigned int pie,
 		unsigned int vit, unsigned int agi, unsigned int luk, unsigned int thief_skill,
-		const std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >& spells,
-		const std::vector<unsigned int>& exp_list);
+		unsigned int exp_base,
+		const std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >& spells);
 	~Job();
 	unsigned int GetId(void) const;
 	boost::shared_ptr<const std::string> GetName(void) const;
@@ -31,21 +31,21 @@ public:
 	unsigned int CalcLv(unsigned int exp) const;
 	unsigned int CalcExp(unsigned int level) const;
 protected:
-	unsigned int id;
-	boost::shared_ptr<const std::string> name;
-	unsigned int hp_base;
-	unsigned int hp_count_bonus;
-	unsigned int str;
-	unsigned int iq;
-	unsigned int pie;
-	unsigned int vit;
-	unsigned int agi;
-	unsigned int luk;
+	const unsigned int id;
+	const boost::shared_ptr<const std::string> name;
+	const unsigned int hp_base;
+	const unsigned int hp_count_bonus;
+	const unsigned int str;
+	const unsigned int iq;
+	const unsigned int pie;
+	const unsigned int vit;
+	const unsigned int agi;
+	const unsigned int luk;
 
-	unsigned int thief_skill;
+	const unsigned int thief_skill;
 
-	std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > > spells;
-	std::vector<unsigned int> exp_list;
+	const std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > > spells;
+	const unsigned int exp_base;
 };
 #pragma warning(pop)
 
