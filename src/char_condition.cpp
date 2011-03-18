@@ -14,6 +14,9 @@ boost::shared_ptr<std::wstring> CharCondition::ToString(void) const {
 	wchar_t *result;
 	switch(condition) {
 #define ADD_CONDITION(name) case CONDITION_##name: result = L#name; break
+		ADD_CONDITION(OK);
+		ADD_CONDITION(POISON);
+		ADD_CONDITION(SILENCE);
 		ADD_CONDITION(SLEEP);
 		ADD_CONDITION(FEAR);
 		ADD_CONDITION(PARALYZED);
@@ -21,15 +24,6 @@ boost::shared_ptr<std::wstring> CharCondition::ToString(void) const {
 		ADD_CONDITION(DEAD);
 		ADD_CONDITION(ASHED);
 		ADD_CONDITION(LOST);
-		case CONDITION_OK:
-			if(poison) {
-				result = L"POISON";
-			} else if(silence) {
-				result = L"SILENCE";
-			} else {
-				result = L"OK";
-			}
-			break;
 		default:
 			BOOST_ASSERT(false);
 			result = L"Unknown";
@@ -75,7 +69,7 @@ bool CharCondition::IsLost() const {
 }
 
 bool CharCondition::SetSleep() {
-	if(!IsOk()) {
+	if(GetCondition() >= CONDITION_SLEEP) {
 		return false;
 	}
 	condition = CONDITION_SLEEP;
@@ -83,7 +77,7 @@ bool CharCondition::SetSleep() {
 }
 
 bool CharCondition::SetFear() {
-	if(!IsOk()) {
+	if(GetCondition() >= CONDITION_SLEEP) {
 		return false;
 	}
 	condition = CONDITION_FEAR;
@@ -134,7 +128,7 @@ bool CharCondition::RecoverySleep() {
 	if(!IsSleep()) {
 		return false;
 	}
-	condition = CONDITION_OK;
+	condition = (IsSilence() ? CONDITION_SILENCE : (IsPoison() ? CONDITION_POISON : CONDITION_OK));
 	return true;
 }
 
@@ -142,7 +136,7 @@ bool CharCondition::RecoveryFear() {
 	if(!IsFear()) {
 		return false;
 	}
-	condition = CONDITION_OK;
+	condition = (IsSilence() ? CONDITION_SILENCE : (IsPoison() ? CONDITION_POISON : CONDITION_OK));
 	return true;
 }
 
@@ -150,7 +144,7 @@ bool CharCondition::RecoveryParalyze() {
 	if(!IsParalyzed()) {
 		return false;
 	}
-	condition = CONDITION_OK;
+	condition = (IsSilence() ? CONDITION_SILENCE : (IsPoison() ? CONDITION_POISON : CONDITION_OK));
 	return true;
 }
 
@@ -158,7 +152,7 @@ bool CharCondition::RecoveryStone() {
 	if(!IsStoned()) {
 		return false;
 	}
-	condition = CONDITION_OK;
+	condition = (IsSilence() ? CONDITION_SILENCE : (IsPoison() ? CONDITION_POISON : CONDITION_OK));
 	return true;
 }
 
@@ -166,6 +160,8 @@ bool CharCondition::RecoveryDead() {
 	if(!IsDead()) {
 		return false;
 	}
+	RecoveryPoison();
+	RecoverySilence();
 	condition = CONDITION_OK;
 	return true;
 }
@@ -174,6 +170,8 @@ bool CharCondition::RecoveryAshed() {
 	if(!IsAshed()) {
 		return false;
 	}
+	RecoveryPoison();
+	RecoverySilence();
 	condition = CONDITION_OK;
 	return true;
 }
@@ -182,6 +180,8 @@ bool CharCondition::RecoveryLost() {
 	if(!IsLost()) {
 		return false;
 	}
+	RecoveryPoison();
+	RecoverySilence();
 	condition = CONDITION_OK;
 	return true;
 }
@@ -195,6 +195,9 @@ bool CharCondition::SetPoison() {
 		return false;
 	}
 	poison = true;
+	if(IsOk()) {
+		condition = CONDITION_POISON;
+	}
 	return true;
 }
 
@@ -203,6 +206,9 @@ bool CharCondition::RecoveryPoison() {
 		return false;
 	}
 	poison = false;
+	if(GetCondition() == CONDITION_POISON) {
+		condition = CONDITION_OK;
+	}
 	return true;
 }
 
@@ -214,6 +220,9 @@ bool CharCondition::SetSilence() {
 	if(IsSilence()) {
 		return false;
 	}
+	if(GetCondition() <= CONDITION_POISON) {
+		condition = CONDITION_SILENCE;
+	}
 	silence = true;
 	return true;
 }
@@ -223,6 +232,9 @@ bool CharCondition::RecoverySilence() {
 		return false;
 	}
 	silence = false;
+	if(GetCondition() == CONDITION_SILENCE) {
+		condition = (IsPoison() ? CONDITION_POISON : CONDITION_OK);
+	}
 	return true;
 }
 

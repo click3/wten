@@ -9,6 +9,8 @@ class CharCondition : boost::noncopyable {
 public:
 	enum CONDITION {
 		CONDITION_OK,
+		CONDITION_POISON,
+		CONDITION_SILENCE,
 		CONDITION_SLEEP,
 		CONDITION_FEAR,
 		CONDITION_PARALYZED,
