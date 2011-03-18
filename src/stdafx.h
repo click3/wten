@@ -28,7 +28,7 @@
 
 // RELEASEビルド時のみ発生する警告の無効化
 #ifndef _DEBUG
-#pragma warning(disable: 4710) // inline宣言されていない関数/メソッドをinline展開しました
+#pragma warning(disable: 4710) // inline宣言されている関数/メソッドをinline展開しませんでした
 #pragma warning(disable: 4711) // inline宣言されていない関数/メソッドをinline展開しました
 #endif
 
@@ -41,9 +41,9 @@
 #include "DxLib.h"
 
 //phoenixで扱える最大引数
-#define BOOST_RESULT_OF_NUM_ARGS 14
-#define FUSION_MAX_VECTOR_SIZE 14
-#define PHOENIX_LIMIT 14
+#define BOOST_RESULT_OF_NUM_ARGS 18
+#define FUSION_MAX_VECTOR_SIZE 18
+#define PHOENIX_LIMIT 18
 
 #include "boost/config/warning_disable.hpp"
 #include "boost/utility.hpp"
@@ -100,7 +100,7 @@
 #ifndef _DEBUG
 #pragma warning(disable: 4100) // 宣言された引数を使用していません
 #pragma warning(disable: 4189) // 変数に代入後参照されていません
-#pragma warning(disable: 4710) // inline宣言されていない関数/メソッドをinline展開しました
+#pragma warning(disable: 4710) // inline宣言されている関数/メソッドをinline展開しませんでした
 #pragma warning(disable: 4711) // inline宣言されていない関数/メソッドをinline展開しました
 #endif
 
