@@ -5,18 +5,13 @@ using namespace boost::assign;
 
 namespace {
 
-boost::shared_ptr<const Job> CreateDummyJob() {
-	static unsigned int id = 1;
-	boost::shared_ptr<const std::wstring> name(new std::wstring(L"DUMMY"));
-	unsigned int hp_base = 10, hp_count_bonus = 0, str = 10, iq = 10, pie = 10, vit = 10, agi = 10, luk = 10, thief_skill = 0, exp_base = 1000;
-	std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > > spells;
-	boost::shared_ptr<const Job> job(new Job(id, name, hp_base, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, exp_base, spells));
-	id++;
-	return job;
+boost::shared_ptr<const Job> GetRandomJob() {
+	boost::shared_ptr<JobList> list = JobList::GetCurrentInstance();
+	return list->GetList()[DxLibWrapper::GetRand(list->GetList().size())];
 }
 
 boost::shared_ptr<CharData> CreateDummyCharData(const wchar_t *char_name) {
-	boost::shared_ptr<const Job> job = CreateDummyJob();
+	boost::shared_ptr<const Job> job = GetRandomJob();
 	boost::shared_ptr<const std::wstring> name(new std::wstring(char_name));
 	unsigned int lv = 1;
 	unsigned int hp = job->CalcMaxHP(lv, 1);
