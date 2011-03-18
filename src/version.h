@@ -1,2 +1,2 @@
-#define VERSION 1285
+#define VERSION 1288
 #define OPEN_VERSION L"Ver0.00"
