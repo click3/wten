@@ -32,21 +32,20 @@ public:
 
 } // anonymous
 
-Job::Job(unsigned int id, boost::shared_ptr<const std::wstring> name,
-	unsigned int hp_base, unsigned int hp_count_bonus,
-	unsigned int str, unsigned int iq, unsigned int pie,
-	unsigned int vit, unsigned int agi, unsigned int luk,
-	unsigned int thief_skill, unsigned int exp_base,
+Job::Job(unsigned int id, boost::shared_ptr<const std::wstring> name, boost::shared_ptr<const std::wstring> identity_name,
+	unsigned int hp_base, unsigned int hp_bonus, unsigned int hp_count_bonus, unsigned int str, unsigned int iq, unsigned int pie,
+	unsigned int vit, unsigned int agi, unsigned int luk, unsigned int thief_skill, unsigned int exp_base,
 	const std::vector<SPELL_PAIR>& spells)
 :
-	id(id), name(name), hp_base(hp_base), hp_count_bonus(hp_count_bonus),
-	str(str), iq(iq), pie(pie), vit(vit), agi(agi), luk(luk),
-	thief_skill(thief_skill), exp_base(exp_base), spells(spells)
+	id(id), name(name), identity_name(identity_name), hp_base(hp_base), hp_bonus(hp_bonus), hp_count_bonus(hp_count_bonus),
+	str(str), iq(iq), pie(pie), vit(vit), agi(agi), luk(luk), thief_skill(thief_skill), exp_base(exp_base), spells(spells)
 {
-	BOOST_ASSERT(id > 0);
 	BOOST_ASSERT(name);
 	BOOST_ASSERT(!name->empty());
+	BOOST_ASSERT(identity_name);
+	BOOST_ASSERT(!identity_name->empty());
 	BOOST_ASSERT(hp_base > 0);
+	BOOST_ASSERT(hp_bonus > 0);
 	BOOST_ASSERT(str > 0);
 	BOOST_ASSERT(iq > 0);
 	BOOST_ASSERT(pie > 0);
@@ -78,12 +77,16 @@ unsigned int Job::GetId() const {
 	return id;
 }
 
+boost::shared_ptr<const std::wstring> Job::GetIdentityName(void) const {
+	return identity_name;
+}
+
 boost::shared_ptr<const std::wstring> Job::GetName() const {
 	return name;
 }
 
 unsigned int Job::CalcMaxHP(unsigned int lv, unsigned int current_hp) const {
-	return std::max(current_hp + 1, Dice(hp_base, lv + hp_count_bonus));
+	return std::max(current_hp + 1, Dice(hp_base, lv + hp_count_bonus, hp_bonus));
 }
 
 unsigned int Job::GetStr() const {
