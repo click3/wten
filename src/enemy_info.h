@@ -9,8 +9,21 @@ class ItemInfo;
 class EnemyInfo : boost::noncopyable {
 public:
 	enum MONSTER_TYPE {
+		MONSTER_TYPE_FIGHTER,
+		MONSTER_TYPE_SAMURAI,
+		MONSTER_TYPE_PRIEST,
+		MONSTER_TYPE_MAGE,
+		MONSTER_TYPE_MERCHANT,
+		MONSTER_TYPE_THIEF,
+		MONSTER_TYPE_GIANT,
+		MONSTER_TYPE_MYTH,
+		MONSTER_TYPE_DRAGON,
 		MONSTER_TYPE_ANIMAL,
+		MONSTER_TYPE_HUMAN_BEAST,
 		MONSTER_TYPE_UNDEAD,
+		MONSTER_TYPE_SATAN,
+		MONSTER_TYPE_INSECT,
+		MONSTER_TYPE_MAGIC_ANIMAL,
 	};
 	EnemyInfo(boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
 		MONSTER_TYPE type, unsigned int lv, unsigned int hp_base, unsigned int hp_bonus, int ac,
