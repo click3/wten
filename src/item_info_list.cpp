@@ -32,14 +32,28 @@ struct equip_jobs_ : boost::spirit::qi::symbols<wchar_t, boost::shared_ptr<const
 	}
 } equip_jobs_impl;
 
-boost::shared_ptr<const ItemInfo> CreateItemInfo(boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
-		boost::shared_ptr<const std::wstring> description, unsigned int sale_price, unsigned int price,
-		ItemInfo::ITEM_TYPE item_type, unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
-		unsigned int hit, unsigned int hit_count, int ac, unsigned int broken_probability,
-		const std::vector<boost::shared_ptr<const Job> > &equip_possible)
+struct element_type_names_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_TYPE> {
+	element_type_names_() {
+		add
+			(L"NORMAL",	Action::ACTION_TYPE_NORMAL)
+			(L"FIRE",	Action::ACTION_TYPE_FIRE)
+			(L"ICE",	Action::ACTION_TYPE_ICE)
+			(L"POISON",	Action::ACTION_TYPE_POISON)
+			(L"DRAIN",	Action::ACTION_TYPE_DRAIN)
+			(L"STONE",	Action::ACTION_TYPE_STONE)
+			(L"SPELL",	Action::ACTION_TYPE_SPELL)
+			(L"SPECIAL",	Action::ACTION_TYPE_SPECIAL)
+		;
+	}
+} element_type_names_impl;
+
+boost::shared_ptr<const ItemInfo> CreateItemInfo(
+	unsigned int id, boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
+	boost::shared_ptr<const std::wstring> description, unsigned int sale_price, unsigned int price,
+	ItemInfo::ITEM_TYPE item_type, unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
+	unsigned int hit, unsigned int hit_count, int ac, unsigned int broken_probability,
+	const std::vector<boost::shared_ptr<const Job> > &equip_possible, const std::vector<boost::tuple<Action::ACTION_TYPE, unsigned int> > &element_resist)
 {
-	unsigned int id = 0;
-	std::vector<boost::tuple<Action::ACTION_TYPE, unsigned int> > element_resist;
 	std::vector<boost::tuple<EnemyInfo::MONSTER_TYPE, unsigned int> > monster_resist;
 	std::vector<boost::tuple<CharCondition::CONDITION, unsigned int> > condition_resist;
 	return boost::shared_ptr<const ItemInfo>(
@@ -68,12 +82,15 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 		item_types = quoted_item_types | item_types_impl;
 		quoted_equip_jobs = '"' >> equip_jobs_impl >> '"';
 		equip_jobs = quoted_equip_jobs | equip_jobs_impl;
-		data_line = (string >> ',' >> string >> ','
+		quoted_element_type_names = '"' >> element_type_names_impl >> '"';
+		element_type_names = quoted_element_type_names | element_type_names_impl;
+		element_types = (element_type_names >> ',' >> uint_)[qi::_val = boost::phoenix::bind(&boost::make_tuple<Action::ACTION_TYPE, unsigned int>, qi::_1, qi::_2)];
+		data_line = (uint_ >> ',' >> string >> ',' >> string >> ','
 			>> string >> ',' >> uint_ >> ',' >> uint_ >> ','
 			>> item_types >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
 			>> uint_ >> ',' >> uint_ >> ',' >> int_ >> ',' >> uint_ >>
-			*(',' >> equip_jobs) >> -eol)
-			[qi::_val = boost::phoenix::bind(&CreateItemInfo, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13, qi::_14)];
+			*(',' >> equip_jobs) >> *(',' >> element_types) >> -eol)
+			[qi::_val = boost::phoenix::bind(&CreateItemInfo, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13, qi::_14, qi::_15, qi::_16)];
 		Initialize(data_line);
 	}
 
@@ -81,6 +98,9 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 	boost::spirit::qi::rule<Iterator, ItemInfo::ITEM_TYPE()> item_types;
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const Job>()> quoted_equip_jobs;
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const Job>()> equip_jobs;
+	boost::spirit::qi::rule<Iterator, Action::ACTION_TYPE()> quoted_element_type_names;
+	boost::spirit::qi::rule<Iterator, Action::ACTION_TYPE()> element_type_names;
+	boost::spirit::qi::rule<Iterator, boost::tuple<Action::ACTION_TYPE, unsigned int>()> element_types;
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const ItemInfo>()> data_line;
 };
 #pragma warning(pop)
