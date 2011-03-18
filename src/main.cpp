@@ -7,7 +7,7 @@ namespace {
 
 boost::shared_ptr<const Job> GetRandomJob() {
 	boost::shared_ptr<JobList> list = JobList::GetCurrentInstance();
-	return list->GetList()[DxLibWrapper::GetRand(list->GetList().size())];
+	return list->GetList()[DxLibWrapper::GetRand(list->GetList().size()-1)];
 }
 
 boost::shared_ptr<CharData> CreateDummyCharData(const wchar_t *char_name) {
