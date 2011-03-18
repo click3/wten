@@ -69,6 +69,7 @@ struct SpellListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const 
 		namespace qi = boost::spirit::qi;
 		using qi::char_;
 		using qi::uint_;
+		using qi::eol;
 
 		quoted_target_types = '"' >> target_types_impl >> '"';
 		target_types = target_types_impl | quoted_target_types;
@@ -76,7 +77,7 @@ struct SpellListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const 
 		action_types = action_types_impl | quoted_action_types;
 		quoted_spell_jobs = '"' >> spell_jobs_impl >> '"';
 		spell_jobs = spell_jobs_impl | quoted_spell_jobs;
-		data_line = (uint_ >> ',' >> target_types >> ',' >> action_types >> ',' >> spell_jobs >> ',' >> uint_ >> ',' >> string >> -char_('\n'))
+		data_line = (uint_ >> ',' >> target_types >> ',' >> action_types >> ',' >> spell_jobs >> ',' >> uint_ >> ',' >> string >> -eol)
 			[qi::_val = boost::phoenix::bind(&CreateSpell, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6)];
 		Initialize(data_line);
 	}

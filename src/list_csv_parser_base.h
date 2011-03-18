@@ -16,12 +16,13 @@ struct ListCSVParserBase : boost::spirit::qi::grammar<Iterator, std::vector<resu
 		namespace qi = boost::spirit::qi;
 		using boost::spirit::standard_wide::char_;
 		using qi::lexeme;
+		using qi::eol;
 
 		quoted_string = lexeme['"' >> +(char_ - '"') >> '"'][qi::_val = boost::phoenix::bind(&WStrV2Ptr, qi::_1)];
 		unquoted_string = (+(char_ - ',' - '"'))[qi::_val = boost::phoenix::bind(&WStrV2Ptr, qi::_1)];
 		string = quoted_string | unquoted_string;
-		comment_line = "//" >> *(char_ - '\n') >> -char_('\n');
-		empty_line = '\n';
+		comment_line = "//" >> *(char_ - eol) >> -eol;
+		empty_line = eol;
 		this->data_line = data_line;
 		line = *(comment_line | empty_line) >> this->data_line;
 		root = +(line) >> *(comment_line | empty_line);

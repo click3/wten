@@ -9,14 +9,13 @@ namespace {
 
 boost::shared_ptr<JobList> instance;
 
-boost::shared_ptr<const Job> CreateJob(unsigned int id, boost::shared_ptr<const std::wstring> name,
-		unsigned int hp_base, unsigned int hp_count_bonus,
-		unsigned int str, unsigned int iq, unsigned int pie,
-		unsigned int vit, unsigned int agi, unsigned int luk, unsigned int thief_skill,
-		unsigned int exp_base,
-		const std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >& spells)
+boost::shared_ptr<const Job> CreateJob(
+	unsigned int id, boost::shared_ptr<const std::wstring> name, boost::shared_ptr<const std::wstring> identity_name,
+	unsigned int hp_base, unsigned int hp_bonus, unsigned int hp_count_bonus, unsigned int str, unsigned int iq, unsigned int pie,
+	unsigned int vit, unsigned int agi, unsigned int luk, unsigned int thief_skill, unsigned int exp_base,
+	const std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >& spells)
 {
-	return boost::shared_ptr<const Job>(new Job(id, name, hp_base, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, exp_base, spells));
+	return boost::shared_ptr<const Job>(new Job(id, name, identity_name, hp_base, hp_bonus, hp_count_bonus, str, iq, pie, vit, agi, luk, thief_skill, exp_base, spells));
 }
 
 #pragma pack(push, 4)
@@ -30,14 +29,13 @@ struct JobListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const Jo
 		using qi::char_;
 		using qi::uint_;
 		using qi::int_;
+		using qi::eol;
 
-		data_line = (uint_ >> ',' >> string >> ','
-			>> uint_ >> ',' >> uint_ >> ','
-			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
-			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
-			>> uint_ >> -char_('\n'))
+		data_line = (uint_ >> ',' >> string >> ',' >> string >> ','
+			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
+			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> -eol)
 			[qi::_val = boost::phoenix::bind(&CreateJob, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11,
-				qi::_12, std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >())];
+				qi::_12, qi::_13, qi::_14, std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >())];
 		Initialize(data_line);
 	}
 
@@ -69,8 +67,11 @@ std::vector<boost::shared_ptr<const Job> > ReadJob(const std::wstring &path) {
 JobList::JobList(const std::vector<boost::shared_ptr<const Job> >& list) :
 	list(list)
 {
+	unsigned int id = 0;
 	BOOST_FOREACH(boost::shared_ptr<const Job> job, this->list) {
 		BOOST_ASSERT(job);
+		BOOST_ASSERT(job->GetId() >= id);
+		id = job->GetId()+1;
 	}
 }
 
