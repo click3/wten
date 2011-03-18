@@ -41,9 +41,9 @@
 #include "DxLib.h"
 
 //phoenixÇ≈àµÇ¶ÇÈç≈ëÂà¯êî
-#define BOOST_RESULT_OF_NUM_ARGS 18
-#define FUSION_MAX_VECTOR_SIZE 18
-#define PHOENIX_LIMIT 18
+#define BOOST_RESULT_OF_NUM_ARGS 19
+#define FUSION_MAX_VECTOR_SIZE 19
+#define PHOENIX_LIMIT 19
 
 #include "boost/config/warning_disable.hpp"
 #include "boost/utility.hpp"
