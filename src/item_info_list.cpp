@@ -47,21 +47,60 @@ struct element_type_names_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_
 	}
 } element_type_names_impl;
 
+struct monster_type_names_ : boost::spirit::qi::symbols<wchar_t, EnemyInfo::MONSTER_TYPE> {
+	monster_type_names_() {
+		add
+			(L"FIGHTER",		EnemyInfo::MONSTER_TYPE_FIGHTER)
+			(L"SAMURAI",		EnemyInfo::MONSTER_TYPE_SAMURAI)
+			(L"PRIEST",		EnemyInfo::MONSTER_TYPE_PRIEST)
+			(L"MAGE",		EnemyInfo::MONSTER_TYPE_MAGE)
+			(L"MERCHANT",		EnemyInfo::MONSTER_TYPE_MERCHANT)
+			(L"THIEF",		EnemyInfo::MONSTER_TYPE_THIEF)
+			(L"GIANT",		EnemyInfo::MONSTER_TYPE_GIANT)
+			(L"MYTH",		EnemyInfo::MONSTER_TYPE_MYTH)
+			(L"DRAGON",		EnemyInfo::MONSTER_TYPE_DRAGON)
+			(L"ANIMAL",		EnemyInfo::MONSTER_TYPE_ANIMAL)
+			(L"HUMAN_BEAST",	EnemyInfo::MONSTER_TYPE_HUMAN_BEAST)
+			(L"UNDEAD",		EnemyInfo::MONSTER_TYPE_UNDEAD)
+			(L"SATAN",		EnemyInfo::MONSTER_TYPE_SATAN)
+			(L"INSECT",		EnemyInfo::MONSTER_TYPE_INSECT)
+			(L"MAGIC_ANIMAL",	EnemyInfo::MONSTER_TYPE_MAGIC_ANIMAL)
+		;
+	}
+} monster_type_names_impl;
+
+struct condition_type_names_ : boost::spirit::qi::symbols<wchar_t, CharCondition::CONDITION> {
+	condition_type_names_() {
+		add
+			(L"ST_POISON",	CharCondition::CONDITION_POISON)
+			(L"ST_SILENCE",	CharCondition::CONDITION_SILENCE)
+			(L"ST_SLEEP",		CharCondition::CONDITION_SLEEP)
+			(L"ST_FEAR",		CharCondition::CONDITION_FEAR)
+			(L"ST_PARALYZED",	CharCondition::CONDITION_PARALYZED)
+			(L"ST_STONED",	CharCondition::CONDITION_STONED)
+			(L"ST_DEAD",		CharCondition::CONDITION_DEAD)
+			(L"ST_ASHED",		CharCondition::CONDITION_ASHED)
+			(L"ST_LOST",		CharCondition::CONDITION_LOST)
+		;
+	}
+} condition_type_names_impl;
+
 boost::shared_ptr<const ItemInfo> CreateItemInfo(
 	unsigned int id, boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
 	boost::shared_ptr<const std::wstring> description, unsigned int sale_price, unsigned int price,
 	ItemInfo::ITEM_TYPE item_type, unsigned int atk_base, unsigned int atk_count, unsigned int atk_bonus,
 	unsigned int hit, unsigned int hit_count, int ac, unsigned int broken_probability,
-	const std::vector<boost::shared_ptr<const Job> > &equip_possible, const std::vector<boost::tuple<Action::ACTION_TYPE, unsigned int> > &element_resist)
+	const std::vector<boost::shared_ptr<const Job> > &equip_possible, const std::vector<boost::tuple<Action::ACTION_TYPE, unsigned int> > &element_resist,
+	const std::vector<boost::tuple<EnemyInfo::MONSTER_TYPE, unsigned int> > &monster_resist, const std::vector<boost::tuple<CharCondition::CONDITION, unsigned int> > &condition_resist)
 {
-	std::vector<boost::tuple<EnemyInfo::MONSTER_TYPE, unsigned int> > monster_resist;
-	std::vector<boost::tuple<CharCondition::CONDITION, unsigned int> > condition_resist;
 	return boost::shared_ptr<const ItemInfo>(
 		new ItemInfo(
 			id, uncertainty_name, name,
 			description, sale_price, price,
 			item_type, atk_base, atk_count, atk_bonus,
-			hit, hit_count, ac, broken_probability, equip_possible, element_resist, monster_resist, condition_resist)
+			hit, hit_count, ac, broken_probability,
+			equip_possible, element_resist,
+			monster_resist, condition_resist)
 	);
 }
 
@@ -80,17 +119,28 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 
 		quoted_item_types = '"' >> item_types_impl >> '"';
 		item_types = quoted_item_types | item_types_impl;
+
 		quoted_equip_jobs = '"' >> equip_jobs_impl >> '"';
 		equip_jobs = quoted_equip_jobs | equip_jobs_impl;
+
 		quoted_element_type_names = '"' >> element_type_names_impl >> '"';
 		element_type_names = quoted_element_type_names | element_type_names_impl;
-		element_types = (element_type_names >> ',' >> uint_)[qi::_val = boost::phoenix::bind(&boost::make_tuple<Action::ACTION_TYPE, unsigned int>, qi::_1, qi::_2)];
+		element_types = (element_type_names >> ',' >> uint_);
+
+		quoted_element_type_names = '"' >> monster_type_names_impl >> '"';
+		monster_type_names = quoted_monster_type_names | monster_type_names_impl;
+		monster_types = (monster_type_names >> ',' >> uint_);
+
+		quoted_condition_type_names = '"' >> condition_type_names_impl >> '"';
+		condition_type_names = quoted_condition_type_names | condition_type_names_impl;
+		condition_types = (condition_type_names >> ',' >> uint_);
+
 		data_line = (uint_ >> ',' >> string >> ',' >> string >> ','
 			>> string >> ',' >> uint_ >> ',' >> uint_ >> ','
 			>> item_types >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
 			>> uint_ >> ',' >> uint_ >> ',' >> int_ >> ',' >> uint_ >>
-			*(',' >> equip_jobs) >> *(',' >> element_types) >> -eol)
-			[qi::_val = boost::phoenix::bind(&CreateItemInfo, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13, qi::_14, qi::_15, qi::_16)];
+			*(',' >> equip_jobs) >> *(',' >> element_types) >> *(',' >> monster_types) >> *(',' >> condition_types) >> -eol)
+			[qi::_val = boost::phoenix::bind(&CreateItemInfo, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13, qi::_14, qi::_15, qi::_16, qi::_17, qi::_18)];
 		Initialize(data_line);
 	}
 
@@ -101,6 +151,12 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 	boost::spirit::qi::rule<Iterator, Action::ACTION_TYPE()> quoted_element_type_names;
 	boost::spirit::qi::rule<Iterator, Action::ACTION_TYPE()> element_type_names;
 	boost::spirit::qi::rule<Iterator, boost::tuple<Action::ACTION_TYPE, unsigned int>()> element_types;
+	boost::spirit::qi::rule<Iterator, EnemyInfo::MONSTER_TYPE()> quoted_monster_type_names;
+	boost::spirit::qi::rule<Iterator, EnemyInfo::MONSTER_TYPE()> monster_type_names;
+	boost::spirit::qi::rule<Iterator, boost::tuple<EnemyInfo::MONSTER_TYPE, unsigned int>()> monster_types;
+	boost::spirit::qi::rule<Iterator, CharCondition::CONDITION()> quoted_condition_type_names;
+	boost::spirit::qi::rule<Iterator, CharCondition::CONDITION()> condition_type_names;
+	boost::spirit::qi::rule<Iterator, boost::tuple<CharCondition::CONDITION, unsigned int>()> condition_types;
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const ItemInfo>()> data_line;
 };
 #pragma warning(pop)
