@@ -45,6 +45,19 @@ ItemInfo::ItemInfo(unsigned int id, boost::shared_ptr<const std::wstring> uncert
 	BOOST_ASSERT(atk_count > 0);
 	BOOST_ASSERT(atk_bonus > 0);
 	BOOST_ASSERT(broken_probability <= 256);
+	switch(item_type) {
+		case ITEM_TYPE_WEAPON:
+		case ITEM_TYPE_SHIELD:
+		case ITEM_TYPE_ARMOR:
+		case ITEM_TYPE_HELMET:
+		case ITEM_TYPE_GAUNTLET:
+		case ITEM_TYPE_ADORNMENT:
+			BOOST_ASSERT(equip_possible.size() > 0);
+			break;
+		case ITEM_TYPE_TOOL:
+			BOOST_ASSERT(equip_possible.size() == 0);
+			break;
+	}
 }
 
 ItemInfo::~ItemInfo() {
