@@ -15,6 +15,9 @@ public:
 	~SelectWindow();
 	bool IsSelectClose(void) const;
 	void SetSelectClose(bool flag);
+	boost::optional<boost::shared_ptr<Error> > SetCancelSelectionDataIndex(boost::optional<unsigned int> cancel_data_index);
+	boost::optional<boost::shared_ptr<Error> > SetCancelSelectionDataIndex(boost::shared_ptr<void> data);
+	boost::optional<boost::shared_ptr<Error> > SetCancelSelectionDataIndex(boost::shared_ptr<const std::wstring> text);
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	boost::optional<boost::shared_ptr<Error> > Resize();
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);
@@ -28,6 +31,7 @@ private:
 	const boost::shared_ptr<uis::UISelector> selector;
 	const boost::shared_ptr<uis::UIBox> frame;
 	const std::vector<boost::shared_ptr<void> > data_list;
+	boost::optional<unsigned int> cancel_data_index;
 };
 #pragma warning(pop)
 #pragma pack(pop)

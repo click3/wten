@@ -86,21 +86,24 @@ boost::optional<boost::shared_ptr<Error> > TempleScene::StepInitialize(void) {
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
-			OPT_ERROR(AddSelectorWindow(ui_list, 1, 50, 100, 540, 180));
+			OPT_ERROR(AddSelectorWindow(ui_list, 1, ui_list.size()-1, 50, 100, 540, 180));
 			break;
 		}
 		case MEDICAL_SELECT_STEP: {
 			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
 			BOOST_FOREACH(boost::shared_ptr<CharData> char_data, pt->GetCharacters()) {
 				if(!char_data->GetCondition()->IsOk()) {
-					boost::shared_ptr<const std::wstring> text(char_data->GetStatus()->GetName());
-					boost::shared_ptr<void> data(char_data);
+					const boost::shared_ptr<const std::wstring> text(char_data->GetStatus()->GetName());
+					const boost::shared_ptr<void> data(char_data);
 					ui_list.push_back(make_tuple(text, data));
 				}
 			}
 			if(ui_list.size() > 0) {
 				next_step = MEDICAL_STEP;
-				OPT_ERROR(AddSelectorWindow(ui_list, 1, 50, 100, 540, 180));
+				const boost::shared_ptr<const std::wstring> text(new std::wstring(L"やめる"));
+				const boost::shared_ptr<void> data;
+				ui_list.push_back(make_tuple(text, data));
+				OPT_ERROR(AddSelectorWindow(ui_list, 1, ui_list.size() - 1, 50, 100, 540, 180));
 			} else {
 				next_step = NORMAL_STEP;
 				const wchar_t *text_char = L"治療が必要なキャラクターは居ません。";
@@ -146,6 +149,9 @@ boost::optional<boost::shared_ptr<Error> > TempleScene::OnEvent(boost::shared_pt
 			if(event->GetEventType() == EVENT_TYPE_ON_SELECT) {
 				boost::shared_ptr<events::OnSelectEvent> on_select_event = boost::static_pointer_cast<events::OnSelectEvent>(event);
 				medical_char = boost::static_pointer_cast<CharData>(on_select_event->GetUserData());
+				if(!medical_char) {
+					next_step = NORMAL_STEP;
+				}
 				SendNextStepEvent();
 			}
 			break;

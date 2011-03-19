@@ -98,8 +98,9 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::AddCharStatusUI(boost::sha
 	return base_window->AddCharStatusUI(pt_data, char_index, move_mode, x, y, width, height);
 }
 
-boost::optional<boost::shared_ptr<Error> > SceneBase::AddSelectorWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& select_list, unsigned int line_count, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+boost::optional<boost::shared_ptr<Error> > SceneBase::AddSelectorWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& select_list, unsigned int line_count, boost::optional<unsigned int> cancel_index, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 	boost::shared_ptr<windows::SelectWindow> window(new windows::SelectWindow(select_list, line_count, default_frame_filename));
+	OPT_ERROR(window->SetCancelSelectionDataIndex(cancel_index));
 	return AddWindow(window, x, y, width, height);
 }
 

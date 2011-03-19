@@ -39,7 +39,8 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	selector(new uis::UISelector(CreateSelectList(input), line_count)),
 	data_list(CreateDataList(input)),
 	frame(new uis::UIBox(frame_filename)),
-	select_close(true)
+	select_close(true),
+	cancel_data_index(boost::none)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
@@ -49,7 +50,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 }
 
 SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<Graph> frame) :
-	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true)
+	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true), cancel_data_index(boost::none)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
@@ -57,7 +58,7 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 }
 
 SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count) :
-	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), select_close(true)
+	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), select_close(true), cancel_data_index(boost::none)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
@@ -73,6 +74,36 @@ bool SelectWindow::IsSelectClose(void) const {
 
 void SelectWindow::SetSelectClose(bool flag) {
 	select_close = flag;
+}
+
+boost::optional<boost::shared_ptr<Error> > SelectWindow::SetCancelSelectionDataIndex(boost::optional<unsigned int> cancel_data_index) {
+	if(cancel_data_index && cancel_data_index.get() >= data_list.size()) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	this->cancel_data_index = cancel_data_index;
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > SelectWindow::SetCancelSelectionDataIndex(boost::shared_ptr<void> data) {
+	const std::vector<boost::shared_ptr<void> >::const_iterator it = std::find(data_list.begin(), data_list.end(), data);
+	if(it == data_list.end()) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	const int index = std::distance(data_list.begin(), it);
+	if(index < 0) {
+		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	return SetCancelSelectionDataIndex(static_cast<unsigned int>(index));
+}
+
+boost::optional<boost::shared_ptr<Error> > SelectWindow::SetCancelSelectionDataIndex(boost::shared_ptr<const std::wstring> text) {
+	unsigned int current_index;
+	OPT_UINT(current_index, selector->GetIndex());
+	OPT_ERROR(selector->Select(text));
+	unsigned int cancel_data_index;
+	OPT_UINT(cancel_data_index, selector->GetIndex());
+	OPT_ERROR(selector->Select(current_index));
+	return SetCancelSelectionDataIndex(cancel_data_index);
 }
 
 boost::optional<boost::shared_ptr<Error> > SelectWindow::WindowInitialize(void) {
@@ -134,6 +165,14 @@ opt_error<boost::optional<boost::shared_ptr<Event> > >::type SelectWindow::Notif
 				case events::KeyEvent::KEY_A:
 					OPT_ERROR(OnSelect());
 					return boost::none;
+				case events::KeyEvent::KEY_B:
+					if(cancel_data_index) {
+						OPT_ERROR(selector->Select(cancel_data_index.get()));
+						OPT_ERROR(OnSelect());
+						return boost::none;
+					}
+					//cancel_data_indexÇ™ñ¢ê›íËÇ»èÍçáÇÕå„ë±ÇÃwindowÇ…ÉCÉxÉìÉgÇó¨Ç∑
+					break;
 				default:
 					break;
 			}

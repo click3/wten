@@ -53,7 +53,7 @@ boost::optional<boost::shared_ptr<Error> > SceneSelectorScene::SceneInitialize(v
 	OPT_ERROR(AddWindow(script_window, 0, 0, 0, 0));
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
 	OPT_ERROR(AddTextUI(title, uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
-	OPT_ERROR(AddSelectorWindow(CreateSelectList(scene_list), 1, 50, 100, 540, 150));
+	OPT_ERROR(AddSelectorWindow(CreateSelectList(scene_list), 1, boost::none, 50, 100, 540, 150));
 	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
 	return boost::none;
 }

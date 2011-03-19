@@ -94,7 +94,7 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
 			}
-			OPT_ERROR(AddSelectorWindow(ui_list, 1, 50, 100, 540, 180));
+			OPT_ERROR(AddSelectorWindow(ui_list, 1, ui_list.size()-1, 50, 100, 540, 180));
 			break;
 		}
 		case NEW_CHARACTER_STEP:
