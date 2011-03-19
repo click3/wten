@@ -15,7 +15,6 @@ public:
 private:
 	boost::optional<boost::shared_ptr<Error> > OnOK(void);
 
-	int back_buffer;
 	unsigned int frame_counter;
 };
 #pragma warning(pop)
