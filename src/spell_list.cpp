@@ -9,49 +9,6 @@ namespace {
 
 boost::shared_ptr<SpellList> instance;
 
-struct target_types_ : boost::spirit::qi::symbols<wchar_t, Action::TARGET_TYPE> {
-	target_types_() {
-		add
-			(L"THIS",			Action::TARGET_TYPE_THIS)
-			(L"FRIEND_UNIT",		Action::TARGET_TYPE_FRIEND_UNIT)
-			(L"FRIEND_FRONT",		Action::TARGET_TYPE_FRIEND_FRONT)
-			(L"FRIEND_BACK",		Action::TARGET_TYPE_FRIEND_BACK)
-			(L"FRIEND_ALL",		Action::TARGET_TYPE_FRIEND_ALL)
-			(L"FRIEND_NO_SELECT",	Action::TARGET_TYPE_FRIEND_NO_SELECT)
-			(L"ENEMY_UNIT",		Action::TARGET_TYPE_ENEMY_UNIT)
-			(L"ENEMY_AREA",		Action::TARGET_TYPE_ENEMY_AREA)
-			(L"ENEMY_FRONT",		Action::TARGET_TYPE_ENEMY_FRONT)
-			(L"ENEMY_BACK",		Action::TARGET_TYPE_ENEMY_BACK)
-			(L"ENEMY_ALL",		Action::TARGET_TYPE_ENEMY_ALL)
-			(L"ENEMY_NO_SELECT",		Action::TARGET_TYPE_ENEMY_NO_SELECT)
-		;
-	}
-} target_types_impl;
-
-struct action_types_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_TYPE> {
-	action_types_() {
-		add
-			(L"NORMAL",	Action::ACTION_TYPE_NORMAL)
-			(L"FIRE",	Action::ACTION_TYPE_FIRE)
-			(L"ICE",	Action::ACTION_TYPE_ICE)
-			(L"POISON",	Action::ACTION_TYPE_POISON)
-			(L"DRAIN",	Action::ACTION_TYPE_DRAIN)
-			(L"STONE",	Action::ACTION_TYPE_STONE)
-			(L"SPELL",	Action::ACTION_TYPE_SPELL)
-			(L"SPECIAL",	Action::ACTION_TYPE_SPECIAL)
-		;
-	}
-} action_types_impl;
-
-struct spell_jobs_ : boost::spirit::qi::symbols<wchar_t, actions::SpellBase::SPELL_JOB> {
-	spell_jobs_() {
-		add
-			(L"MAGE",	actions::SpellBase::SPELL_JOB_MAGE)
-			(L"PRIEST",	actions::SpellBase::SPELL_JOB_PRIEST)
-		;
-	}
-} spell_jobs_impl;
-
 boost::shared_ptr<const actions::SpellBase> CreateSpell(
 	unsigned int id, Action::TARGET_TYPE target_type, Action::ACTION_TYPE action_type, actions::SpellBase::SPELL_JOB use_job, unsigned int lv,
 	boost::shared_ptr<const std::wstring> name, boost::shared_ptr<const std::wstring> identity_name, boost::shared_ptr<const std::wstring> description)
@@ -82,6 +39,49 @@ struct SpellListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const 
 			[qi::_val = boost::phoenix::bind(&CreateSpell, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8)];
 		Initialize(data_line);
 	}
+
+	struct target_types_ : boost::spirit::qi::symbols<wchar_t, Action::TARGET_TYPE> {
+		target_types_() {
+			add
+				(L"THIS",			Action::TARGET_TYPE_THIS)
+				(L"FRIEND_UNIT",		Action::TARGET_TYPE_FRIEND_UNIT)
+				(L"FRIEND_FRONT",		Action::TARGET_TYPE_FRIEND_FRONT)
+				(L"FRIEND_BACK",		Action::TARGET_TYPE_FRIEND_BACK)
+				(L"FRIEND_ALL",		Action::TARGET_TYPE_FRIEND_ALL)
+				(L"FRIEND_NO_SELECT",	Action::TARGET_TYPE_FRIEND_NO_SELECT)
+				(L"ENEMY_UNIT",		Action::TARGET_TYPE_ENEMY_UNIT)
+				(L"ENEMY_AREA",		Action::TARGET_TYPE_ENEMY_AREA)
+				(L"ENEMY_FRONT",		Action::TARGET_TYPE_ENEMY_FRONT)
+				(L"ENEMY_BACK",		Action::TARGET_TYPE_ENEMY_BACK)
+				(L"ENEMY_ALL",		Action::TARGET_TYPE_ENEMY_ALL)
+				(L"ENEMY_NO_SELECT",		Action::TARGET_TYPE_ENEMY_NO_SELECT)
+			;
+		}
+	} target_types_impl;
+
+	struct action_types_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_TYPE> {
+		action_types_() {
+			add
+				(L"NORMAL",	Action::ACTION_TYPE_NORMAL)
+				(L"FIRE",	Action::ACTION_TYPE_FIRE)
+				(L"ICE",	Action::ACTION_TYPE_ICE)
+				(L"POISON",	Action::ACTION_TYPE_POISON)
+				(L"DRAIN",	Action::ACTION_TYPE_DRAIN)
+				(L"STONE",	Action::ACTION_TYPE_STONE)
+				(L"SPELL",	Action::ACTION_TYPE_SPELL)
+				(L"SPECIAL",	Action::ACTION_TYPE_SPECIAL)
+			;
+		}
+	} action_types_impl;
+
+	struct spell_jobs_ : boost::spirit::qi::symbols<wchar_t, actions::SpellBase::SPELL_JOB> {
+		spell_jobs_() {
+			add
+				(L"MAGE",	actions::SpellBase::SPELL_JOB_MAGE)
+				(L"PRIEST",	actions::SpellBase::SPELL_JOB_PRIEST)
+			;
+		}
+	} spell_jobs_impl;
 
 	boost::spirit::qi::rule<Iterator, Action::TARGET_TYPE()> quoted_target_types;
 	boost::spirit::qi::rule<Iterator, Action::TARGET_TYPE()> target_types;

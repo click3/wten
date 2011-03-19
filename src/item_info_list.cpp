@@ -9,73 +9,6 @@ namespace {
 
 boost::shared_ptr<ItemInfoList> instance;
 
-struct item_types_ : boost::spirit::qi::symbols<wchar_t, ItemInfo::ITEM_TYPE> {
-	item_types_() {
-		add
-			(L"WEAPON",		ItemInfo::ITEM_TYPE_WEAPON)
-			(L"SHIELD",		ItemInfo::ITEM_TYPE_SHIELD)
-			(L"ARMOR",		ItemInfo::ITEM_TYPE_ARMOR)
-			(L"HELMET",		ItemInfo::ITEM_TYPE_HELMET)
-			(L"GAUNTLET",		ItemInfo::ITEM_TYPE_GAUNTLET)
-			(L"ADORNMENT",	ItemInfo::ITEM_TYPE_ADORNMENT)
-			(L"TOOL",		ItemInfo::ITEM_TYPE_TOOL)
-		;
-	}
-} item_types_impl;
-
-struct element_type_names_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_TYPE> {
-	element_type_names_() {
-		add
-			(L"NORMAL",	Action::ACTION_TYPE_NORMAL)
-			(L"FIRE",	Action::ACTION_TYPE_FIRE)
-			(L"ICE",	Action::ACTION_TYPE_ICE)
-			(L"POISON",	Action::ACTION_TYPE_POISON)
-			(L"DRAIN",	Action::ACTION_TYPE_DRAIN)
-			(L"STONE",	Action::ACTION_TYPE_STONE)
-			(L"SPELL",	Action::ACTION_TYPE_SPELL)
-			(L"SPECIAL",	Action::ACTION_TYPE_SPECIAL)
-		;
-	}
-} element_type_names_impl;
-
-struct monster_type_names_ : boost::spirit::qi::symbols<wchar_t, EnemyInfo::MONSTER_TYPE> {
-	monster_type_names_() {
-		add
-			(L"FIGHTER",		EnemyInfo::MONSTER_TYPE_FIGHTER)
-			(L"SAMURAI",		EnemyInfo::MONSTER_TYPE_SAMURAI)
-			(L"PRIEST",		EnemyInfo::MONSTER_TYPE_PRIEST)
-			(L"MAGE",		EnemyInfo::MONSTER_TYPE_MAGE)
-			(L"MERCHANT",		EnemyInfo::MONSTER_TYPE_MERCHANT)
-			(L"THIEF",		EnemyInfo::MONSTER_TYPE_THIEF)
-			(L"GIANT",		EnemyInfo::MONSTER_TYPE_GIANT)
-			(L"MYTH",		EnemyInfo::MONSTER_TYPE_MYTH)
-			(L"DRAGON",		EnemyInfo::MONSTER_TYPE_DRAGON)
-			(L"ANIMAL",		EnemyInfo::MONSTER_TYPE_ANIMAL)
-			(L"HUMAN_BEAST",	EnemyInfo::MONSTER_TYPE_HUMAN_BEAST)
-			(L"UNDEAD",		EnemyInfo::MONSTER_TYPE_UNDEAD)
-			(L"SATAN",		EnemyInfo::MONSTER_TYPE_SATAN)
-			(L"INSECT",		EnemyInfo::MONSTER_TYPE_INSECT)
-			(L"MAGIC_ANIMAL",	EnemyInfo::MONSTER_TYPE_MAGIC_ANIMAL)
-		;
-	}
-} monster_type_names_impl;
-
-struct condition_type_names_ : boost::spirit::qi::symbols<wchar_t, CharCondition::CONDITION> {
-	condition_type_names_() {
-		add
-			(L"ST_POISON",	CharCondition::CONDITION_POISON)
-			(L"ST_SILENCE",	CharCondition::CONDITION_SILENCE)
-			(L"ST_SLEEP",		CharCondition::CONDITION_SLEEP)
-			(L"ST_FEAR",		CharCondition::CONDITION_FEAR)
-			(L"ST_PARALYZED",	CharCondition::CONDITION_PARALYZED)
-			(L"ST_STONED",	CharCondition::CONDITION_STONED)
-			(L"ST_DEAD",		CharCondition::CONDITION_DEAD)
-			(L"ST_ASHED",		CharCondition::CONDITION_ASHED)
-			(L"ST_LOST",		CharCondition::CONDITION_LOST)
-		;
-	}
-} condition_type_names_impl;
-
 boost::shared_ptr<const ItemInfo> CreateItemInfo(
 	unsigned int id, boost::shared_ptr<const std::wstring> uncertainty_name, boost::shared_ptr<const std::wstring> name,
 	boost::shared_ptr<const std::wstring> description, unsigned int sale_price, unsigned int price,
@@ -134,6 +67,73 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 			[qi::_val = boost::phoenix::bind(&CreateItemInfo, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13, qi::_14, qi::_15, qi::_16, qi::_17, qi::_18)];
 		Initialize(data_line);
 	}
+
+	struct item_types_ : boost::spirit::qi::symbols<wchar_t, ItemInfo::ITEM_TYPE> {
+		item_types_() {
+			add
+				(L"WEAPON",		ItemInfo::ITEM_TYPE_WEAPON)
+				(L"SHIELD",		ItemInfo::ITEM_TYPE_SHIELD)
+				(L"ARMOR",		ItemInfo::ITEM_TYPE_ARMOR)
+				(L"HELMET",		ItemInfo::ITEM_TYPE_HELMET)
+				(L"GAUNTLET",		ItemInfo::ITEM_TYPE_GAUNTLET)
+				(L"ADORNMENT",	ItemInfo::ITEM_TYPE_ADORNMENT)
+				(L"TOOL",		ItemInfo::ITEM_TYPE_TOOL)
+			;
+		}
+	} item_types_impl;
+
+	struct element_type_names_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_TYPE> {
+		element_type_names_() {
+			add
+				(L"NORMAL",	Action::ACTION_TYPE_NORMAL)
+				(L"FIRE",	Action::ACTION_TYPE_FIRE)
+				(L"ICE",	Action::ACTION_TYPE_ICE)
+				(L"POISON",	Action::ACTION_TYPE_POISON)
+				(L"DRAIN",	Action::ACTION_TYPE_DRAIN)
+				(L"STONE",	Action::ACTION_TYPE_STONE)
+				(L"SPELL",	Action::ACTION_TYPE_SPELL)
+				(L"SPECIAL",	Action::ACTION_TYPE_SPECIAL)
+			;
+		}
+	} element_type_names_impl;
+
+	struct monster_type_names_ : boost::spirit::qi::symbols<wchar_t, EnemyInfo::MONSTER_TYPE> {
+		monster_type_names_() {
+			add
+				(L"FIGHTER",		EnemyInfo::MONSTER_TYPE_FIGHTER)
+				(L"SAMURAI",		EnemyInfo::MONSTER_TYPE_SAMURAI)
+				(L"PRIEST",		EnemyInfo::MONSTER_TYPE_PRIEST)
+				(L"MAGE",		EnemyInfo::MONSTER_TYPE_MAGE)
+				(L"MERCHANT",		EnemyInfo::MONSTER_TYPE_MERCHANT)
+				(L"THIEF",		EnemyInfo::MONSTER_TYPE_THIEF)
+				(L"GIANT",		EnemyInfo::MONSTER_TYPE_GIANT)
+				(L"MYTH",		EnemyInfo::MONSTER_TYPE_MYTH)
+				(L"DRAGON",		EnemyInfo::MONSTER_TYPE_DRAGON)
+				(L"ANIMAL",		EnemyInfo::MONSTER_TYPE_ANIMAL)
+				(L"HUMAN_BEAST",	EnemyInfo::MONSTER_TYPE_HUMAN_BEAST)
+				(L"UNDEAD",		EnemyInfo::MONSTER_TYPE_UNDEAD)
+				(L"SATAN",		EnemyInfo::MONSTER_TYPE_SATAN)
+				(L"INSECT",		EnemyInfo::MONSTER_TYPE_INSECT)
+				(L"MAGIC_ANIMAL",	EnemyInfo::MONSTER_TYPE_MAGIC_ANIMAL)
+			;
+		}
+	} monster_type_names_impl;
+
+	struct condition_type_names_ : boost::spirit::qi::symbols<wchar_t, CharCondition::CONDITION> {
+		condition_type_names_() {
+			add
+				(L"ST_POISON",	CharCondition::CONDITION_POISON)
+				(L"ST_SILENCE",	CharCondition::CONDITION_SILENCE)
+				(L"ST_SLEEP",		CharCondition::CONDITION_SLEEP)
+				(L"ST_FEAR",		CharCondition::CONDITION_FEAR)
+				(L"ST_PARALYZED",	CharCondition::CONDITION_PARALYZED)
+				(L"ST_STONED",	CharCondition::CONDITION_STONED)
+				(L"ST_DEAD",		CharCondition::CONDITION_DEAD)
+				(L"ST_ASHED",		CharCondition::CONDITION_ASHED)
+				(L"ST_LOST",		CharCondition::CONDITION_LOST)
+			;
+		}
+	} condition_type_names_impl;
 
 	struct equip_jobs_ : boost::spirit::qi::symbols<wchar_t, boost::shared_ptr<const Job> > {
 		equip_jobs_() {
