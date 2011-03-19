@@ -141,6 +141,7 @@
 #include "uis/ui_selector.h"
 #include "uis/ui_string_box.h"
 #include "uis/ui_queue.h"
+#include "uis/ui_pager.h"
 #include "uis/ui_pt_status.h"
 #include "uis/ui_input_string.h"
 #include "uis/ui_input_dlg.h"
