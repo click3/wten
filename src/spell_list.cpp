@@ -53,10 +53,10 @@ struct spell_jobs_ : boost::spirit::qi::symbols<wchar_t, actions::SpellBase::SPE
 } spell_jobs_impl;
 
 boost::shared_ptr<const actions::SpellBase> CreateSpell(
-	unsigned int id, Action::TARGET_TYPE target_type, Action::ACTION_TYPE action_type,
-	actions::SpellBase::SPELL_JOB use_job, unsigned int lv, boost::shared_ptr<const std::wstring> description)
+	unsigned int id, Action::TARGET_TYPE target_type, Action::ACTION_TYPE action_type, actions::SpellBase::SPELL_JOB use_job, unsigned int lv,
+	const boost::shared_ptr<const std::wstring> &name, const boost::shared_ptr<const std::wstring> &identity_name, boost::shared_ptr<const std::wstring> description)
 {
-	return boost::shared_ptr<const actions::SpellBase>(new actions::DummySpell(id, target_type, action_type, use_job, lv, description));
+	return boost::shared_ptr<const actions::SpellBase>(new actions::DummySpell(id, target_type, action_type, use_job, lv, name, identity_name, description));
 }
 
 #pragma pack(push, 4)
@@ -77,8 +77,10 @@ struct SpellListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const 
 		action_types = action_types_impl | quoted_action_types;
 		quoted_spell_jobs = '"' >> spell_jobs_impl >> '"';
 		spell_jobs = spell_jobs_impl | quoted_spell_jobs;
-		data_line = (uint_ >> ',' >> target_types >> ',' >> action_types >> ',' >> spell_jobs >> ',' >> uint_ >> ',' >> string >> -eol)
-			[qi::_val = boost::phoenix::bind(&CreateSpell, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6)];
+		data_line = (
+			uint_ >> ',' >> target_types >> ',' >> action_types >> ',' >> spell_jobs >> ',' >> uint_ >> ',' >>
+			string >> ',' >> string >> ',' >> string >> -eol)
+			[qi::_val = boost::phoenix::bind(&CreateSpell, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8)];
 		Initialize(data_line);
 	}
 
