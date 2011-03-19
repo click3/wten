@@ -26,19 +26,33 @@ template <typename Iterator>
 struct JobListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const Job> > {
 	JobListCSVParser() {
 		namespace qi = boost::spirit::qi;
-		using qi::char_;
 		using qi::uint_;
 		using qi::int_;
 		using qi::eol;
 
+		quoted_spell_names = '"' >> spell_names_impl >> '"';
+		spell_names = quoted_spell_names | spell_names_impl;
+		spells = uint_ >> ',' >> spell_names;
 		data_line = (uint_ >> ',' >> string >> ',' >> string >> ','
 			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ','
-			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> -eol)
-			[qi::_val = boost::phoenix::bind(&CreateJob, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11,
-				qi::_12, qi::_13, qi::_14, std::vector<boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> > >())];
+			>> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> ',' >> uint_ >> *(',' >> spells) >> -eol)
+			[qi::_val = boost::phoenix::bind(&CreateJob, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6,
+				qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13, qi::_14, qi::_15)];
 		Initialize(data_line);
 	}
 
+	struct spell_names_ : boost::spirit::qi::symbols<wchar_t, boost::shared_ptr<const actions::SpellBase> > {
+		spell_names_() {
+			boost::shared_ptr<SpellList> list = SpellList::GetCurrentInstance();
+			BOOST_FOREACH(boost::shared_ptr<const actions::SpellBase> spell, list->GetList()) {
+				add(spell->GetIdentityName()->c_str(), spell);
+			}
+		}
+	} spell_names_impl;
+
+	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const actions::SpellBase>()> quoted_spell_names;
+	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const actions::SpellBase>()> spell_names;
+	boost::spirit::qi::rule<Iterator, boost::tuple<unsigned int, boost::shared_ptr<const actions::SpellBase> >()> spells;
 	boost::spirit::qi::rule<Iterator, boost::shared_ptr<const Job>()> data_line;
 };
 #pragma warning(pop)

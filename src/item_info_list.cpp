@@ -23,15 +23,6 @@ struct item_types_ : boost::spirit::qi::symbols<wchar_t, ItemInfo::ITEM_TYPE> {
 	}
 } item_types_impl;
 
-struct equip_jobs_ : boost::spirit::qi::symbols<wchar_t, boost::shared_ptr<const Job> > {
-	equip_jobs_() {
-		boost::shared_ptr<JobList> list = JobList::GetCurrentInstance();
-		BOOST_FOREACH(boost::shared_ptr<const Job> job, list->GetList()) {
-			add(job->GetIdentityName()->c_str(), job);
-		}
-	}
-} equip_jobs_impl;
-
 struct element_type_names_ : boost::spirit::qi::symbols<wchar_t, Action::ACTION_TYPE> {
 	element_type_names_() {
 		add
@@ -143,6 +134,15 @@ struct ItemInfoListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<con
 			[qi::_val = boost::phoenix::bind(&CreateItemInfo, qi::_1, qi::_2, qi::_3, qi::_4, qi::_5, qi::_6, qi::_7, qi::_8, qi::_9, qi::_10, qi::_11, qi::_12, qi::_13, qi::_14, qi::_15, qi::_16, qi::_17, qi::_18)];
 		Initialize(data_line);
 	}
+
+	struct equip_jobs_ : boost::spirit::qi::symbols<wchar_t, boost::shared_ptr<const Job> > {
+		equip_jobs_() {
+			boost::shared_ptr<JobList> list = JobList::GetCurrentInstance();
+			BOOST_FOREACH(boost::shared_ptr<const Job> job, list->GetList()) {
+				add(job->GetIdentityName()->c_str(), job);
+			}
+		}
+	} equip_jobs_impl;
 
 	boost::spirit::qi::rule<Iterator, ItemInfo::ITEM_TYPE()> quoted_item_types;
 	boost::spirit::qi::rule<Iterator, ItemInfo::ITEM_TYPE()> item_types;
