@@ -137,6 +137,7 @@
 #include "uis/ui_box.h"
 #include "uis/ui_string.h"
 #include "uis/ui_image.h"
+#include "uis/ui_selector_base.h"
 #include "uis/ui_selector.h"
 #include "uis/ui_string_box.h"
 #include "uis/ui_queue.h"
