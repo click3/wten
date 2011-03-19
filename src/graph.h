@@ -14,6 +14,7 @@ public:
 	unsigned int GetWidth() const;
 	unsigned int GetHeight() const;
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y) const;
+	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y, bool turn, double rate, double angle, unsigned int center_x, unsigned int center_y) const;
 	boost::optional<boost::shared_ptr<Error> > DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const;
 	utility::opt_error<boost::shared_ptr<Graph> >::type Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const;
 private:

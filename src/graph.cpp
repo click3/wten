@@ -83,6 +83,19 @@ boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned 
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned int y, bool turn, double rate, double angle, unsigned int center_x, unsigned int center_y) const {
+	BOOST_ASSERT(inner_ptr);
+	BOOST_ASSERT(x <= INT_MAX);
+	BOOST_ASSERT(y <= INT_MAX);
+	BOOST_ASSERT(center_x <= width);
+	BOOST_ASSERT(center_y <= height);
+	const int result = ::DrawRotaGraph2(static_cast<int>(x), static_cast<int>(y), static_cast<int>(center_x), static_cast<int>(center_y), rate, angle, GetDxLibGraph(inner_ptr), TRUE, (turn ? TRUE : FALSE));
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
 boost::optional<boost::shared_ptr<Error> > Graph::DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const {
 	BOOST_ASSERT(inner_ptr);
 	BOOST_ASSERT(x + w <= INT_MAX);
