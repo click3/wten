@@ -3,7 +3,7 @@
 namespace wten { namespace actions {
 
 DummySpell::DummySpell(unsigned int id, TARGET_TYPE target_type, ACTION_TYPE action_type, SPELL_JOB use_job, unsigned int lv,
-	const boost::shared_ptr<const std::wstring> &name, const boost::shared_ptr<const std::wstring> &identity_name,
+	boost::shared_ptr<const std::wstring> name, boost::shared_ptr<const std::wstring> identity_name,
 	boost::shared_ptr<const std::wstring> description)
 :
 	SpellBase(id, target_type, action_type, use_job, lv, name, identity_name, description)

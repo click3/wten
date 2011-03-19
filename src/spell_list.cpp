@@ -54,7 +54,7 @@ struct spell_jobs_ : boost::spirit::qi::symbols<wchar_t, actions::SpellBase::SPE
 
 boost::shared_ptr<const actions::SpellBase> CreateSpell(
 	unsigned int id, Action::TARGET_TYPE target_type, Action::ACTION_TYPE action_type, actions::SpellBase::SPELL_JOB use_job, unsigned int lv,
-	const boost::shared_ptr<const std::wstring> &name, const boost::shared_ptr<const std::wstring> &identity_name, boost::shared_ptr<const std::wstring> description)
+	boost::shared_ptr<const std::wstring> name, boost::shared_ptr<const std::wstring> identity_name, boost::shared_ptr<const std::wstring> description)
 {
 	return boost::shared_ptr<const actions::SpellBase>(new actions::DummySpell(id, target_type, action_type, use_job, lv, name, identity_name, description));
 }
@@ -67,7 +67,6 @@ template <typename Iterator>
 struct SpellListCSVParser : ListCSVParserBase<Iterator, boost::shared_ptr<const actions::SpellBase> > {
 	SpellListCSVParser() {
 		namespace qi = boost::spirit::qi;
-		using qi::char_;
 		using qi::uint_;
 		using qi::eol;
 
