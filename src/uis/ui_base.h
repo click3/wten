@@ -21,6 +21,8 @@ public:
 	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetPoint(void) const;
 	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetAbsolutePoint(void) const;
 	virtual utility::opt_error<boost::tuple<unsigned int, unsigned int> >::type GetSize(void) const;
+	bool IsVisible(void) const;
+	void SetVisible(bool flag);
 	virtual boost::optional<boost::shared_ptr<Error> > Draw(void);
 	virtual boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y) = 0;
 
@@ -58,6 +60,8 @@ protected:
 	unsigned int width;
 	unsigned int height;
 	MOVE_MODE move_mode;
+	bool visible;
+	unsigned char padding[3]; // unused
 };
 #pragma warning(pop)
 

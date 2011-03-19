@@ -25,7 +25,7 @@ boost::optional<boost::shared_ptr<Error> > OwnerRectCheck(boost::weak_ptr<const 
 } // anonymous
 
 UIBase::UIBase() :
-	x(0),	y(0),	width(0),	height(0),	move_mode(MOVE_MODE_FREE_FREE)
+	x(0),	y(0),	width(0),	height(0),	move_mode(MOVE_MODE_FREE_FREE), visible(true)
 {
 }
 
@@ -94,7 +94,18 @@ opt_error<boost::tuple<unsigned int, unsigned int> >::type UIBase::GetSize(void)
 	return boost::make_tuple<unsigned int, unsigned int>(width, height);
 }
 
+bool UIBase::IsVisible(void) const {
+	return visible;
+}
+
+void UIBase::SetVisible(bool flag) {
+	visible = flag;
+}
+
 boost::optional<boost::shared_ptr<Error> > UIBase::Draw(void) {
+	if(!visible) {
+		return boost::none;
+	}
 	OPT_ERROR(PointAndSizeIsValid());
 	OPT_ERROR(Move());
 

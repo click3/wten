@@ -206,6 +206,10 @@ boost::optional<boost::shared_ptr<Error> > UISelectorBase::Resize(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UISelectorBase::Draw(void) {
+	return UIBase::Draw();
+}
+
+boost::optional<boost::shared_ptr<Error> > UISelectorBase::Draw(unsigned int, unsigned int) {
 	BOOST_ASSERT(arrow);
 	OPT_ERROR(arrow->Draw());
 
@@ -213,10 +217,6 @@ boost::optional<boost::shared_ptr<Error> > UISelectorBase::Draw(void) {
 		BOOST_ASSERT(select);
 		OPT_ERROR(select->Draw());
 	}
-	return UIBase::Draw();
-}
-
-boost::optional<boost::shared_ptr<Error> > UISelectorBase::Draw(unsigned int, unsigned int) {
 	return boost::none;
 }
 
