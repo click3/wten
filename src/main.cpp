@@ -44,7 +44,7 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 
 #ifndef _DEBUG
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
-#elif
+#else
 int main() {
 #endif
 	::setlocale(LC_ALL, _T(""));
