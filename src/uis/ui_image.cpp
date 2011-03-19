@@ -5,10 +5,22 @@ namespace wten { namespace uis {
 using namespace utility;
 
 UIImage::UIImage(boost::shared_ptr<const std::wstring> filename) :
-	UIBase(), image(new Graph(filename))
+	image(new Graph(filename))
 {
 	BOOST_ASSERT(filename);
 	BOOST_ASSERT(!filename->empty());
+	BOOST_ASSERT(image);
+
+	boost::optional<boost::shared_ptr<Error> > error = Resize(image->GetWidth(), image->GetHeight());
+	if(error) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+}
+
+UIImage::UIImage(boost::shared_ptr<const Graph> image) :
+	image(image)
+{
 	BOOST_ASSERT(image);
 
 	boost::optional<boost::shared_ptr<Error> > error = Resize(image->GetWidth(), image->GetHeight());
