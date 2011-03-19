@@ -42,8 +42,11 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 
 } // anonymous
 
-//int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow ){
+#ifndef _DEBUG
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
+#elif
 int main() {
+#endif
 	::setlocale(LC_ALL, _T(""));
 
 	ItemInfoList::GetCurrentInstance();

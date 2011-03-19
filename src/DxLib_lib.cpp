@@ -31,6 +31,10 @@ DxLibWrapper::DxLibWrapper(bool window_mode, boost::shared_ptr<const std::wstrin
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+#ifndef _DEBUG
+	::SetOutApplicationLogValidFlag(FALSE);
+#endif
+	::SetAlwaysRunFlag(TRUE);
 	const int result = DxLib_Init();
 	BOOST_ASSERT(result != -1);
 }
