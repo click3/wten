@@ -162,6 +162,7 @@
 #include "character_list.h"
 #include "windows/window_base.h"
 #include "windows/select_window.h"
+#include "windows/page_select_window.h"
 #include "windows/script_window.h"
 #include "windows/text_window.h"
 #include "windows/input_dlg_window.h"
