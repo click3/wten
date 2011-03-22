@@ -45,13 +45,37 @@ std::vector<boost::shared_ptr<CharData> >::const_iterator PTData::Begin(void) co
 	return characters.begin();
 }
 
+std::vector<boost::shared_ptr<CharData> >::const_iterator PTData::begin(void) const {
+	return Begin();
+}
+
 std::vector<boost::shared_ptr<CharData> >::const_iterator PTData::End(void) const {
 	return characters.end();
 }
 
+std::vector<boost::shared_ptr<CharData> >::const_iterator PTData::end(void) const {
+	return End();
+}
+
 boost::shared_ptr<const CharData> PTData::operator[](unsigned int index) const {
+	return At(index);
+}
+
+boost::shared_ptr<const CharData> PTData::At(unsigned int index) const {
 	BOOST_ASSERT(index < characters.size());
-	return characters[index];
+	return characters.at(index);
+}
+
+boost::shared_ptr<const CharData> PTData::at(unsigned int index) const {
+	return At(index);
+}
+
+unsigned int PTData::Size(void) const {
+	return characters.size();
+}
+
+unsigned int PTData::size(void) const {
+	return Size();
 }
 
 boost::shared_ptr<PTCondition> PTData::GetCondition(void) {
@@ -66,13 +90,29 @@ std::vector<boost::shared_ptr<CharData> >::iterator PTData::Begin(void) {
 	return characters.begin();
 }
 
+std::vector<boost::shared_ptr<CharData> >::iterator PTData::begin(void) {
+	return Begin();
+}
+
 std::vector<boost::shared_ptr<CharData> >::iterator PTData::End(void) {
 	return characters.end();
+}
+
+std::vector<boost::shared_ptr<CharData> >::iterator PTData::end(void) {
+	return End();
 }
 
 boost::shared_ptr<CharData> PTData::operator[](unsigned int index) {
 	BOOST_ASSERT(index < characters.size());
 	return characters[index];
+}
+
+boost::shared_ptr<CharData> PTData::At(unsigned int index) {
+	return characters.at(index);
+}
+
+boost::shared_ptr<CharData> PTData::at(unsigned int index) {
+	return At(index);
 }
 
 boost::optional<boost::shared_ptr<Error> > PTData::DungeonStart(unsigned int floor, DIRECTION dir, unsigned int x, unsigned int y) {

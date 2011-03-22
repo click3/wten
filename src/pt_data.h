@@ -20,14 +20,24 @@ public:
 	boost::shared_ptr<const PTCondition> GetCondition(void) const;
 	std::vector<boost::shared_ptr<const CharData> > GetCharacters(void) const;
 	std::vector<boost::shared_ptr<CharData> >::const_iterator Begin(void) const;
+	std::vector<boost::shared_ptr<CharData> >::const_iterator begin(void) const;
 	std::vector<boost::shared_ptr<CharData> >::const_iterator End(void) const;
+	std::vector<boost::shared_ptr<CharData> >::const_iterator end(void) const;
 	boost::shared_ptr<const CharData> operator[](unsigned int index) const;
+	boost::shared_ptr<const CharData> At(unsigned int index) const;
+	boost::shared_ptr<const CharData> at(unsigned int index) const;
+	unsigned int Size(void) const;
+	unsigned int size(void) const;
 
 	boost::shared_ptr<PTCondition> GetCondition(void);
 	std::vector<boost::shared_ptr<CharData> > GetCharacters(void);
 	std::vector<boost::shared_ptr<CharData> >::iterator Begin(void);
+	std::vector<boost::shared_ptr<CharData> >::iterator begin(void);
 	std::vector<boost::shared_ptr<CharData> >::iterator End(void);
+	std::vector<boost::shared_ptr<CharData> >::iterator end(void);
 	boost::shared_ptr<CharData> operator[](unsigned int index);
+	boost::shared_ptr<CharData> At(unsigned int index);
+	boost::shared_ptr<CharData> at(unsigned int index);
 
 	boost::optional<boost::shared_ptr<Error> > DungeonStart(unsigned int floor, DIRECTION dir, unsigned int x, unsigned int y);
 	boost::optional<boost::shared_ptr<Error> > DungeonEnd(void);
