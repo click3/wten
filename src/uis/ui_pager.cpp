@@ -37,7 +37,7 @@ struct MaxFindByUIHeight {
 
 boost::shared_ptr<UIString> CreatePagerLabel(unsigned int size) {
 	wchar_t text[256];
-	WSPRINTF(text, L"%s/%s", 1, size);
+	WSPRINTF(text, L"%d/%d", size, size);
 	boost::shared_ptr<UIString> result(new UIString(text));
 	result->Resize(150, 0);
 	return result;
@@ -56,6 +56,14 @@ boost::shared_ptr<UIImage> CreateUIImage(boost::shared_ptr<const std::wstring> p
 
 } // anonymous
 
+void UIPager::Initialize(void) {
+	boost::optional<boost::shared_ptr<Error> > error = ReloadPagerLabel();
+	if(error) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+}
+
 UIPager::UIPager(const std::vector<boost::shared_ptr<uis::UIBase> > &page_list, boost::shared_ptr<const Graph> arrow_enable, boost::shared_ptr<Graph> arrow_disble) :
 	page_list(page_list),
 	pager_label(CreatePagerLabel(page_list.size())),
@@ -71,6 +79,7 @@ UIPager::UIPager(const std::vector<boost::shared_ptr<uis::UIBase> > &page_list, 
 	BOOST_ASSERT(next_arrow_disable);
 	BOOST_ASSERT(next_arrow_enable);
 	BOOST_ASSERT(next_arrow_disable);
+	Initialize();
 }
 
 UIPager::UIPager(const std::vector<boost::shared_ptr<uis::UIBase> > &page_list, boost::shared_ptr<const std::wstring> arrow_enable_path, boost::shared_ptr<const std::wstring> arrow_disable_path) :
@@ -88,6 +97,7 @@ UIPager::UIPager(const std::vector<boost::shared_ptr<uis::UIBase> > &page_list, 
 	BOOST_ASSERT(next_arrow_disable);
 	BOOST_ASSERT(next_arrow_enable);
 	BOOST_ASSERT(next_arrow_disable);
+	Initialize();
 }
 
 UIPager::~UIPager() {
@@ -121,17 +131,30 @@ boost::optional<boost::shared_ptr<Error> > UIPager::ClearOwnerWindow(void) {
 	return boost::none;
 }
 
+boost::optional<boost::shared_ptr<Error> > UIPager::ReloadPagerLabel(void) {
+	wchar_t text[256];
+	WSPRINTF(text, L"%d/%d", page_index + 1, page_list.size());
+	return pager_label->SetText(text);
+}
+
 boost::optional<boost::shared_ptr<Error> > UIPager::Select(MOVE_TYPE move_type) {
 	switch(move_type) {
 		case MOVE_TYPE_PREV:
-			BOOST_ASSERT(page_index > 0);
-			page_index--;
+			if(page_index == 0) {
+				page_index = page_list.size() - 1;
+			} else {
+				page_index--;
+			}
 			break;
 		case MOVE_TYPE_NEXT:
-			BOOST_ASSERT(page_index < page_list.size() - 1);
-			page_index++;
+			if(page_index == page_list.size() - 1) {
+				page_index = 0;
+			} else {
+				page_index++;
+			}
 			break;
 	}
+	OPT_ERROR(ReloadPagerLabel());
 	return boost::none;
 }
 
@@ -210,10 +233,7 @@ boost::optional<boost::shared_ptr<Error> > UIPager::Draw(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIPager::Draw(unsigned int, unsigned int) {
-	BOOST_FOREACH(boost::shared_ptr<UIBase> page, page_list) {
-		BOOST_ASSERT(page);
-		OPT_ERROR(page->Draw());
-	}
+	OPT_ERROR(page_list[page_index]->Draw());
 	OPT_ERROR(pager_label->Draw());
 	OPT_ERROR(next_arrow_enable->Draw());
 	OPT_ERROR(next_arrow_disable->Draw());
@@ -224,11 +244,13 @@ boost::optional<boost::shared_ptr<Error> > UIPager::Draw(unsigned int, unsigned 
 
 utility::opt_error<unsigned int>::type UIPager::CalcPageWidth() const {
 	std::vector<boost::shared_ptr<UIBase> >::const_iterator it = std::max_element(page_list.begin(), page_list.end(), MaxFindByUIWidth());
+	BOOST_ASSERT(it != page_list.end());
 	return GetUIWidth(*it);
 }
 
 utility::opt_error<unsigned int>::type UIPager::CalcPageHeight() const {
 	std::vector<boost::shared_ptr<UIBase> >::const_iterator it = std::max_element(page_list.begin(), page_list.end(), MaxFindByUIHeight());
+	BOOST_ASSERT(it != page_list.end());
 	return GetUIHeight(*it);
 }
 
