@@ -7,8 +7,11 @@ namespace windows {
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
 class CampWindow : public WindowBase {
+private:
+	void Initialize(void);
 public:
 	CampWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename);
+	CampWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph);
 	~CampWindow();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	boost::optional<boost::shared_ptr<Error> > OnForeground(void);

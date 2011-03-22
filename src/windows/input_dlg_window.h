@@ -9,6 +9,7 @@ namespace windows {
 class InputDlgWindow : public WindowBase {
 public:
 	InputDlgWindow(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const std::wstring> frame_filename);
+	InputDlgWindow(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const Graph> frame_graph);
 	~InputDlgWindow();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);

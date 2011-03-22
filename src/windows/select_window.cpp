@@ -49,20 +49,12 @@ SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<cons
 	BOOST_ASSERT(frame);
 }
 
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<Graph> frame) :
-	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true), cancel_data_index(boost::none)
+SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<const Graph> frame) :
+	WindowBase(frame), selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), frame(new uis::UIBox(frame)), select_close(true), cancel_data_index(boost::none)
 {
 	BOOST_ASSERT(selector);
 	BOOST_ASSERT(selector->GetCount() == data_list.size());
 	BOOST_ASSERT(frame);
-}
-
-SelectWindow::SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count) :
-	selector(new uis::UISelector(CreateSelectList(input), line_count)), data_list(CreateDataList(input)), select_close(true), cancel_data_index(boost::none)
-{
-	BOOST_ASSERT(selector);
-	BOOST_ASSERT(selector->GetCount() == data_list.size());
-	BOOST_ASSERT(!frame);
 }
 
 SelectWindow::~SelectWindow() {

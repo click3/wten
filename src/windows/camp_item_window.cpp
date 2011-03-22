@@ -7,7 +7,7 @@ using namespace boost::assign;
 
 namespace {
 
-boost::shared_ptr<SelectWindow> CreateCharSelectWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateCharSelectWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) {
 	BOOST_ASSERT(pt->GetCharacters().size() > 0);
 	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(boost::shared_ptr<CharData> char_data, pt->GetCharacters()) {
@@ -15,14 +15,14 @@ boost::shared_ptr<SelectWindow> CreateCharSelectWindow(boost::shared_ptr<PTData>
 		boost::shared_ptr<void> user_data = char_data;
 		text_list += boost::make_tuple(text, user_data);
 	}
-	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_graph));
 	result->SetSelectClose(false);
 	BOOST_ASSERT(!result->Move(50, 50));
 	BOOST_ASSERT(!result->Resize());
 	return result;
 }
 
-boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const std::wstring> default_frame_filename) {
+boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const Graph> default_frame_graph) {
 	BOOST_ASSERT(selected_char->GetStatus()->GetItemList().size() > 0);
 	boost::shared_ptr<const std::wstring> text;
 	{
@@ -34,13 +34,13 @@ boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<Ch
 		}
 	}
 
-	boost::shared_ptr<uis::UIStringBox> result(new uis::UIStringBox(text, default_frame_filename));
+	boost::shared_ptr<uis::UIStringBox> result(new uis::UIStringBox(default_frame_graph, text));
 	BOOST_ASSERT(!result->Move(0, 350));
 	BOOST_ASSERT(!result->Resize(640, 130));
 	return result;
 }
 
-boost::shared_ptr<SelectWindow> CreateItemSelectWindow(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const std::wstring> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateItemSelectWindow(boost::shared_ptr<CharData> selected_char, boost::shared_ptr<const Graph> default_frame_graph) {
 	BOOST_ASSERT(selected_char->GetStatus()->GetItemList().size() > 0);
 	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(boost::shared_ptr<Item> item, selected_char->GetStatus()->GetItemList()) {
@@ -48,7 +48,7 @@ boost::shared_ptr<SelectWindow> CreateItemSelectWindow(boost::shared_ptr<CharDat
 		boost::shared_ptr<void> user_data = item;
 		text_list += boost::make_tuple(text, user_data);
 	}
-	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_graph));
 	result->SetSelectClose(false);
 	BOOST_ASSERT(!result->Move(75, 75));
 	BOOST_ASSERT(!result->Resize());
@@ -134,7 +134,7 @@ const wchar_t *COMMANDToString(CampItemWindow::COMMAND command) {
 	return L"Unknown";
 }
 
-boost::shared_ptr<SelectWindow> CreateCommandSelectWindow(boost::shared_ptr<Item> selected_item, boost::shared_ptr<const std::wstring> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateCommandSelectWindow(boost::shared_ptr<Item> selected_item, boost::shared_ptr<const Graph> default_frame_graph) {
 	std::vector<CampItemWindow::COMMAND> command_list = CreateCommandList(selected_item);
 	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(CampItemWindow::COMMAND command, command_list) {
@@ -142,14 +142,14 @@ boost::shared_ptr<SelectWindow> CreateCommandSelectWindow(boost::shared_ptr<Item
 		boost::shared_ptr<void> user_data = boost::shared_ptr<CampItemWindow::COMMAND>(new CampItemWindow::COMMAND(command));
 		text_list += boost::make_tuple(text, user_data);
 	}
-	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_graph));
 	result->SetSelectClose(false);
 	BOOST_ASSERT(!result->Move(100, 100));
 	BOOST_ASSERT(!result->Resize());
 	return result;
 }
 
-boost::shared_ptr<SelectWindow> CreateTargetSelectWindow(boost::shared_ptr<PTData>pt, boost::shared_ptr<Item> selected_item, boost::shared_ptr<CampItemWindow::COMMAND>selected_command, boost::shared_ptr<const std::wstring> default_frame_filename) {
+boost::shared_ptr<SelectWindow> CreateTargetSelectWindow(boost::shared_ptr<PTData>pt, boost::shared_ptr<Item> selected_item, boost::shared_ptr<CampItemWindow::COMMAND>selected_command, boost::shared_ptr<const Graph> default_frame_graph) {
 	BOOST_ASSERT(pt->GetCharacters().size() > 0);
 	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > text_list;
 	BOOST_FOREACH(boost::shared_ptr<CharData> char_data, pt->GetCharacters()) {
@@ -157,7 +157,7 @@ boost::shared_ptr<SelectWindow> CreateTargetSelectWindow(boost::shared_ptr<PTDat
 		boost::shared_ptr<void> user_data = char_data;
 		text_list += boost::make_tuple(text, user_data);
 	}
-	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_filename));
+	boost::shared_ptr<SelectWindow> result(new SelectWindow(text_list, 1, default_frame_graph));
 	result->SetSelectClose(false);
 	BOOST_ASSERT(!result->Move(125, 125));
 	BOOST_ASSERT(!result->Resize());
@@ -172,6 +172,23 @@ CampItemWindow::CampItemWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<c
 	BOOST_ASSERT(pt);
 	BOOST_ASSERT(default_frame_filename);
 	BOOST_ASSERT(!default_frame_filename->empty());
+	BOOST_ASSERT(!char_select_window);
+	BOOST_ASSERT(!selected_char);
+	BOOST_ASSERT(!item_select_window);
+	BOOST_ASSERT(!item_description_ui);
+	BOOST_ASSERT(!selected_item);
+	BOOST_ASSERT(!item_command_select_window);
+	BOOST_ASSERT(!selected_command);
+	BOOST_ASSERT(!item_target_select_window);
+	BOOST_ASSERT(!target_char);
+	BOOST_ASSERT(!error_message);
+}
+
+CampItemWindow::CampItemWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) :
+	CampBaseWindow(pt, default_frame_graph), state(STATE_INITIALIZE)
+{
+	BOOST_ASSERT(pt);
+	BOOST_ASSERT(default_frame_graph);
 	BOOST_ASSERT(!char_select_window);
 	BOOST_ASSERT(!selected_char);
 	BOOST_ASSERT(!item_select_window);
@@ -318,7 +335,7 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToCharSelect(voi
 	BOOST_ASSERT(state == STATE_INITIALIZE);
 
 	if(pt->GetCharacters().size() > 0) {
-		char_select_window = CreateCharSelectWindow(pt, default_frame_filename);
+		char_select_window = CreateCharSelectWindow(pt, default_frame_graph);
 		BOOST_ASSERT(char_select_window);
 
 		SendNextWindowEvent(char_select_window);
@@ -338,9 +355,9 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToItemSelect(boo
 	BOOST_ASSERT(selected_char);
 
 	if(selected_char->GetStatus()->GetItemList().size() > 0) {
-		item_description_ui = CreateItemDescriptionUI(selected_char, default_frame_filename);
+		item_description_ui = CreateItemDescriptionUI(selected_char, default_frame_graph);
 		BOOST_ASSERT(item_description_ui);
-		item_select_window = CreateItemSelectWindow(selected_char, default_frame_filename);
+		item_select_window = CreateItemSelectWindow(selected_char, default_frame_graph);
 		BOOST_ASSERT(item_select_window);
 
 		OPT_ERROR(AddUI(item_description_ui));
@@ -360,7 +377,7 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToCommandSelect(
 	selected_item = boost::static_pointer_cast<Item>(data);
 	BOOST_ASSERT(selected_item);
 
-	item_command_select_window = CreateCommandSelectWindow(selected_item, default_frame_filename);
+	item_command_select_window = CreateCommandSelectWindow(selected_item, default_frame_graph);
 	BOOST_ASSERT(item_command_select_window);
 
 	SendNextWindowEvent(item_command_select_window);
@@ -373,7 +390,7 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::StateToTargetSelect(b
 	selected_command = boost::static_pointer_cast<COMMAND>(data);
 	BOOST_ASSERT(selected_command);
 
-	item_target_select_window = CreateTargetSelectWindow(pt, selected_item, selected_command, default_frame_filename);
+	item_target_select_window = CreateTargetSelectWindow(pt, selected_item, selected_command, default_frame_graph);
 	BOOST_ASSERT(item_target_select_window);
 
 	SendNextWindowEvent(item_target_select_window);

@@ -12,14 +12,24 @@ enum NEXT {
 
 } // anonymous
 
-TitleScene::TitleScene() :
-	exit(false), script_window(new windows::ScriptWindow())
-{
+void TitleScene::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error = script_window->AddEventProc(EVENT_TYPE_ON_SELECT, boost::bind(&TitleScene::OnSelect, this, _1));
 	if(error) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+TitleScene::TitleScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
+	SceneBase(default_frame_filename), exit(false), script_window(new windows::ScriptWindow())
+{
+	Initialize();
+}
+
+TitleScene::TitleScene(boost::shared_ptr<const Graph> default_frame_graph) :
+	SceneBase(default_frame_graph), exit(false), script_window(new windows::ScriptWindow())
+{
+	Initialize();
 }
 
 TitleScene::~TitleScene() {
@@ -79,7 +89,7 @@ boost::optional<boost::shared_ptr<Error> > TitleScene::OnSelect(boost::shared_pt
 		case NEXT_LOAD_GAME:
 			OPT_ERROR(SaveDataLoad());
 		case NEXT_NEW_GAME:
-			next_scene.reset(new TownScene());
+			next_scene.reset(new TownScene(default_frame_graph));
 			break;
 		case NEXT_EXIT:
 			exit = true;

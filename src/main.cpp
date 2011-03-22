@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 using namespace wten;
+using namespace utility;
 using namespace boost::assign;
 
 namespace {
@@ -51,14 +52,14 @@ int main() {
 
 	ItemInfoList::GetCurrentInstance();
 
-	boost::shared_ptr<WTen> game;/*
+	boost::shared_ptr<WTen> game(new WTen());/*
 	{
 		boost::shared_ptr<Scene> scene(new scenes::DebugScene());
-		game.reset(new WTen(scene));
+		game->SetScene(scene);
 	}*/
 	{
-		boost::shared_ptr<Scene> scene(new scenes::OpeningScene());
-		game.reset(new WTen(scene));
+		boost::shared_ptr<Scene> scene(new scenes::OpeningScene(WChar2Ptr(L"data/ui/box1.png")));
+		game->SetScene(scene);
 	}
 	boost::optional<boost::shared_ptr<Error> > result = game->DoStart(CreateDummyPT());
 	game.reset();

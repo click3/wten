@@ -142,15 +142,26 @@ boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data
 
 } // anonymous
 
-UIPTStatus::UIPTStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data) :
-	UIBox(frame_filename), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
-{
-	BOOST_ASSERT(pt_data);
+void UIPTStatus::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error = SetInnerUI(queue_ui);
 	if(error) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+UIPTStatus::UIPTStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data) :
+	UIBox(frame_filename), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
+{
+	BOOST_ASSERT(pt_data);
+	Initialize();
+}
+
+UIPTStatus::UIPTStatus(boost::shared_ptr<const Graph> frame_graph, boost::shared_ptr<const PTData> pt_data) :
+	UIBox(frame_graph), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
+{
+	BOOST_ASSERT(pt_data);
+	Initialize();
 }
 
 UIPTStatus::~UIPTStatus() {

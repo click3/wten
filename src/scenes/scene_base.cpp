@@ -5,12 +5,7 @@ namespace wten { namespace scenes {
 using namespace utility;
 using namespace boost::assign;
 
-SceneBase::SceneBase(boost::shared_ptr<const std::wstring> default_frame_filename) :
-	window_manager(new WindowManager()), base_window(new windows::WindowBase(default_frame_filename)), default_frame_filename(default_frame_filename)
-{
-	BOOST_ASSERT(window_manager);
-	BOOST_ASSERT(base_window);
-
+void SceneBase::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = window_manager->PushWindow(base_window)) {
 		error.get()->Abort();
@@ -20,6 +15,24 @@ SceneBase::SceneBase(boost::shared_ptr<const std::wstring> default_frame_filenam
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+SceneBase::SceneBase(boost::shared_ptr<const std::wstring> default_frame_filename) :
+	window_manager(new WindowManager()), default_frame_graph(new Graph(default_frame_filename)), base_window(new windows::WindowBase(default_frame_graph))
+{
+	BOOST_ASSERT(window_manager);
+	BOOST_ASSERT(default_frame_graph);
+	BOOST_ASSERT(base_window);
+	Initialize();
+}
+
+SceneBase::SceneBase(boost::shared_ptr<const Graph> default_frame_graph) :
+	window_manager(new WindowManager()), default_frame_graph(default_frame_graph), base_window(new windows::WindowBase(default_frame_graph))
+{
+	BOOST_ASSERT(window_manager);
+	BOOST_ASSERT(default_frame_graph);
+	BOOST_ASSERT(base_window);
+	Initialize();
 }
 
 SceneBase::~SceneBase() { }
@@ -99,18 +112,18 @@ boost::optional<boost::shared_ptr<Error> > SceneBase::AddCharStatusUI(boost::sha
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddSelectorWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& select_list, unsigned int line_count, boost::optional<unsigned int> cancel_index, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<windows::SelectWindow> window(new windows::SelectWindow(select_list, line_count, default_frame_filename));
+	boost::shared_ptr<windows::SelectWindow> window(new windows::SelectWindow(select_list, line_count, default_frame_graph));
 	OPT_ERROR(window->SetCancelSelectionDataIndex(cancel_index));
 	return AddWindow(window, x, y, width, height);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddTextWindow(boost::shared_ptr<const std::wstring> text, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<windows::TextWindow> window(new windows::TextWindow(text, default_frame_filename));
+	boost::shared_ptr<windows::TextWindow> window(new windows::TextWindow(text, default_frame_graph));
 	return AddWindow(window, x, y, width, height);
 }
 
 boost::optional<boost::shared_ptr<Error> > SceneBase::AddInputDlgWindow(boost::shared_ptr<const std::wstring> message, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<windows::InputDlgWindow> window(new windows::InputDlgWindow(message, default_frame_filename));
+	boost::shared_ptr<windows::InputDlgWindow> window(new windows::InputDlgWindow(message, default_frame_graph));
 	return AddWindow(window, x, y, width, height);
 }
 

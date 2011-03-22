@@ -11,9 +11,12 @@ class PTData;
 #pragma warning(disable: 4626)
 class WTen : boost::noncopyable {
 public:
-	WTen(boost::shared_ptr<Scene> start_scene);
+	WTen();
 	~WTen();
 	static boost::shared_ptr<std::wstring> CreateWindowTitle(void);
+	void SetScene(boost::shared_ptr<Scene> scene);
+	boost::shared_ptr<Scene> GetScene(void);
+	boost::shared_ptr<const Scene> GetScene(void) const;
 	boost::optional<boost::shared_ptr<Error> > DoStart(boost::shared_ptr<PTData> pt);
 private:
 	typedef boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > LoopResult;

@@ -2,11 +2,10 @@
 
 namespace wten { namespace scenes {
 
-CampScene::CampScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
-	SceneBase(default_frame_filename), camp_script_window(new windows::ScriptWindow()), camp_enabled(true)
-{
-	BOOST_ASSERT(camp_script_window);
+using namespace utility;
+using namespace boost::assign;
 
+void CampScene::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error;
 
 	error = camp_script_window->AddEventProc(EVENT_TYPE_KEY, boost::bind(&CampScene::OnKeyEvent, this, _1));
@@ -20,6 +19,20 @@ CampScene::CampScene(boost::shared_ptr<const std::wstring> default_frame_filenam
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+CampScene::CampScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
+	SceneBase(default_frame_filename), camp_script_window(new windows::ScriptWindow()), camp_enabled(true)
+{
+	BOOST_ASSERT(camp_script_window);
+	Initialize();
+}
+
+CampScene::CampScene(boost::shared_ptr<const Graph> default_frame_graph) :
+	SceneBase(default_frame_graph), camp_script_window(new windows::ScriptWindow()), camp_enabled(true)
+{
+	BOOST_ASSERT(camp_script_window);
+	Initialize();
 }
 
 CampScene::~CampScene() {
@@ -68,7 +81,7 @@ void CampScene::CampDisabled(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > CampScene::AddCampWindow(void) {
-	boost::shared_ptr<windows::CampWindow> camp(new windows::CampWindow(pt, default_frame_filename));
+	boost::shared_ptr<windows::CampWindow> camp(new windows::CampWindow(pt, default_frame_graph));
 	OPT_ERROR(AddWindow(camp, 0, 0, 640, 480));
 	return boost::none;
 }

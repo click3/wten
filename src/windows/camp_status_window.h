@@ -9,6 +9,7 @@ namespace windows {
 class CampStatusWindow : public CampBaseWindow {
 public:
 	CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename);
+	CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph);
 	~CampStatusWindow();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type NotifyEvent(boost::shared_ptr<Event> event);

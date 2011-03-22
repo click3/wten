@@ -5,8 +5,11 @@ namespace wten { namespace scenes {
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
 class OpeningScene : public SceneBase {
+private:
+	void Initialize(void);
 public:
-	OpeningScene();
+	OpeningScene(boost::shared_ptr<const std::wstring> default_frame_filename);
+	OpeningScene(boost::shared_ptr<const Graph> default_frame_graph);
 	~OpeningScene();
 
 	boost::optional<boost::shared_ptr<Error> > SceneInitialize(void);

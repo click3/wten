@@ -7,8 +7,11 @@ namespace uis {
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
 class UIInputDlg : public UIBox {
+private:
+	void Initialize(boost::shared_ptr<const std::wstring> message);
 public:
 	UIInputDlg(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const std::wstring> frame_filename);
+	UIInputDlg(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const Graph> frame_graph);
 	~UIInputDlg();
 	boost::shared_ptr<std::wstring> GetText(void) const;
 protected:

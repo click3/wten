@@ -11,7 +11,7 @@ typedef std::multimap<EVENT_TYPE, boost::function<boost::optional<boost::shared_
 
 } // anonymous
 
-ScriptWindow::ScriptWindow() {
+ScriptWindow::ScriptWindow() : WindowBase(boost::shared_ptr<const Graph>()) {
 }
 
 ScriptWindow::~ScriptWindow() {

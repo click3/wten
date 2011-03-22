@@ -8,7 +8,8 @@ namespace windows {
 #pragma warning(disable: 4626)
 class WindowBase : public Window, public boost::enable_shared_from_this<WindowBase> {
 public:
-	WindowBase(boost::shared_ptr<const std::wstring> default_frame_filename = boost::shared_ptr<const std::wstring>());
+	WindowBase(boost::shared_ptr<const std::wstring> default_frame_filename);
+	WindowBase(boost::shared_ptr<const Graph> default_frame_graph);
 	~WindowBase();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	boost::optional<boost::shared_ptr<Error> > OnForeground(void);
@@ -36,7 +37,7 @@ protected:
 	unsigned int y;
 	unsigned int width;
 	unsigned int height;
-	boost::shared_ptr<const std::wstring> default_frame_filename;
+	boost::shared_ptr<const Graph> default_frame_graph;
 };
 #pragma warning(pop)
 

@@ -49,13 +49,7 @@ void GuildCreateSuccess(void) {
 
 } // anonymous
 
-
-CastleScene::CastleScene() :
-	current_step(GetCurrentStep()), title(GetCastleName()), script_window(new windows::ScriptWindow())
-{
-	BOOST_ASSERT(title);
-	BOOST_ASSERT(script_window);
-
+void CastleScene::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = AddEvent(EVENT_TYPE_NEXT_STEP)) {
 		error.get()->Abort();
@@ -69,6 +63,22 @@ CastleScene::CastleScene() :
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+CastleScene::CastleScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
+	CampScene(default_frame_filename), current_step(GetCurrentStep()), title(GetCastleName()), script_window(new windows::ScriptWindow())
+{
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(script_window);
+	Initialize();
+}
+
+CastleScene::CastleScene(boost::shared_ptr<const Graph> default_frame_graph) :
+	CampScene(default_frame_graph), current_step(GetCurrentStep()), title(GetCastleName()), script_window(new windows::ScriptWindow())
+{
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(script_window);
+	Initialize();
 }
 
 CastleScene::~CastleScene() {
@@ -156,7 +166,7 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			break;
 		}
 		case GUILD_CREATE_END_STEP: {
-			next_scene.reset(new TownScene());
+			next_scene.reset(new TownScene(default_frame_graph));
 			break;
 		}
 		case NORMAL_STEP: {
@@ -207,7 +217,7 @@ boost::optional<boost::shared_ptr<Error> > CastleScene::StepInitialize(void) {
 			break;
 		}
 		case RETURN_STEP: {
-			next_scene.reset(new TownScene());
+			next_scene.reset(new TownScene(default_frame_graph));
 			break;
 		}
 	}

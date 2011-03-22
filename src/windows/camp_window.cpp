@@ -40,7 +40,7 @@ void SendPopWindowEvent(boost::shared_ptr<Window> window) {
 	EventNotify::Send(event);
 }
 
-std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) {
+std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > CreateSelectList(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) {
 	const wchar_t *text_list[] = {
 		L"ÉAÉCÉeÉÄ",
 		L"ëïîı",
@@ -49,11 +49,11 @@ std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_pt
 		L"ê›íË"
 	};
 	boost::shared_ptr<void> window_list[] = {
-		boost::shared_ptr<void>(new CampItemWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampStatusWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename)),
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_filename))
+		boost::shared_ptr<void>(new CampItemWindow(pt, default_frame_graph)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_graph)),
+		boost::shared_ptr<void>(new CampStatusWindow(pt, default_frame_graph)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_graph)),
+		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_graph))
 	};
 	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > result;
 	for(unsigned int i = 0; i < 5; i++) {
@@ -66,17 +66,30 @@ std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_pt
 
 } // anonymous
 
+void CampWindow::Initialize(void) {
+	boost::optional<boost::shared_ptr<Error> > error = this->Resize(640, 480);
+	if(error) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+}
+
 CampWindow::CampWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) :
 	WindowBase(default_frame_filename), pt(pt), money_text(CreateMoneyText(pt)), play_time_text(CreatePlayTimeText())
 {
 	BOOST_ASSERT(pt);
 	BOOST_ASSERT(money_text);
 	BOOST_ASSERT(play_time_text);
-	boost::optional<boost::shared_ptr<Error> > error = this->Resize(640, 480);
-	if(error) {
-		error.get()->Abort();
-		BOOST_ASSERT(false);
-	}
+	Initialize();
+}
+
+CampWindow::CampWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) :
+	WindowBase(default_frame_graph), pt(pt), money_text(CreateMoneyText(pt)), play_time_text(CreatePlayTimeText())
+{
+	BOOST_ASSERT(pt);
+	BOOST_ASSERT(money_text);
+	BOOST_ASSERT(play_time_text);
+	Initialize();
 }
 
 CampWindow::~CampWindow() {
@@ -88,7 +101,7 @@ boost::optional<boost::shared_ptr<Error> > CampWindow::WindowInitialize(void) {
 	OPT_ERROR(AddTextUI(title, uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
 	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
 
-	select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_filename), 1, default_frame_filename));
+	select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_graph), 1, default_frame_graph));
 	select_window->Move(50, 100);
 	select_window->Resize(540, 150);
 	select_window->SetSelectClose(false);

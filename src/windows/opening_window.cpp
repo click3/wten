@@ -1,9 +1,14 @@
 #include "stdafx.h"
 
 namespace wten { namespace windows {
+	
+OpeningWindow::OpeningWindow(boost::shared_ptr<const std::wstring> default_frame_filename) :
+	WindowBase(default_frame_filename), frame_counter(0)
+{
+}
 
-OpeningWindow::OpeningWindow() :
-	frame_counter(0)
+OpeningWindow::OpeningWindow(boost::shared_ptr<const Graph> default_frame_graph) :
+	WindowBase(default_frame_graph), frame_counter(0)
 {
 }
 

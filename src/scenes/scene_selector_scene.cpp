@@ -22,8 +22,16 @@ std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_pt
 
 } // anonymous
 
-SceneSelectorScene::SceneSelectorScene(boost::shared_ptr<const std::wstring> title, const std::vector<SCENE_PAIR>& scene_list) :
-	title(title), scene_list(scene_list), script_window(new windows::ScriptWindow())
+void SceneSelectorScene::Initialize(void) {
+	boost::optional<boost::shared_ptr<Error> > error = script_window->AddEventProc(EVENT_TYPE_ON_SELECT, boost::bind(&SceneSelectorScene::OnSelect, this, _1));
+	if(error) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+}
+
+SceneSelectorScene::SceneSelectorScene(boost::shared_ptr<const std::wstring> default_frame_filename, boost::shared_ptr<const std::wstring> title, const std::vector<SCENE_PAIR>& scene_list) :
+	CampScene(default_frame_filename), title(title), scene_list(scene_list), script_window(new windows::ScriptWindow())
 {
 	BOOST_ASSERT(title);
 	BOOST_ASSERT(scene_list.size() > 0);
@@ -36,12 +44,24 @@ SceneSelectorScene::SceneSelectorScene(boost::shared_ptr<const std::wstring> tit
 		BOOST_ASSERT(!text->empty());
 		BOOST_ASSERT(scene);
 	}
+	Initialize();
+}
 
-	boost::optional<boost::shared_ptr<Error> > error = script_window->AddEventProc(EVENT_TYPE_ON_SELECT, boost::bind(&SceneSelectorScene::OnSelect, this, _1));
-	if(error) {
-		error.get()->Abort();
-		BOOST_ASSERT(false);
+SceneSelectorScene::SceneSelectorScene(boost::shared_ptr<const Graph> default_frame_graph, boost::shared_ptr<const std::wstring> title, const std::vector<SCENE_PAIR>& scene_list) :
+	CampScene(default_frame_graph), title(title), scene_list(scene_list), script_window(new windows::ScriptWindow())
+{
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(scene_list.size() > 0);
+	BOOST_ASSERT(script_window);
+	BOOST_FOREACH(SCENE_PAIR scene_pair, scene_list) {
+		boost::shared_ptr<const std::wstring> text;
+		boost::shared_ptr<Scene> scene;
+		boost::tie(text, scene) = scene_pair;
+		BOOST_ASSERT(text);
+		BOOST_ASSERT(!text->empty());
+		BOOST_ASSERT(scene);
 	}
+	Initialize();
 }
 
 SceneSelectorScene::~SceneSelectorScene() {

@@ -10,6 +10,11 @@ CampBaseWindow::CampBaseWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<c
 {
 }
 
+CampBaseWindow::CampBaseWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) :
+	WindowBase(default_frame_graph), pt(pt)
+{
+}
+
 CampBaseWindow::~CampBaseWindow() {
 }
 
@@ -80,7 +85,7 @@ void CampBaseWindow::SendPopWindowEvent(boost::shared_ptr<Window> window) {
 
 
 boost::optional<boost::shared_ptr<Error> > CampBaseWindow::SendNextTextWindowEvent(boost::shared_ptr<const std::wstring> text, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
-	boost::shared_ptr<TextWindow> window(new TextWindow(text, default_frame_filename));
+	boost::shared_ptr<TextWindow> window(new TextWindow(text, default_frame_graph));
 	OPT_ERROR(window->Move(x, y));
 	OPT_ERROR(window->Resize(width, height));
 	SendNextWindowEvent(window);

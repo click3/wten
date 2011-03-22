@@ -9,6 +9,7 @@ namespace windows {
 class CampBaseWindow : public WindowBase {
 public:
 	CampBaseWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename);
+	CampBaseWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph);
 	~CampBaseWindow();
 	boost::optional<boost::shared_ptr<Error> > WindowInitialize(void);
 	boost::optional<boost::shared_ptr<Error> > Resize(unsigned int width, unsigned int height);

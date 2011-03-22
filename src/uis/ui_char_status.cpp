@@ -218,13 +218,7 @@ const wchar_t* AlignmentToString(CharStatus::ALIGNMENT alignment) {
 
 } // anonymous
 
-UICharStatus::UICharStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index) :
-	UIBox(frame_filename), pt_data(pt_data), text_ui_list(CreateTextUIList())
-{
-	BOOST_ASSERT(pt_data);
-	BOOST_ASSERT(char_index < pt_data->GetCharacters().size());
-	this->char_index = char_index;
-	char_data = (*pt_data)[char_index];
+void UICharStatus::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error = ReloadStatus();
 	if(error) {
 		error.get()->Abort();
@@ -235,6 +229,22 @@ UICharStatus::UICharStatus(boost::shared_ptr<const std::wstring> frame_filename,
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+UICharStatus::UICharStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data, unsigned int char_index) :
+	UIBox(frame_filename), pt_data(pt_data), char_index(char_index), char_data(pt_data->at(char_index)), text_ui_list(CreateTextUIList())
+{
+	BOOST_ASSERT(pt_data);
+	BOOST_ASSERT(char_index < pt_data->GetCharacters().size());
+	Initialize();
+}
+
+UICharStatus::UICharStatus(boost::shared_ptr<const Graph> frame_graph, boost::shared_ptr<const PTData> pt_data, unsigned int char_index) :
+	UIBox(frame_graph), pt_data(pt_data), char_index(char_index), char_data(pt_data->at(char_index)), text_ui_list(CreateTextUIList())
+{
+	BOOST_ASSERT(pt_data);
+	BOOST_ASSERT(char_index < pt_data->GetCharacters().size());
+	Initialize();
 }
 
 UICharStatus::~UICharStatus() {

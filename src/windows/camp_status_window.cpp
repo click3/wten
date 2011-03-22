@@ -7,15 +7,20 @@ using namespace boost::assign;
 
 namespace {
 
-boost::shared_ptr<uis::UICharStatus> CreateCharStatusUI(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) {
-	boost::shared_ptr<uis::UICharStatus> result(new uis::UICharStatus(default_frame_filename, pt, 0));
+boost::shared_ptr<uis::UICharStatus> CreateCharStatusUI(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) {
+	boost::shared_ptr<uis::UICharStatus> result(new uis::UICharStatus(default_frame_graph, pt, 0));
 	return result;
 }
 
 } // anonymous
 
 CampStatusWindow::CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const std::wstring> default_frame_filename) :
-	CampBaseWindow(pt, default_frame_filename), char_status_ui(CreateCharStatusUI(pt, default_frame_filename))
+	CampBaseWindow(pt, default_frame_filename), char_status_ui(CreateCharStatusUI(pt, default_frame_graph))
+{
+}
+
+CampStatusWindow::CampStatusWindow(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) :
+	CampBaseWindow(pt, default_frame_graph), char_status_ui(CreateCharStatusUI(pt, default_frame_graph))
 {
 }
 
@@ -30,7 +35,7 @@ boost::optional<boost::shared_ptr<Error> > CampStatusWindow::WindowInitialize(vo
 		L"A:Žô•¶ˆê——\n"
 		L"B:–ß‚é";
 	boost::shared_ptr<std::wstring> text(new std::wstring(char_text));
-	text_window.reset(new TextWindow(text, default_frame_filename));
+	text_window.reset(new TextWindow(text, default_frame_graph));
 	OPT_ERROR(text_window->Move(380, 280));
 	OPT_ERROR(text_window->Resize(180, 50));
 	text_window->SetOkClose(false);

@@ -5,12 +5,9 @@ namespace wten { namespace uis {
 using namespace utility;
 using namespace boost::assign;
 
-UIInputDlg::UIInputDlg(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const std::wstring> frame_filename) :
-	UIBox(frame_filename), ui_input_string(new UIInputString())
-{
+void UIInputDlg::Initialize(boost::shared_ptr<const std::wstring> message) {
 	boost::optional<boost::shared_ptr<Error> > error;
-	BOOST_ASSERT(ui_input_string);
-	boost::shared_ptr<UIBox> ui_box(new UIBox(frame_filename));
+	boost::shared_ptr<UIBox> ui_box(new UIBox(GetSrcGraph()));
 	if(error = ui_box->SetInnerUI(ui_input_string)) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
@@ -26,6 +23,20 @@ UIInputDlg::UIInputDlg(boost::shared_ptr<const std::wstring> message, boost::sha
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+UIInputDlg::UIInputDlg(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const std::wstring> frame_filename) :
+	UIBox(frame_filename), ui_input_string(new UIInputString())
+{
+	BOOST_ASSERT(ui_input_string);
+	Initialize(message);
+}
+
+UIInputDlg::UIInputDlg(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const Graph> frame_graph) :
+	UIBox(frame_graph), ui_input_string(new UIInputString())
+{
+	BOOST_ASSERT(ui_input_string);
+	Initialize(message);
 }
 
 UIInputDlg::~UIInputDlg() {

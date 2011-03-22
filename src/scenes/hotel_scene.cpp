@@ -45,14 +45,7 @@ void SendNextStepEvent(void) {
 
 } // anonymous
 
-HotelScene::HotelScene() :
-	current_step(GetCurrentStep()), title(GetTitle()), script_window(new windows::ScriptWindow())
-{
-	BOOST_ASSERT(title);
-	BOOST_ASSERT(!title->empty());
-	BOOST_ASSERT(script_window);
-	BOOST_ASSERT(!next_scene);
-
+void HotelScene::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = AddEvent(EVENT_TYPE_NEXT_STEP)) {
 		error.get()->Abort();
@@ -62,6 +55,26 @@ HotelScene::HotelScene() :
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+HotelScene::HotelScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
+	CampScene(default_frame_filename), current_step(GetCurrentStep()), title(GetTitle()), script_window(new windows::ScriptWindow())
+{
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(!title->empty());
+	BOOST_ASSERT(script_window);
+	BOOST_ASSERT(!next_scene);
+	Initialize();
+}
+
+HotelScene::HotelScene(boost::shared_ptr<const Graph> default_frame_graph) :
+	CampScene(default_frame_graph), current_step(GetCurrentStep()), title(GetTitle()), script_window(new windows::ScriptWindow())
+{
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(!title->empty());
+	BOOST_ASSERT(script_window);
+	BOOST_ASSERT(!next_scene);
+	Initialize();
 }
 
 HotelScene::~HotelScene() {
@@ -152,7 +165,7 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 			break;
 		}
 		case RETURN_STEP: {
-			next_scene.reset(new TownScene());
+			next_scene.reset(new TownScene(default_frame_graph));
 			break;
 		}
 	}

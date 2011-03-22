@@ -3,9 +3,8 @@
 
 namespace wten {
 
-WTen::WTen(boost::shared_ptr<Scene> start_scene) :
-	lib(new DxLibWrapper(true, CreateWindowTitle())),
-	scene(start_scene)
+WTen::WTen() :
+	lib(new DxLibWrapper(true, CreateWindowTitle()))
 {
 	BOOST_ASSERT(lib);
 	boost::optional<boost::shared_ptr<Error> > error = lib->SetDrawScreen(DxLibWrapper::SCREEN_MODE_BACK);
@@ -22,6 +21,18 @@ boost::shared_ptr<std::wstring> WTen::CreateWindowTitle(void) {
 	wchar_t str[1024];
 	WSPRINTF(str, L"Wizardry Å`ìVó≥ÇÃìÉÅ` %s", OPEN_VERSION);
 	return boost::shared_ptr<std::wstring>(new std::wstring(str));
+}
+
+void WTen::SetScene(boost::shared_ptr<Scene> scene) {
+	this->scene = scene;
+}
+
+boost::shared_ptr<Scene> WTen::GetScene(void) {
+	return scene;
+}
+
+boost::shared_ptr<const Scene> WTen::GetScene(void) const {
+	return scene;
 }
 
 boost::optional<boost::shared_ptr<Error> > WTen::DoStart(boost::shared_ptr<PTData> pt) {

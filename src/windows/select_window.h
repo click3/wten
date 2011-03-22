@@ -10,8 +10,7 @@ namespace windows {
 class SelectWindow : public WindowBase {
 public:
 	SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<const std::wstring> frame_filename);
-	SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<Graph> frame);
-	SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count);
+	SelectWindow(const std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > >& input, unsigned int line_count, boost::shared_ptr<const Graph> frame);
 	~SelectWindow();
 	bool IsSelectClose(void) const;
 	void SetSelectClose(bool flag);

@@ -19,8 +19,8 @@ TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared
 	}
 }
 
-TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<Graph> frame) :
-	ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame)), ok_close(true)
+TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<const Graph> frame) :
+	WindowBase(frame), ui_string(new uis::UIString(text)), frame(new uis::UIBox(frame)), ok_close(true)
 {
 	BOOST_ASSERT(ui_string);
 	BOOST_ASSERT(frame);
@@ -29,13 +29,6 @@ TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
-}
-
-TextWindow::TextWindow(boost::shared_ptr<const std::wstring> text) :
-	ui_string(new uis::UIString(text)), ok_close(true)
-{
-	BOOST_ASSERT(ui_string);
-	BOOST_ASSERT(!frame);
 }
 
 TextWindow::~TextWindow() {

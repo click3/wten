@@ -10,7 +10,7 @@ namespace uis {
 class UIPager : public UIBase {
 public:
 	UIPager(const std::vector<boost::shared_ptr<uis::UIBase> > &page_list, boost::shared_ptr<const Graph> arrow_enable, boost::shared_ptr<Graph> arrow_disble);
-	UIPager(const std::vector<boost::shared_ptr<uis::UIBase> > &page_list, boost::shared_ptr<const std::wstring> arrow_enable_path, boost::shared_ptr<const std::wstring> arrow_disble_path);
+	UIPager(const std::vector<boost::shared_ptr<uis::UIBase> > &page_list, boost::shared_ptr<const std::wstring> arrow_enable_path = utility::WChar2Ptr(L"data/ui/arrow2_enable.png"), boost::shared_ptr<const std::wstring> arrow_disble_path = utility::WChar2Ptr(L"data/ui/arrow2_disable.png"));
 	~UIPager();
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > ClearOwnerWindow(void);

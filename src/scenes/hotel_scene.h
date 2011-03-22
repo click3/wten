@@ -5,9 +5,11 @@ namespace wten { namespace scenes {
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
 class HotelScene : public CampScene {
+private:
+	void Initialize(void);
 public:
-
-	HotelScene();
+	HotelScene(boost::shared_ptr<const std::wstring> default_frame_filename);
+	HotelScene(boost::shared_ptr<const Graph> default_frame_graph);
 	~HotelScene();
 
 	boost::optional<boost::shared_ptr<Error> > SceneInitialize(void);

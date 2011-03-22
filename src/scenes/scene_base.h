@@ -9,8 +9,11 @@ namespace scenes {
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
 class SceneBase : public Scene, public EventNotifyInterface, public boost::enable_shared_from_this<SceneBase> {
+private:
+	void Initialize(void);
 public:
-	SceneBase(boost::shared_ptr<const std::wstring> default_frame_filename = boost::shared_ptr<const std::wstring>(new std::wstring(L"data/ui/box1.png")));
+	SceneBase(boost::shared_ptr<const std::wstring> default_frame_filename);
+	SceneBase(boost::shared_ptr<const Graph> default_frame_graph);
 	~SceneBase();
 
 	boost::optional<boost::shared_ptr<Error> > DoStart(boost::shared_ptr<PTData> pt);
@@ -40,10 +43,10 @@ public:
 	boost::optional<boost::shared_ptr<Error> > AddInputDlgWindow(boost::shared_ptr<const std::wstring> message, unsigned int x = 150, unsigned int y = 205, unsigned int width = 340, unsigned int height = 70);
 	boost::optional<boost::shared_ptr<Error> > Clear(void);
 protected:
-	boost::shared_ptr<PTData> pt;
-	const boost::shared_ptr<windows::WindowBase> base_window;
 	const boost::shared_ptr<WindowManager> window_manager;
-	const boost::shared_ptr<const std::wstring> default_frame_filename;
+	boost::shared_ptr<PTData> pt;
+	const boost::shared_ptr<const Graph> default_frame_graph;
+	const boost::shared_ptr<windows::WindowBase> base_window;
 };
 #pragma warning(pop)
 

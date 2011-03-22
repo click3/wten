@@ -10,8 +10,7 @@ namespace windows {
 class TextWindow : public WindowBase {
 public:
 	TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<const std::wstring> frame_filename);
-	TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<Graph> frame);
-	TextWindow(boost::shared_ptr<const std::wstring> text);
+	TextWindow(boost::shared_ptr<const std::wstring> text, boost::shared_ptr<const Graph> frame);
 	~TextWindow();
 	bool IsOkClose(void) const;
 	void SetOkClose(bool flag);

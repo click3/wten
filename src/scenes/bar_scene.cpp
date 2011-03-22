@@ -36,14 +36,7 @@ void SendNextStepEvent(void) {
 
 } // anonymous
 
-BarScene::BarScene() :
-	current_step(GetCurrentStep()), title(GetTitle()), script_window(new windows::ScriptWindow())
-{
-	BOOST_ASSERT(title);
-	BOOST_ASSERT(!title->empty());
-	BOOST_ASSERT(script_window);
-	BOOST_ASSERT(!next_scene);
-
+void BarScene::Initialize(void) {
 	boost::optional<boost::shared_ptr<Error> > error;
 	if(error = AddEvent(EVENT_TYPE_NEXT_STEP)) {
 		error.get()->Abort();
@@ -53,6 +46,26 @@ BarScene::BarScene() :
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+}
+
+BarScene::BarScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
+	CampScene(default_frame_filename), current_step(GetCurrentStep()), title(GetTitle()), script_window(new windows::ScriptWindow())
+{
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(!title->empty());
+	BOOST_ASSERT(script_window);
+	BOOST_ASSERT(!next_scene);
+	Initialize();
+}
+
+BarScene::BarScene(boost::shared_ptr<const Graph> default_frame_graph) :
+	CampScene(default_frame_graph), current_step(GetCurrentStep()), title(GetTitle()), script_window(new windows::ScriptWindow())
+{
+	BOOST_ASSERT(title);
+	BOOST_ASSERT(!title->empty());
+	BOOST_ASSERT(script_window);
+	BOOST_ASSERT(!next_scene);
+	Initialize();
 }
 
 BarScene::~BarScene() {
@@ -110,7 +123,7 @@ boost::optional<boost::shared_ptr<Error> > BarScene::StepInitialize(void) {
 			break;
 		}
 		case RETURN_STEP: {
-			next_scene.reset(new TownScene());
+			next_scene.reset(new TownScene(default_frame_graph));
 			break;
 		}
 	}

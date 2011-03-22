@@ -11,7 +11,7 @@ namespace {
 
 } // anonymous
 
-DebugScene::DebugScene(void) {
+DebugScene::DebugScene(void) : SceneBase(WChar2Ptr(L"data/ui/box1.png")) {
 }
 DebugScene::~DebugScene() {
 }
@@ -24,7 +24,7 @@ boost::optional<boost::shared_ptr<Error> > DebugScene::SceneInitialize(void) {
 }
 
 boost::variant<boost::shared_ptr<Error>, boost::optional<boost::shared_ptr<Scene> >, boost::shared_ptr<SceneExit> > DebugScene::EnterFrame(void) {
-	return boost::shared_ptr<Scene>(new TownScene());
+	return boost::shared_ptr<Scene>(new TownScene(default_frame_graph));
 }
 
 } // scenes

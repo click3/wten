@@ -6,11 +6,15 @@ using namespace utility;
 using namespace boost::assign;
 
 InputDlgWindow::InputDlgWindow(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const std::wstring> frame_filename) :
-	WindowBase(frame_filename), ui_input_dlg(new uis::UIInputDlg(message, frame_filename))
+	WindowBase(frame_filename), ui_input_dlg(new uis::UIInputDlg(message, default_frame_graph))
 {
 	BOOST_ASSERT(ui_input_dlg);
-	BOOST_ASSERT(frame_filename);
-	BOOST_ASSERT(!frame_filename->empty());
+}
+
+InputDlgWindow::InputDlgWindow(boost::shared_ptr<const std::wstring> message, boost::shared_ptr<const Graph> frame_graph) :
+	WindowBase(frame_graph), ui_input_dlg(new uis::UIInputDlg(message, default_frame_graph))
+{
+	BOOST_ASSERT(ui_input_dlg);
 }
 
 InputDlgWindow::~InputDlgWindow() {

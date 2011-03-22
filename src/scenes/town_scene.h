@@ -6,7 +6,7 @@ namespace wten { namespace scenes {
 #pragma warning(disable: 4626)
 class TownScene : public SceneSelectorScene {
 public:
-	TownScene();
+	TownScene(boost::shared_ptr<const Graph> default_frame_graph);
 	~TownScene();
 };
 #pragma warning(pop)

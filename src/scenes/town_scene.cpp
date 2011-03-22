@@ -4,7 +4,7 @@ namespace wten { namespace scenes {
 
 namespace {
 
-std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<Scene> > > CreateSceneList(void) {
+std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<Scene> > > CreateSceneList(boost::shared_ptr<const Graph> default_frame_graph) {
 	// TODO 適切なシーンの生成
 	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<Scene> > > result;
 	const wchar_t *text_list[] = {
@@ -17,13 +17,13 @@ std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_pt
 		L"天龍の塔　付近"
 	};
 	boost::shared_ptr<Scene> scene_list[] = {
-		boost::shared_ptr<Scene>(new scenes::HotelScene()),
-		boost::shared_ptr<Scene>(new scenes::ShopScene()),
-		boost::shared_ptr<Scene>(new scenes::TempleScene()),
-		boost::shared_ptr<Scene>(new scenes::BarScene()),
-		boost::shared_ptr<Scene>(new scenes::GuildScene()),
-		boost::shared_ptr<Scene>(new scenes::CastleScene()),
-		boost::shared_ptr<Scene>(new scenes::TowerGateScene())
+		boost::shared_ptr<Scene>(new scenes::HotelScene(default_frame_graph)),
+		boost::shared_ptr<Scene>(new scenes::ShopScene(default_frame_graph)),
+		boost::shared_ptr<Scene>(new scenes::TempleScene(default_frame_graph)),
+		boost::shared_ptr<Scene>(new scenes::BarScene(default_frame_graph)),
+		boost::shared_ptr<Scene>(new scenes::GuildScene(default_frame_graph)),
+		boost::shared_ptr<Scene>(new scenes::CastleScene(default_frame_graph)),
+		boost::shared_ptr<Scene>(new scenes::TowerGateScene(default_frame_graph))
 	};
 	for(unsigned int i = 0; i < 7; i++) {
 		boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
@@ -40,9 +40,8 @@ boost::shared_ptr<const std::wstring> GetTownName(void) {
 
 } // anonymous
 
-
-TownScene::TownScene() :
-	SceneSelectorScene(GetTownName(), CreateSceneList())
+TownScene::TownScene(boost::shared_ptr<const Graph> default_frame_graph) :
+	SceneSelectorScene(default_frame_graph, GetTownName(), CreateSceneList(default_frame_graph))
 {
 }
 
