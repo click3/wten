@@ -191,6 +191,10 @@ boost::shared_ptr<UIBase> UIBox::GetInnerUI(void) const {
 	return inner_ui;
 }
 
+boost::shared_ptr<const Graph> UIBox::GetSrcGraph(void) const {
+	return src;
+}
+
 boost::optional<boost::shared_ptr<Error> > UIBox::Draw(void) {
 	return UIBase::Draw();
 }

@@ -19,6 +19,7 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Resize(void);
 	boost::optional<boost::shared_ptr<Error> > SetInnerUI(boost::shared_ptr<UIBase> ui);
 	boost::shared_ptr<UIBase> GetInnerUI(void) const;
+	boost::shared_ptr<const Graph> GetSrcGraph(void) const;
 	boost::optional<boost::shared_ptr<Error> > Draw(void);
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y);
 	utility::opt_error<unsigned int>::type CalcWidth() const;
