@@ -24,6 +24,9 @@ std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(const wchar_t
 }
 std::vector<boost::shared_ptr<const std::wstring> > CreateTextList(const char *text) {
 	BOOST_ASSERT(text != NULL);
+	if(*text == '\0') {
+		return CreateTextList(L"");
+	}
 	std::vector<wchar_t> buffer;
 	boost::optional<boost::shared_ptr<Error> > error = UTF8ToWChar(text, &buffer);
 	if(error) {
