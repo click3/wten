@@ -7,7 +7,7 @@ using namespace boost::assign;
 
 namespace {
 
-const unsigned int shop_page_size = 10;
+const unsigned int shop_page_size = 7;
 
 std::vector<boost::tuple<boost::shared_ptr<uis::UIBase>, boost::shared_ptr<void> > > CreateShopItemList(void) {
 	boost::shared_ptr<const ItemInfoList> item_info_list = ItemInfoList::GetCurrentInstance();
