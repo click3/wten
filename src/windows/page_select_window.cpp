@@ -149,14 +149,28 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type PageSelect
 					OPT_ERROR(selector_list[pager->GetIndex()]->Select(uis::UISelectorBase::MOVE_FOCUS_DOWN));
 					OPT_ERROR(OnSelectChange());
 					return boost::none;
-				case events::KeyEvent::KEY_RIGHT:
+				case events::KeyEvent::KEY_RIGHT: {
+					const unsigned int index = selector_list[pager->GetIndex()]->GetIndex();
 					OPT_ERROR(pager->Select(uis::UIPager::MOVE_TYPE_NEXT));
+					if(selector_list[pager->GetIndex()]->GetCount() > index) {
+						OPT_ERROR(selector_list[pager->GetIndex()]->Select(index));
+					} else {
+						OPT_ERROR(selector_list[pager->GetIndex()]->Select(selector_list[pager->GetIndex()]->GetCount() - 1));
+					}
 					OPT_ERROR(OnSelectChange());
 					return boost::none;
-				case events::KeyEvent::KEY_LEFT:
+				}
+				case events::KeyEvent::KEY_LEFT: {
+					const unsigned int index = selector_list[pager->GetIndex()]->GetIndex();
 					OPT_ERROR(pager->Select(uis::UIPager::MOVE_TYPE_PREV));
+					if(selector_list[pager->GetIndex()]->GetCount() > index) {
+						OPT_ERROR(selector_list[pager->GetIndex()]->Select(index));
+					} else {
+						OPT_ERROR(selector_list[pager->GetIndex()]->Select(selector_list[pager->GetIndex()]->GetCount() - 1));
+					}
 					OPT_ERROR(OnSelectChange());
 					return boost::none;
+				}
 				case events::KeyEvent::KEY_A:
 					OPT_ERROR(OnSelect());
 					return boost::none;
