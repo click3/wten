@@ -86,7 +86,7 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::SceneInitialize(void) {
 	OPT_ERROR(AddWindow(script_window, 0, 0, 0, 0));
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
 	OPT_ERROR(AddTextUI(title, uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
-	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
+	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, DEFAULT_SCREEN_SIZE_X, 130));
 	return StepInitialize();
 }
 

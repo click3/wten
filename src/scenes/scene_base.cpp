@@ -11,7 +11,7 @@ void SceneBase::Initialize(void) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
-	if(error = base_window->Resize(640, 480)) {
+	if(error = base_window->Resize(DEFAULT_SCREEN_SIZE_X, DEFAULT_SCREEN_SIZE_Y)) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}

@@ -67,7 +67,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_pt
 } // anonymous
 
 void CampWindow::Initialize(void) {
-	boost::optional<boost::shared_ptr<Error> > error = this->Resize(640, 480);
+	boost::optional<boost::shared_ptr<Error> > error = this->Resize(DEFAULT_SCREEN_SIZE_X, DEFAULT_SCREEN_SIZE_Y);
 	if(error) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
@@ -99,7 +99,7 @@ boost::optional<boost::shared_ptr<Error> > CampWindow::WindowInitialize(void) {
 	OPT_ERROR(AddBoxUI(uis::UIBase::MOVE_MODE_FREE_FREE, 10, 25, 620, 445));
 	boost::shared_ptr<std::wstring> title(new std::wstring(L"ƒLƒƒƒ“ƒv"));
 	OPT_ERROR(AddTextUI(title, uis::UIBase::MOVE_MODE_CENTER_FREE, 262, 9, 116, 32));
-	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, 640, 130));
+	OPT_ERROR(AddPTStatusUI(pt, uis::UIBase::MOVE_MODE_FREE_FREE, 0, 350, DEFAULT_SCREEN_SIZE_X, 130));
 
 	select_window.reset(new SelectWindow(CreateSelectList(pt, default_frame_graph), 1, default_frame_graph));
 	select_window->Move(50, 100);
@@ -114,7 +114,7 @@ boost::optional<boost::shared_ptr<Error> > CampWindow::OnForeground(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > CampWindow::Resize(unsigned int width, unsigned int height) {
-	if(width != 640 || height != 480) {
+	if(width != DEFAULT_SCREEN_SIZE_X || height != DEFAULT_SCREEN_SIZE_Y) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}
 	return boost::none;

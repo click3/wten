@@ -7,12 +7,12 @@ namespace windows {
 using namespace utility;
 
 WindowBase::WindowBase(boost::shared_ptr<const std::wstring> default_frame_filename) :
-	x(0),	y(0),	width(640),	height(480), default_frame_graph(new Graph(default_frame_filename))
+	x(0),	y(0),	width(DEFAULT_SCREEN_SIZE_X),	height(DEFAULT_SCREEN_SIZE_Y), default_frame_graph(new Graph(default_frame_filename))
 {
 }
 
 WindowBase::WindowBase(boost::shared_ptr<const Graph> default_frame_graph) :
-	x(0),	y(0),	width(640),	height(480), default_frame_graph(default_frame_graph)
+	x(0),	y(0),	width(DEFAULT_SCREEN_SIZE_X),	height(DEFAULT_SCREEN_SIZE_Y), default_frame_graph(default_frame_graph)
 {
 }
 

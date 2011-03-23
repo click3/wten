@@ -36,7 +36,7 @@ boost::shared_ptr<uis::UIStringBox> CreateItemDescriptionUI(boost::shared_ptr<Ch
 
 	boost::shared_ptr<uis::UIStringBox> result(new uis::UIStringBox(default_frame_graph, text));
 	BOOST_ASSERT(!result->Move(0, 350));
-	BOOST_ASSERT(!result->Resize(640, 130));
+	BOOST_ASSERT(!result->Resize(DEFAULT_SCREEN_SIZE_X, 130));
 	return result;
 }
 

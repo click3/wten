@@ -36,7 +36,7 @@ boost::optional<boost::shared_ptr<Error> > OpeningScene::SceneInitialize(void) {
 	next_scene.reset();
 	OPT_ERROR(AddWindow(script_window, 0, 0, 0, 0));
 	boost::shared_ptr<windows::WindowBase> op(new windows::OpeningWindow(default_frame_graph));
-	OPT_ERROR(AddWindow(op,0,0,640,480));
+	OPT_ERROR(AddWindow(op, 0, 0, DEFAULT_SCREEN_SIZE_X, DEFAULT_SCREEN_SIZE_Y));
 	return boost::none;
 }
 

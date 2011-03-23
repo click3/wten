@@ -82,7 +82,7 @@ void CampScene::CampDisabled(void) {
 
 boost::optional<boost::shared_ptr<Error> > CampScene::AddCampWindow(void) {
 	boost::shared_ptr<windows::CampWindow> camp(new windows::CampWindow(pt, default_frame_graph));
-	OPT_ERROR(AddWindow(camp, 0, 0, 640, 480));
+	OPT_ERROR(AddWindow(camp, 0, 0, DEFAULT_SCREEN_SIZE_X, DEFAULT_SCREEN_SIZE_Y));
 	return boost::none;
 }
 
