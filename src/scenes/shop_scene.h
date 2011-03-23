@@ -1,6 +1,7 @@
 
 namespace wten { namespace scenes {
 
+#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable: 4625)
 #pragma warning(disable: 4626)
@@ -24,9 +25,13 @@ private:
 	const boost::shared_ptr<const std::wstring> title;
 	const boost::shared_ptr<windows::ScriptWindow> script_window;
 	boost::shared_ptr<const ItemInfo> buy_item;
+	boost::shared_ptr<CharData> buy_character;
+	bool money_collect_flag;
+	unsigned char padding[3]; // unused
 	boost::shared_ptr<Scene> next_scene;
 };
 #pragma warning(pop)
+#pragma pack(pop)
 
 } // scenes
 
