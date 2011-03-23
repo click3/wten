@@ -131,6 +131,8 @@
 #include "events/on_select_change_event.h"
 #include "events/pop_window_event.h"
 #include "events/input_string_event.h"
+#include "events/item_buy_event.h"
+#include "events/item_buy_cancel_event.h"
 #include "window.h"
 #include "ui.h"
 #include "uis/ui_base.h"
