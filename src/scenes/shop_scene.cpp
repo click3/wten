@@ -51,6 +51,14 @@ void ShopScene::Initialize(void) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+	if(error = AddEvent(EVENT_TYPE_ITEM_BUY)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
+	if(error = AddEvent(EVENT_TYPE_ITEM_BUY_CANCEL)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
 }
 
 ShopScene::ShopScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
@@ -112,8 +120,12 @@ boost::optional<boost::shared_ptr<Error> > ShopScene::StepInitialize(void) {
 			OPT_ERROR(AddSelectorWindow(ui_list, 1, ui_list.size()-1, 50, 100, 540, 180));
 			break;
 		}
-		case BUY_LIST_STEP:
-			// TODO
+		case BUY_LIST_STEP: {
+			next_step = BUY_STEP;
+			boost::shared_ptr<windows::ShopItemListWindow> window(new windows::ShopItemListWindow(default_frame_graph));
+			OPT_ERROR(AddWindow(window, 50, 100, 540, 180));
+			break;
+		}
 		case BUY_STEP:
 			// TODO
 		case BUY_CHARACTER_SELECT_STEP:
@@ -157,6 +169,19 @@ boost::optional<boost::shared_ptr<Error> > ShopScene::OnEvent(boost::shared_ptr<
 				next_step = *boost::static_pointer_cast<STEP>(on_select_event->GetUserData());
 				SendNextStepEvent();
 			}
+			break;
+		}
+		case BUY_LIST_STEP: {
+			if(event->GetEventType() == EVENT_TYPE_ITEM_BUY_CANCEL) {
+				next_step = NORMAL_STEP;
+			} else if(event->GetEventType() == EVENT_TYPE_ITEM_BUY) {
+				boost::shared_ptr<events::ItemBuyEvent> item_buy_event = boost::static_pointer_cast<events::ItemBuyEvent>(event);
+				buy_item = item_buy_event->GetItemInfo();
+			} else {
+				BOOST_ASSERT(false);
+				next_step = NORMAL_STEP;
+			}
+			SendNextStepEvent();
 			break;
 		}
 	}

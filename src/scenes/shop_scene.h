@@ -23,6 +23,7 @@ private:
 	unsigned int current_step;
 	const boost::shared_ptr<const std::wstring> title;
 	const boost::shared_ptr<windows::ScriptWindow> script_window;
+	boost::shared_ptr<const ItemInfo> buy_item;
 	boost::shared_ptr<Scene> next_scene;
 };
 #pragma warning(pop)
