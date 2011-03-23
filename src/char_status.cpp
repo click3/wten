@@ -211,11 +211,18 @@ boost::optional<boost::shared_ptr<Error> > CharStatus::ChangeName(boost::shared_
 }
 
 void CharStatus::AddExp(unsigned int value) {
+	BOOST_ASSERT(UINT_MAX - exp >= value);
 	exp += value;
 }
 
 void CharStatus::AddTG(unsigned int value) {
+	BOOST_ASSERT(UINT_MAX - tg >= value);
 	tg += value;
+}
+
+void CharStatus::DecTG(unsigned int value) {
+	BOOST_ASSERT(tg >= value);
+	tg -= value;
 }
 
 boost::optional<boost::shared_ptr<Error> > CharStatus::AddItem(boost::shared_ptr<Item> item) {

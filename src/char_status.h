@@ -37,6 +37,7 @@ public:
 	boost::optional<boost::shared_ptr<Error> > ChangeName(boost::shared_ptr<const std::wstring> new_name);
 	void AddExp(unsigned int value);
 	void AddTG(unsigned int value);
+	void DecTG(unsigned int value);
 	boost::optional<boost::shared_ptr<Error> > AddItem(boost::shared_ptr<Item> item);
 	boost::optional<boost::shared_ptr<Error> > DeleteItem(boost::shared_ptr<Item> item);
 	boost::optional<boost::shared_ptr<Error> > LevelDrain(unsigned int value);
