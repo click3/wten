@@ -131,8 +131,8 @@ boost::optional<boost::shared_ptr<Error> > ShopScene::StepInitialize(void) {
 		}
 		case BUY_LIST_STEP: {
 			next_step = BUY_CHARACTER_SELECT_STEP;
-			boost::shared_ptr<windows::ShopItemListWindow> window(new windows::ShopItemListWindow(default_frame_graph));
-			OPT_ERROR(AddWindow(window, 50, 100, 540, 180));
+			boost::shared_ptr<windows::ShopItemListWindow> window(new windows::ShopItemListWindow(default_frame_graph, 10));
+			OPT_ERROR(AddWindow(window, 50, 80, 540, 240));
 			break;
 		}
 		case BUY_CHARACTER_SELECT_STEP: {

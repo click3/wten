@@ -7,8 +7,6 @@ using namespace boost::assign;
 
 namespace {
 
-const unsigned int shop_page_size = 7;
-
 std::vector<boost::tuple<boost::shared_ptr<uis::UIBase>, boost::shared_ptr<void> > > CreateShopItemList(void) {
 	boost::shared_ptr<const ItemInfoList> item_info_list = ItemInfoList::GetCurrentInstance();
 	BOOST_ASSERT(item_info_list);
@@ -33,13 +31,13 @@ void ShopItemListWindow::Initialize(void) {
 	}
 }
 
-ShopItemListWindow::ShopItemListWindow(boost::shared_ptr<const std::wstring> default_frame_filename) :
+ShopItemListWindow::ShopItemListWindow(boost::shared_ptr<const std::wstring> default_frame_filename, unsigned int shop_page_size) :
 	PageSelectWindow(CreateShopItemList(), shop_page_size, default_frame_filename), select_close(true)
 {
 	Initialize();
 }
 
-ShopItemListWindow::ShopItemListWindow(boost::shared_ptr<const Graph> default_frame_graph) :
+ShopItemListWindow::ShopItemListWindow(boost::shared_ptr<const Graph> default_frame_graph, unsigned int shop_page_size) :
 	PageSelectWindow(CreateShopItemList(), shop_page_size, default_frame_graph), select_close(true)
 {
 	Initialize();

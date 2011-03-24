@@ -11,8 +11,8 @@ class ShopItemListWindow : public PageSelectWindow {
 private:
 	void Initialize(void);
 public:
-	ShopItemListWindow(boost::shared_ptr<const std::wstring> default_frame_filename);
-	ShopItemListWindow(boost::shared_ptr<const Graph> default_frame_graph);
+	ShopItemListWindow(boost::shared_ptr<const std::wstring> default_frame_filename, unsigned int shop_page_size);
+	ShopItemListWindow(boost::shared_ptr<const Graph> default_frame_graph, unsigned int shop_page_size);
 	~ShopItemListWindow(void);
 	bool IsSelectClose(void) const;
 	void SetSelectClose(bool flag);
