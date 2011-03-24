@@ -191,8 +191,8 @@ boost::optional<boost::shared_ptr<Error> > UIPager::Resize(unsigned int width, u
 	OPT_UINT(page_width, CalcPageWidth());
 	OPT_UINT(page_height, CalcPageHeight());
 	
-	const unsigned int page_x = (width - page_width) / 2;
-	const unsigned int page_y = (height - page_height) / 2;
+	const unsigned int page_x = this->x + (width - min_width) / 2;
+	const unsigned int page_y = this->y + (height - min_height) / 2;
 	OPT_ERROR(page_list[page_index]->Move(page_x, page_y));
 
 	const unsigned int pager_height = min_height - page_height;
@@ -203,23 +203,23 @@ boost::optional<boost::shared_ptr<Error> > UIPager::Resize(unsigned int width, u
 
 	boost::shared_ptr<UIImage> left_arrow = (page_index == 0 ? prev_arrow_disable : prev_arrow_enable);
 	const unsigned int left_arrow_height = GetUIHeight(left_arrow);
-	const unsigned int left_arrow_x = (width - min_width) / 2;
-	const unsigned int left_arrow_y  = height - (height - min_height) / 2 - left_arrow_height + (pager_height - left_arrow_height) / 2;
+	const unsigned int left_arrow_x = this->x + (width - min_width) / 2;
+	const unsigned int left_arrow_y = this->y + (height - min_height) / 2 + page_height + (pager_height - left_arrow_height) / 2;
 	OPT_ERROR(left_arrow->Move(left_arrow_x, left_arrow_y));
 	left_arrow->SetVisible(true);
 
 	boost::shared_ptr<UIImage> right_arrow = (page_index == page_list.size() - 1 ? next_arrow_disable : next_arrow_enable);
 	const unsigned int right_arrow_height = GetUIHeight(right_arrow);
 	const unsigned int right_arrow_width = GetUIWidth(right_arrow);
-	const unsigned int right_arrow_x = width - (width - min_width) / 2 - right_arrow_width;
-	const unsigned int right_arrow_y  = height - (height - min_height) / 2 - right_arrow_height + (pager_height - right_arrow_height) / 2;
+	const unsigned int right_arrow_x = this->x + width - (width - min_width) / 2 - right_arrow_width;
+	const unsigned int right_arrow_y = this->y + (height - min_height) / 2 + page_height + (pager_height - right_arrow_height) / 2;
 	OPT_ERROR(right_arrow->Move(right_arrow_x, right_arrow_y));
 	right_arrow->SetVisible(true);
 
 	const unsigned int label_height = GetUIHeight(pager_label);
 	const unsigned int label_width = GetUIWidth(pager_label);
-	const unsigned int label_x = (width - label_width) / 2;
-	const unsigned int label_y = height - (height - min_height) / 2 - label_height + (pager_height - label_height) / 2;
+	const unsigned int label_x = this->x + (width - label_width) / 2;
+	const unsigned int label_y = this->y + (height - min_height) / 2 + page_height + (pager_height - label_height) / 2;
 	OPT_ERROR(pager_label->Move(label_x, label_y));
 	return boost::none;
 }
