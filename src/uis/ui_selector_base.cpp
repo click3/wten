@@ -183,12 +183,12 @@ boost::optional<boost::shared_ptr<Error> > UISelectorBase::Resize(unsigned int w
 		for(unsigned int i = 0; i < line_size; i++) {
 			const unsigned int index = line_index * line_size + i;
 			const unsigned int select_height = GetUIHeight(select_list[index]);
-			const unsigned int text_x = current_x + arrow_width;
-			const unsigned int text_y = current_y + (arrow_height > select_height ? (arrow_height - select_height) / 2 : 0);
+			const unsigned int text_x = this->x + current_x + arrow_width;
+			const unsigned int text_y = this->y + current_y + (arrow_height > select_height ? (arrow_height - select_height) / 2 : 0);
 			OPT_ERROR(select_list[index]->Move(text_x, text_y));
 			if(index == this->index) {
-				const unsigned int arrow_x = current_x;
-				const unsigned int arrow_y = current_y + (select_height > arrow_height ? (select_height - arrow_height) / 2 : 0);
+				const unsigned int arrow_x = this->x + current_x;
+				const unsigned int arrow_y = this->y + current_y + (select_height > arrow_height ? (select_height - arrow_height) / 2 : 0);
 				OPT_ERROR(arrow->Move(arrow_x, arrow_y));
 			}
 			current_y += std::max(select_height, arrow_height);
