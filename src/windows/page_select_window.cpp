@@ -112,6 +112,13 @@ boost::optional<boost::shared_ptr<Error> > PageSelectWindow::WindowInitialize(vo
 	OPT_ERROR(WindowBase::WindowInitialize());
 	OPT_ERROR(AddUI(frame));
 	OPT_ERROR(AddUI(pager));
+	unsigned int pager_x;
+	OPT_UINT(pager_x, frame->CalcWidth());
+	pager_x /= 2;
+	unsigned int pager_y;
+	OPT_UINT(pager_y, frame->CalcHeight());
+	pager_y /= 2;
+	OPT_ERROR(pager->Move(pager_x, pager_y));
 	return boost::none;
 }
 
@@ -129,8 +136,12 @@ boost::optional<boost::shared_ptr<Error> > PageSelectWindow::Resize() {
 
 boost::optional<boost::shared_ptr<Error> > PageSelectWindow::Resize(unsigned int width, unsigned int height) {
 	OPT_ERROR(WindowBase::Resize(width, height));
-	OPT_ERROR(pager->Resize(width, height));
 	OPT_ERROR(frame->Resize(width, height));
+	unsigned int frame_width;
+	OPT_UINT(frame_width, frame->CalcWidth());
+	unsigned int frame_height;
+	OPT_UINT(frame_height, frame->CalcHeight());
+	OPT_ERROR(pager->Resize(width - frame_width, height - frame_height));
 	return boost::none;
 }
 
