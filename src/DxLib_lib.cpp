@@ -88,10 +88,12 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ClearDrawScreen() {
 
 //static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ScreenFlip() {
+	::ScreenFlip();
+	/* SetAlwaysRunFlag‚ªTRUE‚ÌAÅ¬‰»’†‚Í-1‚ª‹A‚é‚½‚ß–³‹‚·‚é
 	const int result = ::ScreenFlip();
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
-	}
+	}*/
 	return boost::none;
 }
 
