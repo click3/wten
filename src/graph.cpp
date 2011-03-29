@@ -3,122 +3,160 @@
 namespace wten {
 
 using namespace utility;
+using namespace boost::assign;
 
 namespace {
 
-int GetDxLibGraph(const DxLibGraphHandle& handle) {
-	return reinterpret_cast<int>(handle.get());
-}
-void CloseDxLibGraphHandle(const void* handle) {
-	const int result = ::DeleteGraph(reinterpret_cast<int>(handle));
-	BOOST_ASSERT(result == 0);
-}
-
-DxLibGraphHandle IntToDxLibGraphHandle(int handle) {
-	return DxLibGraphHandle(reinterpret_cast<void*>(handle), &CloseDxLibGraphHandle);
-}
-
-boost::tuple<unsigned int, unsigned int> GetGraphSize(DxLibGraphHandle handle) {
-	BOOST_ASSERT(handle);
-	int x,y;
-	const int result = ::GetGraphSize(GetDxLibGraph(handle), &x, &y);
-	BOOST_ASSERT(result != -1);
-	BOOST_ASSERT(x >= 0);
-	BOOST_ASSERT(y >= 0);
-	return boost::make_tuple(static_cast<unsigned int>(x), static_cast<unsigned int>(y));
+boost::tuple<unsigned int, unsigned int> GetGraphSize(const DxLibGraphHandle handle) {
+	opt_error<boost::tuple<unsigned int, unsigned int> >::type opt_size = DxLibWrapper::GetGraphSize(handle);
+	if(opt_size.which() == 0) {
+		boost::shared_ptr<Error> error = boost::get<boost::shared_ptr<Error> >(opt_size);
+		error->Abort();
+		BOOST_ASSERT(false);
+		return 0;
+	}
+	return boost::get<boost::tuple<unsigned int, unsigned int> >(opt_size);
 }
 
-unsigned int GetGraphWidth(DxLibGraphHandle handle) {
+unsigned int GetGraphWidth(const DxLibGraphHandle handle) {
 	return GetGraphSize(handle).get<0>();
 }
 
-unsigned int GetGraphHeight(DxLibGraphHandle handle) {
+unsigned int GetGraphHeight(const DxLibGraphHandle handle) {
 	return GetGraphSize(handle).get<1>();
-}
-
-DxLibGraphHandle GetGraphHandle(boost::shared_ptr<const std::wstring> filename) {
-	BOOST_ASSERT(filename);
-	BOOST_ASSERT(!filename->empty());
-	const int handle = ::LoadGraph(filename->c_str());
-
-	BOOST_ASSERT(handle != -1);
-	DxLibGraphHandle result = IntToDxLibGraphHandle(handle);
-	return result;
 }
 
 } // anonymous
 
-Graph::Graph(DxLibGraphHandle handle) :
-	inner_ptr(handle), width(GetGraphWidth(inner_ptr)), height(GetGraphHeight(inner_ptr))
+GraphImpl::GraphImpl(boost::shared_ptr<const std::wstring> filename) :
+	filename(filename), source_filename(), x1(0), y1(0), x2(0), y2(0)
 {
-	BOOST_ASSERT(handle);
-	BOOST_ASSERT(width > 0);
-	BOOST_ASSERT(height > 0);
+	BOOST_ASSERT(filename);
+	BOOST_ASSERT(!filename->empty());
+	BOOST_ASSERT(!source_filename);
+}
+
+GraphImpl::GraphImpl(boost::shared_ptr<const std::wstring> source_filename, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) :
+	filename(), source_filename(source_filename), x1(x1), y1(y1), x2(x2), y2(y2)
+{
+	BOOST_ASSERT(!filename);
+	BOOST_ASSERT(source_filename);
+}
+
+GraphImpl::GraphImpl(const GraphImpl& obj) :
+	filename(obj.filename), source_filename(obj.source_filename), x1(obj.x1), y1(obj.y1), x2(obj.x2), y2(obj.y2)
+{
+	if(filename) {
+		BOOST_ASSERT(!filename->empty());
+		BOOST_ASSERT(!source_filename);
+	} else {
+		BOOST_ASSERT(source_filename);
+	}
+}
+
+GraphImpl::~GraphImpl(void) {
+	if(handle) {
+		boost::optional<boost::shared_ptr<Error> > error = DxLibWrapper::DeleteGraph(handle.get());
+		if(error) {
+			error.get()->Abort();
+			BOOST_ASSERT(false);
+		}
+	}
+}
+
+std::size_t GraphImpl::GetHash(void) const {
+	boost::hash<std::wstring> hasher;
+	wchar_t text_char[1024];
+	WSPRINTF(text_char, L"%s\n%s\t%d\t%d\t%d\t%d", (filename ? filename->c_str() : L""), (source_filename ? source_filename->c_str() : L""),  x1, y1, x2, y2);
+	return hasher(text_char);
+}
+
+void GraphImpl::ClearHandle(void) {
+	handle = boost::none;
+}
+
+boost::shared_ptr<const std::wstring> GraphImpl::GetFilename(void) const {
+	return filename;
+}
+
+DxLibGraphHandle GraphImpl::GetHandle(void) const {
+	if(!handle) {
+		const_cast<GraphImpl*>(this)->handle = const_cast<GraphImpl*>(this)->LoadGraph();
+	}
+	return handle.get();
+}
+
+unsigned int GraphImpl::GetWidth(void) const {
+	return GetGraphWidth(GetHandle());
+}
+
+unsigned int GraphImpl::GetHeight(void) const {
+	return GetGraphHeight(GetHandle());
+}
+
+bool GraphImpl::operator==(const GraphImpl &obj) const {
+	return this->filename == obj.filename && 
+		this->source_filename == obj.source_filename &&
+		this->x1 == obj.x1 &&
+		this->y1 == obj.y1 &&
+		this->x2 == obj.x2 &&
+		this->y2 == obj.y2;
+}
+
+DxLibGraphHandle GraphImpl::LoadGraph() {
+	opt_error<DxLibGraphHandle>::type opt_handle;
+	if(filename) {
+		opt_handle = DxLibWrapper::LoadGraph(filename);
+	} else if(source_filename) {
+		boost::flyweight<GraphImpl> source(source_filename);
+		opt_handle = DxLibWrapper::DerivationGraph(source.get().GetHandle(), x1, y1, x2, y2);
+	} else {
+		opt_handle = CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
+	}
+	if(opt_handle.which() == 0) {
+		boost::shared_ptr<Error> error = boost::get<boost::shared_ptr<Error> >(opt_handle);
+		error->Abort();
+		BOOST_ASSERT(false);
+	}
+	return boost::get<DxLibGraphHandle>(opt_handle);
+}
+
+
+std::size_t hash_value(const GraphImpl &obj) {
+	return obj.GetHash();
+}
+
+Graph::Graph(boost::shared_ptr<const std::wstring> source_filename, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) :
+	boost::flyweight<GraphImpl>(source_filename, x1, y1, x2, y2)
+{
 }
 
 Graph::Graph(boost::shared_ptr<const std::wstring> filename) :
-	inner_ptr(GetGraphHandle(filename)), width(GetGraphWidth(inner_ptr)), height(GetGraphHeight(inner_ptr))
+	boost::flyweight<GraphImpl>(filename)
 {
-	BOOST_ASSERT(inner_ptr);
-	BOOST_ASSERT(width > 0);
-	BOOST_ASSERT(height > 0);
 }
 
 unsigned int Graph::GetWidth() const {
-	return width;
+	return get().GetWidth();
 }
-
 unsigned int Graph::GetHeight() const {
-	return height;
+	return get().GetHeight();
 }
 
 boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned int y) const {
-	BOOST_ASSERT(inner_ptr);
-	BOOST_ASSERT(x <= INT_MAX);
-	BOOST_ASSERT(y <= INT_MAX);
-	const int result = ::DrawGraph(static_cast<int>(x), static_cast<int>(y), GetDxLibGraph(inner_ptr), TRUE);
-	if(result == -1) {
-		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
-	}
-	return boost::none;
+	return DxLibWrapper::DrawGraph(x, y, get().GetHandle());
 }
 
 boost::optional<boost::shared_ptr<Error> > Graph::Draw(unsigned int x, unsigned int y, bool turn, double rate, double angle, unsigned int center_x, unsigned int center_y) const {
-	BOOST_ASSERT(inner_ptr);
-	BOOST_ASSERT(x <= INT_MAX);
-	BOOST_ASSERT(y <= INT_MAX);
-	BOOST_ASSERT(center_x <= width);
-	BOOST_ASSERT(center_y <= height);
-	const int result = ::DrawRotaGraph2(static_cast<int>(x), static_cast<int>(y), static_cast<int>(center_x), static_cast<int>(center_y), rate, angle, GetDxLibGraph(inner_ptr), TRUE, (turn ? TRUE : FALSE));
-	if(result == -1) {
-		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
-	}
-	return boost::none;
+	return DxLibWrapper::DrawRotaGraph2(x, y, turn, rate, angle, center_x, center_y, get().GetHandle());
 }
 
 boost::optional<boost::shared_ptr<Error> > Graph::DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const {
-	BOOST_ASSERT(inner_ptr);
-	BOOST_ASSERT(x + w <= INT_MAX);
-	BOOST_ASSERT(y + h <= INT_MAX);
-	const int result = ::DrawExtendGraph(static_cast<int>(x), static_cast<int>(y), static_cast<int>(x + w), static_cast<int>(y + h), GetDxLibGraph(inner_ptr), TRUE);
-	if(result == -1) {
-		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
-	}
-	return boost::none;
+	return DxLibWrapper::DrawExtendGraph(x, y, w, h, get().GetHandle());
 }
 
-opt_error<boost::shared_ptr<Graph> >::type Graph::Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const {
-	BOOST_ASSERT(inner_ptr);
-	BOOST_ASSERT(x <= INT_MAX);
-	BOOST_ASSERT(y <= INT_MAX);
-	BOOST_ASSERT(w <= INT_MAX);
-	BOOST_ASSERT(h <= INT_MAX);
-	const int handle = ::DerivationGraph(static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h), GetDxLibGraph(inner_ptr));
-	if(handle == -1) {
-		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
-	}
-	return boost::shared_ptr<Graph>(new Graph(IntToDxLibGraphHandle(handle)));
+utility::opt_error<boost::shared_ptr<Graph> >::type Graph::Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const {
+	return boost::shared_ptr<Graph>(new Graph(get().GetFilename(), x, y, w, h));
 }
 
 } // wten
-

@@ -67,6 +67,7 @@
 #include "boost/bind.hpp"
 #include "boost/format.hpp"
 #include "boost/lexical_cast.hpp"
+#include "boost/flyweight.hpp"
 //文字コードエラーするため
 #pragma warning(push)
 #pragma warning(disable: 4819)

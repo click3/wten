@@ -121,7 +121,9 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
 
 //static
 opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const std::wstring> text) {
-	BOOST_ASSERT(text);
+	if(!text) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	if(text->empty()) {
 		return 0;
 	}
@@ -134,12 +136,18 @@ opt_error<unsigned int>::type DxLibWrapper::GetFontWidth(boost::shared_ptr<const
 
 //static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawString(unsigned int x, unsigned int y, boost::shared_ptr<const std::wstring> text, Color color) {
-	BOOST_ASSERT(text);
+	if(x > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(!text) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	if(text->empty()) {
 		return boost::none;
 	}
-	BOOST_ASSERT(x <= INT_MAX);
-	BOOST_ASSERT(y <= INT_MAX);
 	const int result = ::DrawString(static_cast<int>(x), static_cast<int>(y), text->c_str(), color.GetColorCode());
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
@@ -164,10 +172,16 @@ unsigned int DxLibWrapper::GetRand(unsigned int max) {
 
 //static
 opt_error<boost::shared_ptr<std::wstring> >::type DxLibWrapper::KeyInputString(unsigned int x, unsigned int y, unsigned int max) {
+	if(x > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(max > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	wchar_t buffer[1024];
-	BOOST_ASSERT(x <= INT_MAX);
-	BOOST_ASSERT(y <= INT_MAX);
-	BOOST_ASSERT(max <= INT_MAX);
 	const int result = ::KeyInputString(static_cast<int>(x), static_cast<int>(y), static_cast<int>(max), buffer, FALSE);
 	if(result != 1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
@@ -177,11 +191,133 @@ opt_error<boost::shared_ptr<std::wstring> >::type DxLibWrapper::KeyInputString(u
 
 //static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawBox(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, utility::Color color) {
-	BOOST_ASSERT(x1 <= INT_MAX);
-	BOOST_ASSERT(y1 <= INT_MAX);
-	BOOST_ASSERT(x2 <= INT_MAX);
-	BOOST_ASSERT(y2 <= INT_MAX);
+	if(x1 > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y1 > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(x2 > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y2 > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	const int result = ::DrawBox(static_cast<int>(x1), static_cast<int>(y1), static_cast<int>(x2), static_cast<int>(y2), color.GetColorCode(), TRUE);
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
+//static
+opt_error<DxLibGraphHandle>::type DxLibWrapper::LoadGraph(boost::shared_ptr<const std::wstring> filename) {
+	const int result = ::LoadGraph(filename->c_str());
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return result;
+}
+
+//static
+opt_error<DxLibGraphHandle>::type DxLibWrapper::DerivationGraph(const DxLibGraphHandle handle, unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
+	if(x > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(w > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(h > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	const int result = ::DerivationGraph(static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h), handle);
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return result;
+}
+
+//static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DeleteGraph(const DxLibGraphHandle handle) {
+	const int result = ::DeleteGraph(handle);
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
+//static
+opt_error<boost::tuple<unsigned int, unsigned int> >::type DxLibWrapper::GetGraphSize(const DxLibGraphHandle handle) {
+	int x;
+	int y;
+	const int result = ::GetGraphSize(handle, &x, &y);
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	if(x < 0) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	if(y < 0) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::make_tuple(static_cast<unsigned int>(x), static_cast<unsigned int>(y));
+}
+
+//static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawGraph(unsigned int x, unsigned int y, const DxLibGraphHandle handle) {
+	if(x > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	const int result = ::DrawGraph(static_cast<int>(x), static_cast<int>(y), handle, TRUE);
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
+
+}
+
+//static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawExtendGraph(unsigned int x, unsigned int y, unsigned int w, unsigned int h, const DxLibGraphHandle handle) {
+	if(x > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(x + w > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y + h > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	const int result = ::DrawExtendGraph(static_cast<int>(x), static_cast<int>(y), static_cast<int>(x + w), static_cast<int>(y + h), handle, TRUE);
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
+//static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawRotaGraph2(unsigned int x, unsigned int y, bool turn, double rate, double angle, unsigned int center_x, unsigned int center_y, const DxLibGraphHandle handle) {
+	if(x > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(center_x > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(center_y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	const int result = ::DrawRotaGraph2(static_cast<int>(x), static_cast<int>(y), static_cast<int>(center_x), static_cast<int>(center_y), rate, angle, handle, TRUE, (turn ? TRUE : FALSE));
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
