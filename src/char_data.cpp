@@ -92,9 +92,17 @@ unsigned int CharData::GetThiefSkill(void) const {
 	return thief_skill;
 }
 
-void CharData::DecHp(unsigned int value) {
+void CharData::DecHP(unsigned int value) {
 	hp -= value;
 	// TODO ó‘Ô•Ï‰»‚Æ‚©Ž€–Sˆ—‚Æ‚©
+}
+
+void CharData::HealHP(unsigned int value) {
+	if(!GetCondition()->IsAlive()) {
+		return;
+	}
+	const unsigned int max_hp = GetStatus()->GetHP();
+	hp = std::max(hp + value, max_hp);
 }
 
 void CharData::AddStr(unsigned int value) {

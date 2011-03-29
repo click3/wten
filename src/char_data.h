@@ -27,7 +27,8 @@ public:
 	std::vector<unsigned int> GetPriestMP(void) const;
 	int GetAC(void) const;
 	unsigned int GetThiefSkill(void) const;
-	void DecHp(unsigned int value);
+	void DecHP(unsigned int value);
+	void HealHP(unsigned int value);
 	void AddStr(unsigned int value);
 	void AddIQ(unsigned int value);
 	void AddPie(unsigned int value);
