@@ -2,6 +2,9 @@
 
 namespace wten {
 
+using namespace utility;
+using namespace boost::assign;
+
 PTData::PTData(boost::shared_ptr<PTCondition> condition, const std::vector<boost::shared_ptr<CharData> >& characters,
 	bool dungeon, unsigned int floor, DIRECTION dir, unsigned int x, unsigned int y)
 :
@@ -296,6 +299,35 @@ boost::optional<boost::shared_ptr<Error> > PTData::Turn(DIRECTION dir) {
 	this->dir = dir;
 	// TODO êFÅX
 	return boost::none;
+}
+
+opt_error<std::vector<boost::optional<std::vector<boost::optional<bool> > > > >::type PTData::Hotel(unsigned int bed_lv) {
+	if(bed_lv > BED_LEVEL_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	std::vector<boost::optional<std::vector<boost::optional<bool> > > > result;
+	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+		if(!character->GetCondition()->IsAlive()) {
+			continue;
+		}
+		OPT_ERROR(HotelHeal(character, bed_lv));
+		opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type opt_row = CheckLevelUP(character, bed_lv);
+		if(opt_row.which() == 0) {
+			return boost::get<boost::shared_ptr<Error> >(opt_row);
+		}
+		result.push_back(boost::get<boost::optional<std::vector<boost::optional<bool> > > >(opt_row));
+	}
+	return result;
+}
+
+boost::optional<boost::shared_ptr<Error> > PTData::HotelHeal(boost::shared_ptr<CharData> character, unsigned int bed_lv) {
+	const unsigned int heal_hp = (bed_lv + 1) * 50;
+	character->HealHP(heal_hp);
+	return boost::none;
+}
+
+opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type PTData::CheckLevelUP(boost::shared_ptr<CharData> character, unsigned int bed_lv) {
+	return character->GetStatus()->CheckLevelUP(bed_lv);
 }
 
 } // wten
