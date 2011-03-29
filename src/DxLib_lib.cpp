@@ -38,7 +38,7 @@ DxLibWrapper::DxLibWrapper(bool window_mode, boost::shared_ptr<const std::wstrin
 	const int result = DxLib_Init();
 	BOOST_ASSERT(result != -1);
 }
-DxLibWrapper::~DxLibWrapper() {
+DxLibWrapper::~DxLibWrapper(void) {
 	DxLib_End();
 }
 
@@ -72,13 +72,13 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::SetDrawScreen(SCREEN_MO
 }
 
 //static
-bool DxLibWrapper::ProcessMessage() {
+bool DxLibWrapper::ProcessMessage(void) {
 	const int result = ::ProcessMessage();
 	return (result != -1);
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ClearDrawScreen() {
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ClearDrawScreen(void) {
 	const int result = ::ClearDrawScreen();
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
@@ -87,7 +87,7 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ClearDrawScreen() {
 }
 
 //static
-boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ScreenFlip() {
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ScreenFlip(void) {
 	::ScreenFlip();
 	/* SetAlwaysRunFlagがTRUEの時、最小化中は-1が帰るため無視する
 	const int result = ::ScreenFlip();
@@ -98,20 +98,24 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::ScreenFlip() {
 }
 
 //static
-opt_error<boost::tuple<unsigned int,unsigned int> >::type DxLibWrapper::GetWindowSize() {
+opt_error<boost::tuple<unsigned int,unsigned int> >::type DxLibWrapper::GetDrawScreenSize(void) {
 	int width;
 	int height;
-	// 最小化やフルスクリーン時に0が帰るようになるため、別の方法で取得
-	//const int result = ::GetWindowSize(&width, &height);
 	const int result = ::GetDrawScreenSize(&width, &height);
-	if(result == -1 || width < 0 || height < 0) {
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	if(width < 0) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	if(height < 0) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
 	}
 	return boost::make_tuple<unsigned int,unsigned int>(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
 }
 
 //static
-opt_error<unsigned int>::type DxLibWrapper::GetFontHeight() {
+opt_error<unsigned int>::type DxLibWrapper::GetFontHeight(void) {
 	const int result = ::GetFontSize();
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
@@ -211,7 +215,22 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawBox(unsigned int x1
 }
 
 //static
+boost::optional<boost::shared_ptr<Error> > DxLibWrapper::InitGraph(void) {
+	const int result = ::InitGraph();
+	if(result == -1) {
+		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
+	}
+	return boost::none;
+}
+
+//static
 opt_error<DxLibGraphHandle>::type DxLibWrapper::LoadGraph(boost::shared_ptr<const std::wstring> filename) {
+	if(!filename) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(filename->empty()) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	const int result = ::LoadGraph(filename->c_str());
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
@@ -221,6 +240,9 @@ opt_error<DxLibGraphHandle>::type DxLibWrapper::LoadGraph(boost::shared_ptr<cons
 
 //static
 opt_error<DxLibGraphHandle>::type DxLibWrapper::DerivationGraph(const DxLibGraphHandle handle, unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
+	if(handle == -1) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	if(x > INT_MAX) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
@@ -242,6 +264,9 @@ opt_error<DxLibGraphHandle>::type DxLibWrapper::DerivationGraph(const DxLibGraph
 
 //static
 boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DeleteGraph(const DxLibGraphHandle handle) {
+	if(handle == -1) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	const int result = ::DeleteGraph(handle);
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
@@ -251,6 +276,9 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DeleteGraph(const DxLib
 
 //static
 opt_error<boost::tuple<unsigned int, unsigned int> >::type DxLibWrapper::GetGraphSize(const DxLibGraphHandle handle) {
+	if(handle == -1) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	int x;
 	int y;
 	const int result = ::GetGraphSize(handle, &x, &y);
@@ -272,6 +300,9 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawGraph(unsigned int 
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
 	if(y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(handle == -1) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
 	const int result = ::DrawGraph(static_cast<int>(x), static_cast<int>(y), handle, TRUE);
@@ -296,6 +327,9 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawExtendGraph(unsigne
 	if(y + h > INT_MAX) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
+	if(handle == -1) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
 	const int result = ::DrawExtendGraph(static_cast<int>(x), static_cast<int>(y), static_cast<int>(x + w), static_cast<int>(y + h), handle, TRUE);
 	if(result == -1) {
 		return CREATE_ERROR(ERROR_CODE_DXLIB_INTERNAL_ERROR);
@@ -315,6 +349,9 @@ boost::optional<boost::shared_ptr<Error> > DxLibWrapper::DrawRotaGraph2(unsigned
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
 	if(center_y > INT_MAX) {
+		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
+	}
+	if(handle == -1) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
 	const int result = ::DrawRotaGraph2(static_cast<int>(x), static_cast<int>(y), static_cast<int>(center_x), static_cast<int>(center_y), rate, angle, handle, TRUE, (turn ? TRUE : FALSE));

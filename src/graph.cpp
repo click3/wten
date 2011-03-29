@@ -168,7 +168,7 @@ utility::opt_error<boost::shared_ptr<Graph> >::type Graph::Derivation(unsigned i
 
 //static
 boost::optional<boost::shared_ptr<Error> > Graph::AllGraphReload(void) {
-	::InitGraph();
+	OPT_ERROR(DxLibWrapper::InitGraph());
 	BOOST_FOREACH(GraphImpl *handle, graph_list) {
 		BOOST_ASSERT(handle);
 		handle->ClearHandle();

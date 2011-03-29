@@ -21,14 +21,14 @@ CampBaseWindow::~CampBaseWindow() {
 boost::optional<boost::shared_ptr<Error> > CampBaseWindow::WindowInitialize(void) {
 	OPT_ERROR(WindowBase::WindowInitialize());
 	unsigned int width, height;
-	OPT_PAIR_UINT(width, height, DxLibWrapper::GetWindowSize());
+	OPT_PAIR_UINT(width, height, DxLibWrapper::GetDrawScreenSize());
 	OPT_ERROR(Resize(width, height));
 	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > CampBaseWindow::Resize(unsigned int width, unsigned int height) {
 	unsigned int w, h;
-	OPT_PAIR_UINT(w, h, DxLibWrapper::GetWindowSize());
+	OPT_PAIR_UINT(w, h, DxLibWrapper::GetDrawScreenSize());
 	if(w > width) {
 		return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 	}

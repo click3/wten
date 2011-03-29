@@ -51,7 +51,7 @@ boost::optional<boost::shared_ptr<Error> > WindowBase::Resize(unsigned int width
 boost::optional<boost::shared_ptr<Error> > WindowBase::Draw(void) {
 	unsigned int max_width;
 	unsigned int max_height;
-	OPT_PAIR_UINT(max_width, max_height, DxLibWrapper::GetWindowSize());
+	OPT_PAIR_UINT(max_width, max_height, DxLibWrapper::GetDrawScreenSize());
 
 	if(x+width > max_width || y+height > max_height) {
 		return CREATE_ERROR(ERROR_CODE_OUTSIDE_RANGE);

@@ -43,7 +43,11 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 }
 
 void callback(void) {
-	Graph::AllGraphReload();
+	boost::optional<boost::shared_ptr<Error> > error = Graph::AllGraphReload();
+	if(error) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
 }
 
 } // anonymous
