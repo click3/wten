@@ -51,6 +51,7 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int x, unsigned int y, bool turn, double rate, double angle, unsigned int center_x, unsigned int center_y) const;
 	boost::optional<boost::shared_ptr<Error> > DrawEx(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const;
 	utility::opt_error<boost::shared_ptr<Graph> >::type Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const;
+	static boost::optional<boost::shared_ptr<Error> > AllGraphReload(void);
 };
 #pragma warning(pop)
 #pragma pack(pop)

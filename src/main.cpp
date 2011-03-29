@@ -17,7 +17,8 @@ boost::shared_ptr<CharData> CreateDummyCharData(const wchar_t *char_name) {
 	unsigned int lv = 1;
 	unsigned int hp = job->CalcMaxHP(lv, 1);
 	unsigned int str,iq,pie,vit,agi,luk,tg,exp;
-	str = iq = pie = vit = agi = luk = tg = exp = 0;
+	str = iq = pie = vit = agi = luk = exp = 0;
+	tg = 123456789;
 	std::vector<boost::shared_ptr<Item> > item_list;
 	std::vector<boost::tuple<boost::shared_ptr<const Job>, boost::shared_ptr<const actions::SpellBase> > > spell_list;
 	boost::shared_ptr<CharStatus> char_status(new CharStatus(name, job, CharStatus::ALIGNMENT_GOOD, lv, hp, str, iq, pie, vit, agi, luk, tg, exp, item_list, spell_list));
@@ -41,6 +42,10 @@ boost::shared_ptr<PTData> CreateDummyPT() {
 	return pt;
 }
 
+void callback(void) {
+	Graph::AllGraphReload();
+}
+
 } // anonymous
 
 #ifndef _DEBUG
@@ -61,6 +66,7 @@ int main() {
 		boost::shared_ptr<Scene> scene(new scenes::OpeningScene(WChar2Ptr(L"data/ui/box1.png")));
 		game->SetScene(scene);
 	}
+	::SetRestoreGraphCallback(callback);
 	boost::optional<boost::shared_ptr<Error> > result = game->DoStart(CreateDummyPT());
 	game.reset();
 	if(result) {

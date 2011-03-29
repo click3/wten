@@ -7,6 +7,8 @@ using namespace boost::assign;
 
 namespace {
 
+std::vector<GraphImpl*> graph_list;
+
 boost::tuple<unsigned int, unsigned int> GetGraphSize(const DxLibGraphHandle handle) {
 	opt_error<boost::tuple<unsigned int, unsigned int> >::type opt_size = DxLibWrapper::GetGraphSize(handle);
 	if(opt_size.which() == 0) {
@@ -56,6 +58,10 @@ GraphImpl::GraphImpl(const GraphImpl& obj) :
 
 GraphImpl::~GraphImpl(void) {
 	if(handle) {
+		std::vector<GraphImpl*>::iterator it = std::find(graph_list.begin(), graph_list.end(), this);
+		if(it != graph_list.end()) {
+			graph_list.erase(it);
+		}
 		boost::optional<boost::shared_ptr<Error> > error = DxLibWrapper::DeleteGraph(handle.get());
 		if(error) {
 			error.get()->Abort();
@@ -82,6 +88,7 @@ boost::shared_ptr<const std::wstring> GraphImpl::GetFilename(void) const {
 DxLibGraphHandle GraphImpl::GetHandle(void) const {
 	if(!handle) {
 		const_cast<GraphImpl*>(this)->handle = const_cast<GraphImpl*>(this)->LoadGraph();
+		graph_list.push_back(const_cast<GraphImpl*>(this));
 	}
 	return handle.get();
 }
@@ -157,6 +164,17 @@ boost::optional<boost::shared_ptr<Error> > Graph::DrawEx(unsigned int x, unsigne
 
 utility::opt_error<boost::shared_ptr<Graph> >::type Graph::Derivation(unsigned int x, unsigned int y, unsigned int w, unsigned int h) const {
 	return boost::shared_ptr<Graph>(new Graph(get().GetFilename(), x, y, w, h));
+}
+
+//static
+boost::optional<boost::shared_ptr<Error> > Graph::AllGraphReload(void) {
+	::InitGraph();
+	BOOST_FOREACH(GraphImpl *handle, graph_list) {
+		BOOST_ASSERT(handle);
+		handle->ClearHandle();
+	}
+	graph_list.clear();
+	return boost::none;
 }
 
 } // wten
