@@ -262,7 +262,7 @@ opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type CharStat
 	BOOST_ASSERT(bed_lv < 6);
 	BOOST_ASSERT(job);
 	unsigned int check_level = job->CalcLv(exp);
-	BOOST_ASSERT(lv > check_level);
+	BOOST_ASSERT(lv >= check_level);
 	if(lv == check_level) {
 		return boost::none;
 	}
@@ -285,11 +285,15 @@ opt_error<std::vector<boost::optional<bool> > >::type CharStatus::LevelUP(unsign
 
 	unsigned int i = 0;
 	BOOST_FOREACH(boost::optional<bool> flag, result) {
-		int up_down = 0;
-		if(flag && flag.get() == true) {
-			up_down = 1;
-		} else if(flag && flag.get() == false) {
-			up_down = -1;
+		int up_down;
+		if(flag) {
+			if(flag.get() == true) {
+				up_down = 1;
+			} else {
+				up_down = -1;
+			}
+		} else {
+			up_down = 0;
 		}
 		switch(i) {
 			case 0: str += up_down; break;
@@ -299,6 +303,7 @@ opt_error<std::vector<boost::optional<bool> > >::type CharStatus::LevelUP(unsign
 			case 4: agi += up_down; break;
 			case 5: luk += up_down; break;
 		}
+		i++;
 	}
 	return result;
 }
