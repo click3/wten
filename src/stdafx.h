@@ -108,6 +108,7 @@
 
 #include "org/click3/notification_center.h"
 
+#include "consts.h"
 #include "error.h"
 #include "utility.h"
 #include "global_data.h"
