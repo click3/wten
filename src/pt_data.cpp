@@ -301,10 +301,11 @@ boost::optional<boost::shared_ptr<Error> > PTData::Turn(DIRECTION dir) {
 	return boost::none;
 }
 
-opt_error<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >::type PTData::Hotel(unsigned int bed_lv) {
+opt_error<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >::type PTData::Hotel(unsigned int bed_lv, unsigned price) {
 	if(bed_lv > BED_LEVEL_MAX) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
+	OPT_ERROR(DecHotelPrice(price));
 	std::vector<boost::optional<boost::shared_ptr<std::wstring> > > result;
 	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
 		if(!character->GetCondition()->IsAlive()) {
@@ -319,6 +320,24 @@ opt_error<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >::typ
 		character->ReloadStatus();
 	}
 	return result;
+}
+
+boost::optional<boost::shared_ptr<Error> > PTData::DecHotelPrice(unsigned int price) {
+	unsigned int total_money = 0;
+	while(total_money < price) {
+		unsigned int split_price = std::min(static_cast<unsigned int>(::ceil(static_cast<double>(price) / Size())), price - total_money);
+		BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
+			if(character->GetStatus()->GetTG() >= split_price) {
+				character->GetStatus()->DecTG(split_price);
+				total_money += split_price;
+				if(total_money == price) {
+					break;
+				}
+			}
+		}
+	}
+	BOOST_ASSERT(total_money == price);
+	return boost::none;
 }
 
 boost::optional<boost::shared_ptr<Error> > PTData::HotelHeal(boost::shared_ptr<CharData> character, unsigned int bed_lv) {

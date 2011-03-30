@@ -51,8 +51,9 @@ public:
 	boost::optional<boost::shared_ptr<Error> > MoveFloor(unsigned int floor, DIRECTION dir, unsigned int x, unsigned int y);
 	boost::optional<boost::shared_ptr<Error> > Turn(DIRECTION dir);
 
-	utility::opt_error<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >::type Hotel(unsigned int bed_lv);
+	utility::opt_error<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >::type Hotel(unsigned int bed_lv, unsigned int price);
 protected:
+	boost::optional<boost::shared_ptr<Error> > DecHotelPrice(unsigned int price);
 	boost::optional<boost::shared_ptr<Error> > HotelHeal(boost::shared_ptr<CharData> character, unsigned int bed_lv);
 	utility::opt_error<boost::optional<boost::shared_ptr<std::wstring> > >::type CheckLevelUP(boost::shared_ptr<CharData> character, unsigned int bed_lv);
 
