@@ -273,6 +273,7 @@ boost::optional<boost::shared_ptr<Error> > CampItemWindow::OnNextStepEvent(boost
 		case STATE_CHAR_SELECT:
 			error_message.reset();
 			OPT_ERROR(RemoveThisWindow());
+			state = STATE_INITIALIZE;
 			break;
 		case STATE_ITEM_SELECT:
 			error_message.reset();
