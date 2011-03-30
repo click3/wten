@@ -48,7 +48,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_pt
 		L"‘à—ñ•ÏX",
 		L"İ’è"
 	};
-	boost::shared_ptr<void> window_list[] = {
+	const boost::shared_ptr<void> window_list[] = {
 		boost::shared_ptr<void>(new CampItemWindow(pt, default_frame_graph)),
 		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_graph)),
 		boost::shared_ptr<void>(new CampStatusWindow(pt, default_frame_graph)),

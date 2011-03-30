@@ -8,7 +8,10 @@ using namespace boost::assign;
 namespace {
 
 boost::shared_ptr<uis::UICharStatus> CreateCharStatusUI(boost::shared_ptr<PTData> pt, boost::shared_ptr<const Graph> default_frame_graph) {
-	boost::shared_ptr<uis::UICharStatus> result(new uis::UICharStatus(default_frame_graph, pt, 0));
+	boost::shared_ptr<uis::UICharStatus> result;
+	if(pt->Size() > 0) {
+		result.reset(new uis::UICharStatus(default_frame_graph, pt, 0));
+	}
 	return result;
 }
 
@@ -29,6 +32,10 @@ CampStatusWindow::~CampStatusWindow() {
 
 boost::optional<boost::shared_ptr<Error> > CampStatusWindow::WindowInitialize(void) {
 	OPT_ERROR(CampBaseWindow::WindowInitialize());
+	if(!char_status_ui) {
+		OPT_ERROR(SendNextTextWindowEvent(WChar2Ptr(L"PTに所属しているキャラクターが居ません")));
+		return boost::none;
+	}
 	OPT_ERROR(AddUI(char_status_ui, uis::UIBase::MOVE_MODE_CENTER_FREE, 50, 100, 540, 150));
 
 	const wchar_t char_text[] =
@@ -48,10 +55,17 @@ utility::opt_error<boost::optional<boost::shared_ptr<Event> > >::type CampStatus
 	BOOST_ASSERT(event);
 	switch(event->GetEventType()) {
 		case EVENT_TYPE_NEXT_STEP: {
+			if(!char_status_ui) {
+				OPT_ERROR(RemoveThisWindow());
+				return boost::none;
+			}
 			// TODO
 			return boost::none;
 		}
 		case EVENT_TYPE_KEY: {
+			if(!char_status_ui) {
+				return boost::none;
+			}
 			boost::shared_ptr<events::KeyEvent> key_event = boost::static_pointer_cast<events::KeyEvent>(event);
 			if(key_event->GetAction() == events::KeyEvent::KEY_PRESS) {
 				switch(key_event->GetKey()) {
