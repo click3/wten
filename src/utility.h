@@ -12,18 +12,21 @@ struct opt_error {
 boost::shared_ptr<Error> CreateError(ERROR_CODE code, const std::string filename, unsigned int fileline);
 
 
-#define SPRINTF_IMPL_IMPL(proc, buffer, fmt, ...)	::proc(buffer, sizeof(buffer) / sizeof(*buffer), fmt, __VA_ARGS__)
-#define STRLEN_IMPL(proc, buffer)				::proc(buffer, sizeof(buffer) / sizeof(*buffer))
-#define SPRINTF_IMPL(proc, len_proc, buffer, fmt, ...)						\
-do {													\
-	const int length = SPRINTF_IMPL_IMPL(proc, buffer, fmt, __VA_ARGS__);			\
-	BOOST_ASSERT(length != -1);									\
-	BOOST_ASSERT(static_cast<unsigned int>(length) == STRLEN_IMPL(len_proc, buffer));	\
+#define SPRINTF_IMPL_IMPL(proc, buffer, start, fmt, ...)	::proc(&buffer[start], sizeof(buffer) / sizeof(*buffer) - start, fmt, __VA_ARGS__)
+#define STRLEN_IMPL(proc, buffer)					::proc(buffer, sizeof(buffer) / sizeof(*buffer))
+#define SPRINTF_IMPL(proc, len_proc, buffer, start, fmt, ...)							\
+do {															\
+	const unsigned int start_pos = start;									\
+	const int length = SPRINTF_IMPL_IMPL(proc, buffer, start_pos, fmt, __VA_ARGS__);			\
+	BOOST_ASSERT(length != -1);											\
+	BOOST_ASSERT(static_cast<unsigned int>(length) == STRLEN_IMPL(len_proc, buffer) - start_pos);	\
 } while(false)
-#define SPRINTF(buffer, fmt, ...)		SPRINTF_IMPL(sprintf_s, strnlen, buffer, fmt, __VA_ARGS__)
-#define WSPRINTF(buffer, fmt, ...)		SPRINTF_IMPL(swprintf_s, wcsnlen, buffer, fmt, __VA_ARGS__)
+#define SPRINTF(buffer, fmt, ...)		SPRINTF_IMPL(sprintf_s, strnlen, buffer, 0, fmt, __VA_ARGS__)
+#define WSPRINTF(buffer, fmt, ...)		SPRINTF_IMPL(swprintf_s, wcsnlen, buffer, 0, fmt, __VA_ARGS__)
 #define STRLEN(buffer)			STRLEN_IMPL(strnlen, buffer)
 #define WSTRLEN(buffer)			STRLEN_IMPL(wcsnlen, buffer)
+#define STRCATF(buffer, fmt, ...)		SPRINTF_IMPL(sprintf_s, strnlen, buffer, STRLEN(buffer), fmt, __VA_ARGS__)
+#define WSTRCATF(buffer, fmt, ...)		SPRINTF_IMPL(swprintf_s, wcsnlen, buffer, WSTRLEN(buffer), fmt, __VA_ARGS__)
 
 
 #define OPT_ERROR(in)								\
