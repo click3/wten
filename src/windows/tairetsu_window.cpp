@@ -19,7 +19,7 @@ boost::shared_ptr<uis::UIPager> CreateUIPageSelector(const std::vector<boost::sh
 			++it;
 		}
 		bool break_flag = false;
-		if(text_list.size() != page_size) {
+		if(!is_full_member && text_list.size() != page_size) {
 			text_list += WChar2Ptr(L"Œˆ’è");
 			break_flag = true;
 		}
