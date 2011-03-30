@@ -102,7 +102,7 @@ void CharData::HealHP(unsigned int value) {
 		return;
 	}
 	const unsigned int max_hp = GetStatus()->GetHP();
-	hp = std::max(hp + value, max_hp);
+	hp = std::min(hp + value, max_hp);
 }
 
 void CharData::AddStr(unsigned int value) {
