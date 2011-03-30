@@ -38,6 +38,10 @@ public:
 	boost::shared_ptr<CharData> operator[](unsigned int index);
 	boost::shared_ptr<CharData> At(unsigned int index);
 	boost::shared_ptr<CharData> at(unsigned int index);
+	void Clear(void);
+	void clear(void);
+	void PushBack(boost::shared_ptr<CharData> char_data);
+	void push_back(boost::shared_ptr<CharData> char_data);
 
 	boost::optional<boost::shared_ptr<Error> > DungeonStart(unsigned int floor, DIRECTION dir, unsigned int x, unsigned int y);
 	boost::optional<boost::shared_ptr<Error> > DungeonEnd(void);

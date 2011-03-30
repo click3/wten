@@ -118,6 +118,23 @@ boost::shared_ptr<CharData> PTData::at(unsigned int index) {
 	return At(index);
 }
 
+void PTData::Clear(void) {
+	characters.clear();
+}
+
+void PTData::clear(void) {
+	Clear();
+}
+
+void PTData::PushBack(boost::shared_ptr<CharData> char_data) {
+	BOOST_ASSERT(char_data);
+	characters.push_back(char_data);
+}
+
+void PTData::push_back(boost::shared_ptr<CharData> char_data) {
+	PushBack(char_data);
+}
+
 boost::optional<boost::shared_ptr<Error> > PTData::DungeonStart(unsigned int floor, DIRECTION dir, unsigned int x, unsigned int y) {
 	BOOST_ASSERT(!dungeon);
 	BOOST_ASSERT(x < 20);
