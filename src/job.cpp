@@ -129,8 +129,8 @@ std::vector<boost::shared_ptr<const actions::SpellBase> > Job::GetSpell(unsigned
 
 unsigned int Job::CalcLv(unsigned int exp) const {
 	unsigned int lv = 0;
-	unsigned int necessary = exp_base;
-	unsigned int up = static_cast<unsigned int>(necessary * 0.75);
+	unsigned int necessary = 0;
+	unsigned int up = exp_base;
 	while(exp >= necessary) {
 		lv++;
 		necessary += up;
