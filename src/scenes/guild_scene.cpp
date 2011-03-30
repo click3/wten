@@ -47,6 +47,10 @@ void GuildScene::Initialize(void) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
 	}
+	if(error = AddEvent(EVENT_TYPE_TAIRETSU_SELECTED)) {
+		error.get()->Abort();
+		BOOST_ASSERT(false);
+	}
 }
 
 GuildScene::GuildScene(boost::shared_ptr<const std::wstring> default_frame_filename) :
@@ -114,8 +118,21 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 			// TODO
 		case CHARACTER_MANAGE_STEP:
 			// TODO
-		case PT_SETTING_STEP:
-			// TODO
+		{
+			next_step = NORMAL_STEP;
+			const wchar_t *text_char = L"åªç›ñ¢é¿ëïÇ≈Ç∑ÅB";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
+			OPT_ERROR(AddTextWindow(text));
+			break;
+		}
+		case PT_SETTING_STEP: {
+			next_step = NORMAL_STEP;
+			pt->Clear();
+			std::vector<boost::shared_ptr<CharData> > char_list = CharacterList::GetCurrentInstance()->GetFreeList();
+			boost::shared_ptr<windows::WindowBase> window(new windows::TairetsuWindow(char_list, false, default_frame_graph));
+			OPT_ERROR(AddWindow(window, 50, 80, 540, 260));
+			break;
+		}
 		case STAY_STEP:
 			// TODO
 		case CONTRIBUTION_STEP:
@@ -145,6 +162,18 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::OnEvent(boost::shared_ptr
 			if(event->GetEventType() == EVENT_TYPE_ON_SELECT) {
 				boost::shared_ptr<events::OnSelectEvent> on_select_event = boost::static_pointer_cast<events::OnSelectEvent>(event);
 				next_step = *boost::static_pointer_cast<STEP>(on_select_event->GetUserData());
+				SendNextStepEvent();
+			}
+			break;
+		}
+		case PT_SETTING_STEP: {
+			if(event->GetEventType() == EVENT_TYPE_TAIRETSU_SELECTED) {
+				boost::shared_ptr<events::TairetsuSelectedEvent> tairetsu_selected_event = boost::static_pointer_cast<events::TairetsuSelectedEvent>(event);
+				BOOST_FOREACH(boost::shared_ptr<CharData> char_data, tairetsu_selected_event->GetCharList()) {
+					if(char_data) {
+						pt->PushBack(char_data);
+					}
+				}
 				SendNextStepEvent();
 			}
 			break;
