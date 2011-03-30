@@ -32,43 +32,47 @@ boost::shared_ptr<std::wstring> GetStatusString(boost::shared_ptr<const CharData
 	return character->GetCondition()->ToString();
 }
 
-boost::optional<boost::shared_ptr<Error> > ReloadTextList(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::wstring> > > *text_list) {
+boost::optional<boost::shared_ptr<Error> > ReloadUIStringList(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<UIString> > > *ui_string_list) {
 	if(!pt_data) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
-	if(text_list->size() != 6) {
+	if(ui_string_list->size() != PT_MEMBER_MAX) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
-	BOOST_ASSERT(pt_data->GetCharacters().size() <= 6);
+	BOOST_ASSERT(pt_data->GetCharacters().size() <= PT_MEMBER_MAX);
 	unsigned int i = 0;
 	BOOST_FOREACH(boost::shared_ptr<const CharData> character, pt_data->GetCharacters()) {
 		BOOST_ASSERT(character);
 		BOOST_ASSERT(character->GetStatus());
-		if((*text_list)[i].size() != 3) {
+		if((*ui_string_list)[i].size() != 5) {
 			return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 		}
 		boost::shared_ptr<std::wstring> ac = GetACString(character);
 		boost::shared_ptr<std::wstring> hp = GetHPString(character);
 		boost::shared_ptr<std::wstring> max_hp = GetStatusString(character);
-
-		(*text_list)[i][0]->swap(*ac);
-		(*text_list)[i][1]->swap(*hp);
-		(*text_list)[i][2]->swap(*max_hp);
+		
+		(*ui_string_list)[i][0]->SetText(character->GetStatus()->GetName());
+		(*ui_string_list)[i][1]->SetText(character->GetStatus()->GetJob()->GetName());
+		(*ui_string_list)[i][2]->SetText(ac);
+		(*ui_string_list)[i][3]->SetText(hp);
+		(*ui_string_list)[i][4]->SetText(max_hp);
 		i++;
 	}
 	return boost::none;
 }
 
-std::vector<const std::vector<boost::shared_ptr<std::wstring> > > CreateTextList(boost::shared_ptr<const PTData> pt_data) {
-	std::vector<const std::vector<boost::shared_ptr<std::wstring> > > result;
-	for(unsigned int i = 0; i < 6; i++) {
-		std::vector<boost::shared_ptr<std::wstring> > row;
-		row.push_back(boost::shared_ptr<std::wstring>(new std::wstring(L"")));
-		row.push_back(boost::shared_ptr<std::wstring>(new std::wstring(L"")));
-		row.push_back(boost::shared_ptr<std::wstring>(new std::wstring(L"")));
+std::vector<const std::vector<boost::shared_ptr<UIString> > > CreateUIStringList(boost::shared_ptr<const PTData> pt_data) {
+	std::vector<const std::vector<boost::shared_ptr<UIString> > > result;
+	for(unsigned int i = 0; i < PT_MEMBER_MAX; i++) {
+		std::vector<boost::shared_ptr<uis::UIString> > row;
+		row += boost::shared_ptr<UIString>(new UIString(WChar2Ptr(L"")));
+		row += boost::shared_ptr<UIString>(new UIString(WChar2Ptr(L"")));
+		row += boost::shared_ptr<UIString>(new UIString(WChar2Ptr(L"")));
+		row += boost::shared_ptr<UIString>(new UIString(WChar2Ptr(L"")));
+		row += boost::shared_ptr<UIString>(new UIString(WChar2Ptr(L"")));
 		result += row;
 	}
-	boost::optional<boost::shared_ptr<Error> > error = ReloadTextList(pt_data, &result);
+	boost::optional<boost::shared_ptr<Error> > error = ReloadUIStringList(pt_data, &result);
 	if(error) {
 		error.get()->Abort();
 		BOOST_ASSERT(false);
@@ -95,28 +99,15 @@ void SetColumnTitle(std::vector<std::vector<QUEUE_UI_PAIR> > *ui_list) {
 	}
 }
 
-std::vector<std::vector<QUEUE_UI_PAIR> > CreateUIList(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::wstring> > >&text_list) {
-	BOOST_ASSERT(pt_data);
-	BOOST_ASSERT(pt_data->GetCharacters().size() == text_list.size());
+std::vector<std::vector<QUEUE_UI_PAIR> > CreateUIList(const std::vector<const std::vector<boost::shared_ptr<UIString> > >&ui_string_list) {
 	std::vector<std::vector<QUEUE_UI_PAIR> > ui_list(5);
 	SetColumnTitle(&ui_list);
-	unsigned int index = 0;
-	BOOST_FOREACH(boost::shared_ptr<const CharData> character, pt_data->GetCharacters()) {
-		BOOST_ASSERT(character);
-		BOOST_ASSERT(character->GetStatus());
-		BOOST_ASSERT(character->GetStatus()->GetJob());
-		BOOST_ASSERT(text_list[index].size() == 3);
-		boost::shared_ptr<UIBase> name(new UIString(character->GetStatus()->GetName()));
-		boost::shared_ptr<UIBase> job(new UIString(character->GetStatus()->GetJob()->GetName()));
-		boost::shared_ptr<UIBase> ac(new UIString(text_list[index][0]));
-		boost::shared_ptr<UIBase> hits(new UIString(text_list[index][1]));
-		boost::shared_ptr<UIBase> status(new UIString(text_list[index][2]));
-		ui_list[0] += make_tuple(UIQueue::ROW_POSITION_TOP, name);
-		ui_list[1] += make_tuple(UIQueue::ROW_POSITION_TOP, job);
-		ui_list[2] += make_tuple(UIQueue::ROW_POSITION_TOP, ac);
-		ui_list[3] += make_tuple(UIQueue::ROW_POSITION_TOP, hits);
-		ui_list[4] += make_tuple(UIQueue::ROW_POSITION_TOP, status);
-		index++;
+	BOOST_FOREACH(const std::vector<boost::shared_ptr<UIString> > row, ui_string_list) {
+		ui_list[0] += make_tuple(UIQueue::ROW_POSITION_TOP, row[0]);
+		ui_list[1] += make_tuple(UIQueue::ROW_POSITION_TOP, row[1]);
+		ui_list[2] += make_tuple(UIQueue::ROW_POSITION_TOP, row[2]);
+		ui_list[3] += make_tuple(UIQueue::ROW_POSITION_TOP, row[3]);
+		ui_list[4] += make_tuple(UIQueue::ROW_POSITION_TOP, row[4]);
 	}
 	return ui_list;
 }
@@ -132,8 +123,8 @@ std::vector<QUEUE_UI_PAIR> CreateUIRowList(const std::vector<std::vector<QUEUE_U
 	}
 	return result;
 }
-boost::shared_ptr<UIQueue> CreateQueueUI(boost::shared_ptr<const PTData> pt_data, const std::vector<const std::vector<boost::shared_ptr<std::wstring> > >&text_list) {
-	std::vector<std::vector<QUEUE_UI_PAIR> > ui_list = CreateUIList(pt_data, text_list);
+boost::shared_ptr<UIQueue> CreateQueueUI(const std::vector<const std::vector<boost::shared_ptr<UIString> > >&ui_string_list) {
+	std::vector<std::vector<QUEUE_UI_PAIR> > ui_list = CreateUIList(ui_string_list);
 	std::vector<UIQueue::INNER_POSITION> position_list;
 	position_list += UIQueue::INNER_POSITION_LEFT, UIQueue::INNER_POSITION_CENTER, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_RIGHT, UIQueue::INNER_POSITION_CENTER;
 	std::vector<QUEUE_UI_PAIR> row_list = CreateUIRowList(ui_list, position_list);
@@ -151,14 +142,14 @@ void UIPTStatus::Initialize(void) {
 }
 
 UIPTStatus::UIPTStatus(boost::shared_ptr<const std::wstring> frame_filename, boost::shared_ptr<const PTData> pt_data) :
-	UIBox(frame_filename), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
+	UIBox(frame_filename), pt_data(pt_data), ui_string_list(CreateUIStringList(pt_data)), queue_ui(CreateQueueUI(ui_string_list))
 {
 	BOOST_ASSERT(pt_data);
 	Initialize();
 }
 
 UIPTStatus::UIPTStatus(boost::shared_ptr<const Graph> frame_graph, boost::shared_ptr<const PTData> pt_data) :
-	UIBox(frame_graph), pt_data(pt_data), text_list(CreateTextList(pt_data)), queue_ui(CreateQueueUI(pt_data, text_list))
+	UIBox(frame_graph), pt_data(pt_data), ui_string_list(CreateUIStringList(pt_data)), queue_ui(CreateQueueUI(ui_string_list))
 {
 	BOOST_ASSERT(pt_data);
 	Initialize();
@@ -172,7 +163,7 @@ boost::optional<boost::shared_ptr<Error> > UIPTStatus::Draw(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UIPTStatus::Draw(unsigned int abs_x, unsigned int abs_y) {
-	OPT_ERROR(ReloadTextList(pt_data, &text_list));
+	OPT_ERROR(ReloadUIStringList(pt_data, &ui_string_list));
 	return UIBox::Draw(abs_x, abs_y);
 }
 

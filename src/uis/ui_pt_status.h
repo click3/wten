@@ -19,7 +19,7 @@ public:
 	boost::optional<boost::shared_ptr<Error> > Draw(unsigned int abs_x, unsigned int abs_y);
 protected:
 	const boost::shared_ptr<const PTData> pt_data;
-	const std::vector<const std::vector<boost::shared_ptr<std::wstring> > > text_list;
+	const std::vector<const std::vector<boost::shared_ptr<uis::UIString> > > ui_string_list;
 	const boost::shared_ptr<UIQueue> queue_ui;
 };
 #pragma warning(pop)
