@@ -7,31 +7,15 @@ using namespace boost::assign;
 
 namespace {
 
-unsigned int GetUIWidth(boost::shared_ptr<UIBase> ui) {
-	opt_error<unsigned int>::type width_opt = ui->CalcWidth();
-	BOOST_ASSERT(width_opt.which() == 1);
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = ui->GetSize();
-	BOOST_ASSERT(size_opt.which() == 1);
-	return std::max(boost::get<unsigned int>(width_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<0>());
-}
-
-unsigned int GetUIHeight(boost::shared_ptr<UIBase> ui) {
-	opt_error<unsigned int>::type height_opt = ui->CalcHeight();
-	BOOST_ASSERT(height_opt.which() == 1);
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = ui->GetSize();
-	BOOST_ASSERT(size_opt.which() == 1);
-	return std::max(boost::get<unsigned int>(height_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<1>());
-}
-
 struct MaxFindByUIWidth {
 	bool operator ()(boost::shared_ptr<UIBase> left, boost::shared_ptr<UIBase> right) {
-		return GetUIWidth(left) < GetUIWidth(right);
+		return left->GetWidth() < right->GetWidth();
 	}
 };
 
 struct MaxFindByUIHeight {
 	bool operator ()(boost::shared_ptr<UIBase> left, boost::shared_ptr<UIBase> right) {
-		return GetUIHeight(left) < GetUIHeight(right);
+		return left->GetHeight() < right->GetHeight();
 	}
 };
 
@@ -202,22 +186,22 @@ boost::optional<boost::shared_ptr<Error> > UIPager::Resize(unsigned int width, u
 	prev_arrow_disable->SetVisible(false);
 
 	boost::shared_ptr<UIImage> left_arrow = (page_index == 0 ? prev_arrow_disable : prev_arrow_enable);
-	const unsigned int left_arrow_height = GetUIHeight(left_arrow);
+	const unsigned int left_arrow_height = left_arrow->GetHeight();
 	const unsigned int left_arrow_x = this->x + (width - min_width) / 2;
 	const unsigned int left_arrow_y = this->y + (height - min_height) / 2 + page_height + (pager_height - left_arrow_height) / 2;
 	OPT_ERROR(left_arrow->Move(left_arrow_x, left_arrow_y));
 	left_arrow->SetVisible(true);
 
 	boost::shared_ptr<UIImage> right_arrow = (page_index == page_list.size() - 1 ? next_arrow_disable : next_arrow_enable);
-	const unsigned int right_arrow_height = GetUIHeight(right_arrow);
-	const unsigned int right_arrow_width = GetUIWidth(right_arrow);
+	const unsigned int right_arrow_height = right_arrow->GetHeight();
+	const unsigned int right_arrow_width = right_arrow->GetWidth();
 	const unsigned int right_arrow_x = this->x + width - (width - min_width) / 2 - right_arrow_width;
 	const unsigned int right_arrow_y = this->y + (height - min_height) / 2 + page_height + (pager_height - right_arrow_height) / 2;
 	OPT_ERROR(right_arrow->Move(right_arrow_x, right_arrow_y));
 	right_arrow->SetVisible(true);
 
-	const unsigned int label_height = GetUIHeight(pager_label);
-	const unsigned int label_width = GetUIWidth(pager_label);
+	const unsigned int label_height = pager_label->GetHeight();
+	const unsigned int label_width = pager_label->GetWidth();
 	const unsigned int label_x = this->x + (width - label_width) / 2;
 	const unsigned int label_y = this->y + (height - min_height) / 2 + page_height + (pager_height - label_height) / 2;
 	OPT_ERROR(pager_label->Move(label_x, label_y));
@@ -245,27 +229,27 @@ boost::optional<boost::shared_ptr<Error> > UIPager::Draw(unsigned int, unsigned 
 utility::opt_error<unsigned int>::type UIPager::CalcPageWidth() const {
 	std::vector<boost::shared_ptr<UIBase> >::const_iterator it = std::max_element(page_list.begin(), page_list.end(), MaxFindByUIWidth());
 	BOOST_ASSERT(it != page_list.end());
-	return GetUIWidth(*it);
+	return (*it)->GetWidth();
 }
 
 utility::opt_error<unsigned int>::type UIPager::CalcPageHeight() const {
 	std::vector<boost::shared_ptr<UIBase> >::const_iterator it = std::max_element(page_list.begin(), page_list.end(), MaxFindByUIHeight());
 	BOOST_ASSERT(it != page_list.end());
-	return GetUIHeight(*it);
+	return (*it)->GetHeight();
 }
 
 utility::opt_error<unsigned int>::type UIPager::CalcWidth() const {
 	unsigned int page_width;
 	OPT_UINT(page_width, CalcPageWidth());
-	const unsigned int arrow_width = std::max(GetUIWidth(next_arrow_enable), GetUIWidth(next_arrow_disable));
-	const unsigned int label_width = GetUIWidth(pager_label);
+	const unsigned int arrow_width = std::max(next_arrow_enable->GetWidth(), next_arrow_disable->GetWidth());
+	const unsigned int label_width = pager_label->GetWidth();
 	return std::max(page_width, arrow_width * 2 + label_width);
 }
 
 utility::opt_error<unsigned int>::type UIPager::CalcHeight() const {
 	unsigned int page_height;
 	OPT_UINT(page_height, CalcPageHeight());
-	const unsigned int pager_height = std::max(GetUIHeight(pager_label), std::max(GetUIHeight(next_arrow_enable), GetUIHeight(next_arrow_disable)));
+	const unsigned int pager_height = std::max(pager_label->GetHeight(), std::max(next_arrow_enable->GetHeight(), next_arrow_disable->GetHeight()));
 	return page_height + pager_height;
 }
 

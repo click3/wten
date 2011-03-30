@@ -33,46 +33,24 @@ namespace {
 		return col_split.get();
 	}
 
-	unsigned int GetUIWidth(boost::shared_ptr<const UIBase> ui) {
-		opt_error<unsigned int>::type calc = ui->CalcWidth();
-		BOOST_ASSERT(calc.which() == 1);
-		opt_error<boost::tuple<unsigned int, unsigned int> >::type size = ui->GetSize();
-		BOOST_ASSERT(size.which() == 1);
-		return std::max(
-			boost::get<unsigned int>(calc),
-			boost::get<boost::tuple<unsigned int, unsigned int> >(size).get<0>()
-		);
-	}
-
-	unsigned int GetUIHeight(boost::shared_ptr<const UIBase> ui) {
-		opt_error<unsigned int>::type calc = ui->CalcHeight();
-		BOOST_ASSERT(calc.which() == 1);
-		opt_error<boost::tuple<unsigned int, unsigned int> >::type size = ui->GetSize();
-		BOOST_ASSERT(size.which() == 1);
-		return std::max(
-			boost::get<unsigned int>(calc),
-			boost::get<boost::tuple<unsigned int, unsigned int> >(size).get<1>()
-		);
-	}
-
 	struct UIMaxHeight {
 		bool operator() (const UI_PAIR& left, const UI_PAIR& right) const {
-			return GetUIHeight(left.get<1>()) < GetUIHeight(right.get<1>());
+			return left.get<1>()->GetHeight() < right.get<1>()->GetHeight();
 		}
 	};
 	struct UIMaxWidth {
 		bool operator() (const UI_PAIR& left, const UI_PAIR& right) const {
-			return GetUIWidth(left.get<1>()) < GetUIWidth(right.get<1>());
+			return left.get<1>()->GetWidth() < right.get<1>()->GetWidth();
 		}
 	};
 	struct UISumHeight {
 		unsigned int operator() (const unsigned int value, const UI_PAIR& obj) const {
-			return value + GetUIHeight(obj.get<1>());
+			return value + obj.get<1>()->GetHeight();
 		}
 	};
 	struct UISumWidth {
 		unsigned int operator() (const unsigned int value, const UI_PAIR& obj) const {
-			return value + GetUIWidth(obj.get<1>());
+			return value + obj.get<1>()->GetWidth();
 		}
 	};
 
@@ -194,7 +172,7 @@ opt_error<unsigned int>::type UIQueue::CalcWidth() const {
 	} else { // ècï¿Ç—
 		std::vector<UI_PAIR>::const_iterator it = std::max_element(ui_list.begin(), ui_list.end(), UIMaxWidth());
 		BOOST_ASSERT(it != ui_list.end());
-		return GetUIWidth(it->get<1>());
+		return it->get<1>()->GetWidth();
 	}
 }
 
@@ -202,7 +180,7 @@ opt_error<unsigned int>::type UIQueue::CalcHeight() const {
 	if(col_split) { // â°ï¿Ç—
 		std::vector<UI_PAIR>::const_iterator it = std::max_element(ui_list.begin(), ui_list.end(), UIMaxHeight());
 		BOOST_ASSERT(it != ui_list.end());
-		return GetUIHeight(it->get<1>());
+		return it->get<1>()->GetHeight();
 	} else { // ècï¿Ç—
 		return std::accumulate(ui_list.begin(), ui_list.end(), static_cast<unsigned int>(0), UISumHeight());
 	}

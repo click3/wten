@@ -53,6 +53,8 @@ public:
 	virtual boost::optional<boost::shared_ptr<Error> > Resize(void);
 	virtual utility::opt_error<unsigned int>::type CalcWidth() const;
 	virtual utility::opt_error<unsigned int>::type CalcHeight() const;
+	unsigned int GetWidth(void) const;
+	unsigned int GetHeight(void) const;
 protected:
 	boost::weak_ptr<const windows::WindowBase> owner;
 	unsigned int x;

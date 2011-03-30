@@ -6,25 +6,9 @@ using namespace utility;
 
 namespace {
 
-unsigned int GetUIWidth(boost::shared_ptr<uis::UIBase> ui) {
-	opt_error<unsigned int>::type width_opt = ui->CalcWidth();
-	BOOST_ASSERT(width_opt.which() == 1);
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = ui->GetSize();
-	BOOST_ASSERT(size_opt.which() == 1);
-	return std::max(boost::get<unsigned int>(width_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<0>());
-}
-
-unsigned int GetUIHeight(boost::shared_ptr<uis::UIBase> ui) {
-	opt_error<unsigned int>::type height_opt = ui->CalcHeight();
-	BOOST_ASSERT(height_opt.which() == 1);
-	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = ui->GetSize();
-	BOOST_ASSERT(size_opt.which() == 1);
-	return std::max(boost::get<unsigned int>(height_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<1>());
-}
-
 struct MaxFindByUIWidth {
 	bool operator ()(boost::shared_ptr<UIBase> left, boost::shared_ptr<UIBase> right) {
-		return GetUIWidth(left) < GetUIWidth(right);
+		return left->GetWidth() < right->GetWidth();
 	}
 };
 
@@ -34,7 +18,7 @@ struct SumByUIHeight {
 	SumByUIHeight(unsigned int min) : min(min) { }
 	const unsigned int min;
 	unsigned int operator ()(unsigned int value, boost::shared_ptr<UIBase> obj) {
-		return value + std::max(min, GetUIHeight(obj));
+		return value + std::max(min, obj->GetHeight());
 	}
 };
 #pragma warning(pop)
@@ -171,8 +155,8 @@ boost::optional<boost::shared_ptr<Error> > UISelectorBase::Resize(unsigned int w
 	BOOST_ASSERT(height >= this_height);
 
 	BOOST_ASSERT(arrow);
-	const unsigned int arrow_width = GetUIWidth(arrow);
-	const unsigned int arrow_height = GetUIHeight(arrow);
+	const unsigned int arrow_width = arrow->GetWidth();
+	const unsigned int arrow_height = arrow->GetHeight();
 
 	const unsigned int blank_x = (width - this_width) / 2;
 	const unsigned int blank_y = (height - this_height) / 2;
@@ -182,7 +166,7 @@ boost::optional<boost::shared_ptr<Error> > UISelectorBase::Resize(unsigned int w
 		unsigned int current_y = blank_y;
 		for(unsigned int i = 0; i < line_size; i++) {
 			const unsigned int index = line_index * line_size + i;
-			const unsigned int select_height = GetUIHeight(select_list[index]);
+			const unsigned int select_height = select_list[index]->GetHeight();
 			const unsigned int text_x = this->x + current_x + arrow_width;
 			const unsigned int text_y = this->y + current_y + (arrow_height > select_height ? (arrow_height - select_height) / 2 : 0);
 			OPT_ERROR(select_list[index]->Move(text_x, text_y));
@@ -241,7 +225,7 @@ opt_error<unsigned int>::type UISelectorBase::CalcHeight() const {
 }
 
 utility::opt_error<unsigned int>::type UISelectorBase::CalcLineWidth(unsigned int index) const {
-	unsigned int result = GetUIWidth(arrow);
+	unsigned int result = arrow->GetWidth();
 	std::vector<boost::shared_ptr<UIBase> >::const_iterator start, end, it;
 	start = select_list.begin();
 	std::advance(start, line_size * index);
@@ -252,7 +236,7 @@ utility::opt_error<unsigned int>::type UISelectorBase::CalcLineWidth(unsigned in
 		std::advance(end, line_size);
 	}
 	it = std::max_element(start, end, MaxFindByUIWidth());
-	result += GetUIWidth(*it);
+	result += (*it)->GetWidth();
 
 	return result;
 }
@@ -267,7 +251,7 @@ utility::opt_error<unsigned int>::type UISelectorBase::CalcLineHeight(unsigned i
 		end = start;
 		std::advance(end, line_size);
 	}
-	return std::accumulate(start, end, static_cast<unsigned int>(0), SumByUIHeight(GetUIHeight(arrow)));
+	return std::accumulate(start, end, static_cast<unsigned int>(0), SumByUIHeight(arrow->GetHeight()));
 }
 
 unsigned int UISelectorBase::GetCount() const {

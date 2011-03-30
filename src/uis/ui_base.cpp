@@ -259,6 +259,22 @@ utility::opt_error<unsigned int>::type UIBase::CalcHeight() const {
 	return 0;
 }
 
+unsigned int UIBase::GetWidth(void) const {
+	opt_error<unsigned int>::type width_opt = CalcWidth();
+	BOOST_ASSERT(width_opt.which() == 1);
+	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = GetSize();
+	BOOST_ASSERT(size_opt.which() == 1);
+	return std::max(boost::get<unsigned int>(width_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<0>());
+}
+
+unsigned int UIBase::GetHeight(void) const {
+	opt_error<unsigned int>::type height_opt = CalcHeight();
+	BOOST_ASSERT(height_opt.which() == 1);
+	opt_error<boost::tuple<unsigned int, unsigned int> >::type size_opt = GetSize();
+	BOOST_ASSERT(size_opt.which() == 1);
+	return std::max(boost::get<unsigned int>(height_opt), boost::get<boost::tuple<unsigned int, unsigned int> >(size_opt).get<1>());
+}
+
 } // uis
 
 } // wten
