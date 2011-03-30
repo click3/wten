@@ -179,6 +179,7 @@
 #include "windows/camp_base_window.h"
 #include "windows/camp_status_window.h"
 #include "windows/camp_item_window.h"
+#include "windows/camp_tairetsu_window.h"
 #include "windows/shop_item_list_window.h"
 #include "event_manager.h"
 #include "event_notify.h"

@@ -52,7 +52,7 @@ std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_pt
 		boost::shared_ptr<void>(new CampItemWindow(pt, default_frame_graph)),
 		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_graph)),
 		boost::shared_ptr<void>(new CampStatusWindow(pt, default_frame_graph)),
-		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_graph)),
+		boost::shared_ptr<void>(new CampTairetsuWindow(pt, default_frame_graph)),
 		boost::shared_ptr<void>(new CampBaseWindow(pt, default_frame_graph))
 	};
 	std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > result;
