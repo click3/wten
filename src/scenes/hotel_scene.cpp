@@ -7,6 +7,26 @@ using namespace boost::assign;
 
 namespace {
 
+const wchar_t *stay_name_list[] = {
+	L"馬小屋",
+	L"簡易寝台",
+	L"エコノミールーム",
+	L"スイートルーム",
+	L"ロイヤルスイート"
+};
+
+const unsigned int stay_money_list[] = {
+	0,
+	10,
+	50,
+	200,
+	500
+};
+
+unsigned int GetStayPrice(unsigned int bed_lv, unsigned int pt_count) {
+	return stay_money_list[bed_lv] * pt_count;
+}
+
 enum STEP {
 	NORMAL_STEP,
 	STAY_SELECT_STEP,
@@ -15,6 +35,11 @@ enum STEP {
 	STAY_ECONOMY_STEP,
 	STAY_SUITE_STEP,
 	STAY_ROYAL_SUITE_STEP,
+	STAY_MONEY_CHECK_STEP,
+	STAY_WANT_MONEY_STEP,
+	STAY_STEP,
+	STAY_LEVEL_UP_CHECK,
+	STAY_LEVEL_UP_VIEW,
 	ITEM_STORE_IN_LIST_STEP,
 	ITEM_STORE_IN_STEP,
 	ITEM_STORE_OUT_LIST_STEP,
@@ -120,14 +145,11 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 		}
 		case STAY_SELECT_STEP: {
 			std::vector<boost::tuple<boost::shared_ptr<const std::wstring>, boost::shared_ptr<void> > > ui_list;
-			const wchar_t *text_list[] = {
-				L"馬小屋",
-				L"簡易寝台",
-				L"エコノミールーム",
-				L"スイートルーム",
-				L"ロイヤルスイート",
-				L"やめる"
+			std::vector<const wchar_t*> text_list;
+			BOOST_FOREACH(const wchar_t *stay_name, stay_name_list) {
+				text_list += stay_name;
 			};
+			text_list += L"やめる";
 			boost::shared_ptr<void> step_list[] = {
 				boost::shared_ptr<void>(new STEP(STAY_MEWS_STEP)),
 				boost::shared_ptr<void>(new STEP(STAY_SIMPLE_STEP)),
@@ -136,7 +158,7 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 				boost::shared_ptr<void>(new STEP(STAY_ROYAL_SUITE_STEP)),
 				boost::shared_ptr<void>(new STEP(NORMAL_STEP))
 			};
-			for(unsigned int i = 0; i < 6; i++) {
+			for(unsigned int i = 0; i < text_list.size(); i++) {
 				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
@@ -145,10 +167,73 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 			break;
 		}
 		case STAY_MEWS_STEP:
+			OPT_ERROR(StayStepInitialize(0));
+			break;
 		case STAY_SIMPLE_STEP:
+			OPT_ERROR(StayStepInitialize(1));
+			break;
 		case STAY_ECONOMY_STEP:
+			OPT_ERROR(StayStepInitialize(2));
+			break;
 		case STAY_SUITE_STEP:
+			OPT_ERROR(StayStepInitialize(3));
+			break;
 		case STAY_ROYAL_SUITE_STEP:
+			OPT_ERROR(StayStepInitialize(4));
+			break;
+		case STAY_MONEY_CHECK_STEP: {
+			const unsigned int price = GetStayPrice(this->bed_lv, pt->size());
+			unsigned int total_money = 0;
+			BOOST_FOREACH(boost::shared_ptr<CharData> character, pt->GetCharacters()) {
+				total_money += character->GetStatus()->GetTG();
+			}
+			if(total_money >= price) {
+				next_step = STAY_STEP;
+			} else {
+				next_step = STAY_WANT_MONEY_STEP;
+			}
+			SendNextStepEvent();
+			break;
+		}
+		case STAY_WANT_MONEY_STEP: {
+			next_step = NORMAL_STEP;
+			const wchar_t *text_char = L"お金が足りません。";
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
+			OPT_ERROR(AddTextWindow(text));
+			break;
+		}
+		case STAY_STEP: {
+			next_step = STAY_LEVEL_UP_CHECK;
+			wchar_t text_char[256];
+			WSPRINTF(text_char, L"君たちは%sでゆっくりと疲れを癒した", stay_name_list[bed_lv]);
+			const unsigned int price = GetStayPrice(this->bed_lv, pt->size());
+			opt_error<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >::type opt_level_up_list = pt->Hotel(bed_lv, price);
+			if(opt_level_up_list.which() == 0) {
+				return boost::get<boost::shared_ptr<Error> >(opt_level_up_list);
+			}
+			level_up_list = boost::get<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >(opt_level_up_list);
+			boost::shared_ptr<const std::wstring> text(new std::wstring(text_char));
+			OPT_ERROR(AddTextWindow(text));
+			break;
+		}
+		case STAY_LEVEL_UP_CHECK: {
+			next_step = NORMAL_STEP;
+			while(!level_up_list.empty()) {
+				if(level_up_list.back()) {
+					next_step = STAY_LEVEL_UP_VIEW;
+					break;
+				}
+				level_up_list.pop_back();
+			}
+			SendNextStepEvent();
+			break;
+		}
+		case STAY_LEVEL_UP_VIEW: {
+			next_step = STAY_LEVEL_UP_CHECK;
+			OPT_ERROR(AddTextWindow(level_up_list.back().get()));
+			level_up_list.pop_back();
+			break;
+		}
 		case ITEM_STORE_IN_LIST_STEP:
 		case ITEM_STORE_IN_STEP:
 		case ITEM_STORE_OUT_LIST_STEP:
@@ -169,6 +254,13 @@ boost::optional<boost::shared_ptr<Error> > HotelScene::StepInitialize(void) {
 			break;
 		}
 	}
+	return boost::none;
+}
+
+boost::optional<boost::shared_ptr<Error> > HotelScene::StayStepInitialize(unsigned int bed_lv) {
+	next_step = STAY_MONEY_CHECK_STEP;
+	this->bed_lv = bed_lv;
+	SendNextStepEvent();
 	return boost::none;
 }
 
