@@ -58,6 +58,13 @@ boost::optional<boost::shared_ptr<Error> > ReloadUIStringList(boost::shared_ptr<
 		(*ui_string_list)[i][4]->SetText(max_hp);
 		i++;
 	}
+	for(unsigned int i = pt_data->GetCharacters().size(); i < PT_MEMBER_MAX; i++) {
+		(*ui_string_list)[i][0]->SetText(L"");
+		(*ui_string_list)[i][1]->SetText(L"");
+		(*ui_string_list)[i][2]->SetText(L"");
+		(*ui_string_list)[i][3]->SetText(L"");
+		(*ui_string_list)[i][4]->SetText(L"");
+	}
 	return boost::none;
 }
 
