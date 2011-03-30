@@ -129,7 +129,9 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 			next_step = NORMAL_STEP;
 			pt->Clear();
 			std::vector<boost::shared_ptr<CharData> > char_list = CharacterList::GetCurrentInstance()->GetFreeList();
-			boost::shared_ptr<windows::WindowBase> window(new windows::TairetsuWindow(char_list, false, default_frame_graph));
+			boost::shared_ptr<windows::TairetsuWindow> window(new windows::TairetsuWindow(char_list, false, default_frame_graph));
+			boost::shared_ptr<Event> cancel_event(new events::TairetsuSelectedEvent(char_list));
+			window->SetCancelEvent(cancel_event);
 			OPT_ERROR(AddWindow(window, 50, 80, 540, 260));
 			break;
 		}
