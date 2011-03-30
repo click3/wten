@@ -47,7 +47,7 @@ public:
 };
 
 int CalcUpRank(unsigned int bed_level, unsigned int lv) {
-	BOOST_ASSERT(bed_level < 6);
+	BOOST_ASSERT(bed_level <= BED_LEVEL_MAX);
 	int result = static_cast<int>(bed_level);
 	if(lv > 40) {
 		result -= 4;
@@ -59,10 +59,10 @@ int CalcUpRank(unsigned int bed_level, unsigned int lv) {
 
 boost::optional<bool> RankUpChallenge(unsigned int status, int up_rank) {
 	boost::optional<bool> result;
-	if(up_rank < 0) {
+	if(up_rank <= -2) {
 		result = false;
 	} else {
-		const unsigned int rand = DxLibWrapper::GetRand(static_cast<unsigned int>(up_rank+1));
+		const unsigned int rand = DxLibWrapper::GetRand(static_cast<unsigned int>(up_rank+2));
 		if(rand == 0) {
 			result = false;
 		} else if(rand == 1) {
@@ -258,7 +258,7 @@ boost::optional<boost::shared_ptr<Error> > CharStatus::LevelDrain(unsigned int v
 	return boost::none;
 }
 
-opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type CharStatus::CheckLevelUP(unsigned int bed_lv) {
+opt_error<boost::optional<boost::shared_ptr<std::wstring> > >::type CharStatus::CheckLevelUP(unsigned int bed_lv) {
 	BOOST_ASSERT(bed_lv < 6);
 	BOOST_ASSERT(job);
 	unsigned int check_level = job->CalcLv(exp);
@@ -269,7 +269,7 @@ opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type CharStat
 	return LevelUP(bed_lv);
 }
 
-opt_error<std::vector<boost::optional<bool> > >::type CharStatus::LevelUP(unsigned int bed_lv) {
+opt_error<boost::shared_ptr<std::wstring> >::type CharStatus::LevelUP(unsigned int bed_lv) {
 	BOOST_ASSERT(job);
 	lv++;
 	unsigned int min_exp = job->CalcExp(lv);
@@ -280,11 +280,21 @@ opt_error<std::vector<boost::optional<bool> > >::type CharStatus::LevelUP(unsign
 	const int up_rank = CalcUpRank(bed_lv, lv);
 	std::vector<unsigned int> status_list;
 	status_list += str, iq, pie, vit, agi, luk;
-	std::vector<boost::optional<bool> > result = RankUpChallenge(status_list, up_rank);
-	BOOST_ASSERT(result.size() == 6);
+	std::vector<boost::optional<bool> > up_list = RankUpChallenge(status_list, up_rank);
+	BOOST_ASSERT(up_list.size() == 6);
+
+	wchar_t text_char[1024];
+	WSPRINTF(text_char, L"%sÇÕÉåÉxÉãÇ™è„Ç™Ç¡ÇΩ(%d => %d)\n", GetName()->c_str(), GetLv() - 1, GetLv());
+
+	{
+		const unsigned int before = hp;
+		hp = GetJob()->CalcMaxHP(lv, hp);
+		const unsigned int after = hp;
+		WSTRCATF(text_char, L"HPÇ™%dè„Ç™Ç¡ÇΩ(%d => %d)\n", after-before, before, after);
+	}
 
 	unsigned int i = 0;
-	BOOST_FOREACH(boost::optional<bool> flag, result) {
+	BOOST_FOREACH(boost::optional<bool> flag, up_list) {
 		int up_down;
 		if(flag) {
 			if(flag.get() == true) {
@@ -293,19 +303,34 @@ opt_error<std::vector<boost::optional<bool> > >::type CharStatus::LevelUP(unsign
 				up_down = -1;
 			}
 		} else {
-			up_down = 0;
+			continue;
 		}
 		switch(i) {
-			case 0: str += up_down; break;
-			case 1: iq  += up_down; break;
-			case 2: pie += up_down; break;
-			case 3: vit += up_down; break;
-			case 4: agi += up_down; break;
-			case 5: luk += up_down; break;
+#define ADD_STATUS(id, var, name, geter)																			\
+			case id: {																				\
+					const unsigned int before = geter();														\
+					var += up_down;																	\
+					const unsigned int after = geter();														\
+					WSTRCATF(text_char, L"%sÇ™%d%s(%d => %d)\n", name, after - before, (up_down == 1 ? L"è„Ç™Ç¡ÇΩ" : L"â∫Ç™Ç¡ÇΩ"), before, after);	\
+				}																				\
+				break
+			
+			ADD_STATUS(0, str, L"STR", GetStr);
+			ADD_STATUS(1, iq,  L"IQ",  GetIQ);
+			ADD_STATUS(2, pie, L"PIE", GetPie);
+			ADD_STATUS(3, vit, L"VIT", GetVit);
+			ADD_STATUS(4, agi, L"AGI", GetAgi);
+			ADD_STATUS(5, luk, L"LUK", GetLuk);
+#undef ADD_STATUS
+			default:
+				BOOST_ASSERT(false);
+				return CREATE_ERROR(ERROR_CODE_INTERNAL_ERROR);
 		}
 		i++;
 	}
-	return result;
+
+	// TODO ÉXÉyÉãÇÃèKìæÇ»Ç«
+	return boost::shared_ptr<std::wstring>(new std::wstring(text_char));
 }
 
 } // wten

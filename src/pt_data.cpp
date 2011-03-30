@@ -301,21 +301,22 @@ boost::optional<boost::shared_ptr<Error> > PTData::Turn(DIRECTION dir) {
 	return boost::none;
 }
 
-opt_error<std::vector<boost::optional<std::vector<boost::optional<bool> > > > >::type PTData::Hotel(unsigned int bed_lv) {
+opt_error<std::vector<boost::optional<boost::shared_ptr<std::wstring> > > >::type PTData::Hotel(unsigned int bed_lv) {
 	if(bed_lv > BED_LEVEL_MAX) {
 		return CREATE_ERROR(ERROR_CODE_INVALID_PARAMETER);
 	}
-	std::vector<boost::optional<std::vector<boost::optional<bool> > > > result;
+	std::vector<boost::optional<boost::shared_ptr<std::wstring> > > result;
 	BOOST_FOREACH(boost::shared_ptr<CharData> character, characters) {
 		if(!character->GetCondition()->IsAlive()) {
 			continue;
 		}
-		OPT_ERROR(HotelHeal(character, bed_lv));
-		opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type opt_row = CheckLevelUP(character, bed_lv);
+		opt_error<boost::optional<boost::shared_ptr<std::wstring> > >::type opt_row = CheckLevelUP(character, bed_lv);
 		if(opt_row.which() == 0) {
 			return boost::get<boost::shared_ptr<Error> >(opt_row);
 		}
-		result.push_back(boost::get<boost::optional<std::vector<boost::optional<bool> > > >(opt_row));
+		result.push_back(boost::get<boost::optional<boost::shared_ptr<std::wstring> > >(opt_row));
+		OPT_ERROR(HotelHeal(character, bed_lv));
+		character->ReloadStatus();
 	}
 	return result;
 }
@@ -326,7 +327,7 @@ boost::optional<boost::shared_ptr<Error> > PTData::HotelHeal(boost::shared_ptr<C
 	return boost::none;
 }
 
-opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type PTData::CheckLevelUP(boost::shared_ptr<CharData> character, unsigned int bed_lv) {
+opt_error<boost::optional<boost::shared_ptr<std::wstring> > >::type PTData::CheckLevelUP(boost::shared_ptr<CharData> character, unsigned int bed_lv) {
 	return character->GetStatus()->CheckLevelUP(bed_lv);
 }
 

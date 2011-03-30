@@ -41,9 +41,9 @@ public:
 	boost::optional<boost::shared_ptr<Error> > AddItem(boost::shared_ptr<Item> item);
 	boost::optional<boost::shared_ptr<Error> > DeleteItem(boost::shared_ptr<Item> item);
 	boost::optional<boost::shared_ptr<Error> > LevelDrain(unsigned int value);
-	utility::opt_error<boost::optional<std::vector<boost::optional<bool> > > >::type CheckLevelUP(unsigned int bed_lv);
+	utility::opt_error<boost::optional<boost::shared_ptr<std::wstring> > >::type CheckLevelUP(unsigned int bed_lv);
 protected:
-	utility::opt_error<std::vector<boost::optional<bool> > >::type LevelUP(unsigned int bed_lv);
+	utility::opt_error<boost::shared_ptr<std::wstring> >::type LevelUP(unsigned int bed_lv);
 
 	boost::shared_ptr<const std::wstring> name;
 	boost::shared_ptr<const Job> job;
