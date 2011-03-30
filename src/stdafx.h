@@ -152,6 +152,7 @@
 #include "uis/ui_input_dlg.h"
 #include "uis/ui_dummy.h"
 #include "uis/ui_char_status.h"
+#include "uis/ui_tairetsu.h"
 #include "event_checker.h"
 #include "events/event_checker_base.h"
 #include "events/key_event_checker.h"
