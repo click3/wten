@@ -15,6 +15,7 @@ public:
 	UITairetsu(boost::shared_ptr<const Graph> frame_graph, boost::shared_ptr<const std::wstring> arrow_filename = utility::WChar2Ptr(L"data/ui/arrow1.png"));
 	~UITairetsu();
 	boost::optional<boost::shared_ptr<Error> > Set(boost::shared_ptr<CharData> char_data);
+	boost::shared_ptr<CharData> Get(void) const;
 	boost::optional<boost::shared_ptr<Error> > Select(unsigned int index);
 	enum MOVE_FOCUS {
 		MOVE_FOCUS_UP,
@@ -22,6 +23,8 @@ public:
 	};
 	boost::optional<boost::shared_ptr<Error> > Select(MOVE_FOCUS move_mode);
 	unsigned int GetIndex() const;
+	bool IsArrowEnable(void) const;
+	void SetArrowEnable(bool arrow_enable);
 	std::vector<boost::shared_ptr<CharData> > GetCharDataList(void) const;
 	boost::optional<boost::shared_ptr<Error> > SetOwnerWindow(boost::weak_ptr<const windows::WindowBase> window);
 	boost::optional<boost::shared_ptr<Error> > ClearOwnerWindow(void);
@@ -36,6 +39,8 @@ public:
 	utility::opt_error<unsigned int>::type CalcHeight() const;
 protected:
 	unsigned int index;
+	bool arrow_enable;
+	unsigned char padding[3]; // unused
 	const boost::shared_ptr<UIImage> arrow;
 	std::vector<boost::shared_ptr<CharData> > char_data_list;
 	const std::vector<boost::shared_ptr<UIString> > ui_string_list;

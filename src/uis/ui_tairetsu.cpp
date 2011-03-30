@@ -87,6 +87,10 @@ boost::optional<boost::shared_ptr<Error> > UITairetsu::Set(boost::shared_ptr<Cha
 	return boost::none;
 }
 
+boost::shared_ptr<CharData> UITairetsu::Get(void) const {
+	return char_data_list[index];
+}
+
 boost::optional<boost::shared_ptr<Error> > UITairetsu::Select(unsigned int index) {
 	BOOST_ASSERT(index < PT_MEMBER_MAX);
 	this->index = index;
@@ -122,6 +126,14 @@ unsigned int UITairetsu::GetIndex() const {
 	return index;
 }
 
+bool UITairetsu::IsArrowEnable(void) const {
+	return arrow_enable;
+}
+
+void UITairetsu::SetArrowEnable(bool arrow_enable) {
+	this->arrow_enable = arrow_enable;
+}
+
 std::vector<boost::shared_ptr<CharData> > UITairetsu::GetCharDataList(void) const {
 	return char_data_list;
 }
@@ -143,12 +155,21 @@ boost::optional<boost::shared_ptr<Error> > UITairetsu::ClearOwnerWindow(void) {
 
 boost::optional<boost::shared_ptr<Error> > UITairetsu::ResetUI(void) {
 	for(unsigned int i = 0; i < PT_MEMBER_MAX; i++) {
-		OPT_ERROR(ui_string_list[i]->SetText(char_data_list[i]->GetStatus()->GetName()));
+		BOOST_ASSERT(i < ui_string_list.size());
+		BOOST_ASSERT(ui_string_list[i]);
+		BOOST_ASSERT(i < char_data_list.size());
+		if(char_data_list[i]) {
+			OPT_ERROR(ui_string_list[i]->SetText(char_data_list[i]->GetStatus()->GetName()));
+		} else {
+			OPT_ERROR(ui_string_list[i]->SetText(WChar2Ptr(L"")));
+		}
 	}
 
+	BOOST_ASSERT(arrow);
 	const unsigned int arrow_width = arrow->GetWidth();
 	const unsigned int ui_queue_x = this->x + arrow_width;
 	const unsigned int ui_queue_y = this->y;
+	BOOST_ASSERT(ui_queue);
 	OPT_ERROR(ui_queue->Move(ui_queue_x, ui_queue_y));
 
 	unsigned int text_x;
@@ -187,7 +208,9 @@ boost::optional<boost::shared_ptr<Error> > UITairetsu::Draw(void) {
 }
 
 boost::optional<boost::shared_ptr<Error> > UITairetsu::Draw(unsigned int, unsigned int) {
-	OPT_ERROR(arrow->Draw());
+	if(arrow_enable) {
+		OPT_ERROR(arrow->Draw());
+	}
 	OPT_ERROR(ui_queue->Draw());
 	return boost::none;
 }
