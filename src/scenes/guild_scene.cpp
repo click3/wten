@@ -13,6 +13,14 @@ enum STEP {
 	CHARACTER_MANAGE_STEP,
 	PT_SETTING_STEP,
 	STAY_STEP,
+	HOUSE_BUY_STEP,
+	ITEM_STORE_IN_CHECK_STEP,
+	ITEM_STORE_IN_LIST_STEP,
+	ITEM_STORE_IN_STEP,
+	ITEM_STORE_OUT_CHECK_STEP,
+	ITEM_STORE_OUT_LIST_STEP,
+	ITEM_STORE_OUT_CHARACTER_SELECT_STEP,
+	ITEM_STORE_OUT_EMPTY_STEP,
 	CONTRIBUTION_STEP,
 	RETURN_STEP,
 };
@@ -33,6 +41,11 @@ void SetCurrentStep(STEP step) {
 void SendNextStepEvent(void) {
 	boost::shared_ptr<Event> event(new events::NextStepEvent());
 	EventNotify::Send(event);
+}
+
+unsigned int GetHouseLevel(void) {
+	boost::shared_ptr<GlobalData> global_data = GlobalData::GetCurrentInstance();
+	return global_data->GetHouseLevel();
 }
 
 } // anonymous
@@ -95,18 +108,35 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 				L"冒険者を管理する",
 				L"PTを編成する",
 				L"宿泊する",
-				L"寄付する",
+				L"家を購入する",
+				L"アイテムをしまう",
+				L"アイテムを取り出す",
+				L"増築する",
 				L"外に出る"
 			};
-			boost::shared_ptr<void> step_list[] = {
+			std::vector<boost::shared_ptr<void> > step_list;
+			step_list += 
 				boost::shared_ptr<void>(new STEP(NEW_CHARACTER_STEP)),
 				boost::shared_ptr<void>(new STEP(CHARACTER_MANAGE_STEP)),
 				boost::shared_ptr<void>(new STEP(PT_SETTING_STEP)),
 				boost::shared_ptr<void>(new STEP(STAY_STEP)),
+				boost::shared_ptr<void>(new STEP(HOUSE_BUY_STEP)),
+				boost::shared_ptr<void>(new STEP(ITEM_STORE_IN_CHECK_STEP)),
+				boost::shared_ptr<void>(new STEP(ITEM_STORE_OUT_CHECK_STEP)),
 				boost::shared_ptr<void>(new STEP(CONTRIBUTION_STEP)),
 				boost::shared_ptr<void>(new STEP(RETURN_STEP))
-			};
-			for(unsigned int i = 0; i < 6; i++) {
+			;
+			std::vector<unsigned int> list;
+			const unsigned int house_level = GetHouseLevel();
+			if(house_level == 0) {
+				list += 0,1,2,4,8;
+			} else if(house_level < HOUSE_LEVEL_MAX) {
+				list += 0,1,2,3,5,6,7,8;
+			} else {
+				BOOST_ASSERT(house_level == HOUSE_LEVEL_MAX);
+				list += 0,1,2,3,5,6,8;
+			}
+			BOOST_FOREACH(unsigned int i, list) {
 				boost::shared_ptr<const std::wstring> text(new std::wstring(text_list[i]));
 				boost::shared_ptr<void> step(step_list[i]);
 				ui_list.push_back(make_tuple(text, step));
@@ -136,6 +166,22 @@ boost::optional<boost::shared_ptr<Error> > GuildScene::StepInitialize(void) {
 			break;
 		}
 		case STAY_STEP:
+			// TODO
+		case HOUSE_BUY_STEP:
+			// TODO
+		case ITEM_STORE_IN_CHECK_STEP:
+			// TODO
+		case ITEM_STORE_IN_LIST_STEP:
+			// TODO
+		case ITEM_STORE_IN_STEP:
+			// TODO
+		case ITEM_STORE_OUT_CHECK_STEP:
+			// TODO
+		case ITEM_STORE_OUT_LIST_STEP:
+			// TODO
+		case ITEM_STORE_OUT_CHARACTER_SELECT_STEP:
+			// TODO
+		case ITEM_STORE_OUT_EMPTY_STEP:
 			// TODO
 		case CONTRIBUTION_STEP:
 			// TODO
